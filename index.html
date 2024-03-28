@@ -1,0 +1,3838 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<meta charset="UTF-8">
+
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+
+
+
+ <title>Tvm</title>
+ 
+
+ <style>
+ 
+carouselOfImages
+{
+  max-width:960px;
+  margin:auto;
+  overflow:visible;
+}
+.carouselImage {
+  width: 200px;
+  height: 150px;
+  margin-top:5px;
+  margin-bottom:100px;
+  border-radius: 5px;
+  counter-increment: carousel-cell;
+  transition: transform 0.5s;
+  transform: scale(2);
+}
+.carouselImage img {
+  height:235px;
+}
+.carouselImage.is-selected {
+  z-index:10;
+  transform: scale(1.5);
+}
+.carouselImage.nextToSelected {
+  transform: scale(1.25);
+  z-index:5;
+}
+
+/*! Flickity v2.0.5
+https://flickity.metafizzy.co
+---------------------------------------------- */
+
+.flickity-enabled {
+  position: relative;
+}
+
+.flickity-enabled:focus { outline: none; }
+
+.flickity-viewport {
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+
+.flickity-slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/* draggable */
+
+.flickity-enabled.is-draggable {
+  -webkit-tap-highlight-color: transparent;
+          tap-highlight-color: transparent;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.flickity-enabled.is-draggable .flickity-viewport {
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.flickity-enabled.is-draggable .flickity-viewport.is-pointer-down {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+/* ---- previous/next buttons ---- */
+
+.flickity-prev-next-button {
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  background: hsla(0, 0%, 100%, 0.75);
+  cursor: pointer;
+  /* vertically center */
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.flickity-prev-next-button:hover { background: white; }
+
+.flickity-prev-next-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 5px #09F;
+}
+
+.flickity-prev-next-button:active {
+  opacity: 0.6;
+}
+
+.flickity-prev-next-button.previous { left: 10px; }
+.flickity-prev-next-button.next { right: 10px; }
+/* right to left */
+.flickity-rtl .flickity-prev-next-button.previous {
+  left: auto;
+  right: 10px;
+}
+.flickity-rtl .flickity-prev-next-button.next {
+  right: auto;
+  left: 10px;
+}
+
+.flickity-prev-next-button:disabled {
+  opacity: 0.3;
+  cursor: auto;
+}
+
+.flickity-prev-next-button svg {
+  position: absolute;
+  left: 20%;
+  top: 20%;
+  width: 60%;
+  height: 60%;
+}
+
+.flickity-prev-next-button .arrow {
+  fill: #333;
+}
+
+/* ---- page dots ---- */
+
+.flickity-page-dots {
+  position: absolute;
+  width: 100%;
+  bottom: -25px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+  line-height: 1;
+}
+
+.flickity-rtl .flickity-page-dots { direction: rtl; }
+
+.flickity-page-dots .dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 8px;
+  background: #333;
+  border-radius: 50%;
+  opacity: 0.25;
+  cursor: pointer;
+}
+
+.flickity-page-dots .dot.is-selected {
+  opacity: 1;
+}
+.product-detail-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    font-size:21px;
+    font-weight:700;
+}
+
+#lightbox {
+	display: none;
+	position: fixed;
+	top:0;
+	left:0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	width:90vw;
+	height:90vh;
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+#dark {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background:rgba(0,0,0,.9);
+	width:100vw;
+	height:100vh;
+}
+
+.product-detail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7); }
+
+.product-detail-inner {
+  display: flex;  
+  background-color: white;
+  width: 75vw;
+  height: 75vh;
+  position: relative;
+  padding: 1rem;
+  overflow-y: auto; }
+
+.product-detail-image {
+  flex: 0 1 30%;
+  padding:15px;
+}
+  
+.product-detail-image  img {
+    width: 100%;
+} 
+
+.hide {
+  display: none; }
+
+.modal-dialog {
+      max-width: 800px;
+      margin: 30px auto;
+  }
+.modal-body {
+  position:relative;
+  padding:0px;
+}
+.modal-header {
+  padding:0;
+}
+
+a.btn.btn-primary {
+  color:#fff;
+}
+.close {
+  position:absolute;
+  right:-30px;
+  top:0;
+  z-index:999;
+  font-size:2rem;
+  font-weight: normal;
+  color:#fff;
+  opacity:1;
+}
+</style>
+
+    
+<style>
+        body {
+            font-family: 'Roboto Condensed', arial, sans-serif;
+            margin: 0;
+            background-image:                    url("https://bayanbox.ir/download/1793887276848709656/Background.jpg");
+            background-attachment: fixed;
+            background-color: #000000;
+            direction: rtl;
+        }
+
+        /* -- main content -- */
+        .content-container {
+            position: relative;
+            z-index: 0;
+            padding: 20px;
+            max-width: 1078px;
+            margin: 0 auto;
+            overflow: hidden;
+            transition: all 300ms ease-in-out;
+        }
+
+        .site-title {
+            text-align: center;
+            border-bottom: 4px solid #ffffff;
+            margin-bottom: 24px;
+        }
+
+        .site-title h1 {
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+        }
+
+
+
+        .content p {
+            line-height: 1.6em;
+            margin-bottom: 24px;
+        }
+
+        /* -- Slideout Sidebar -- */
+
+        .slideout-sidebar {
+            position: fixed;
+            float: right;
+            top: 0;
+            left: -190px;
+            z-index: 0;
+            width: 150px;
+            height: 100%;
+            padding: 20px;
+            background-color: #212121;
+            transition: all 300ms ease-in-out;
+            font-family: "byekan"
+        }
+
+        .slideout-sidebar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .slideout-sidebar ul li {
+            cursor: pointer;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(244,244,244,0.4);
+            color: rgba(244,244,244,0.7);
+        }
+
+        .slideout-sidebar ul li:last-child {
+            border-bottom: 0;
+        }
+
+        .slideout-sidebar ul li:hover {
+            color: rgba(244,244,244,1);
+        }
+
+        /* -- Menu Icon -- */
+
+        #menu-toggle {
+            display: none;
+        }
+
+        .menu-icon {
+            position: absolute;
+            top: 18px;
+            left: 30px;
+            font-size: 24px;
+            z-index: 1;
+            transition: all 300ms ease-in-out;
+        }
+
+
+
+        /*-- The Magic --*/
+        #menu-toggle:checked ~ .slideout-sidebar {
+            left: 0px;
+        }
+
+        #menu-toggle:checked + .menu-icon {
+            left: 210px;
+        }
+
+        #menu-toggle:checked ~ .content-container {
+            padding-left: 190px;
+        }
+
+        /* -- Media Queries -- */
+
+        @media (max-width: 991px) {
+
+            .content-container {
+                max-width: 480px;
+            }
+
+        }
+
+        @media (max-width: 1067px) {
+
+            .content-container {
+                max-width: 100%;
+                margin: 30px auto 0;
+            }
+
+            #menu-toggle:checked ~ .content-container {
+                padding-left: 0;
+            }
+
+            .slideout-sidebar ul {
+                text-align: center;
+                max-width: 200px;
+                margin: 30px auto 0;
+            }
+
+            .menu-icon {
+                left: 20px
+            }
+
+            #menu-toggle:checked ~ .slideout-sidebar {
+                width: 100%;
+            }
+
+            #menu-toggle:checked + .menu-icon {
+                left: 87%;
+                color: #fafafa;
+            }
+
+            @media screen
+            and (max-width: 936px)
+            and (orientation: landscape) {
+
+                .slideout-sidebar {
+                    padding: 0;
+                }
+
+                .slideout-sidebar ul {
+                    max-width: 100%;
+                    margin: 60px auto 0;
+                }
+
+                .slideout-sidebar ul li {
+                    display: inline-block;
+                    border-bottom: 0;
+                    width: 72px;
+                    padding: 18px 24px;
+                    margin: 0 6px 12px;
+                    color: #ffffff;
+                    background-color: #777;
+                }
+
+
+            }
+
+        }
+
+
+    </style>
+
+
+    
+
+<style>
+ul {
+list-style-type: none;
+margin: 0;
+padding: 0;
+overflow: hidden;
+background-color: #333;
+}
+li {float: right;}
+li a, .dropbtn {
+display: inline-block;
+color: white;
+font-size: 18px;
+text-align: center;
+padding: 14px 20px;
+text-decoration: none;
+}
+li a:hover, .dropdown:hover .dropbtn {
+background-color:#2196F3;
+}
+li.dropdown {
+display: inline-block;
+}
+.dropdown-content {
+display: none;
+position: absolute;
+background-color: #f9f9f9;
+min-width: 1z60px;
+box-shadow: 0 18px 26px 0 rgba(0,0,0,5);
+z-index: 1;
+}
+.dropdown-content a {
+color: black;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+text-align: center;
+
+}
+.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown:hover .dropdown-content {display: block;}
+</style>
+
+<style>
+.mybutton{
+ background-color:#4d4d4d;
+ font-family: 'El Messiri', sans-serif;
+ padding: 14px;
+ border-radius: 15px;
+ box-shadow: 0 0 8px rgb(207, 207, 207);
+ color:#fff;
+ font-size:18px;
+}
+.mybutton:hover{
+  background-color:#cccccc;
+  color:#000;
+  border: none;
+}
+</style>
+
+
+<style>
+video{
+ border-radius: 10px;
+ -webkit-transform:scale(1.1):( Webkit: Scale up image to 1.2x original size);
+ -moz-border-radius:10px;
+ -webkit-border-radius:10px;
+ -moz-transform:scale(1.1):( Mozilla scale version);
+ -moz-transform:scale(0.9):(Explorer scale version);
+ box-shadow:-3px 3px 15px #fff;
+ }
+ video:out{
+ border-radius: 10px;
+ -webkit-transform:scale(0.9):( Webkit: Scale down image to 0.8x original size);
+ padding:0px;
+ float:center;
+ -moz-transform:scale(0.9):(Mozilla scale version);
+ -moz-transform:scale(0.9):(Explorer scale version);
+ }
+ video{
+ -webkit-transform:scale(0.9);
+ -moz-transform:scale(0.9);
+ -o-transform:scale(0.9);
+ -webkit-transition-duration: 0.5s;
+ -moz-transition-duration: 0.5s;
+ -o-transition-duration: 0.5s;
+ margin: 0 0px 0px 0;
+ }
+ </style>
+ 
+
+
+<style>
+img{
+ border-radius: 10px;
+ -webkit-transform:scale(1.1):( Webkit: Scale up image to 1.2x original size);
+ -moz-border-radius:10px;
+ -webkit-border-radius:10px;
+ -moz-transform:scale(1.1):( Mozilla scale version);
+ -moz-transform:scale(0.9):(Explorer scale version);
+ box-shadow:-3px 3px 15px #fff;
+ }
+ img:out{
+ border-radius: 10px;
+ -webkit-transform:scale(0.9):( Webkit: Scale down image to 0.8x original size);
+ padding:0px;
+ float:center;
+ -moz-transform:scale(0.9):(Mozilla scale version);
+ -moz-transform:scale(0.9):(Explorer scale version);
+ }
+ img{
+ -webkit-transform:scale(0.9);
+ -moz-transform:scale(0.9);
+ -o-transform:scale(0.9);
+ -webkit-transition-duration: 0.5s;
+ -moz-transition-duration: 0.5s;
+ -o-transition-duration: 0.5s;
+ margin: 0 0px 0px 0;
+ }
+ img:hover{
+ -webkit-transform:scale(1.005);
+ -moz-transform:scale(1.1);
+ -o-transform:scale(1.1);
+ box-shadow:0px 0px 3px gray;
+ -webkit-box-shadow:0px 0px 30px gray;
+ -moz-box-shadow:0px 0px 30px gray;
+ -webkit-filter: grayscale(100%); /* Ch 23+, Saf 6.0+, BB 10.0+ */
+filter: grayscale(100%); /* FF 35+ */
+ }
+ 
+</style>
+
+
+<style>
+ h2 { 
+ font-family: 'El Messiri', sans-serif;
+ color: white;
+ text-shadow: 1px 1px 3px black, 0 0 25px     blue, 0 0 5px darkblue;
+ font-size: 32px; 
+ } 
+</style>
+
+<!-- Date Persian-->
+<style>
+#demo {
+  direction: rtl;
+  color: #ffffff; 
+  text-align: center;  
+  margin: 2em 0;
+  line-height: 1.42857;
+  font-size: 18px; 
+}
+</style>
+ 
+ <style>
+ marquee{
+ font-family: 'El Messiri', sans-serif;
+ width: 2100px;
+ height: 100px;
+ font-size:22px;
+ padding: 10px 0;
+ color: #ffc107;
+ text-align:center;
+ }
+</style>
+
+
+ <script>
+ location.reload(forceGet)
+</script> 
+ 
+</head>
+
+
+<body>
+
+  
+
+
+
+
+<ul>
+<li class="dropdown">
+<a href="javascript:void(0)" class="dropbtn">فیلم و سریال</a>
+<div class="dropdown-content">
+<a href="/irani/cinema.html">جدیدترین فیلم و سریال</a>
+<a href="/irani/film_irani.html">فیلم ایرانی</a>
+<a href="/india/film_india.html">فیلم هندی</a>
+<a href="/khareji/film_khareji.html">فیلم خارجی</a>
+<a href="/serial/serialiran.html">سریال ایرانی جدید</a>
+<a href="/serial/serial.html">سریال  ایرانی قدیمی</a>
+</div>
+</li>
+
+
+
+
+
+
+
+<li class="dropdown">
+<a href="javascript:void(0)" 
+class="dropbtn">کنسرت</a>
+<div class="dropdown-content">
+
+<a href="/video/golpa1999.html">کنسرت گلپا ۱۹۹۹ نیویورک</a>
+<a href="/video/shakila1995 a.html">کنسرت  شکیلا ۱۹۹۵ قسمت ۱</a>
+<a href="/video/shakila1995 b.html">کنسرت  شکیلا ۱۹۹۵ قسمت ۲</a>
+<a href="/video/sima koln a.html">کنسرت سیما بینا کلن قسمت یک</a>
+<a href="/video/sima koln b.html">کنسرت سیما بینا کلن قسمت دو</a>
+<a href="/video/omid.html">کنسرت امید</a>
+<a href="/video/moein2016.html">کنسرت معین ۲۰۱۶</a>
+<a href="/video/ebi2016.html">کنسرت ابی ۲۰۱۶</a>
+<a href="/video/googoosh2018.html">کنسرت  گوگوش ۲۰۱۸</a>
+<a href="/video/bijan1995.html">کنسرت بیژن مرتضوی ۱۹۹۵</a>
+<a href="/video/mahasti1995.html">کنسرت مهستی ۱۹۹۵ لندن</a>
+<a href="/video/hayede1981.html">کنسرت هایده ۱۹۸۱</a>
+<a href="/video/hayde1987.html">کنسرت هایده ۱۹۸۷ لندن</a>
+<a href="/video/leyla1400.html">کنسرت لیلا فروهر نوروز ۱۴۰۰</a>
+<a href="/video/evanalijenab.html">کنسرت ایوان بند عالیجناب</a>
+<a href="/video/satin1400.html">کنسرت ستین ۱۴۰۰ استانبول</a>
+<a href="/video/shadmehr.html">کنسرت شادمهر</a>
+<a
+<a href="/video/bazm1.html">بزم ستار و مهستی</a>
+<a href="/video/bazm2.html">بزم هایده و گلپا</a>
+<a href="/video/show73.html">شو طنین ۱۳۷۳</a>
+<a href="/video/besthomeyra.html">بهترین های حمیرا</a>
+<a href="/video/showshad.html">گلچین موزیک ویدیو شاد</a>
+<a href="/video/chavoshi shahrzad.html">چاوشی عاشقانه های شهرزاد</a>
+
+</div>
+</li>
+
+
+
+<li class="dropdown">
+<a href="javascript:void(0)"
+ class="dropbtn">ویدیو کلیپ</a>
+<div class="dropdown-content">
+
+<a href="/clip/musicvideo.html">گلچین موزیک ویدیو ایرانی</a>
+<a href="/clip/khareji.html">گلچین موزیک ویدیو خارجی</a>
+<a href="/clip/mahasti.html">گلچین مهستی</a>
+<a href="/clip/arash.html">گلچین آرش</a>
+<a href="/clip/xband.html">گلچین ایکس بند</a>
+
+</div>
+</li>
+
+
+
+
+<li class="dropdown">
+<a href="javascript:void(0)"
+ class="dropbtn">موزیک</a>
+<div class="dropdown-content">
+<a href="/music/music2021.html">محبوب ترین آهنگ های ۲۰۲۱</a>
+<a href="/music/music2022.html">محبوب ترین آهنگ های ۲۰۲۲</a>
+<a href="/music/makan.html">محبوب ترین  آهنگ های ماکان بند</a>
+<a href="/music/music2022.html">محبوب ترین آهنگ های ۲۰۲۲</a>
+<a href="/music/xband.html">محبوب ترین آهنگ های xband</a>
+<a href="/music/golchin1.html">گلچین آهنگ های قدیمی</a>
+<a href="/music/golchinhayedeh.html">گلچین هایده</a>
+<a href="/music/golchinmahasti.html">گلچین مهستی</a>
+<a href="/music/golchinhomeyra.html">گلچین حمیرا</a>
+<a href="/music/golchinshadmehr.html">گلچین شادمهر</a>
+<a href="/music/golchinchavoshi.html">گلچین چاوشی
+</a>
+<a href="/music/evanband.html">ایوان بند آلبوم عالیجناب</a>
+
+
+</div>
+</li>
+
+
+
+
+
+<li class="dropdown">
+<a href="javascript:void(0)"
+ class="dropbtn">ویژه برنامه</a>
+<div class="dropdown-content">
+
+<a href="/vip/nurooz1401.html">جشن نوروز ۱۴۰۱</a>
+<a href="/vip/nuroozmbc1401.html">جشن نوروز ۱۴۰۱ ام بی سی پرشیا</a>
+
+
+
+</div>
+</li>
+
+
+
+
+
+<li class="dropdown">
+<a href="javascript:void(0)"
+ class="dropbtn">پخش زنده تلویزیونی</a>
+<div class="dropdown-content">
+
+<a href="/tv/lenzfilm.html">شبکه لنز فیلم</a>
+<a href="/tv/lenzsport.html">شبکه لنز اسپورت</a>
+<a href="/tv/lenzsportplus.html">شبکه لنز اسپورت پلاس</a>
+<a href="/tv/lenzcartoon.html">شبکه لنز کارتون</a>
+<a href="/tv/lenzshaparak.html">شبکه کارتونی شاپرک</a>
+<a href="/tv/tivacartoon.html">شبکه تیوا کودک</a>
+<a href="/tv/tivafilm.html">شبکه تیوا فیلم</a>
+<a href="/tv/tiva1.html">شبکه تیوا ۱</a>
+<a href="/tv/tiva2.html">شبکه تیوا ۲</a>
+
+</div>
+</li>
+
+
+
+
+
+<li class="dropdown">
+<a href="javascript:void(0)"
+ 
+
+<span> سرعت اینترنت :
+        <span id="information"></span> Mbps</span>
+
+
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+ <!--
+<a class="weatherwidget-io" href="https://forecast7.com/en/35d7251d38/tehran-province/" data-label_1="وضعیت" data-label_2="آب و هوای تهران" data-icons="Climacons Animated" data-days="3" data-theme="dark" >TEHRAN PROVINCE WEATHER</a>
+<script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+</script>
+
+
+
+
+<div id="ww_8041aafe27c9a" v='1.20' loc='id' a='{"t":"responsive","lang":"en","ids":["wl2993"],"cl_bkg":"#000000","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","sl_tof":"3","sl_sot":"celsius","sl_ics":"one_a","font":"Arial","cl_odd":"#FFFFFF17"}'>Weather for the Following Location: <a href="https://2ua.org/irn/tehran/map/" id="ww_8041aafe27c9a_u" target="_blank">Tehran map, Iran</a></div><script async src="https://srv2.weatherwidget.org/js/?id=ww_8041aafe27c9a">
+</script>
+-->
+
+
+
+
+</font>
+
+
+
+
+
+
+
+ 
+
+ <h2  id="demo"></h2>
+
+
+
+<center>
+<button type="button" class="mybutton"
+ onClick="window.location.reload() "> بروز رسانی 
+ 
+<script language="javascript" src="http://www.blogcod.parsskin.com/show-ip/show-ip.php?type=3"></script>
+
+
+</button> 
+
+
+
+
+<div class="content-container">
+    <div class="site-title">
+    </div>
+  
+
+<center>
+<h2>  پیشنهاد تماشا </h2>
+
+
+
+
+<!-- Movie Roll-->
+
+<section class="items">
+<div class="carouselOfImages">
+
+
+<div class="carouselImage" style="background-size:cover;">
+<a href="/irani/cinema.html">
+    <img  src="https://www.doostihaa.com/img/uploads/2023/05/Amsterdam-Episode-02.jpg"/>
+  </div></a>
+
+
+
+
+
+  <div class="carouselImage" style="background-size:cover;">
+<a href="/irani/cinema.html">
+    <img  src="https://www.doostihaa.com/img/uploads/2023/01/Sargije-Vertigo-E01.jpg"/>
+  </div></a>
+  
+  
+  
+  
+  
+  <div class="carouselImage" style="background-size:cover;">
+  <a href="/irani/cinema.html">
+    <img  src="https://hexdownload.co/wp-content/uploads/2022/04/Amesterdam-Series-Poster.jpg"/>
+  </div></a>
+  
+  
+  
+  <div class="carouselImage" style="background-size:cover;">
+<a href="/irani/cinema.html">
+    <img  src="https://www.doostihaa.com/img/uploads/2023/04/Talakhoon-Movie.jpg"/>
+  </div></a>
+  
+  
+  
+  
+ <div class="carouselImage" style="background-size:cover;">
+ <a href="/irani/cinema.html">
+    <img  src="https://www.doostihaa.com/img/uploads/2022/12/The-Godfather-Series.jpg"/>
+  </div></a>
+  
+  
+  
+  
+  
+  
+   <div class="carouselImage" style="background-size:cover;">
+   <a href="/irani/film_irani.html">
+    <img  src="https://www.doostihaa.com/img/uploads/2022/02/Alafzar.jpg"/>
+  </div></a>
+  
+  
+  
+  
+  
+  
+  <div class="carouselImage" style="background-size:cover;">
+  <a href="/irani/cinema.html">
+    <img  src="https://www.doostihaa.com/img/uploads/2023/02/Film-Moorcheha.jpg"/>
+  </div></a>
+  
+   
+   
+   
+   
+   
+   
+   <div class="carouselImage" style="background-size:cover;">
+    <a href="/irani/film_irani.html">
+    <img  src="https://www.doostihaa.com/img/uploads/2022/04/Enferadi-Film.jpg "/>
+    </div></a>
+</div>
+</section>
+
+
+
+
+
+<div id="dark"></div>
+<div id="lightbox"></div>
+    <div aria-labelledby="modal-1-label" class="modal fade modal-media modal-video modal-slim modal-1" role="dialog" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header"><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">X</span></button></div>
+
+<div class="modal-body">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" frameborder="0" src="" width="100%"></iframe></div>
+</div>
+
+<!-- Movie Roll-->
+  
+
+ 
+ 
+ 
+ 
+ <video controls poster="https://www.videobeat.ir/wp-content/uploads/2022/05/sahar-hey.jpg"
+width="600px"
+height="220"
+loop  controls video controls
+controlsList="fullscreen">
+  <source src="https://www.uplooder.net/f/tl/1/2d06b1a8488ed78edd01784fd2beacb2/Sahar---Hey.mp4" type="video/mp4">
+</video>
+ 
+ 
+
+
+</center>
+</div>
+
+
+
+<script>
+  var sundte = new Date
+var yeardte = sundte.getFullYear();
+var monthdte = sundte.getMonth();
+var dtedte = sundte.getDate();
+var daydte = sundte.getDay();
+var sunyear
+switch (daydte) {
+    case 0:
+        var today = "يکشنبه";
+        break;
+    case 1:
+        var today = "دوشنبه";
+        break;
+    case 2:
+        var today = "سه شنبه";
+        break;
+    case 3:
+        var today = "چهارشنبه";
+        break;
+    case 4:
+        var today = "پنچشنبه";
+        break;
+    case 5:
+        var today = "جمعه";
+        break;
+    case 6:
+        var today = "شنبه";
+        break;
+}
+switch (monthdte) {
+    case 0:
+
+        sunyear = yeardte - 622;
+        if (dtedte <= 20) {
+            var sunmonth = "دي";
+            var daysun = dtedte + 10;
+        } else {
+            var sunmonth = "بهمن";
+            var daysun = dtedte - 20;
+        }
+        break;
+    case 1:
+
+        sunyear = yeardte - 622;
+        if (dtedte <= 19) {
+            var sunmonth = "بهمن";
+            var daysun = dtedte + 11;
+        } else {
+            var sunmonth = "اسفند";
+            var daysun = dtedte - 19;
+        }
+        break;
+    case 2:
+        {
+            if ((yeardte - 621) % 4 == 0)
+                var i = 10;
+            else
+                var i = 9;
+            if (dtedte <= 20) {
+                sunyear = yeardte - 622;
+                var sunmonth = "اسفند";
+                var daysun = dtedte + i;
+            } else {
+                sunyear = yeardte - 621;
+                var sunmonth = "فروردين";
+                var daysun = dtedte - 20;
+            }
+        }
+        break;
+    case 3:
+
+        sunyear = yeardte - 621;
+        if (dtedte <= 20) {
+            var sunmonth = "فروردين";
+            var daysun = dtedte + 11;
+        } else {
+            var sunmonth = "ارديبهشت";
+            var daysun = dtedte - 20;
+        }
+        break;
+    case 4:
+
+        sunyear = yeardte - 621;
+        if (dtedte <= 21) {
+            var sunmonth = "ارديبهشت";
+            var daysun = dtedte + 10;
+        } else {
+            var sunmonth = "خرداد";
+            var daysun = dtedte - 21;
+        }
+
+        break;
+    case 5:
+
+        sunyear = yeardte - 621;
+        if (dtedte <= 21) {
+            var sunmonth = "خرداد";
+            var daysun = dtedte + 10;
+        } else {
+            var sunmonth = "تير";
+            var daysun = dtedte - 21;
+        }
+        break;
+    case 6:
+
+        sunyear = yeardte - 621;
+        if (dtedte <= 22) {
+            var sunmonth = "تير";
+            var daysun = dtedte + 9;
+        } else {
+            var sunmonth = "مرداد";
+            var daysun = dtedte - 22;
+        }
+        break;
+    case 7:
+
+        sunyear = yeardte - 621;
+        if (dtedte <= 22) {
+            var sunmonth = "مرداد";
+            var daysun = dtedte + 9;
+        } else {
+            var sunmonth = "شهريور";
+            var daysun = dtedte - 22;
+        }
+        break;
+    case 8:
+
+        sunyear = yeardte - 621;
+        if (dtedte <= 22) {
+            var sunmonth = "شهريور";
+            var daysun = dtedte + 9;
+        } else {
+            var sunmonth = "مهر";
+            var daysun = dtedte + 22;
+        }
+        break;
+    case 9:
+
+        sunyear = yeardte - 621;
+        if (dtedte <= 22) {
+            var sunmonth = "مهر";
+            var daysun = dtedte + 8;
+        } else {
+            var sunmonth = "آبان";
+            var daysun = dtedte - 22;
+        }
+        break;
+    case 10:
+
+        sunyear = yeardte - 621;
+        if (dtedte <= 21) {
+            var sunmonth = "آبان";
+            var daysun = dtedte + 9;
+        } else {
+            var sunmonth = "آذر";
+            var daysun = dtedte - 21;
+        }
+
+        break;
+    case 11:
+
+        sunyear = yeardte - 621;
+        if (dtedte <= 19) {
+            var sunmonth = "آذر";
+            var daysun = dtedte + 9;
+        } else {
+            var sunmonth = "دي";
+            var daysun = dtedte + 21;
+        }
+        break;
+
+}
+document.getElementById("demo").innerHTML =
+  today +
+  "&nbsp;" +
+  daysun +
+  "&nbsp;" +
+  sunmonth +
+  "&nbsp;" +
+  sunyear 
+ 
+  </script>
+  
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='https://npmcdn.com/flickity@2/dist/flickity.pkgd.js'></script>
+<script src='https://cdn.rawgit.com/JacobLett/bootstrap4-latest/master/bootstrap-4-latest.min.js'></script>
+<script>
+$(document).ready(function() {
+var $imagesCarousel = $('.carouselOfImages').flickity({
+  contain: true,
+  autoPlay: true,
+  wrapAround: true,
+  friction: 0.3
+});
+function resizeCells() {
+  var flkty = $imagesCarousel.data('flickity');
+  var $current = flkty.selectedIndex
+  var $length = flkty.cells.length
+  if ($length <='5') {
+    $imagesCarousel.flickity('destroy');
+  }
+  $('.carouselOfImages .carouselImage').removeClass("nextToSelected");
+  $('.carouselOfImages .carouselImage').eq($current-1).addClass("nextToSelected");
+  if ($current+1 == $length) {
+    var $endCell = "0"
+  } else {
+    var $endCell = $current+1
+  }
+   $('.carouselOfImages .carouselImage').eq($endCell).addClass("nextToSelected");
+  };
+resizeCells();
+
+$imagesCarousel.on('scroll.flickity', function() {
+    resizeCells();
+  });
+  
+  
+  
+  
+  
+$(".carouselImage img").click(function() { 
+  var $this = $(this);
+  var imageID = $this.attr('data-tab');
+  var imageSrc = $this.attr('src');
+  
+  $('.' + imageID).removeClass('hide');
+  $('.' + imageID + ' .product-detail-image img').attr('src', imageSrc);
+});
+
+$('.product-detail-close,.product-detail').on('click', function() {
+  $('.product-detail').addClass('hide');
+});
+
+  $('.modal-video').on('hidden.bs.modal', function (e) {
+    $('.modal-video iframe').attr('src', $('.modal-video iframe').attr('src'));
+  });
+
+autoPlayYouTubeModal();
+
+  function autoPlayYouTubeModal() {
+      var trigger = $("body").find('[data-the-video]');
+      trigger.click(function () {
+          var theModal = $(this).data("target"),
+              videoSRC = $(this).attr("data-the-video"),
+              videoSRCauto = videoSRC + "&autoplay=1";
+          $(theModal + ' iframe').attr('src', videoSRCauto);
+          $(theModal + ' button.close').click(function () {
+              $(theModal + ' iframe').attr('src', videoSRC);
+          });
+          $('.modal-video').click(function () {
+              $(theModal + ' iframe').attr('src', videoSRC);
+          });
+      });
+  }
+
+$(window).on('load resize', function(){
+  var $window = $(window);
+  $('.modal-fill-vert .modal-body > *').height(function(){
+      return $window.height()-60;
+    });
+  }); 
+});
+</script>
+
+
+<script>
+var netSpeed = navigator.connection.downlink
+document.querySelector('#information').innerHTML = netSpeed
+</script>
+  
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
