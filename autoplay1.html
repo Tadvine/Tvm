@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
+
+
+    <!-- custom css file link  -->
+  <style>
+
+*{
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  margin:0; padding:0;
+  box-sizing: border-box;
+  outline: none; border:none;
+  text-decoration: none;
+  text-transform: capitalize;
+  transition: all .2s linear;
+}
+
+.container{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding:0 10%;
+  background:linear-gradient(90deg, #fff 60%, #eee 40.1%);
+}
+
+.container .side-bar{
+  width:400px;
+}
+
+.container .side-bar.active{
+  display: none;
+}
+
+.container .side-bar .list{
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+}
+
+.container .side-bar .list li{
+  padding:10px 0;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  list-style: none;
+}
+
+.container .side-bar .list li::before{
+  content: '';
+  position: absolute;
+  top:50%;
+  transform: translateY(-50%);
+  left:-5px;
+  width: 0%;
+  height: 3px;
+  background-color: #000;
+  transition: width .2s linear .2s;
+}
+
+.container .side-bar .list li.active,
+.container .side-bar .list li:hover{
+  font-size: 30px;
+}
+
+.container .side-bar .list li.active::before,
+.container .side-bar .list li:hover::before{
+  right: -5px;
+  width: 105%;
+}
+
+.container .video-container{
+  flex:1;
+}
+
+.container .video-container video{
+  width: 100%;
+  object-fit: cover;
+}
+
+#menu-btn{
+  position: fixed;
+  top:0px; left:30px;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+@media (max-width:1200px){
+  .container{
+    position: relative;
+  }
+
+  .container .side-bar{
+    position: absolute;
+    top:0; left:-110%;
+    height: 100%;
+    background-color: #fff;
+    z-index: 10;
+    padding:30px;
+  }
+
+  .container .side-bar .list{
+    height: 100%;
+    justify-content: center;
+  }
+
+  .container .side-bar.active{
+    box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
+    display: initial;
+    left:0;
+  }
+}
+
+@media (max-width:850px){
+
+  .container{
+    padding:20px;
+  }
+
+  .container .side-bar{
+    width: 300px;
+  }
+
+  .container .side-bar .list li{
+    font-size: 16px;
+    
+  }
+
+  .container .side-bar .list li.active{
+    font-size: 20px;
+   
+  }
+
+}
+</style>
+
+
+<style>
+.mybutton{
+ background-color:#2196F3;
+ border:none;
+ border-radius:7px;
+color:#fff;
+ padding:10px 25px;
+ text-align:center;
+ font-size:18px;
+ cursor:pointer;
+}
+.mybutton:hover{
+ background-color:#4287BF;
+}
+</style>
+
+
+</head>
+<body>
+
+
+
+<div id="menu-btn" class="fas fa-bars"></div>
+
+<div class="container">
+
+    <div class="side-bar">
+
+        <ul class="list">
+            <li class="active" data-src="https://dl.rozmusic.com/Music%20Video/1400/20/Ragheb%20-%20Gharare%20Asheghi%20480p_RozMusic.mp4">راغب # قرار عاشقی </li>
+            
+            
+            <li data-src="https://dl.rozmusic.com/Music%20Video/1400/10/10/Hamid%20Hiraad%20%26%20Ragheb%20-%20Jazzab%20480p_RozMusic.mp4">راغب و هیراد # جذاب</li>  
+      
+      
+            <li data-src="https://dl.rozmusic.com/Music%20Video/1400/09/29/Ragheb%20-%20Ay%20Falak%20480p_RozMusic.mp4">راغب # ای فلک</li>
+            
+            <li data-src="https://www.googleapis.com/drive/v3/files/1EJBTWXfxMr-9_V6PuAudo0kxuUzBWXet?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">زانکو # مثلا</li>
+          
+          
+          <li data-src="https://dl.rozmusic.com/Music%20Video/1401/02/05/Masih%20%26%20Arash%20AP%20-%20Shah%20Beyt%20480p_RozMusic.mp4">مسیح و آرش #شاه بیت </li>  
+            
+            
+            <li data-src="https://dl.rozmusic.com/Music%20Video/1401/01/04/Mohsen%20Ebrahimzadeh%20-%20Eshghe%20Shirin%20480p_RozMusic.mp4"> ابراهیم زاده # عشق شیرین</li>
+       
+        
+            
+            <li data-src="https://dl.rozmusic.com/Music%20Video/1400/11/27/Evan%20Band%20-%20Khaterkhah%20480p_RozMusic.mp4">ایوان بند #خاطرخواه</li>  
+            
+            
+            <li data-src="https://dl.rozmusic.com/Music%20Video/1400/10/22/Evan%20Band%20-%20Soghaat%20480p_RozMusic.mp4">ایوان بند #سوغات</li>
+            
+            <li data-src="https://dl.rozmusic.com/Music%20Video/1400/28/Behnam%20Bani%20-%20Baroon%20480p_RozMusic.mp4">بهنام بانی # بارون</li>
+            
+            
+            <li data-src="https://dl.rozmusic.com/Music%20Video/1400/08/29/Ali%20Lohrasbi%20-%20Donyaye%20Bi%20To%20480p_RozMusic.mp4">لهراسبی # دنیای بی تو</li>
+            
+           
+            
+            <li data-src="https://www.ifilo.net/filo/video/TVRNNU9DOHdOQzh3TlE9PQ==/VVdONVpraHZaQT09/IAiv-720.mp4">امین بانی # نشد</li>
+            
+            <li data-src="https://www.ifilo.net/filo/video/TVRNNU9TOHdOeTh4Tnc9PQ==/YUd0dFdtbGtTZz09/uanf-360.mp4">امین بانی # دل من خدایی داره</li>  
+            
+            
+            <li>
+<button type="button" class="mybutton"
+ onClick="window.location.reload() "> بروز رسانی
+</button>
+</li>
+            
+        </ul>
+
+    </div>
+
+    <div class="video-container">
+        <video src="https://dl.rozmusic.com/Music%20Video/1400/20/Ragheb%20-%20Gharare%20Asheghi%20480p_RozMusic.mp4" loop  autoplay controls></video>
+    </div>
+
+</div>
+
+<script>
+
+let sideBar = document.querySelector('.container .side-bar');
+
+document.querySelector('#menu-btn').onclick = () =>{
+    sideBar.classList.toggle('active');
+};
+
+let video = document.querySelector('.container .video-container video');
+let videoLinks = document.querySelectorAll('.container .side-bar .list li');
+
+videoLinks.forEach(link =>{
+    link.onclick = () =>{
+        let src = link.getAttribute('data-src');
+        video.src = src;
+        sideBar.classList.remove('active');
+        videoLinks.forEach(remove =>{remove.classList.remove('active')});
+        link.classList.add('active');
+    }
+})
+
+</script>
+    
+</body>
+</html>
