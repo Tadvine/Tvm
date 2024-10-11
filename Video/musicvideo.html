@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500&display=swap" rel="stylesheet">
+    
+     <title>Tvm</title>
+    
+    
+    <style>
+    
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'El Messiri', sans-serif;
+    font-size: 20px;
+    background: #ecfff2;
+    width: 100%;
+    min-height: 100vh;    
+}
+.wrapper{
+    width: 100%;
+    padding: 30px 0;
+    text-align: center;
+}
+.section-header{
+    text-transform: uppercase;
+    line-height: 70px;
+    padding-bottom: 30px;
+    font-size: 50px;
+    color: #262626;
+    letter-spacing: 2px;
+    
+}
+.content {
+  padding: 10%;
+}
+.content h2 {
+  font-size: 27px;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+}
+.content h3 {
+  font-size: 23px;
+  color: #009933; 
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+.content  a {
+  font-size: 25px;
+  color: #000000; 
+  text-decoration: none;   
+}
+.content p {
+  line-height: 2.5;
+}
+.main-content{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-main-content-gap: 25px;
+    grid-column-gap: 15px;
+}
+.main-content .box{
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 15px;
+    box-shadow: 15px 15px 400px rgba(0, 0, 0, 0.15);
+    height: 250px;
+    overflow: hidden;    
+}
+.main-content .box::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    transition: all 0.3s ease-in-out;
+}
+.main-content .box:hover:before{
+    top: 0;
+    right: calc(100% - 5px);
+    z-index: 10;
+}
+.main-content .box img{
+    width: 250px;
+    height: 250px;
+    object-fit: fit;
+}
+.main-content .box .img-text {
+	position: absolute;
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgba(230,230,230,0.7);
+	width: 100%;
+	height: 100%;
+	top: 0;
+	right: 100%;
+	transition: all 0.5s ease-in-out;	
+}
+.main-content .box:hover .img-text{
+    top: 0;
+    right: 0;
+}
+
+hr { 
+display: block; 
+margin-top: 0.5em; 
+margin-bottom: 0.5em; 
+margin-left: auto; 
+margin-right: auto; 
+border-style: inset; 
+border-width: 3px; 
+}
+</style>
+
+<style>
+img{
+ border-radius: 10px;
+ -webkit-transform:scale(1.1):( Webkit: Scale up image to 1.2x original size);
+ -moz-border-radius:10px;
+ -webkit-border-radius:10px;
+ -moz-transform:scale(1.1):( Mozilla scale version);
+ -moz-transform:scale(0.9):(Explorer scale version);
+ }
+ 
+</style>
+
+
+        <style>
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'El Messiri', sans-serif;
+    font-size: 20px;
+    background: #ecfff2;
+    width: 100%;
+    min-height: 100vh;    
+}
+
+ul{
+    list-style: none;
+}
+
+img{
+    max-width: 100%;
+    height: auto;
+}
+
+.container{
+    max-width: 1200px;
+    margin: auto;
+    padding: 15px;
+    text-align: center;
+}
+
+h2{
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 120%;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.filter-menu{
+    margin-bottom: 20px;
+   
+}
+.filter-menu li{
+    display: inline-block;
+    padding: 10px 18px;
+    background: #eb4d4b;
+    color: #fff;
+    cursor: pointer;
+}
+.filter-menu li:hover,
+.filter-menu li.current{
+    background: #ff7979;
+}
+
+
+
+.filter-item li{
+    width: 50%;
+    padding: 2px;
+    float: left;
+}
+
+.filter-item li.active{
+    width: 50%;
+    padding: 2px;
+    transition: all 0.5s ease;
+}
+
+.filter-item li.delete{
+    width: 0%;
+    padding: 0;
+    transition: all 0.5s ease;
+}
+
+.filter-item img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (min-width: 768px){
+    .filter-item li.active,
+    .filter-item li{
+        width: 33.33%;
+    }
+
+    h2{
+        font-size: 190%;
+    }
+}
+@media screen and (min-width: 1280px){
+    .filter-item li.active,
+    .filter-item li{
+        width: 25%;
+    }
+
+    h2{
+        font-size: 270%;
+    }
+}
+</style>
+
+
+<style>
+.mybutton{
+ background-color:#009933;
+ font-family: 'El Messiri', sans-serif;
+ border:none;
+ border-radius:7px;
+color:#fff;
+ padding:10px 25px;
+ text-align:center;
+ font-size:18px;
+ cursor:pointer;
+}
+.mybutton:hover{
+ background-color:#006600;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<div class="container">
+        
+
+        <ul class="filter-menu">
+            <li data-target="all">همه</li>
+            <li data-target="متفرقه">متفرقه</li>
+            
+              <li data-target="آرش و مسیح">آرش و مسیح</li>
+            
+              <li data-target="امین بانی">امین بانی</li>
+              <li data-target="امو بند">امو بند</li>
+              <li data-target="ایوان بند">ایوان بند</li>
+              <li data-target="باران">باران</li>
+              <li data-target="بهنام بانی">بهنام بانی</li>
+              <li data-target="حامیم">حامیم</li>
+              <li data-target="خواجه امیری">خواجه امیری</li>
+              <li data-target="دنیا">دنیا</li>
+              <li data-target="راغب">راغب</li>        
+              <li data-target="زانکو">زانکو</li>
+              <li data-target="زند وکیلی">زتد وکیلی</li>     
+           <li  data-target="طلیسچی">طلیسچی</li>
+              <li data-target="فرزاد فرزین">فرزاد فرزین</li>
+              <li data-target="ماکان بند">ماکان بند</li>
+        
+         
+        
+        
+         
+        </ul>
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+    
+    <center>
+<button type="button" class="mybutton"
+ onClick="window.location.reload() "> بروز رسانی
+</button> 
+</center>
+<br>
+
+<hr>
+
+
+
+
+
+        <h1>گلچین موزیک ویدیو</h1>
+        <br>
+        <div class="main-content">
+        
+          <ul class="filter-item">
+          
+          
+          
+          
+          
+<!--            S   T   A   R   T       -->        
+<li data-item="حامیم">
+            <div class="box">
+            <img src="https://musicha.org/wp-content/uploads/2024/08/haamim-moroor-150x150.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>حامیم</h2>
+                          
+    <h3>مرور</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl4.clipsho.com/videos/u-2-1724010415197.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+
+
+
+
+<li data-item="زند وکیلی">
+            <div class="box">
+            <img src="https://sakhamusic.ir/wp-content/uploads/2016/03/Ali-Zand-Vakili-Called-Lalaei.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>زند وکیلی</h2>
+                          
+    <h3>لالایی</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.sakhamusic.ir/94/mv/Ali%20Zand%20Vakili%20-%20Lalaei%20720p_SakhaMusic.AVI
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<li data-item="زند وکیلی">
+            <div class="box">
+            <img src="https://sakhamusic.ir/wp-content/uploads/2018/02/Ali-Zand-Vakili-Bavaram-Kon.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>زند وکیلی</h2>
+                          
+    <h3>باورم کن</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.sakhamusic.ir/97/mv/Ali%20Zand%20Vakili%20-%20Bavaram%20Kon%20480p_SakhaMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+
+
+
+<li data-item="ماکان بند">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/08/Macan-Band-Hala-Ke-Oomadi.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>ماکان بند </h2>
+                          
+    <h3>حالا که اومدی</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1401/06/07/Macan%20Band%20-%20Hala%20Ke%20Oomadi%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+
+
+<li data-item="ماکان بند">
+            <div class="box">
+            <img src="https://musicsfarsi.com/wp-content/uploads/2022/03/macan-band-gardanam-bendaz-tamomme_musicsfarsi.com_.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>ماکان بند </h2>
+                          
+    <h3>گردنم بنداز</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1401/05/27/Macan%20Band%20-%20Gardanam%20Bendaz%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li data-item="طلیسچی">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/07/Alireza-Talischi-Ye-Darya-Narim.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>طلیسچی</h2>
+                          
+    <h3>یه دریا نریم</h3>             
+    <a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1401/05/07/Alireza%20Talischi%20-%20Ye%20Darya%20Narim%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+
+
+
+
+
+<li data-item="راغب">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/08/Ragheb-To-Ra-Ke-Didam.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>راغب</h2>
+                          
+    <h3>تو را که دیدم</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1401/05/18/Ragheb%20-%20To%20Ra%20Ke%20Didam%20720p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+
+
+
+<li data-item="ماکان بند">
+            <div class="box">
+            <img src="https://musicsfarsi.com/wp-content/uploads/2022/03/macan-band-aseh-aseh_musicsfarsi.com_.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>ماکان بند</h2>
+                          
+    <h3>آسه آسه</h3> 
+           <a href="https://filmr.ir/play/?v=     
+https://dl.rozmusic.com/Music%20Video/1401/03/24/Macan%20Band%20-%20Asse%20Asse%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+
+
+<li data-item="زند وکیلی">
+            <div class="box">
+            <img src="https://upmusics.com/wp-content/uploads/2022/02/Ali-Zand-Vakili-Zibatarin-Roya.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>زند وکیلی</h2>
+                          
+    <h3>زیباترین رویا</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1401/04/03/Ali%20Zand%20Vakili%20-%20Zibatarin%20Roya%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
+ <li data-item="ایوان بند">
+            <div class="box">
+            <img src="https://saednews.com/storage/media-center/images/ac-image-zC16347526358h.jpeg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>ایوان بند</h2>
+                          
+    <h3>نرماندی</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1401/02/23/Evan%20Band%20-%20Normandy%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+
+
+
+
+          
+          <li data-item="ماکان بند">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/04/Macan-Band-Narenji.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>ماکان بند</h2>
+                          
+    <h3>نارنجی</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1401/01/29/Macan%20Band%20-%20Narenji%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+             <li data-item="زانکو">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/01/Zanco-Eshagham-Ine.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>زانکو</h2>
+                          
+    <h3>عشقم اینه</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1401/02/11/Zanco%20-%20Eshagham%20Ine%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            
+            
+            
+            
+            
+                
+          
+          <li data-item="بهنام بانی">
+        <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2024/04/Behnam-Bani-Bi-Marefat.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>بهنام بانی</h2>
+                          
+    <h3>بی معرفت</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1403/01/24/Behnam%20Bani%20-%20Bi%20Marefat%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          <li data-item="امین بانی">
+        <div class="box">
+            <img src="https://sakhamusic.ir/wp-content/uploads/2020/10/%D8%AF%D8%A7%D9%86%D9%84%D9%88%D8%AF-%D8%A2%D9%87%D9%86%DA%AF-%D8%A7%D9%85%DB%8C%D9%86-%D8%A8%D8%A7%D9%86%DB%8C-%D8%AF%D9%84-%D9%85%D9%86%D9%85-%D8%AE%D8%AF%D8%A7%DB%8C%DB%8C-%D8%AF%D8%A7%D8%B1%D9%87.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>امین بانی</h2>
+                          
+    <h3>دل من یه خدایی داره</h3>             
+<a href="https://filmr.ir/play/?v=
+https://www.ifilo.net/filo/video/TVRNNU9TOHdOeTh4Tnc9PQ==/YUd0dFdtbGtTZz09/uanf-360.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+            
+          
+          
+          
+          
+        <li data-item="طلیسچی">
+        <div class="box">
+            <img src="https://ahaang.com/wp-content/uploads/2020/01/Alireza-Talischi-Gharar-Nabood.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>علیرضا طلیسچی</h2>
+                          
+    <h3>قرار نبود</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.teh-music.co/Music/Video/Alireza%20Talischi%20-%20Gharar%20Nabood%20480p%20Teh-Music.com.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+            
+            
+            
+            
+            <li data-item="راغب">
+        <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/11/Ragheb-Hamine-Eshgh.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>راغب</h2>
+                          
+    <h3>همینه عشق</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1400/08/29/Ragheb%20-%20Hamine%20Eshgh%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+            
+            
+            
+           
+        
+       
+        
+        
+        <li data-item="طلیسچی">
+        <div class="box">
+            <img src="https://eramblog.com/img/1612522282_9526418.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>علیرضا طلیسچی</h2>
+                          
+    <h3>قاف</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.musicsfarsi.com/music_video/1400/01/Alireza%20Talischi%20-%20Ghaaf(musicsfarsi.com)%5B480%5D.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+        
+        
+        
+        
+        
+         <li data-item="باران">
+        <div class="box">
+            <img src="https://rozup.ir/view/2126371/Baran_Tazahor.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>باران</h2>
+                          
+    <h3>بیا</h3>             
+<a href="https://filmr.ir/play/?v=
+https://ts10.tarafdari.com/contents/user724550/content-video/0_13.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+        
+        
+         <li data-item="متفرقه">
+        <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2018/02/Ehaam-Bezan-Baran.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>گروه ایهام</h2>
+                          
+    <h3>بزن باران</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1400/09/04/Ehaam%20-%20Bezan%20Baran%20480p_Rozmusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+            </li>
+            
+            
+            
+             
+        
+        
+        
+      
+       
+       
+       
+        
+        
+         <li data-item="متفرقه">
+        <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/10/Sina-Shabankhani-Jadooye-Siah.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>سینا شعبان خانی</h2>
+                          
+    <h3>جادوی سیاه</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1400/09/05/Sina%20Shabankhani%20-%20Jadooye%20Siah%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+                     </li>
+
+            
+            
+             
+        
+        
+        
+         <li data-item="متفرقه">
+        <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/11/Ali-Montazeri-Bitabi.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>علی منتظری</h2>
+                          
+    <h3>بی تابی</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1400/09/02/Ali%20Montazeri%20-%20Bitabi%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+             </li>
+
+
+
+
+         <li data-item="آرش و مسیح">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/04/Masih-Arash-AP-Shah-Beyt.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>مسیح و آرش</h2>
+                          
+    <h3>شاه بیت </h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1401/02/05/Masih%20%26%20Arash%20AP%20-%20Shah%20Beyt%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+                 </li>
+
+
+
+            
+            
+             
+<li data-item="طلیسچی">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2018/08/Alireza-Talischi-Divooneye-Doost-Dashtani.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>علیرضا طلیسچی</h2>
+                          
+    <h3>دیوونه دوست داشتنی</h3>             
+<a href="https://filmr.ir/play/?v=
+http://dl.golsarmusic.ir/GolsarMusic-Root/97/06%20shahrivar/13/Alireza%20Talischi%20-%20Divooneye%20Doos%20Dashtani%20[GolsarMusic.ir]%20[480].mp4
+">پخش موزیک ویدیو</a>
+                    </div>
+                </div>
+            </div>
+                 </li>
+
+
+            
+            
+            
+            
+             <li data-item="متفرقه">
+               <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2019/10/Reza-Malekzadeh-Bigharare-Toam.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>رضا ملک زاده</h2>
+                          
+    <h3>بی قرار تو ام </h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1401/01/30/Reza%20Malekzadeh%20-%20Bigharare%20Toam%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+                 </li>
+
+
+
+
+
+
+            
+             <li data-item="راغب">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/03/Hamid-Hiraad-Ragheb-Khosh-Be-Halam.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>حمید هیراد و راغب</h2>
+                          
+    <h3>خوش به حالم</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1401/01/10/Hamid%20Hiraad%20%26%20Ragheb%20-%20Khosh%20Be%20Halam%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+                 </li>
+
+            
+            
+             <li data-item="امین بانی">
+            <div class="box">
+            <img src="https://mifa-music.ir/wp-content/uploads/2020/12/5225552.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>امین بانی و فرناز ملکی</h2>
+                          
+    <h3>نشد</h3>             
+<a href="https://filmr.ir/play/?v=http://dl.ashnamusic.ir/music_video/97-3/amin-bani-farnaz-maleki-nashod(ashnamusic.ir)[480].mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+                 </li>
+
+            
+            
+            
+            
+              <li data-item="زانکو">
+            <div class="box">
+            <img src="https://ba-musics.ir/wp-content/uploads/2021/06/1-300x300.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>زانکو</h2>
+                          
+    <h3>مثلا</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.musicsfarsi.com/music_video/1400/05/Zanco%20-%20Masalan%20(musicsfarsi.com)[480].mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+               </li>
+            
+            
+            
+            
+              <li data-item="آرش و مسیح">
+             <div class="box">
+            <img src="            https://rozmusic.com/wp-content/uploads/2022/03/Masih-Arash-Shakhe-Nabat.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>مسیح و آرش</h2>
+                          
+    <h3>شاخه نبات</h3>          
+    <a href="https://filmr.ir/play/?v= https://dl.rozmusic.com/Music%20Video/1401/02/21/Masih%20%26%20Arash%20AP%20-%20Shakhe%20Nabat%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+               </li>
+            
+            
+            
+            
+            
+            
+              <li data-item="فرزاد فرزین">
+                    <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/03/Farzad-Farzin-Ft.-Ilyas-Yalcintas-Mask.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>فرزاد فرزین و الیاس یالچینتاش</h2>
+                          
+    <h3>ماسک</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1401/01/01/Farzad%20Farzin%20Ft.%20Ilyas%20Yalcintas%20-%20Mask%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+               </li>
+            
+            
+            
+              <li data-item="بهنام بانی">
+                    <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/03/Behnam-Bani-Baroon.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>بهنام بانی </h2>
+                          
+    <h3>بارون</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/28/Behnam%20Bani%20-%20Baroon%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+               </li>
+            
+            
+            
+            
+              <li data-item="متفرقه">
+                    <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2020/05/Meysam-Ebrahimi-Ki-Mese-Mane.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>میثم ابراهیمی</h2>
+                          
+    <h3>کی مثل منه</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/23/Meysam%20Ebrahimi%20-%20Ki%20Mese%20Mane%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+               </li>
+               
+               
+               
+            
+              <li data-item="فرزاد فرزین">
+                    <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/03/Farzad-Farzin-Nagi-Ke-Nagoftam.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>فرزاد فرزین</h2>
+                          
+    <h3>نگی نگفتم</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/22/Farzad%20Farzin%20-%20Nagi%20Ke%20Nagoftam%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+               </li>
+            
+            
+            
+            
+            
+              <li data-item="راغب">
+                    <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/03/Ragheb-Gharare-Asheghi.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>راغب</h2>
+                          
+    <h3>قرار عاشقی</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/20/Ragheb%20-%20Gharare%20Asheghi%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+               </li>
+            
+            
+            
+            
+              
+              <li data-item="متفرقه">
+                    <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/08/NaserZeynali-Khodeto-Beresoon.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>ناصر زینعلی</h2>
+                          
+    <h3>خودت رو برسون</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/19/Naser%20Zeynali%20-%20Khodeto%20Beresoon%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+               </li>
+            
+            
+            
+              <li data-item="طلیسچی">
+                    <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/01/Alireza-Talischi-Ghaaf.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>علیرضا طلیسچی</h2>
+                          
+    <h3>قاف ( کنسرت )</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/12/12/Alireza%20Talischi%20-%20Ghaaf%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+               </li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li data-item="خواجه امیری">
+                    <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/02/Ehsan-Khajeh-Amiri-Kooch.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>احسان خواجه امیری </h2>
+                          
+    <h3>کوچ</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/12/02/Ehsan%20Khajeh%20Amiri%20-%20Kooch%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+         
+        
+         
+         
+         
+            
+         
+         <li data-item="متفرقه">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/02/Fereydoun-Asraei-Dashli-Gala.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>فریدون آسرایی</h2>
+                          
+    <h3>داشلی قالا</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/12/02/Fereydoun%20Asraei%20-%20Dashli%20Gala%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <li data-item="بهنام بانی">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/12/Behnam-Bani-2ta-Dele-Ashegh.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>بهنام بانی</h2>
+                          
+    <h3>دو تا دل عاشق</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/09/12/Behnam%20Bani%20-%202ta%20Dele%20Ashegh%20720p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <li data-item="راغب">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/12/Ragheb-Ay-Falak.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>راغب</h2>
+                          
+    <h3>ای فلک</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/09/29/Ragheb%20-%20Ay%20Falak%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+         
+         
+         
+         
+         
+            
+            <li data-item="فرزاد فرزین">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/12/Farzad-Farzin-Ta-Hamishe.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>فرزاد فرزبن</h2>
+                          
+    <h3>تا همیشه</h3>             
+<a href="https://filmr.ir/play/?v=
+https://dl.rozmusic.com/Music%20Video/1400/09/30/Farzad%20Farzin%20-%20Ta%20Hamishe%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <li data-item="امو بند">
+            <div class="box">
+            <img src="https://upmusics.com/wp-content/uploads/2017/07/Emo-Band-Harja-Ke-Bashi.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>اموبند</h2>
+                          
+    <h3>هر کجا که باشی</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1397/08/02/Emo%20Band%20-%20Harja%20Ke%20Bashi%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <li data-item="متفرقه">
+            <div class="box">
+            <img src="https://next1.ir/wp-content/uploads/2020/07/RezaMalekzadeh-Darya-480x480.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>رضا ملک زاده</h2>
+                          
+    <h3>دریا</h3>             
+<a href="https://filmr.ir/play/?v=https://media.myavangmusic.com/Archive/Mp3/dlavangmusic/Part003/files/Reza%20Malekzadeh%20-%20Darya%20[480]p.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            <li data-item="ایوان بند">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/12/Evan-Band-Delbar.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>ایوان بند</h2>
+                          
+    <h3>دلبر</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/10/05/Evan%20Band%20-%20Delbar%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            <li data-item="آرش و مسیح">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2021/12/Masih-Mochaleh.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>مسیح</h2>
+                          
+    <h3>مچاله</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/10/10/Masih%20-%20Mochaleh%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <li data-item="راغب">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2020/07/Hamid-Hiraad-Ragheb-Jazzab.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>حمید هیراد و راغب</h2>
+                          
+    <h3>جذاب</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/10/10/Hamid%20Hiraad%20%26%20Ragheb%20-%20Jazzab%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <li data-item="ایوان بند">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/01/Evan-Band-Soghaat.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>ایوان بند</h2>
+                          
+    <h3>سوغات</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/10/22/Evan%20Band%20-%20Soghaat%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <li data-item="فرزاد فرزین">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/02/Farzad-Farzin-Rade-Pa.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>فرزاد فرزین</h2>
+                          
+    <h3> رد پا</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/11/15/Farzad%20Farzin%20-%20Rade%20Pa%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            <li data-item="ایوان بند">
+            <div class="box">
+            <img src="https://rozmusic.com/wp-content/uploads/2022/02/Evan-Band-Khaterkhah.jpg" alt="">
+                <div class="img-text">
+                    <div class="content">
+                        <h2>ایوان بند</h2>
+                          
+    <h3>خاطرخواه</h3>             
+<a href="https://filmr.ir/play/?v=https://dl.rozmusic.com/Music%20Video/1400/11/27/Evan%20Band%20-%20Khaterkhah%20480p_RozMusic.mp4
+">پخش موزیک ویدیو</a>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          
+            
+            
+            
+        </div>
+    </div>
+    </ul>
+    </div>
+    
+    <script>
+  let sortBtn = document.querySelector('.filter-menu').children;
+let sortItem = document.querySelector('.filter-item').children;
+
+for(let i = 0; i < sortBtn.length; i++){
+    sortBtn[i].addEventListener('click', function(){
+        for(let j = 0; j< sortBtn.length; j++){
+            sortBtn[j].classList.remove('current');
+        }
+
+        this.classList.add('current');
+        
+
+        let targetData = this.getAttribute('data-target');
+
+        for(let k = 0; k < sortItem.length; k++){
+            sortItem[k].classList.remove('active');
+            sortItem[k].classList.add('delete');
+
+            if(sortItem[k].getAttribute('data-item') == targetData || targetData == "all"){
+                sortItem[k].classList.remove('delete');
+                sortItem[k].classList.add('active');
+            }
+        }
+    });
+}
+  </script>
+    
+</body>
+</html>
