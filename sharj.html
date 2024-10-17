@@ -11,278 +11,118 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 
+<!--
 <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
+-->
+
+<link href="https://fonts.googleapis.com/css2?family=Zain:wght@200;300;400;700;800;900&display=swap" rel="stylesheet">
 
 
 
  <title>Sharj</title>
- 
-
-
-    
-<style>
+ <style>
         body {
-            font-family: 'Roboto Condensed', arial, sans-serif;
-            margin: 0;
-            background-image:                    url("");
-            background-attachment: fixed;
-            background-color: #ffffff;
-            
-        }
-
-        /* -- main content -- */
-        .content-container {
-            position: relative;
-            z-index: 0;
-            padding: 20px;
-            max-width: 1078px;
-            margin: 0 auto;
-            overflow: hidden;
-            transition: all 300ms ease-in-out;
-        }
-
-        .site-title {
-            text-align: center;
-            border-bottom: 4px solid #ffffff;
-            margin-bottom: 24px;
-        }
-
-        .site-title h1 {
-            font-weight: 300;
-            text-transform: uppercase;
-            letter-spacing: 10px;
-        }
-
-
-
-        .content p {
-            line-height: 1.6em;
-            margin-bottom: 24px;
-        }
-
-        /* -- Slideout Sidebar -- */
-
-        .slideout-sidebar {
-            position: fixed;
-            float: right;
-            top: 0;
-            left: -190px;
-            z-index: 0;
-            width: 150px;
-            height: 100%;
-            padding: 20px;
-            background-color: #212121;
-            transition: all 300ms ease-in-out;
-            font-family: "byekan"
-        }
-
-        .slideout-sidebar ul {
-            list-style: none;
+            font-family: Zain, sans-serif;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+             font-size: 15px; 
         }
-
-        .slideout-sidebar ul li {
-            cursor: pointer;
-            padding: 18px 0;
-            border-bottom: 1px solid rgba(244,244,244,0.4);
-            color: rgba(244,244,244,0.7);
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .slideout-sidebar ul li:last-child {
-            border-bottom: 0;
+        h2 { 
+ font-family: 'Zain', sans-serif;
+ color: white;
+ text-shadow: 1px 1px 3px black, 0 0 25px     blue, 0 0 5px darkblue;
+ font-size: 32px; 
+ } 
+        input[type="text"] {
+            width: 50%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 22px;
         }
-
-        .slideout-sidebar ul li:hover {
-            color: rgba(244,244,244,1);
-        }
-
-        /* -- Menu Icon -- */
-
-        #menu-toggle {
-            display: none;
-        }
-
-        .menu-icon {
-            position: absolute;
-            top: 18px;
-            left: 30px;
-            font-size: 24px;
-            z-index: 1;
-            transition: all 300ms ease-in-out;
-        }
-
-
-
-        /*-- The Magic --*/
-        #menu-toggle:checked ~ .slideout-sidebar {
-            left: 0px;
-        }
-
-        #menu-toggle:checked + .menu-icon {
-            left: 210px;
-        }
-
-        #menu-toggle:checked ~ .content-container {
-            padding-left: 190px;
-        }
-
-        /* -- Media Queries -- */
-
-        @media (max-width: 991px) {
-
-            .content-container {
-                max-width: 480px;
-            }
-
-        }
-
-        @media (max-width: 1067px) {
-
-            .content-container {
-                max-width: 100%;
-                margin: 30px auto 0;
-            }
-
-            #menu-toggle:checked ~ .content-container {
-                padding-left: 0;
-            }
-
-            .slideout-sidebar ul {
-                text-align: center;
-                max-width: 200px;
-                margin: 30px auto 0;
-            }
-
-            .menu-icon {
-                left: 20px
-            }
-
-            #menu-toggle:checked ~ .slideout-sidebar {
-                width: 100%;
-            }
-
-            #menu-toggle:checked + .menu-icon {
-                left: 87%;
-                color: #fafafa;
-            }
-
-            @media screen
-            and (max-width: 936px)
-            and (orientation: landscape) {
-
-                .slideout-sidebar {
-                    padding: 0;
-                }
-
-                .slideout-sidebar ul {
-                    max-width: 100%;
-                    margin: 60px auto 0;
-                }
-
-                .slideout-sidebar ul li {
-                    display: inline-block;
-                    border-bottom: 0;
-                    width: 72px;
-                    padding: 18px 24px;
-                    margin: 0 6px 12px;
-                    color: #ffffff;
-                    background-color: #777;
-                }
-
-
-            }
-
-        }
-
-
-    </style>
-
-
-    
-<style>
-    @font-face {
-  
-       src: url('BYekan+.ttf') format('truetype');
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    font-family: 'Noto Kufi Arabic', sans-serif;
-      font-size: 12px; /* تغییر اندازه فونت */
-    }
-
-    td {
-      border: 1px solid black;
-      padding: 15px;
-      text-align: center;
-    }
-  </style>
-
-
-<style>
-.mybutton{
+        .mybutton{
  background-color:#4d4d4d;
- font-family: 'El Messiri', sans-serif;
- padding: 8px;
- border-radius: 15px;
- box-shadow: 0 0 8px rgb(207, 207, 207);
+ font-family: 'Zain', sans-serif;
+ padding: 10px;
+ border-radius: 16px;
+ box-shadow: 0 0 9px rgb(207, 207, 207);
  color:#fff;
- font-size:15px;
+ font-size:16px;
 }
 .mybutton:hover{
   background-color:#cccccc;
   color:#000;
   border: none;
 }
-</style>
-
-
-
-
-<style>
- h2 { 
- font-family: 'El Messiri', sans-serif;
- color: white;
- text-shadow: 1px 1px 3px black, 0 0 25px     blue, 0 0 5px darkblue;
- font-size: 32px; 
- } 
-</style>
-
-
- <style>
-    table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-      vertical-align: middle;
-      padding: 3px; /* فاصله داخل سلول‌ها */
-      text-align: center; /* متن‌ها در وسط سلول‌ها قرار می‌گیرند */
-     
-    }
-    
-  </style>
- 
-
-
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-family: 'Noto Kufi Arabic', sans-serif;
+      
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+    </style>
 
 </head>
-    
-  
-  
-  
-  
+   
   
 <body>
 
-
+    <div class="container">
 <center>
 
 <h2>لیست شارژ ساختمان</h2>
 <h2>تعداد نفرات ۲۴ نفر</h2>
 <br> 
 
-<button type="button" class="mybutton"
+
+
+
+  <form id="inputForm">
+            <label for="num1">متفرقه</label>
+            <input type="text" id="num1" name="num1" value="0" oninput="formatNumber(this)"><br>
+            <label for="num2">مبلغ گاز</label>
+            <input type="text" id="num2" name="num2" value="0" oninput="formatNumber(this)"><br>
+            <label for="num3">مبلغ آب</label>
+            <input type="text" id="num3" name="num3" value="0" oninput="formatNumber(this)"><br>
+            <label for="num4">مبلغ برق</label>
+            <input type="text" id="num4" name="num4" value="0" oninput="formatNumber(this)"><br><br><br>
+        </form>
+        <table id="myTable">
+            <tr style="background-color: #d3d3d3;">
+                <th>جمع</th>
+                <th>متفرقه</th>
+                <th>برق</th>
+                <th>آب</th>
+                <th>گاز</th>
+                <th>شارژ</th>
+                <th>واحد</th>
+            </tr>
+        </table>
+        
+        <button type="button" class="mybutton"
  onClick="createTable() "> محاسبه</button>
  
  <button type="button" class="mybutton"
@@ -291,53 +131,37 @@
  <button type="button" class="mybutton"
  onClick="window.location.reload() ">از ابتدا </button>
   
-  <br>
-  <br>
-  
+    </div>
 </center>
 
-
-<center>
-
-<form id="inputForm">
-  <label for="num1"> متفرقه</label>
-  <input type="number" id="num1" name="num1"><br>
-  <label for="num2">مبلغ گاز</label>
-  <input type="number" id="num2" name="num2"><br>
-  <label for="num3">مبلغ آب</label>
-  <input type="number" id="num3" name="num3"><br>
-  <label for="num4">مبلغ برق</label>
-  <input type="number" id="num4" name="num4"><br>
-  <br>
-  <br>
-  </form>
-  
-  
-  
-
-
-<table id="myTable">
- 
-</table>
-
-
 <script>
+function toPersianNumber(n) {
+            const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+            return n.toString().replace(/\d/g, (d) => persianDigits[d]);
+        }
 
-  function createTable() {
-    var num1 = Math.round(parseFloat(document.getElementById('num1').value));
-    var num2 = Math.round(parseFloat(document.getElementById('num2').value));
-    var num3 = Math.round(parseFloat(document.getElementById('num3').value));
-    var num4 = Math.round(parseFloat(document.getElementById('num4').value));
+        function formatNumber(input) {
+            let value = input.value.replace(/,/g, '');
+            let formattedValue = new Intl.NumberFormat('en-US').format(value);
+            input.value = formattedValue;
+        }
+
+        function formatNumberOutput(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function parseNumber(num) {
+            return parseFloat(num.replace(/,/g, '')) || 0;
+        }
+
+        function createTable() {
+            var num1 = parseNumber(document.getElementById('num1').value);
+            var num2 = parseNumber(document.getElementById('num2').value);
+            var num3 = parseNumber(document.getElementById('num3').value);
+            var num4 = parseNumber(document.getElementById('num4').value);
 
     // عملیات روی متغیرهای گرد شده
-    
-var x1 = "واحد"    
-var x2 = "شارژ "        
-var x3 = "مبلغ گاز "    
-var x4 = " مبلغ آب"    
-var x5 = " مبلغ برق "    
-var x6 = " متفرقه "    
-var x7 = " جمع "    
+
    
     
 var a = "اول شرقی";
@@ -397,6 +221,7 @@ function roundToTen(num) {
 
 
       // اول شرقی
+   // var gaz1= roundToTen(num2 /kol)*a1);
     var gaz1= roundToTen(((gazz/kol)*a1)+gazzz);
     var ab1 = roundToTen(num3 / kol)*a1;
     var bargh1 = roundToTen(num4 / kol)*a1;
@@ -422,14 +247,82 @@ function roundToTen(num) {
 
 
 
+// دوم غربی
+    var gaz4 = roundToTen(((gazz/kol)*d1)+gazzz);
+    var ab4 = roundToTen(num3 / kol)*d1;
+    var bargh4 = roundToTen(num4 / kol)*d1;
+    var jam4 = roundToTen(sharj + gaz4 + ab4 + bargh4 + makharej);
 
+
+
+
+// سوم شرقی
+    var gaz5 = roundToTen(((gazz/kol)*e1)+gazzz);
+    var ab5 = roundToTen(num3 / kol)*e1;
+    var bargh5 = roundToTen(num4 / kol)*e1;
+    var jam5 = roundToTen(sharj + gaz5 + ab5 + bargh5 + makharej);
+
+
+
+// سوم غربی
+    var gaz6 = roundToTen(((gazz/kol)*f1)+gazzz);
+    var ab6 = roundToTen(num3 / kol)*f1;
+    var bargh6 = roundToTen(num4 / kol)*f1;
+    var jam6 = roundToTen(sharj + gaz6 + ab6 + bargh6 + makharej);
+
+
+
+
+// چهارم شرقی
+    var gaz7 = roundToTen((gazz/kol)*g1);
+   // var gaz7 = roundToTen(((gazz/kol)*g1)+gazzz);
+    var ab7 = roundToTen(num3 / kol)*g1;
+    var bargh7 = roundToTen(num4 / kol)*g1;
+    var jam7 = roundToTen(sharj + gaz7 + ab7 + bargh7 + makharej);
+    
+    
+    
+    
+// چهارم غربی
+    var gaz8 = roundToTen(((gazz/kol)*h1)+gazzz);
+    var ab8 = roundToTen(num3 / kol)*h1;
+    var bargh8 = roundToTen(num4 / kol)*h1;
+    var jam8 = roundToTen(sharj + gaz8 + ab8 + bargh8 + makharej);
+    
+    
+    
+    
+// پنجم شرقی
+    var gaz9 = roundToTen(((gazz/kol)*i1)+gazzz);
+    var ab9 = roundToTen(num3 / kol)*i1;
+    var bargh9 = roundToTen(num4 / kol)*i1;
+    var jam9 = roundToTen(sharj + gaz9 + ab9 + bargh9 + makharej);
+    
+    
+    
+    
+    
+// پنجم غربی
+    var gaz10 = roundToTen(((gazz/kol)*j1)+gazzz);
+    var ab10 = roundToTen(num3 / kol)*j1;
+    var bargh10 = roundToTen(num4 / kol)*j1;
+    var jam10 = roundToTen(sharj + gaz10 + ab10 + bargh10 + makharej);
+    
+    
     
 
     // آرایه‌ای از نتایج
-    var data = [x7,x6,x5,x4,x3,x2,x1,
+    var data = [
     jam1,makharej, bargh1, ab1, gaz1, sharj, a,
     jam2,makharej, bargh2, ab2, gaz2, sharj, b,
     jam3,makharej, bargh3, ab3, gaz3, sharj, c,
+    jam4,makharej, bargh4, ab4, gaz4, sharj, d,
+    jam5,makharej, bargh5, ab5, gaz5, sharj, e,
+    jam6,makharej, bargh6, ab6, gaz6, sharj, f,
+    jam7,makharej, bargh7, ab7, gaz7, sharj, g,
+    jam8,makharej, bargh8, ab8, gaz8, sharj, h,
+    jam9,makharej, bargh9, ab9, gaz9, sharj, i,
+    jam10,makharej, bargh10, ab10, gaz10, sharj, j,
     ];
 
 
@@ -438,22 +331,22 @@ function roundToTen(num) {
       return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    var table = document.getElementById("myTable");
-    table.innerHTML = ""; // پاک کردن محتوای قبلی جدول
-
-    var rows = 10; // ده ردیف
-    var cols = 7; // هفت ستون
-
-    var dataIndex = 0;
-    for (var i = 0; i < rows; i++) {
-      var row = table.insertRow();
-      for (var j = 0; j < cols; j++) {
-        var cell = row.insertCell();
-        cell.innerHTML = formatNumber(data[dataIndex++]) || "";
-      }
-    }
-  }
-
+         var table = document.getElementById("myTable");
+            // حذف تمام ردیف‌های جدول به جز تیترها
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            var rows = 10;
+            var cols = 7;
+            var dataIndex = 0;
+            for (var i = 0; i < rows; i++) {
+                var row = table.insertRow();
+                for (var j = 0; j < cols; j++) {
+                    var cell = row.insertCell();
+                    cell.innerHTML = toPersianNumber(formatNumber(data[dataIndex++])) || "";
+                }
+            }
+        }
 
 
 
