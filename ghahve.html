@@ -1,149 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <!-- font awesome cdn link  -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Lalezar' rel='stylesheet' type='text/css'>
 
 
-    <!-- custom css file link  -->
-  <style>
 
-*{
-  font-family: 'Noto Kufi Arabic', sans-serif;
-  margin:0; padding:0;
-  box-sizing: border-box;
-  outline: none; border:none;
-  text-decoration: none;
-  text-transform: capitalize;
-  transition: all .2s linear;
-}
+    <title>Tvm</title>
+    
+<style>
+        body {
+            font-family: 'Lalezar', sans-serif;
+            margin: 0;
+            background-color:#000000;
+            direction: rtl;
+        }
 
-.container{
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding:0 10%;
-  background:linear-gradient(90deg, #fff 60%, #eee 40.1%);
-}
+        /* -- main content -- */
+        .content-container {
+            position: relative;
+            z-index: 0;
+            padding: 20px;
+            max-width: 1078px;
+            margin: 0 auto;
+            overflow: hidden;
+            transition: all 300ms ease-in-out;
+        }
 
-.container .side-bar{
-  width:400px;
-}
+        .site-title {
+            text-align: center;
+            border-bottom: 4px solid #ffffff;
+            margin-bottom: 24px;
+        }
 
-.container .side-bar.active{
-  display: none;
-}
+        .site-title h1 {
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+        }
 
-.container .side-bar .list{
-  display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-}
 
-.container .side-bar .list li{
-  padding:10px 0;
-  font-size: 20px;
-  cursor: pointer;
-  position: relative;
-  list-style: none;
-}
 
-.container .side-bar .list li::before{
-  content: '';
-  position: absolute;
-  top:50%;
-  transform: translateY(-50%);
-  left:-5px;
-  width: 0%;
-  height: 0px;
-  background-color: #000;
-  transition: width .2s linear .2s;
-}
+        .content p {
+            line-height: 1.6em;
+            margin-bottom: 24px;
+        }
 
-.container .side-bar .list li.active,
-.container .side-bar .list li:hover{
-  font-size: 30px;
-}
+        /* -- Slideout Sidebar -- */
 
-.container .side-bar .list li.active::before,
-.container .side-bar .list li:hover::before{
-  right: -5px;
-  width: 105%;
-}
+        .slideout-sidebar {
+            position: fixed;
+            float: right;
+            top: 0;
+            left: -190px;
+            z-index: 0;
+            width: 150px;
+            height: 100%;
+            padding: 20px;
+            background-color: #212121;
+            transition: all 300ms ease-in-out;
+            font-family: "byekan"
+        }
 
-.container .video-container{
-  flex:1;
-}
+        .slideout-sidebar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
 
-.container .video-container video{
-  width: 100%;
-  object-fit: cover;
-}
+        .slideout-sidebar ul li {
+            cursor: pointer;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(244,244,244,0.4);
+            color: rgba(244,244,244,0.7);
+        }
 
-#menu-btn{
-  position: fixed;
-  top:0px; left:30px;
-  font-size: 40px;
-  cursor: pointer;
-  z-index: 1000;
-}
+        .slideout-sidebar ul li:last-child {
+            border-bottom: 0;
+        }
 
-@media (max-width:1200px){
-  .container{
-    position: relative;
-  }
+        .slideout-sidebar ul li:hover {
+            color: rgba(244,244,244,1);
+        }
 
-  .container .side-bar{
-    position: absolute;
-    top:0; left:-110%;
-    height: 100%;
-    background-color: #fff;
-    z-index: 10;
-    padding:30px;
-  }
+        /* -- Menu Icon -- */
 
-  .container .side-bar .list{
-    height: 100%;
-    justify-content: center;
-  }
+        #menu-toggle {
+            display: none;
+        }
 
-  .container .side-bar.active{
-    box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
-    display: initial;
-    left:0;
-  }
-}
+        .menu-icon {
+            position: absolute;
+            top: 18px;
+            left: 30px;
+            font-size: 24px;
+            z-index: 1;
+            transition: all 300ms ease-in-out;
+        }
 
-@media (max-width:1200px){
 
-  .container{
-    padding:10px;
-  }
 
-  .container .side-bar{
-    width: 240px;
-  }
+        /*-- The Magic --*/
+        #menu-toggle:checked ~ .slideout-sidebar {
+            left: 0px;
+        }
 
-  .container .side-bar .list li{
-    font-size: 16px;
+        #menu-toggle:checked + .menu-icon {
+            left: 210px;
+        }
+
+        #menu-toggle:checked ~ .content-container {
+            padding-left: 190px;
+        }
+
+        /* -- Media Queries -- */
+
+        @media (max-width: 991px) {
+
+            .content-container {
+                max-width: 480px;
+            }
+
+        }
+
+        @media (max-width: 967px) {
+
+            .content-container {
+                max-width: 100%;
+                margin: 30px auto 0;
+            }
+
+            #menu-toggle:checked ~ .content-container {
+                padding-left: 0;
+            }
+
+            .slideout-sidebar ul {
+                text-align: center;
+                max-width: 200px;
+                margin: 30px auto 0;
+            }
+
+            .menu-icon {
+                left: 20px
+            }
+
+            #menu-toggle:checked ~ .slideout-sidebar {
+                width: 100%;
+            }
+
+            #menu-toggle:checked + .menu-icon {
+                left: 87%;
+                color: #fafafa;
+            }
+
+            @media screen
+            and (max-width: 936px)
+            and (orientation: landscape) {
+
+                .slideout-sidebar {
+                    padding: 0;
+                }
+
+                .slideout-sidebar ul {
+                    max-width: 100%;
+                    margin: 60px auto 0;
+                }
+
+                .slideout-sidebar ul li {
+                    display: inline-block;
+                    border-bottom: 0;
+                    width: 72px;
+                    padding: 18px 24px;
+                    margin: 0 6px 12px;
+                    color: #ffffff;
+                    background-color: #777;
+                }
+
+
+            }
+
+        }
+
+
+    </style>
+
+
   
-  }
-
-  .container .side-bar .list li.active{
-    font-size: 18px;
-    color: red;
-  }
-
-}
-</style>
-
 
 <style>
 .mybutton{
@@ -162,71 +206,108 @@ color:#fff;
 </style>
 
 
+<style>
+ a { 
+ text-decoration:none; 
+ color: #ffffff; 
+ font-size: 25px; 
+ } 
+ a:hover {
+ color: #f08080; 
+ text-decoration:none; 
+ font-size: 30px; 
+ }
+ 
+ </style>
+ 
+<style>
+    body {
+
+font-weight:normal;
+	background: #000;
+}
+.box {
+    
+    display: grid;
+    place-items:center;
+    height: 10vh;
+	font'Titr', cursive;ans-serif;
+	text-align: center;
+}
+.box p {
+    font-size: 45px;
+    text-transform: uppercase;
+	color: #ffd9e2;
+	text-shadow: 0 0 0 transparent,
+                0 0 10px #ff003c,
+                0 0 20px rgba(255, 0, 60, 0.5),
+                0 0 40px #ff003c,
+                0 0 100px #ff003c,
+                0 0 200px #ff003c,
+                0 0 300px #ff003c,
+                0 0 500px #ff003c,
+                0 0 1000px #ff003c;
+	animation: animate 3s infinite alternate;
+}
+@keyframes animate {
+	40% {
+		opacity: 1;
+	}
+	42% {
+		opacity: 0.8;
+	}
+	43% {
+		opacity: 1;
+	}
+	45% {
+		opacity: 0.3;
+	}
+	46% {
+		opacity: 1;
+	}
+}
+</style>   
+
+
+    
+   
+    
 </head>
+
+
+
+
+
 <body>
-
 <center>
-<h2>سریال قهوه پدری </h2>
-
-<div id="menu-btn" class="fas fa-bars"></div>
-
-<div class="container">
-
-    <div class="side-bar">
-
-        <ul class="list">
-            <li class="active" 
-            
-            
-            
-                             
-                             <li
-                            
-                             data-src="https://www.googleapis.com/drive/v3/files/13vWNXyf_1b1HDFs9DL13UZxEIF3tFCU7?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">قسمت اول  </li>
-                             
-                             
-          
-       
-       
-            
-            <li>
 <button type="button" class="mybutton"
  onClick="window.location.reload() "> بروز رسانی
 </button>
-</li>
-            
-        </ul>
+<br>
 
+    <div class="box">
+      <p>سریال قهوه پدری </p>  
+    </div>
+    </center>
+    <br>
+    <br>
+<div class="content-container">
+    <div class="site-title">
     </div>
 
-    <div class="video-container">
-        <video src="https://caspian16.cdn.asset.aparat.com/aparat-video/cdcb8b06bca96aa440a8fedadce951b661522248-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjVkZjMyY2JlYjczNTliMmE2OGI5YWM5MGI3ZmUwYjE2IiwiZXhwIjoxNzMwODA0MzMyLCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.KxfBAVDgApyVHQ82moBiMhj9eXOCWJ4VL9udafyUjQE" loop  autoplay controls></video>
-    </div>
+
+ 
+    
+<a href="https://mega.nz/file/kzkBAChA#1l-w3bLwgq3JD-0VAHr9bjQThk6xj_jPahPG-U8fFSE">قسمت اول</a>
+<br>
+
+
+<a href="https://mega.nz/file/6uhVwbIL#Zp-IrHeKy4ZVKVcgCqDiHU1s51IDkV4rYO0H7XoQ7wM">قسمت دوم</a>
+<br>
+
+
+
+
 
 </div>
-
-<script>
-
-let sideBar = document.querySelector('.container .side-bar');
-
-document.querySelector('#menu-btn').onclick = () =>{
-    sideBar.classList.toggle('active');
-};
-
-let video = document.querySelector('.container .video-container video');
-let videoLinks = document.querySelectorAll('.container .side-bar .list li');
-
-videoLinks.forEach(link =>{
-    link.onclick = () =>{
-        let src = link.getAttribute('data-src');
-        video.src = src;
-        sideBar.classList.remove('active');
-        videoLinks.forEach(remove =>{remove.classList.remove('active')});
-        link.classList.add('active');
-    }
-})
-
-</script>
-    
 </body>
-</html>
