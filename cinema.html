@@ -6,162 +6,185 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
     <!-- font awesome cdn link  -->
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
 
     <!-- custom css file link  -->
-  <style>
+    <style>
+        *{
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            margin:0; padding:0;
+            box-sizing: border-box;
+            outline: none; border:none;
+            text-decoration: none;
+            text-transform: capitalize;
+            transition: all .2s linear;
+        }
 
-*{
-  font-family: 'Noto Kufi Arabic', sans-serif;
-  margin:0; padding:0;
-  box-sizing: border-box;
-  outline: none; border:none;
-  text-decoration: none;
-  text-transform: capitalize;
-  transition: all .2s linear;
-}
+        .container{
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding:0 10%;
+            background:linear-gradient(90deg, #fff 60%, #eee 40.1%);
+        }
 
-.container{
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding:0 10%;
-  background:linear-gradient(90deg, #fff 60%, #eee 40.1%);
-}
+        .container .side-bar{
+            width:400px;
+            overflow-y: auto;
+            height: 100vh; /* Added to enable scrolling */
+        }
 
-.container .side-bar{
-  width:400px;
-}
+        .container .side-bar.active{
+            display: none;
+        }
 
-.container .side-bar.active{
-  display: none;
-}
+        .container .side-bar .list{
+            display: flex;
+            flex-flow: column;
+            align-items: flex-start;
+            max-height: calc(100vh - 100px); /* Added to fit 30 items */
+            overflow-y: auto;
+        }
 
-.container .side-bar .list{
-  display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-}
+        .container .side-bar .list li{
+            padding:5px 0; /* Reduced padding to fit more items */
+            font-size: 16px; /* Reduced font size */
+            cursor: pointer;
+            position: relative;
+            list-style: none;
+        }
 
-.container .side-bar .list li{
-  padding:10px 0;
-  font-size: 20px;
-  cursor: pointer;
-  position: relative;
-  list-style: none;
-}
+        .container .side-bar .list li::before{
+            content: '';
+            position: absolute;
+            top:50%;
+            transform: translateY(-50%);
+            left:-5px;
+            width: 0%;
+            height: 0px;
+            background-color: #000;
+            transition: width .2s linear .2s;
+        }
 
-.container .side-bar .list li::before{
-  content: '';
-  position: absolute;
-  top:50%;
-  transform: translateY(-50%);
-  left:-5px;
-  width: 0%;
-  height: 0px;
-  background-color: #000;
-  transition: width .2s linear .2s;
-}
+        .container .side-bar .list li.active,
+        .container .side-bar .list li:hover{
+            font-size: 18px; /* Adjusted font size for active state */
+        }
 
-.container .side-bar .list li.active,
-.container .side-bar .list li:hover{
-  font-size: 30px;
-}
+        .container .side-bar .list li.active::before,
+        .container .side-bar .list li:hover::before{
+            right: -5px;
+            width: 105%;
+        }
 
-.container .side-bar .list li.active::before,
-.container .side-bar .list li:hover::before{
-  right: -5px;
-  width: 105%;
-}
+        .container .video-container{
+            flex:1;
+        }
 
-.container .video-container{
-  flex:1;
-}
+        .container .video-container video{
+            width: 100%;
+            object-fit: cover;
+        }
 
-.container .video-container video{
-  width: 100%;
-  object-fit: cover;
-}
+        #menu-btn{
+            position: fixed;
+            top:0px; left:30px;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 1000;
+        }
 
-#menu-btn{
-  position: fixed;
-  top:0px; left:30px;
-  font-size: 40px;
-  cursor: pointer;
-  z-index: 1000;
-}
+        @media (max-width:1200px){
+            .container{
+                position: relative;
+            }
 
-@media (max-width:1200px){
-  .container{
-    position: relative;
-  }
+            .container .side-bar{
+                position: absolute;
+                top:0; left:-110%;
+                height: 100%;
+                background-color: #fff;
+                z-index: 10;
+                padding:30px;
+            }
 
-  .container .side-bar{
-    position: absolute;
-    top:0; left:-110%;
-    height: 100%;
-    background-color: #fff;
-    z-index: 10;
-    padding:30px;
-  }
+            .container .side-bar .list{
+                height: 100%;
+                justify-content: center;
+            }
 
-  .container .side-bar .list{
-    height: 100%;
-    justify-content: center;
-  }
+            .container .side-bar.active{
+                box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
+                display: initial;
+                left:0;
+            }
+        }
 
-  .container .side-bar.active{
-    box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
-    display: initial;
-    left:0;
-  }
-}
+        @media (max-width:1200px){
+            .container{
+                padding:10px;
+            }
 
-@media (max-width:1200px){
+            .container .side-bar{
+                width: 240px;
+            }
 
-  .container{
-    padding:10px;
-  }
+            .container .side-bar .list li{
+                font-size: 14px; /* Further reduced font size for small screens */
+            }
 
-  .container .side-bar{
-    width: 240px;
-  }
+            .container .side-bar .list li.active{
+                font-size: 16px;
+                color: red;
+            }
+        }
 
-  .container .side-bar .list li{
-    font-size: 16px;
-  
-  }
+        .mybutton{
+            background-color:#2196F3;
+            border:none;
+            border-radius:7px;
+            color:#fff;
+            padding:10px 25px;
+            text-align:center;
+            font-size:18px;
+            cursor:pointer;
+        }
 
-  .container .side-bar .list li.active{
-    font-size: 18px;
-    color: red;
-  }
+        .mybutton:hover{
+            background-color:#4287BF;
+        }
 
-}
-</style>
+        .search-bar {
+            margin-bottom: 20px;
+        }
 
+        .search-bar input {
+            width: calc(100% - 50px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
 
-<style>
-.mybutton{
- background-color:#2196F3;
- border:none;
- border-radius:7px;
-color:#fff;
- padding:10px 25px;
- text-align:center;
- font-size:18px;
- cursor:pointer;
-}
-.mybutton:hover{
- background-color:#4287BF;
-}
-</style>
+        .search-bar button {
+            padding: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
+        .results {
+            margin-top: 20px;
+        }
 
+        .result-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -171,79 +194,65 @@ color:#fff;
 <div id="menu-btn" class="fas fa-bars"></div>
 
 <div class="container">
-
     <div class="side-bar">
-
-        <ul class="list">
-            <li class="active" 
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="... نام فیلم">
+            <button onclick="searchMovie()">جستجو</button>
+        </div>
+        <ul class="list" id="movieList">
+            <li class="active" data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>
+            
+            <li data-src="https://www.googleapis.com/drive/v3/files/1mcTDonjq08o6VphRtfBCiYASPftjxwzA?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سال گربه</li>
+            
+            <li data-src="https://www.googleapis.com/drive/v3/files/1AB8AMYMGL6SdS9x8EyiMLS1y98e9XCno?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">تگزاس ۳</li>
+            
+            <li data-src="https://12dlredirecttorussiaandthenetherlands.93308.online/Movies/T/Temsah_Khouni_1403_480p.mp4">خجالت نکش ۲</li>
             
             
             
-                             
-                             <li
-                            
-                             data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>        
-     
-     
-     <li
-            
-            
-            
-           <li data-src="https://www.googleapis.com/drive/v3/files/1mcTDonjq08o6VphRtfBCiYASPftjxwzA?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سال گربه</li>  
-      
-            
-     
-     
-     
-          <li data-src="https://www.googleapis.com/drive/v3/files/1AB8AMYMGL6SdS9x8EyiMLS1y98e9XCno?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU"> تگزاس ۳</li>  
-     
-     
-        <li data-src="https://12dlredirecttorussiaandthenetherlands.93308.online/Movies/T/Temsah_Khouni_1403_480p.mp4"> خجالت نکش ۲</li>  
-     
-       
-       
-       
-       
-       
+         
             
             <li>
-<button type="button" class="mybutton"
- onClick="window.location.reload() "> بروز رسانی
-</button>
-</li>
-            
+                <button type="button" class="mybutton" onClick="window.location.reload()">بروز رسانی</button>
+            </li>
         </ul>
-
     </div>
-
     <div class="video-container">
-        <video src="https://persian20.asset.aparat.com/aparat-video/134f2b750416b0f0a39acce9f703bf1861039872-360p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjVhMjYyOWYwMTRmZTMwOWRiZDdkNTBlMTYwNmEyNTZhIiwiZXhwIjoxNzI4MzM1ODg3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.l64xA_Rl40zyAJH3uPFkIUjYRudvjEngP-iQKAjIlFY" loop  autoplay controls></video>
+        <video id="moviePlayer" src="https://persian20.asset.aparat.com/aparat-video/134f2b750416b0f0a39acce9f703bf1861039872-360p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjVhMjYyOWYwMTRmZTMwOWRiZDdkNTBlMTYwNmEyNTZhIiwiZXhwIjoxNzI4MzM1ODg3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.l64xA_Rl40zyAJH3uPFkIUjYRudvjEngP-iQKAjIlFY" loop autoplay controls></video>
     </div>
-
 </div>
-
 <script>
-
 let sideBar = document.querySelector('.container .side-bar');
-
-document.querySelector('#menu-btn').onclick = () =>{
-    sideBar.classList.toggle('active');
-};
-
 let video = document.querySelector('.container .video-container video');
 let videoLinks = document.querySelectorAll('.container .side-bar .list li');
 
-videoLinks.forEach(link =>{
-    link.onclick = () =>{
+document.querySelector('#menu-btn').onclick = () => {
+    sideBar.classList.toggle('active');
+};
+
+videoLinks.forEach(link => {
+    link.onclick = () => {
         let src = link.getAttribute('data-src');
         video.src = src;
         sideBar.classList.remove('active');
-        videoLinks.forEach(remove =>{remove.classList.remove('active')});
+        videoLinks.forEach(remove => { remove.classList.remove('active') });
         link.classList.add('active');
     }
-})
+});
 
+function searchMovie() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const movieList = document.getElementById('movieList');
+    const movies = movieList.querySelectorAll('li[data-src]');
+
+    movies.forEach(movie => {
+        if (movie.textContent.toLowerCase().includes(query)) {
+            movie.style.display = 'block';
+        } else {
+            movie.style.display = 'none';
+        }
+    });
+}
 </script>
-    
 </body>
 </html>
