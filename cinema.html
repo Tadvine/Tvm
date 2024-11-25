@@ -160,10 +160,16 @@
         }
 
         .search-bar input {
-            width: calc(100% - 50px);
+            width: 100%; /* Adjusted width to fit cancel button */
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
+        }
+
+        .search-bar .buttons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
         }
 
         .search-bar button {
@@ -173,6 +179,18 @@
             color: white;
             border-radius: 5px;
             cursor: pointer;
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .search-bar .cancel-button {
+            padding: 10px;
+            border: none;
+            background-color: #f44336;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1;
         }
 
         .results {
@@ -197,21 +215,16 @@
     <div class="side-bar">
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="... نام فیلم">
-            <button onclick="searchMovie()">جستجو</button>
+            <div class="buttons">
+                <button onclick="searchMovie()">جستجو</button>
+                <button class="cancel-button" onclick="cancelSearch()">لغو</button>
+            </div>
         </div>
         <ul class="list" id="movieList">
             <li class="active" data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>
-            
             <li data-src="https://www.googleapis.com/drive/v3/files/1mcTDonjq08o6VphRtfBCiYASPftjxwzA?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سال گربه</li>
-            
             <li data-src="https://www.googleapis.com/drive/v3/files/1AB8AMYMGL6SdS9x8EyiMLS1y98e9XCno?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">تگزاس ۳</li>
-            
             <li data-src="https://12dlredirecttorussiaandthenetherlands.93308.online/Movies/T/Temsah_Khouni_1403_480p.mp4">خجالت نکش ۲</li>
-            
-            
-            
-         
-            
             <li>
                 <button type="button" class="mybutton" onClick="window.location.reload()">بروز رسانی</button>
             </li>
@@ -252,6 +265,17 @@ function searchMovie() {
             movie.style.display = 'none';
         }
     });
+}
+
+function cancelSearch() {
+    const movieList = document.getElementById('movieList');
+    const movies = movieList.querySelectorAll('li[data-src]');
+    
+    movies.forEach(movie => {
+        movie.style.display = 'block'; // Show all movies
+    });
+
+    document.getElementById('searchInput').value = ''; // Clear search input
 }
 </script>
 </body>
