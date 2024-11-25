@@ -277,6 +277,19 @@ function cancelSearch() {
 
     document.getElementById('searchInput').value = ''; // Clear search input
 }
+
+// Alphabetically sort the movie list
+function sortMoviesAlphabetically() {
+    const movieList = document.getElementById('movieList');
+    const movies = Array.from(movieList.querySelectorAll('li[data-src]'));
+
+    movies.sort((a, b) => a.textContent.localeCompare(b.textContent));
+
+    movies.forEach(movie => movieList.appendChild(movie));
+}
+
+// Call the sorting function on page load
+document.addEventListener('DOMContentLoaded', sortMoviesAlphabetically);
 </script>
 </body>
 </html>
