@@ -46,10 +46,9 @@
             height: 100vh;
             overflow-y: auto;
             position: fixed;
-            right: 0; /* Open by default */
+            right: -270px; /* Closed by default */
             transition: right 0.3s;
-            backdrop-filter: blur(10px); /* Blur effect */ new width */
-            transition: right 0.3s;
+            backdrop-filter: blur(10px); /* Blur effect */
         }
         .sidebar-right.open {
             right: 0;
@@ -121,8 +120,8 @@
             background-color: #16a085;
         }
         .logo {
-            width: 200px; /* Fixed width for all logos */
-            height: 150px; /* Fixed height for all logos */
+            width: 150px; /* Adjusted width for logos */
+            height: 100px; /* Adjusted height for logos */
             object-fit: cover; /* Maintain aspect ratio */
             margin: 20px auto;
         }
@@ -213,7 +212,7 @@
             const mainContainer = document.getElementById('mainContainer');
             sidebarRight.classList.toggle('open');
             if (sidebarRight.classList.contains('open')) {
-                mainContainer.style.marginRight = '200px'; /* Adjusted to match new width */
+                mainContainer.style.marginRight = '250px'; /* Adjusted to match new width */
             } else {
                 mainContainer.style.marginRight = '0';
             }
