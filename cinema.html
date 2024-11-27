@@ -131,11 +131,11 @@
             }
 
             .container .side-bar .list li{
-                font-size: 14px; /* Further reduced font size for small screens */
+                font-size: 16px; /* Further reduced font size for small screens */
             }
 
             .container .side-bar .list li.active{
-                font-size: 16px;
+                font-size: 18px;
                 color: red;
             }
         }
@@ -202,6 +202,10 @@
             border-bottom: 1px solid #ddd;
             cursor: pointer;
         }
+
+        .hidden-movie {
+            display: none; /* Hide by default */
+        }
     </style>
 </head>
 <body>
@@ -225,13 +229,21 @@
             <li data-src="https://www.googleapis.com/drive/v3/files/1mcTDonjq08o6VphRtfBCiYASPftjxwzA?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سال گربه</li>
             <li data-src="https://www.googleapis.com/drive/v3/files/1AB8AMYMGL6SdS9x8EyiMLS1y98e9XCno?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">تگزاس ۳</li>
             <li data-src="https://12dlredirecttorussiaandthenetherlands.93308.online/Movies/T/Temsah_Khouni_1403_480p.mp4">خجالت نکش ۲</li>
+            
+            
+            <li class="hidden-movie" data-src="https://traffic.upera.tv/2897436-0-480.mp4">سریع و خشن ۱۰</li> <!-- Hidden movie -->
+            
+            
+            <li class="hidden-movie" data-src="https://traffic.upera.tv/2999380-0-480.mp4">جوکر ۲</li> <!-- Hidden movie -->
+            
+            
             <li>
                 <button type="button" class="mybutton" onClick="window.location.reload()">بروز رسانی</button>
             </li>
         </ul>
     </div>
     <div class="video-container">
-        <video id="moviePlayer" src="https://persian20.asset.aparat.com/aparat-video/134f2b750416b0f0a39acce9f703bf1861039872-360p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjVhMjYyOWYwMTRmZTMwOWRiZDdkNTBlMTYwNmEyNTZhIiwiZXhwIjoxNzI4MzM1ODg3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.l64xA_Rl40zyAJH3uPFkIUjYRudvjEngP-iQKAjIlFY" loop autoplay controls></video>
+        <video id="moviePlayer" src="" loop autoplay controls></video>
     </div>
 </div>
 <script>
@@ -247,6 +259,7 @@ videoLinks.forEach(link => {
     link.onclick = () => {
         let src = link.getAttribute('data-src');
         video.src = src;
+        video.dataset.index = Array.from(videoLinks).indexOf(link); // Store the index
         sideBar.classList.remove('active');
         videoLinks.forEach(remove => { remove.classList.remove('active') });
         link.classList.add('active');
@@ -257,9 +270,22 @@ function searchMovie() {
     const query = document.getElementById('searchInput').value.toLowerCase();
     const movieList = document.getElementById('movieList');
     const movies = movieList.querySelectorAll('li[data-src]');
+    const hiddenMovies = document.querySelectorAll('.hidden-movie');
 
+    // Check for the secret code
+    if (query === '1234') { // Replace '1234' with your secret code
+        hiddenMovies.forEach(movie => movie.style.display = 'block');
+        movies.forEach(movie => {
+            if (!movie.classList.contains('hidden-movie')) {
+                movie.style.display = 'none'; // Hide regular movies
+            }
+        });
+        return;
+    }
+
+    // Regular search
     movies.forEach(movie => {
-        if (movie.textContent.toLowerCase().includes(query)) {
+        if (movie.textContent.toLowerCase().includes(query) && !movie.classList.contains('hidden-movie')) {
             movie.style.display = 'block';
         } else {
             movie.style.display = 'none';
@@ -270,9 +296,16 @@ function searchMovie() {
 function cancelSearch() {
     const movieList = document.getElementById('movieList');
     const movies = movieList.querySelectorAll('li[data-src]');
-    
+    const hiddenMovies = document.querySelectorAll('.hidden-movie');
+
     movies.forEach(movie => {
-        movie.style.display = 'block'; // Show all movies
+        if (!movie.classList.contains('hidden-movie')) {
+            movie.style.display = 'block'; // Show all regular movies
+        }
+    });
+
+    hiddenMovies.forEach(movie => {
+        movie.style.display = 'none'; // Hide hidden movies
     });
 
     document.getElementById('searchInput').value = ''; // Clear search input
@@ -289,7 +322,25 @@ function sortMoviesAlphabetically() {
 }
 
 // Call the sorting function on page load
-document.addEventListener('DOMContentLoaded', sortMoviesAlphabetically);
+document.addEventListener('DOMContentLoaded', () => {
+    sortMoviesAlphabetically();
+    // Hide hidden movies initially
+    const hiddenMovies = document.querySelectorAll('.hidden-movie');
+    hiddenMovies.forEach(movie => movie.style.display = 'none');
+});
+
+// Play the next video when the current one ends
+video.addEventListener('ended', () => {
+    const currentIndex = parseInt(video.dataset.index);
+    const nextIndex = (currentIndex + 1) % videoLinks.length; // Loop back to first video if at the end
+    const nextVideo = videoLinks[nextIndex];
+    video.src = nextVideo.getAttribute('data-src');
+    video.dataset.index = nextIndex;
+    video.load();
+    video.play();
+    videoLinks.forEach(link => link.classList.remove('active'));
+    nextVideo.classList.add('active');
+});
 </script>
 </body>
 </html>

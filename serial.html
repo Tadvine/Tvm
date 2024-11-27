@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            height: 100vh;
+            overflow: hidden; /* Prevents horizontal scroll */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            transition: margin-left 0.3s;
+            margin-left: 0;
+        }
+       .sidebar-left {
+            width: 250px; /* Smaller width for left sidebar */
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */ 
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            left: -270px; /* Adjusted to match new width */
+            transition: left 0.3s;
+            backdrop-filter: blur(10px); /* Blur effect */
+        }
+        .sidebar-left.open {
+            left: 0;
+        }
+        .sidebar-right {
+            width: 250px; /* Adjusted to match full width */
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            right: 0; /* Open by default */
+            transition: right 0.3s;
+            backdrop-filter: blur(10px); /* Blur effect */ new width */
+            transition: right 0.3s;
+        }
+        .sidebar-right.open {
+            right: 0;
+        }
+        .toggle-btn-left {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .toggle-btn-left:hover {
+            background-color: #2980b9;
+        }
+        .toggle-btn-right {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .toggle-btn-right:hover {
+            background-color: #2980b9;
+        }
+        #videoPlayer {
+            width: 80%;
+            max-width: 800px;
+            height: auto;
+        }
+        #videoList {
+            margin-top: 20px;
+            padding: 0;
+            text-align: center;
+        }
+        .videoItem {
+            padding: 15px;
+            margin: 8px 0;
+            background-color: #34495e;
+            border: none;
+            cursor: pointer;
+            list-style-type: none;
+            color: white;
+            font-size: 20px; /* Larger font size */
+            font-family: 'Arial', sans-serif; /* Improved font */
+            text-align: center; /* Center align text */
+        }
+        .videoItem:hover {
+            background-color: #1abc9c;
+        }
+        .playlist-menu {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #1abc9c;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        .playlist-menu:hover {
+            background-color: #16a085;
+        }
+        .logo {
+            width: 200px; /* Fixed width for all logos */
+            height: 150px; /* Fixed height for all logos */
+            object-fit: cover; /* Maintain aspect ratio */
+            margin: 20px auto;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+            }
+            .sidebar-left {
+                width: 200px;
+                left: -220px; /* Adjusted to match new width */
+            }
+            .sidebar-left.open {
+                left: 0;
+            }
+            .sidebar-right {
+                width: 150px; /* Smaller width for right sidebar */
+                right: -170px; /* Adjusted to match new width */
+            }
+            .sidebar-right.open {
+                right: 0;
+            }
+            .toggle-btn-left {
+                top: 10px;
+                left: 10px;
+                padding: 8px;
+            }
+            .toggle-btn-right {
+                top: 10px;
+                right: 10px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn-left" onclick="toggleSidebarLeft()"> ☰</button>
+    <button class="toggle-btn-right" onclick="toggleSidebarRight()"> سریال </button>
+    <div class="sidebar-left" id="sidebarLeft">
+        <ul id="episodeList"></ul>
+    </div>
+    <div class="sidebar-right" id="sidebarRight">
+        <div class="playlist-menu" onclick="loadEpisodes('series1', 'https://media.hawzahnews.com/old/fa/Original/1397/03/20/IMG11080719.jpg')">دودکش یک</div>
+        <div class="playlist-menu" onclick="loadEpisodes('series2', 'https://upd.cooldl.net/raul/Doodkesh-s02.jpg')">دودکش دو</div>
+        <div class="playlist-menu" onclick="loadEpisodes('series3', 'poster3.jpg')">سریال ۳</div>
+        <!-- Add more playlist options here -->
+    </div>
+    <div class="container" id="mainContainer">
+        <video id="videoPlayer" controls poster="" class="logo"></video>
+    </div>
+    <script>
+        const episodes = {
+            'series1': [
+                { title: 'قسمت ۱', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_01_(Doostiha.NET).mp4' },
+                { title: 'قسمت ۲', src: 'series1_episode2.mp4' },
+                { title: 'قسمت ۳', src: 'series1_episode3.mp4' },
+            ],
+            'series2': [
+                { title: 'قسمت یکم', src: 'series2_episode1.mp4' },
+                { title: 'قسمت دوم', src: 'series2_episode2.mp4' },
+                { title: 'قسمت سوم', src: 'series2_episode3.mp4' },
+            ],
+            'series3': [
+                { title: 'یکم', src: 'series3_episode1.mp4' },
+                { title: 'دوم', src: 'series3_episode2.mp4' },
+                { title: 'سوم', src: 'series3_episode3.mp4' },
+            ]
+        };
+
+        function playVideo(videoSrc) {
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.src = videoSrc;
+            videoPlayer.play();
+        }
+
+        function toggleSidebarLeft() {
+            const sidebarLeft = document.getElementById('sidebarLeft');
+            const mainContainer = document.getElementById('mainContainer');
+            sidebarLeft.classList.toggle('open');
+            if (sidebarLeft.classList.contains('open')) {
+                mainContainer.style.marginLeft = '250px'; /* Adjusted to match new width */
+            } else {
+                mainContainer.style.marginLeft = '0';
+            }
+        }
+
+        function toggleSidebarRight() {
+            const sidebarRight = document.getElementById('sidebarRight');
+            const mainContainer = document.getElementById('mainContainer');
+            sidebarRight.classList.toggle('open');
+            if (sidebarRight.classList.contains('open')) {
+                mainContainer.style.marginRight = '200px'; /* Adjusted to match new width */
+            } else {
+                mainContainer.style.marginRight = '0';
+            }
+        }
+
+        function loadEpisodes(series, posterSrc) {
+            const episodeList = document.getElementById('episodeList');
+            episodeList.innerHTML = ''; // Clear previous list
+
+            episodes[series].forEach(episode => {
+                const listItem = document.createElement('li');
+                listItem.className = 'videoItem';
+                listItem.textContent = episode.title;
+                listItem.onclick = () => playVideo(episode.src);
+                episodeList.appendChild(listItem);
+            });
+
+            // تنظیم پوستر ویدیو پلیر
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.poster = posterSrc;
+
+            // باز کردن سایدبار لیست قسمت‌ها
+            const sidebarLeft = document.getElementById('sidebarLeft');
+            const mainContainer = document.getElementById('mainContainer');
+            sidebarLeft.classList.add('open');
+            mainContainer.style.marginLeft = '250px'; /* Adjusted to match new width */
+        }
+    </script>
+</body>
+</html>
