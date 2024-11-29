@@ -134,7 +134,7 @@
     <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
     <div class="sidebar" id="sidebar">
         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="نام فیلم را جستجو کنید...">
+            <input type="text" id="searchInput" placeholder="... جستجو شبکه">
             <div class="buttons">
                 <button onclick="searchMovie()">جستجو</button>
                 <button onclick="cancelSearch()">لغو</button>
@@ -146,9 +146,9 @@
         <video id="videoPlayer" controls></video>
     </div>
     <script>
-        const mainPlaylistUrl = 'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/A04_Ghadimi.m3u';
+        const mainPlaylistUrl = 'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/Yahsat.m3u';
         
-        const secondaryPlaylistUrl = ''; // Replace with the actual URL of the second playlist
+        const secondaryPlaylistUrl = 'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/A08.m3u'; // Replace with the actual URL of the second playlist
 
         document.addEventListener('DOMContentLoaded', () => {
             loadPlaylist(mainPlaylistUrl);
@@ -212,7 +212,7 @@
             const query = document.getElementById('searchInput').value.toLowerCase();
             const videoItems = document.querySelectorAll('.videoItem');
 
-            if (query === '00100') { // Replace with your actual secret code
+            if (query === '00@@007') { // Replace with your actual secret code
                 loadPlaylist(secondaryPlaylistUrl); // Load the secondary playlist
                 sidebar.classList.add('open');
                 document.getElementById('mainContainer').style.marginLeft = '300px';

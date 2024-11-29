@@ -6,10 +6,11 @@
     <title>Video Player</title>
     <style>
         body {
+    background-color: #f4f4f4; /* Replace with your desired color */
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+        
             display: flex;
             height: 100vh;
             overflow: hidden; /* Prevents horizontal scroll */
@@ -82,9 +83,13 @@
             background-color: #2980b9;
         }
         #videoPlayer {
-            width: 80%;
-            max-width: 800px;
-            height: auto;
+        position: relative;
+        width: 70%;
+        max-width: 800px;
+        height: auto;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        
+            
         }
         #videoList {
             margin-top: 20px;
@@ -109,7 +114,7 @@
         .playlist-menu {
             margin-bottom: 10px;
             padding: 10px;
-            background-color: #1abc9c;
+            background-color: #000000;
             color: white;
             cursor: pointer;
             text-align: center;
@@ -163,33 +168,238 @@
         <ul id="episodeList"></ul>
     </div>
     <div class="sidebar-right" id="sidebarRight">
+    
         <div class="playlist-menu" onclick="loadEpisodes('series1', 'https://vista.ir/news/u/2024-11-12/andishemoaser-0ye8j.jpg')">دودکش یک</div>
+        
         <div class="playlist-menu" onclick="loadEpisodes('series2', 'https://upd.cooldl.net/raul/Doodkesh-s02.jpg')">دودکش دو</div>
-        <div class="playlist-menu" onclick="loadEpisodes('series3', 'poster3.jpg')">سریال ۳</div>
+        
+        
+        <div class="playlist-menu" onclick="loadEpisodes('series3', 'https://bayanbox.ir/download/2162097565321618633/paytakht1.jpg')">پایتخت یک</div>
+        
+        
+        
+        <div class="playlist-menu" onclick="loadEpisodes('series4', 'https://bayanbox.ir/download/2787677149788171944/Paytakht2.jpg')">پایتخت دو</div>
+        
+        
+        
         <!-- Add more playlist options here -->
     </div>
     <div class="container" id="mainContainer">
-        <video id="videoPlayer" controls poster="" class="logo"></video>
+        <video id="videoPlayer" controls poster="https://mrdialog.com/wp-content/uploads/2023/11/Untitled-1-195.jpg" class="logo"></video>
     </div>
     <script>
         const episodes = {
             'series1': [
                 { title: 'قسمت ۱', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_01_(Doostiha.NET).mp4' },
-                { title: 'قسمت ۲', src: 'series1_episode2.mp4' },
-                { title: 'قسمت ۳', src: 'series1_episode3.mp4' },
+                
+                { title: 'قسمت ۲', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_02_(Doostiha.NET).mp4' },
+                               
+                
+                { title: 'قسمت ۳', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_03_(Doostiha.NET).mp4' },
+                
+                  { title: 'قسمت ۴', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_04_(Doostiha.NET).mp4' },
+                
+                { title: 'قسمت ۵', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_05_(Doostiha.NET).mp4' },
+                               
+                
+                { title: 'قسمت ۶', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_06_(Doostiha.NET).mp4' },
+                
+                
+                     { title: 'قسمت ۷', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_07_(Doostiha.NET).mp4' },
+                
+                { title: 'قسمت ۸', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_08_(Doostiha.NET).mp4' },
+                               
+                
+                { title: 'قسمت ۹', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_09_(Doostiha.NET).mp4' },
+                
+                  { title: 'قسمت ۱۰', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_10_(Doostiha.NET).mp4' },
+                
+                { title: 'قسمت ۱۱', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_11_(Doostiha.NET).mp4' },
+                               
+                
+                { title: 'قسمت ۱۲', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_12_(Doostiha.NET).mp4' },
+                
+                     { title: 'قسمت ۱۳', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_13_(Doostiha.NET).mp4' },
+                
+                { title: 'قسمت ۱۴', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_14_(Doostiha.NET).mp4' },
+                               
+                
+                { title: 'قسمت ۱۵', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_15_(Doostiha.NET).mp4' },
+                
+                  { title: 'قسمت ۱۶', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_16_(Doostiha.NET).mp4' },
+                
+                { title: 'قسمت ۱۷', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_17_(Doostiha.NET).mp4' },
+                               
+                
+                { title: 'قسمت ۱۸', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_18_(Doostiha.NET).mp4' },
+                
+                
+                     { title: 'قسمت ۱۹', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_19_(Doostiha.NET).mp4' },
+                
+                { title: 'قسمت ۲۰', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_20_(Doostiha.NET).mp4' },
+                               
+                
+                { title: 'قسمت ۲۱', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_21_(Doostiha.NET).mp4' },
+                
+                  { title: 'قسمت ۲۲', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_22_(Doostiha.NET).mp4' },
+                
+                { title: 'قسمت ۲۳', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_023_(Doostiha.NET).mp4' },
+                               
+                
+                { title: 'قسمت ۲۴', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/Doodkesh_24_(Doostiha.NET).mp4' },
+                
+                { title: 'پایان', src: '' },
             ],
-            'series2': [
-                { title: 'قسمت یکم', src: 'series2_episode1.mp4' },
-                { title: 'قسمت دوم', src: 'series2_episode2.mp4' },
-                { title: 'قسمت سوم', src: 'series2_episode3.mp4' },
+            
+            
+            
+            
+            
+            
+            
+            
+          'series2': [
+                { title: 'قسمت ۱', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E01.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۲', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E02.480p.HDTV.mkv' },
+                               
+                
+                { title: 'قسمت ۳', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E03.480p.HDTV.mkv' },
+                
+                  { title: 'قسمت ۴', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E04.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۵', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E05.480p.HDTV.mkv' },
+                               
+                
+                { title: 'قسمت ۶', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E06.480p.HDTV.mkv' },
+                
+                
+                     { title: 'قسمت ۷', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E07.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۸', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E08.480p.HDTV.mkv' },
+                               
+                
+                { title: 'قسمت ۹', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E09.480p.HDTV.mkv' },
+                
+                  { title: 'قسمت ۱۰', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E10.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۱۱', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E11.480p.HDTV.mkv' },
+                               
+                
+                { title: 'قسمت ۱۲', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E12.480p.HDTV.mkv' },
+                
+                     { title: 'قسمت ۱۳', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E13.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۱۴', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E14.480p.HDTV.mkv' },
+                               
+                
+                { title: 'قسمت ۱۵', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E15.480p.HDTV.mkv' },
+                
+                  { title: 'قسمت ۱۶', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E16.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۱۷', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E17.480p.HDTV.mkv' },
+                               
+                
+                { title: 'قسمت ۱۸', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E18.480p.HDTV.mkv' },
+                
+                
+                     { title: 'قسمت ۱۹', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E19.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۲۰', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E20.480p.HDTV.mkv' },
+                               
+                
+                { title: 'قسمت ۲۱', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E21.480p.HDTV.mkv' },
+                
+                  { title: 'قسمت ۲۲', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E22.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۲۳', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E23.480p.HDTV.mkv' },
+                               
+                
+                { title: 'قسمت ۲۴', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E24.480p.HDTV.mkv' },
+                
+                       { title: 'قسمت ۲۵', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E25.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۲۶', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E26.480p.HDTV.mkv' },
+                               
+                
+                { title: 'قسمت ۲۷', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E27.480p.HDTV.mkv' },
+                
+                  { title: 'قسمت ۲۸', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E28.480p.HDTV.mkv' },
+                
+                { title: 'قسمت ۲۹', src: 'https://s1.irdanlod.ir/files/Serial/D/Doodkesh/S02/Doodkesh.S02E29.480p.HDTV.mkv' },
+                               
+               
+                
+                { title: 'پایان', src: '' },
             ],
+            
+            
+            
+            
+            
+            
+            
+            
+            
             'series3': [
-                { title: 'یکم', src: 'series3_episode1.mp4' },
-                { title: 'دوم', src: 'series3_episode2.mp4' },
-                { title: 'سوم', src: 'series3_episode3.mp4' },
-            ]
-        };
+                { title: 'قسمت ۱', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S01/Paytakht.S01E01.HDTV.HexDL.com.mkv' },
+                
+             { title: 'قسمت ۲', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S01/Paytakht.S01E02.HDTV.HexDL.com.mkv' },
+                 
+             { title: 'قسمت ۳', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S01/Paytakht.S01E03.HDTV.HexDL.com.mkv' },
+                      
+                      
+              { title: 'قسمت ۴', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S01/Paytakht.S01E04.HDTV.HexDL.com.mkv' },
+                         
+               { title: 'قسمت ۵', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S01/Paytakht.S01E05.HDTV.HexDL.com.mkv' },
+                            
+                { title: 'قسمت ۶', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S01/Paytakht.S01E06.HDTV.HexDL.com.mkv' },
+                               
+                 { title: 'قسمت ۷', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S01/Paytakht.S01E07.HDTV.HexDL.com.mkv' },
+                 
+                 
+                       { title: 'قسمت ۸', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S01/Paytakht.S01E08.HDTV.HexDL.com.mkv' },
+              ],
+              
+              
+              
+              
+              
+                   'series4': [
+                { title: 'قسمت ۱', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E01.HDTV.HexDL.com.mkv' },
+                
+                    { title: 'قسمت ۲', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E02.HDTV.HexDL.com.mkv' },
+                 
+             { title: 'قسمت ۳', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E03.HDTV.HexDL.com.mkv' },
+                      
+                      
+              { title: 'قسمت ۴', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E04.HDTV.HexDL.com.mkv' },
+                         
+               { title: 'قسمت ۵', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E05.HDTV.HexDL.com.mkv' },
+                            
+                { title: 'قسمت ۶', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E06.HDTV.HexDL.com.mkv' },
+                               
+                 { title: 'قسمت ۷', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E07.HDTV.HexDL.com.mkv' },
+                 
+                 
+                       { title: 'قسمت ۸', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E08.HDTV.HexDL.com.mkv' },
+                       
+                       
+                            { title: 'قسمت ۹', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E09.HDTV.HexDL.com.mkv' },
+                 
+                 
+                       { title: 'قسمت ۱۰', src: 'http://dl1.3rver.org/hex1/Series/Paytakht/S02/Paytakht.S02E10.HDTV.HexDL.com.mkv' },
+                
+                       ],
+                     };
 
+            
+            
+            
+            
+            
+      
+  
         function playVideo(videoSrc) {
             const videoPlayer = document.getElementById('videoPlayer');
             videoPlayer.src = videoSrc;
