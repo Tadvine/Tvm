@@ -166,11 +166,9 @@
     </div>
     <script>
         const mainPlaylistUrl = 'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/Yahsat.m3u';
-        const secondaryPlaylistUrl = 'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/test.m3u';
+        const secondaryPlaylistUrl = 'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/A08.m3u';
         const liveStreams = [
-            { title: 'لنز اسپورت', url: 'http://92.42.50.27/wh7f454c46tw634975281_-1806740759/PLTV/88888888/224/3221226979/4.m3u8' },
-            
-                 { title: 'آیو اسپورت', url: 'https://stream.sainaertebat.com/hls2/stream01.m3u8' },
+            { title: 'آیو اسپورت', url: 'https://stream.sainaertebat.com/hls2/stream01.m3u8' },
                  
                        { title: 'طرفداری اسپورت', url: 'https://stream.sainaertebat.com/hls2/stream03.m3u8' },
                  
@@ -181,12 +179,39 @@
             
                    { title: 'RTI Sport', url: 'https://rtatv.akamaized.net/Content/HLS/Live/channel(RTA3)/variant.m3u8' }
         ];
+        
+        
+        
 
-
+        const videoItems = [
+            { title: '4U Tv', url: 'https://hls.4utv.live/hls/stream.m3u8' },
+            { title: 'ITN Tv', url: 'https://itnhls.wns.live/hls/stream.m3u8' },
+            { title: 'PMC Royal', url: 'https://rohls.pmc.live/hls/stream.m3u8' }
+        ];
 
         document.addEventListener('DOMContentLoaded', () => {
-            loadPlaylist(mainPlaylistUrl);
+            loadVideoList(videoItems);
         });
+
+        function loadVideoList(items) {
+            const videoList = document.getElementById('videoList');
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoList.innerHTML = ''; // Clear previous list
+            
+            items.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = 'videoItem';
+                listItem.textContent = item.title;
+                listItem.addEventListener('click', () => {
+                    videoPlayer.src = item.url;
+                    videoPlayer.play();
+                });
+                videoList.appendChild(listItem);
+            });
+
+            // باز کردن سایدبار لیست ویدیوها
+            toggleSidebar();
+        }
 
         function loadPlaylist(url) {
             fetch(url)
@@ -275,7 +300,7 @@
             const sidebar = document.getElementById('sidebar');
             const searchInput = document.getElementById('searchInput');
             searchInput.value = '';
-            loadPlaylist(mainPlaylistUrl); 
+            loadVideoList(videoItems); 
             sidebar.classList.remove('open');
             document.getElementById('mainContainer').style.marginLeft = '0';
         }
@@ -306,3 +331,5 @@
             videoItems.forEach(item => videoList.appendChild(item));
         }
     </script>
+</body>
+</html>
