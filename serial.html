@@ -96,6 +96,10 @@
             padding: 0;
             text-align: center;
         }
+        
+        .videoItem.active {
+    background-color: #2980b9; /* Active item background color */
+}
         .videoItem {
             padding: 15px;
             margin: 8px 0;
@@ -158,6 +162,7 @@
                 right: 10px;
                 padding: 8px;
             }
+            
         }
     </style>
 </head>
@@ -1018,58 +1023,68 @@
             
             
             
+            
       
   
-        function playVideo(videoSrc) {
-            const videoPlayer = document.getElementById('videoPlayer');
-            videoPlayer.src = videoSrc;
-            videoPlayer.play();
-        }
+        
 
-        function toggleSidebarLeft() {
-            const sidebarLeft = document.getElementById('sidebarLeft');
-            const mainContainer = document.getElementById('mainContainer');
-            sidebarLeft.classList.toggle('open');
-            if (sidebarLeft.classList.contains('open')) {
-                mainContainer.style.marginLeft = '250px'; /* Adjusted to match new width */
-            } else {
-                mainContainer.style.marginLeft = '0';
-            }
-        }
+    function playVideo(videoSrc, listItem) {
+        const videoPlayer = document.getElementById('videoPlayer');
+        videoPlayer.src = videoSrc;
+        videoPlayer.play();
 
-        function toggleSidebarRight() {
-            const sidebarRight = document.getElementById('sidebarRight');
-            const mainContainer = document.getElementById('mainContainer');
-            sidebarRight.classList.toggle('open');
-            if (sidebarRight.classList.contains('open')) {
-                mainContainer.style.marginRight = '250px'; /* Adjusted to match new width */
-            } else {
-                mainContainer.style.marginRight = '0';
-            }
-        }
+        // تغییر رنگ آیتم انتخاب شده
+        const items = document.querySelectorAll('.videoItem');
+        items.forEach(item => {
+            item.classList.remove('active');
+        });
+        listItem.classList.add('active');
+    }
 
-        function loadEpisodes(series, posterSrc) {
-            const episodeList = document.getElementById('episodeList');
-            episodeList.innerHTML = ''; // Clear previous list
-
-            episodes[series].forEach(episode => {
-                const listItem = document.createElement('li');
-                listItem.className = 'videoItem';
-                listItem.textContent = episode.title;
-                listItem.onclick = () => playVideo(episode.src);
-                episodeList.appendChild(listItem);
-            });
-
-            // تنظیم پوستر ویدیو پلیر
-            const videoPlayer = document.getElementById('videoPlayer');
-            videoPlayer.poster = posterSrc;
-
-            // باز کردن سایدبار لیست قسمت‌ها
-            const sidebarLeft = document.getElementById('sidebarLeft');
-            const mainContainer = document.getElementById('mainContainer');
-            sidebarLeft.classList.add('open');
+    function toggleSidebarLeft() {
+        const sidebarLeft = document.getElementById('sidebarLeft');
+        const mainContainer = document.getElementById('mainContainer');
+        sidebarLeft.classList.toggle('open');
+        if (sidebarLeft.classList.contains('open')) {
             mainContainer.style.marginLeft = '250px'; /* Adjusted to match new width */
+        } else {
+            mainContainer.style.marginLeft = '0';
         }
-    </script>
+    }
+
+    function toggleSidebarRight() {
+        const sidebarRight = document.getElementById('sidebarRight');
+        const mainContainer = document.getElementById('mainContainer');
+        sidebarRight.classList.toggle('open');
+        if (sidebarRight.classList.contains('open')) {
+            mainContainer.style.marginRight = '250px'; /* Adjusted to match new width */
+        } else {
+            mainContainer.style.marginRight = '0';
+        }
+    }
+
+    function loadEpisodes(series, posterSrc) {
+        const episodeList = document.getElementById('episodeList');
+        episodeList.innerHTML = ''; // Clear previous list
+
+        episodes[series].forEach(episode => {
+            const listItem = document.createElement('li');
+            listItem.className = 'videoItem';
+            listItem.textContent = episode.title;
+            listItem.onclick = () => playVideo(episode.src, listItem);
+            episodeList.appendChild(listItem);
+        });
+
+        // تنظیم پوستر ویدیو پلیر
+        const videoPlayer = document.getElementById('videoPlayer');
+        videoPlayer.poster = posterSrc;
+
+        // باز کردن سایدبار لیست قسمت‌ها
+        const sidebarLeft = document.getElementById('sidebarLeft');
+        const mainContainer = document.getElementById('mainContainer');
+        sidebarLeft.classList.add('open');
+        mainContainer.style.marginLeft = '250px'; /* Adjusted to match new width */
+    }
+</script>
 </body>
 </html>

@@ -1,149 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <!-- font awesome cdn link  -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Lalezar' rel='stylesheet' type='text/css'>
 
 
-    <!-- custom css file link  -->
-  <style>
 
-*{
-  font-family: 'Noto Kufi Arabic', sans-serif;
-  margin:0; padding:0;
-  box-sizing: border-box;
-  outline: none; border:none;
-  text-decoration: none;
-  text-transform: capitalize;
-  transition: all .2s linear;
-}
+    <title>Tvm</title>
+    
+<style>
+        body {
+            font-family: 'Lalezar', sans-serif;
+            margin: 0;
+            background-color:#000000;
+            direction: rtl;
+        }
 
-.container{
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding:0 10%;
-  background:linear-gradient(90deg, #fff 60%, #eee 40.1%);
-}
+        /* -- main content -- */
+        .content-container {
+            position: relative;
+            z-index: 0;
+            padding: 20px;
+            max-width: 1078px;
+            margin: 0 auto;
+            overflow: hidden;
+            transition: all 300ms ease-in-out;
+        }
 
-.container .side-bar{
-  width:400px;
-}
+        .site-title {
+            text-align: center;
+            border-bottom: 4px solid #ffffff;
+            margin-bottom: 24px;
+        }
 
-.container .side-bar.active{
-  display: none;
-}
+        .site-title h1 {
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+        }
 
-.container .side-bar .list{
-  display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-}
 
-.container .side-bar .list li{
-  padding:10px 0;
-  font-size: 20px;
-  cursor: pointer;
-  position: relative;
-  list-style: none;
-}
 
-.container .side-bar .list li::before{
-  content: '';
-  position: absolute;
-  top:50%;
-  transform: translateY(-50%);
-  left:-5px;
-  width: 0%;
-  height: 0px;
-  background-color: #000;
-  transition: width .2s linear .2s;
-}
+        .content p {
+            line-height: 1.6em;
+            margin-bottom: 24px;
+        }
 
-.container .side-bar .list li.active,
-.container .side-bar .list li:hover{
-  font-size: 30px;
-}
+        /* -- Slideout Sidebar -- */
 
-.container .side-bar .list li.active::before,
-.container .side-bar .list li:hover::before{
-  right: -5px;
-  width: 105%;
-}
+        .slideout-sidebar {
+            position: fixed;
+            float: right;
+            top: 0;
+            left: -190px;
+            z-index: 0;
+            width: 150px;
+            height: 100%;
+            padding: 20px;
+            background-color: #212121;
+            transition: all 300ms ease-in-out;
+            font-family: "byekan"
+        }
 
-.container .video-container{
-  flex:1;
-}
+        .slideout-sidebar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
 
-.container .video-container video{
-  width: 100%;
-  object-fit: cover;
-}
+        .slideout-sidebar ul li {
+            cursor: pointer;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(244,244,244,0.4);
+            color: rgba(244,244,244,0.7);
+        }
 
-#menu-btn{
-  position: fixed;
-  top:0px; left:30px;
-  font-size: 40px;
-  cursor: pointer;
-  z-index: 1000;
-}
+        .slideout-sidebar ul li:last-child {
+            border-bottom: 0;
+        }
 
-@media (max-width:1200px){
-  .container{
-    position: relative;
-  }
+        .slideout-sidebar ul li:hover {
+            color: rgba(244,244,244,1);
+        }
 
-  .container .side-bar{
-    position: absolute;
-    top:0; left:-110%;
-    height: 100%;
-    background-color: #fff;
-    z-index: 10;
-    padding:30px;
-  }
+        /* -- Menu Icon -- */
 
-  .container .side-bar .list{
-    height: 100%;
-    justify-content: center;
-  }
+        #menu-toggle {
+            display: none;
+        }
 
-  .container .side-bar.active{
-    box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
-    display: initial;
-    left:0;
-  }
-}
+        .menu-icon {
+            position: absolute;
+            top: 18px;
+            left: 30px;
+            font-size: 24px;
+            z-index: 1;
+            transition: all 300ms ease-in-out;
+        }
 
-@media (max-width:1200px){
 
-  .container{
-    padding:10px;
-  }
 
-  .container .side-bar{
-    width: 240px;
-  }
+        /*-- The Magic --*/
+        #menu-toggle:checked ~ .slideout-sidebar {
+            left: 0px;
+        }
 
-  .container .side-bar .list li{
-    font-size: 16px;
+        #menu-toggle:checked + .menu-icon {
+            left: 210px;
+        }
+
+        #menu-toggle:checked ~ .content-container {
+            padding-left: 190px;
+        }
+
+        /* -- Media Queries -- */
+
+        @media (max-width: 991px) {
+
+            .content-container {
+                max-width: 480px;
+            }
+
+        }
+
+        @media (max-width: 967px) {
+
+            .content-container {
+                max-width: 100%;
+                margin: 30px auto 0;
+            }
+
+            #menu-toggle:checked ~ .content-container {
+                padding-left: 0;
+            }
+
+            .slideout-sidebar ul {
+                text-align: center;
+                max-width: 200px;
+                margin: 30px auto 0;
+            }
+
+            .menu-icon {
+                left: 20px
+            }
+
+            #menu-toggle:checked ~ .slideout-sidebar {
+                width: 100%;
+            }
+
+            #menu-toggle:checked + .menu-icon {
+                left: 87%;
+                color: #fafafa;
+            }
+
+            @media screen
+            and (max-width: 936px)
+            and (orientation: landscape) {
+
+                .slideout-sidebar {
+                    padding: 0;
+                }
+
+                .slideout-sidebar ul {
+                    max-width: 100%;
+                    margin: 60px auto 0;
+                }
+
+                .slideout-sidebar ul li {
+                    display: inline-block;
+                    border-bottom: 0;
+                    width: 72px;
+                    padding: 18px 24px;
+                    margin: 0 6px 12px;
+                    color: #ffffff;
+                    background-color: #777;
+                }
+
+
+            }
+
+        }
+
+
+    </style>
+
+
   
-  }
-
-  .container .side-bar .list li.active{
-    font-size: 18px;
-    color: red;
-  }
-
-}
-</style>
-
 
 <style>
 .mybutton{
@@ -162,106 +206,137 @@ color:#fff;
 </style>
 
 
-</head>
-<body>
+<style>
+ a { 
+ text-decoration:none; 
+ color: #ffffff; 
+ font-size: 25px; 
+ } 
+ a:hover {
+ color: #f08080; 
+ text-decoration:none; 
+ font-size: 30px; 
+ }
+ 
+ </style>
+ 
+<style>
+    body {
 
-<center>
-<h2>سریال گردن زنی
+font-weight:normal;
+	background: #000;
+}
+.box {
+    
+    display: grid;
+    place-items:center;
+    height: 10vh;
+	font'Titr', cursive;ans-serif;
+	text-align: center;
+}
+.box p {
+    font-size: 45px;
+    text-transform: uppercase;
+	color: #ffd9e2;
+	text-shadow: 0 0 0 transparent,
+                0 0 10px #ff003c,
+                0 0 20px rgba(255, 0, 60, 0.5),
+                0 0 40px #ff003c,
+                0 0 100px #ff003c,
+                0 0 200px #ff003c,
+                0 0 300px #ff003c,
+                0 0 500px #ff003c,
+                0 0 1000px #ff003c;
+	animation: animate 3s infinite alternate;
+}
+@keyframes animate {
+	40% {
+		opacity: 1;
+	}
+	42% {
+		opacity: 0.8;
+	}
+	43% {
+		opacity: 1;
+	}
+	45% {
+		opacity: 0.3;
+	}
+	46% {
+		opacity: 1;
+	}
+}
+</style>   
 
-<div id="menu-btn" class="fas fa-bars"></div>
 
-<div class="container">
-
-    <div class="side-bar">
-
-        <ul class="list">
-            <li class="active" 
-            
-            
-            
-                             
-                             <li
-                            
-                             data-src="https://11dlredirecttorussiaandthenetherlands.93308.online/Series_irani/G/Gardan_Zani/Gardan_Zani_S01E01_480p.mp4">قسمت اول  </li>
-                             
-                             
-          <li
-                            
-                             data-src="https://11dlredirecttorussiaandthenetherlands.93308.online/Series_irani/G/Gardan_Zani/Gardan_Zani_S01E02_480p.mp4">قسمت دوم  </li>
-                             
-                             
-                             
-                    <li
-                            
-                             data-src="https://11dlredirecttorussiaandthenetherlands.93308.online/Series_irani/G/Gardan_Zani/Gardan_Zani_S01E03_480p.mp4">قسمت سوم  </li>
-                             
-                             
-                             
-                             
-                    <li
-                            
-                             data-src="https://11dlredirecttorussiaandthenetherlands.93308.online/Series_irani/G/Gardan_Zani/Gardan_Zani_S01E04_480p.mp4">قسمت چهارم  </li>
-                                                                               
-                             
+    
    
-   <li
-                            
-                             data-src="https://11dlredirecttorussiaandthenetherlands.93308.online/Series_irani/G/Gardan_Zani/Gardan_Zani_S01E05_480p.mp4">قسمت پنجم  </li>
-            
-       
-       
-       <li
-    data-src="https://18dlredirecttorussiaandthenetherlands.93308.online/Series_irani/G/Gardan_Zani/Gardan_Zani_S01E06_480p.mp4">قسمت ششم  </li>  
-       
-       
-       
-       <li
-    data-src="https://25dlredirecttorussiaandthenetherlands.93308.online/Series_irani/G/Gardan_Zani/Gardan_Zani_S01E07_480p.mp4">قسمت هفتم  </li>  
-       
-       
-       
-       
-       
-       
-            
-            <li>
+    
+</head>
+
+
+
+
+
+<body>
+<center>
 <button type="button" class="mybutton"
  onClick="window.location.reload() "> بروز رسانی
 </button>
-</li>
-            
-        </ul>
+<br>
 
+    <div class="box">
+      <p>سریال گردن زنی </p>  
+    </div>
+    </center>
+    <br>
+    <br>
+<div class="content-container">
+    <div class="site-title">
     </div>
 
-    <div class="video-container">
-        <video src="https://persian20.asset.aparat.com/aparat-video/134f2b750416b0f0a39acce9f703bf1861039872-360p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjVhMjYyOWYwMTRmZTMwOWRiZDdkNTBlMTYwNmEyNTZhIiwiZXhwIjoxNzI4MzM1ODg3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.l64xA_Rl40zyAJH3uPFkIUjYRudvjEngP-iQKAjIlFY" loop  autoplay controls></video>
-    </div>
+
+ 
+    
+<a href="https://mega.nz/file/WvgU2Izb#72ToY2t8Cxlhe2bf7dha6PS0uGO7Vx1fzCfLrKVX5tE">قسمت هفتم</a>
+<br>
+
+
+<a href="https://mega.nz/file/7qYkzaQa#7hXyzhNZOeNpgPyiP-i2fGsIoCC6za8BFwWamTXobQg">قسمت هشتم</a>
+<br>
+
+
+<a href="https://mega.nz/file/vVNSlDRJ#V_ENcP35hRxCclGZWXJXT7xWoTRPfIFG-48LFzYHJ2M">قسمت نهم</a>
+<br>
+
+
+
+<a href="https://mega.nz/file/qvAxDbiY#SrsbDREQTDRtnR0YK228p_Aql2uNy08srGUQoUNzYaA">قسمت دهم</a>
+<br>
+
+
+
+<a href="https://mega.nz/file/SZlzVL7b#h-E9ZuSF3Rg0UK7zj_roPQ6n3unnY9BbwcEMMafTUU8">قسمت یازدهم</a>
+<br>
+
+
+
+
+<a href="https://mega.nz/file/U7EVlTSL#3KtxVbFFH_mN_E7TqJ2iPOPexqebDxUHLUK2MZIO9-U">قسمت دوازدهم</a>
+<br>
+
+
+
+<a href="https://mega.nz/file/dowzCYAJ#Z1WXjZQmyVc8NXymQdHI7z9Kgo2ey-PI-f-MhbC5q60">قسمت سیزدهم</a>
+<br>
+
+
+
+<a href="https://mega.nz/file/DV92wJyK#htdEuXbm85fLvdPoGRFuG5OYpUuI-WGV9YvDlK0-_94">قسمت چهاردهم</a>
+<br>
+
+
+
 
 </div>
-
-<script>
-
-let sideBar = document.querySelector('.container .side-bar');
-
-document.querySelector('#menu-btn').onclick = () =>{
-    sideBar.classList.toggle('active');
-};
-
-let video = document.querySelector('.container .video-container video');
-let videoLinks = document.querySelectorAll('.container .side-bar .list li');
-
-videoLinks.forEach(link =>{
-    link.onclick = () =>{
-        let src = link.getAttribute('data-src');
-        video.src = src;
-        sideBar.classList.remove('active');
-        videoLinks.forEach(remove =>{remove.classList.remove('active')});
-        link.classList.add('active');
-    }
-})
-
-</script>
-    
 </body>
-</html>
