@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <!-- font awesome cdn link  -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
+
+
+    <!-- custom css file link  -->
+  <style>
+
+*{
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  margin:0; padding:0;
+  box-sizing: border-box;
+  outline: none; border:none;
+  text-decoration: none;
+  text-transform: capitalize;
+  transition: all .2s linear;
+}
+
+.container{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding:0 10%;
+  background:linear-gradient(90deg, #fff 60%, #eee 40.1%);
+}
+
+.container .side-bar{
+  width:400px;
+}
+
+.container .side-bar.active{
+  display: none;
+}
+
+.container .side-bar .list{
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+}
+
+.container .side-bar .list li{
+  padding:10px 0;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  list-style: none;
+}
+
+.container .side-bar .list li::before{
+  content: '';
+  position: absolute;
+  top:50%;
+  transform: translateY(-50%);
+  left:-5px;
+  width: 0%;
+  height: 0px;
+  background-color: #000;
+  transition: width .2s linear .2s;
+}
+
+.container .side-bar .list li.active,
+.container .side-bar .list li:hover{
+  font-size: 30px;
+}
+
+.container .side-bar .list li.active::before,
+.container .side-bar .list li:hover::before{
+  right: -5px;
+  width: 105%;
+}
+
+.container .video-container{
+  flex:1;
+}
+
+.container .video-container video{
+  width: 100%;
+  object-fit: cover;
+}
+
+#menu-btn{
+  position: fixed;
+  top:0px; left:30px;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+@media (max-width:1200px){
+  .container{
+    position: relative;
+  }
+
+  .container .side-bar{
+    position: absolute;
+    top:0; left:-110%;
+    height: 100%;
+    background-color: #fff;
+    z-index: 10;
+    padding:30px;
+  }
+
+  .container .side-bar .list{
+    height: 100%;
+    justify-content: center;
+  }
+
+  .container .side-bar.active{
+    box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
+    display: initial;
+    left:0;
+  }
+}
+
+@media (max-width:1200px){
+
+  .container{
+    padding:10px;
+  }
+
+  .container .side-bar{
+    width: 240px;
+  }
+
+  .container .side-bar .list li{
+    font-size: 16px;
+  
+  }
+
+  .container .side-bar .list li.active{
+    font-size: 18px;
+    color: red;
+  }
+
+}
+</style>
+
+
+<style>
+.mybutton{
+ background-color:#2196F3;
+ border:none;
+ border-radius:7px;
+color:#fff;
+ padding:10px 25px;
+ text-align:center;
+ font-size:18px;
+ cursor:pointer;
+}
+.mybutton:hover{
+ background-color:#4287BF;
+}
+</style>
+
+
+</head>
+<body>
+
+<center>
+<h2>ساعت صفر</h2>
+
+<div id="menu-btn" class="fas fa-bars"></div>
+
+<div class="container">
+
+    <div class="side-bar">
+
+        <ul class="list">
+            <li class="active" 
+            
+            
+            
+                             
+                             <li
+                            
+                             data-src="https://www.googleapis.com/drive/v3/files/15ulWaX1PSjXVFwKx54EW_eC-XVNXEE3p?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">قسمت اول  </li>
+                             
+                             
+          <li
+                            
+                             
+    </div>
+
+    <div class="video-container">
+        <video src="" loop  autoplay controls></video>
+    </div>
+
+</div>
+
+<script>
+
+let sideBar = document.querySelector('.container .side-bar');
+
+document.querySelector('#menu-btn').onclick = () =>{
+    sideBar.classList.toggle('active');
+};
+
+let video = document.querySelector('.container .video-container video');
+let videoLinks = document.querySelectorAll('.container .side-bar .list li');
+
+videoLinks.forEach(link =>{
+    link.onclick = () =>{
+        let src = link.getAttribute('data-src');
+        video.src = src;
+        sideBar.classList.remove('active');
+        videoLinks.forEach(remove =>{remove.classList.remove('active')});
+        link.classList.add('active');
+    }
+})
+
+</script>
+    
+</body>
+</html>
