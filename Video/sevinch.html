@@ -1,55 +1,149 @@
-﻿<!doctype html>
-
-<html dir="rtl" lang="fa-IR">
+<!DOCTYPE html>
+<html lang="fa">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Live Tv</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-	<link id="plyr-io-css" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/plyr.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
 
-<link id="plyr-io-customize" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/player.css">
-
-<link id="playlist-scrollbar-css" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/scrollbar.css">
-
-
-
-<meta name="msapplication-TileImage"
- content="" />
-
-<meta name="robots" content="noindex, nofollow"></head>
-
-<body style="background: #f0f0f0;">
-            <div class="main">
-                        <div class="video-container">
-                <div class="post-info d" id="post-info">
-                    <div class="title-wrapper">
-                                            </div>
-                    
-                </div>
-                <video class="video-player"
-                
-                 <video controls poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEnUf4hkfwz34AFphV9nWDOjXigYpCIptspA&usqp=CAU">
-                 
-id="video-player" controls width="100" height="100" playsinline>
-
-          <source src="https://www.googleapis.com/drive/v3/files/1BmdfPdqcKVo4HBIKn1OYv7h2JXUKciZ6?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU"   
-          
-         </video>
-         </div>
-        </div>
-
-    <script id="jquery-core" src="https://ifilmz.ir/wp-includes/js/jquery/jquery.js"></script>
+  <style>
     
-<script id="plyr-io-js" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/plyr.js"></script>
+    body {
+      font-family: 'Noto Kufi Arabic',sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 10px;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9; /* نسبت طول به عرض ثابت */
+    }
+    video {
+      width: 100%;
+      height: 100%; /* ارتفاع 100% برای حفظ نسبت */
+      border-radius: 10px;
+    }
+    .dropdown {
+    font-family: 'Noto Kufi Arabic',sans-serif;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 800px;
+        }
+    .dropdown select {
+    font-family: 'Noto Kufi Arabic',sans-serif;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+      direction: rtl; /* راست‌چین کردن متون */
+      text-align: right; /* راست‌چین کردن متون */
+      background-color: #f0f0f0f;
+      color: #333333;
+    }
+    .dropdown select option {
+      font-size: 16px;
+      padding: 5px;
+      background-color: #ffffff;
+      color: #333333;
+    }
+    @media (max-width: 600px) {
+      .dropdown select {
+        font-size: 14px;
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+<h2>Sevinch</h2>
 
-<script id="plyr-io-setup" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/plyr.setup.js">
-</script>
-
-
-<script id="playlist-scrollbar-js" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/scrollbar.min.js">
-</script>
+  <div class="video-container">
+    <video id="videoPlayer" controls autoplay>
+      <source src="https://www.googleapis.com/drive/v3/files/1x-Zxlxw1rP1PqRybZdYxUb_b4I2XPH2e?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" type="video/mp4">
+      مرورگر شما از ویدیو پلیر پشتیبانی نمی‌کند.
+    </video>
+  </div>
+  <div class="dropdown">
+    <select id="videoList">
     
-    </body>
+   
+   
+    <option value="https://www.googleapis.com/drive/v3/files/1x-Zxlxw1rP1PqRybZdYxUb_b4I2XPH2e?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سوینچ ■ عاشقم من</option>
+    
+    
+    <option value="https://www.googleapis.com/drive/v3/files/1JIcfdHrhBfaAzxpHQCH-2hO-9H9MRZ8i?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سوینچ ■ دروغگو</option>
+    
+    
+    <option value="https://www.googleapis.com/drive/v3/files/1vPJUzlypIicyxyJOTG5GUUzVA45rmQbw?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سوینچ ■ تقدیر</option>
+      <option
+    
+ 
+ 
+ <option value="https://www.googleapis.com/drive/v3/files/1aGPaQafLKguJhnFN0BrnRW_OPa3RzYDx?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سوینچ ■ بدون تو</option>
+    
+    
+    
+    <option value="https://www.googleapis.com/drive/v3/files/1hXF4aOl_RlLDwgv8kxfd9Suzfm8pHguB?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سوینچ ■ گریه میکنم</option>
+      
+    
+    
+    
+    
+      <option value="https://www.googleapis.com/drive/v3/files/1BmdfPdqcKVo4HBIKn1OYv7h2JXUKciZ6?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سوینچ ■ کنسرت دوشنبه</option>
+      <option
+       value="https://www.googleapis.com/drive/v3/files/1FuRoz7kFfAX960ch0rbF51xxGuDg-7PM?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سوینچ ■ کنسرت ۲۰۲۳ </option>
+      
+      <option value="https://www.googleapis.com/drive/v3/files/1CmGqY-Nm5C-jFNJuStPSgozVD17qVLn9?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سوینچ ■ کنسرت ۲۰۲۴</option>
+      
+      
+      
+      
+     
+      
+      
+      
+      
+      
+      
+     
+      
+     
+     
+     
+    </select>
+  </div>
+  <script>
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoList = document.getElementById('videoList');
+
+    videoList.addEventListener('change', function() {
+      videoPlayer.src = this.value;
+      videoPlayer.play();
+    });
+
+    videoPlayer.addEventListener('ended', function() {
+      const currentIndex = videoList.selectedIndex;
+      const nextIndex = (currentIndex + 1) % videoList.options.length;
+      videoList.selectedIndex = nextIndex;
+      videoPlayer.src = videoList.options[nextIndex].value;
+      videoPlayer.play();
+    });
+  </script>
+</body>
 </html>
-    
