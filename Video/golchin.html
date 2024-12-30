@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
+
+  <style>
+    
+    body {
+      font-family: 'Noto Kufi Arabic',sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 10px;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9; /* نسبت طول به عرض ثابت */
+    }
+    video {
+      width: 100%;
+      height: 100%; /* ارتفاع 100% برای حفظ نسبت */
+      border-radius: 10px;
+    }
+    .dropdown {
+    font-family: 'Noto Kufi Arabic',sans-serif;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 800px;
+        }
+    .dropdown select {
+    font-family: 'Noto Kufi Arabic',sans-serif;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+      direction: rtl; /* راست‌چین کردن متون */
+      text-align: right; /* راست‌چین کردن متون */
+      background-color: #f0f0f0f;
+      color: #333333;
+    }
+    .dropdown select option {
+      font-size: 16px;
+      padding: 5px;
+      background-color: #ffffff;
+      color: #333333;
+    }
+    @media (max-width: 600px) {
+      .dropdown select {
+        font-size: 14px;
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+<h2>گلچین ایرانی</h2>
+
+  <div class="video-container">
+    <video id="videoPlayer" controls autoplay>
+      <source src="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Aref%20-%20Ye%20Khooneh%20Daram%20-%20720%20%5BGhofliMusic%5D.mp4" type="video/mp4">
+      مرورگر شما از ویدیو پلیر پشتیبانی نمی‌کند.
+    </video>
+  </div>
+  <div class="dropdown">
+    <select id="videoList">
+      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Aref%20-%20Ye%20Khooneh%20Daram%20-%20720%20%5BGhofliMusic%5D.mp4">عارف ■ یه خونه</option>
+      <option
+       value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Andy%20-%20Avalin%20Gharar%20-%20480%20%5BGhofliMusic%5D.mp4">اندی ■ اولین قرار</option>
+      
+      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Moein%20-%20Live%20in%20Istanbul%20%28September%202024%29%20-%20480%20%5BGhofliMusic%5D.mp4">معین ■  استانبول</option>
+      
+      <option value="https://www.googleapis.com/drive/v3/files/1cL3CtORHDtdGSNfWvp5i7yC-VdPCSZTN?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهستی ■ یار جون جونی</option>
+      
+     
+     
+     
+     <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Shahrokh%20-%20Gharibeh%20%28Live%20In%20Concert%29.mp4">شاهرخ ■ غریبه</option>
+      <option
+      
+       value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/01/Ebi%20-%20Be%20Salamatit%20-%20480%20%5BGhofliMusic%5D.mp4">ابی ■ بسلامتی</option>
+      
+      
+      
+      <option value="https://www.googleapis.com/drive/v3/files/1cWbe_99NvDnwjZxroNeXhgMgXvV691XT?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهستی ■  حرف های قشنگ
+      
+      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/01/Moein%20-%20Eshareh%20Live%20in%20Los%20Angeles%20480%20%5BGhofliMusic%5D.mp4">معین ■ اشاره</option>
+     
+     
+     
+     <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/02/Shahram%20Solati%20-%20Dalile%20Zendegi%20-%20480%20%5BGhofliMusic%5D.mp4">شهرام صولتی ■ دلیل زندگی</option>
+      <option
+      
+       value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/02/Moein%20-%20Ba%20To%20-%20480%20%5BGhofliMusic%5D.mp4">معین ■ با تو</option>
+      
+      
+      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Odibehesht%20Mah/Siavash%20Ghomayshi%20-%20Sarab%20-%20480%20%5BGhofliMusic%5D.mp4">سیاوش قمیشی ■  سراب</option>
+      
+      
+     
+     
+     
+    </select>
+  </div>
+  <script>
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoList = document.getElementById('videoList');
+
+    videoList.addEventListener('change', function() {
+      videoPlayer.src = this.value;
+      videoPlayer.play();
+    });
+
+    videoPlayer.addEventListener('ended', function() {
+      const currentIndex = videoList.selectedIndex;
+      const nextIndex = (currentIndex + 1) % videoList.options.length;
+      videoList.selectedIndex = nextIndex;
+      videoPlayer.src = videoList.options[nextIndex].value;
+      videoPlayer.play();
+    });
+  </script>
+</body>
+</html>
