@@ -27,7 +27,7 @@
             max-width: 800px;
         }
         .player {
-            background: linear-gradient(135deg, #000000, #0000f0, #000000);
+            background: linear-gradient(135deg, #000000, #ffc0cb, #000000);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             width: 100%;
@@ -90,11 +90,11 @@
 </head>
 <body>
 
-<h2>چاوشی</h2>
+<h2>Sevinch</h2>
 
 <div class="container">
         <div class="player">
-            <img src="https://cdn.mashreghnews.ir/d/2018/01/26/2/2177302.jpg" id="cover" class="cover" alt="Cover Image">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCOf7PsWqN7yRpF_8j7Erqee8NV_tmjR1-CA&s" id="cover" class="cover" alt="Cover Image">
             <div class="controls">
                 <button class="prev"><i class="fas fa-backward"></i></button>
                 <button class="play"><i class="fas fa-play"></i></button>
@@ -109,12 +109,14 @@
         </div>
         <div class="dropdown">
             <select id="playlist" onchange="selectTrack()" style="font-size: 16px; padding: 10px;">
-                <option value="0">دیوارتم</option>
-                <option value="1">سنگ صبور</option>
-                <option value="2">من با تو خوشم</option>
-                         
-                
-                
+                <option value="0">بدون تو</option>
+                <option value="1">دبی دبی</option>
+                <option value="2">دانشگاه</option>
+                <option value="3">عشق من</option>         
+                 <option value="4">دل زخمی</option>         
+                 <option value="5">بدون تو ریمیکس</option>         
+                 <option value="6">من به تو فکر میکنم</option>
+               
                 
             </select>
         </div>
@@ -135,13 +137,24 @@
 
         const tracks = [
         
-            { src: 'https://musictaj.musicmelnet.com/song403/bhr/Mohsen%20Chavoshi%20-%20Divaretam%20Mage%20(Ai).mp3', title: 'دیوارتم' },
+            { src: 'https://dl.mp3lyrics.ir/Sevinch%20muminova%202018%20%20Duk%20Duk.mp3', title: 'دوک دوک' },
             
-            { src: 'https://irsv.upmusics.com/Tracks/Songs/Mohsen%20Chavoshi%20%E2%80%93%20Sangeh%20Saboor128(UpMusic).mp3', title: 'سنگ صبور' },
+            { src: 'https://media.isongs.ir/Music/98/05/sevinchmuminovaDobeyDobeyflv.mp3', title: 'دبی دبی' },
             
             
-            { src: 'https://irsv.upmusics.com/Tracks/Songs/Mohsen%20Chavoshi%20%E2%80%93%20Man%20Ba%20To%20Khosham128(UpMusic).mp3', title: 'من با تو خوشم' }
+            { src: 'https://media.isongs.ir/Music/98/05/SevinchMominovaKolgemqeder%D0%A1%D0%B5%D0%B2%D0%B8%D0%BD%D1%87%D0%9C%D1%83%D0%BC%D0%B8%D0%BD%D0%BE%D0%B2%D0%B0%D0%9A%D0%BE%D0%BB%D0%B3%D0%B5%D0%BC%D0%BA%D0%B5%D0%B4%D0%B5%D1%80.mp3', title: 'دانشگاه' },
             
+            
+            
+              { src: 'https://hitsound.musicmelnet.com/02-03/Ashegham_Ashegh_On_Lab_o_Dandan128.mp3', title: 'عشق من' },
+            
+            
+                      { src: 'https://bayanbox.ir/download/7527412509413137829/Sevinch-Mo-minova-Dil-Yaralab.mp3', title: 'دل زخمی' }, 
+                      
+                      
+                          { src: 'https://quvonch.com/uploads/files/2017-08/1503424332_sevinch-mominova-va-vohidjon-isoqov-sensiz.mp3', title: 'بدون تو ریمیکس' },
+                      
+                  { src: 'https://quvonch.com/uploads/files/2019-03/1553011922_sevinch-mominova-xayolimdasan.mp3', title: 'من به تو فکر میکنم' },
             
           
             
@@ -195,7 +208,7 @@
             audio.src = src;
             audio.play();
             trackTitle.textContent = title;
-            coverImage.src = "https://cdn.mashreghnews.ir/d/2018/01/26/2/2177302.jpg"; // تصویر ثابت برای کاور
+            coverImage.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCOf7PsWqN7yRpF_8j7Erqee8NV_tmjR1-CA&s"; // تصویر ثابت برای کاور
         }
 
         function updatePlaylist() {
