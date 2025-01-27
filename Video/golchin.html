@@ -4,196 +4,264 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+    <title>گلچین ایرانی</title>
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
-
-  <style>
-    
-    body {
-      font-family: 'Noto Kufi Arabic',sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 10px;
-    }
-    .video-container {
-      position: relative;
-      width: 100%;
-      max-width: 800px;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-      overflow: hidden;
-      aspect-ratio: 16 / 9; /* نسبت طول به عرض ثابت */
-    }
-    video {
-      width: 100%;
-      height: 100%; /* ارتفاع 100% برای حفظ نسبت */
-      border-radius: 10px;
-    }
-    .dropdown {
-    font-family: 'Noto Kufi Arabic',sans-serif;
-      margin-top: 20px;
-      width: 100%;
-      max-width: 800px;
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 10px;
         }
-    .dropdown select {
-    font-family: 'Noto Kufi Arabic',sans-serif;
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #cccccc;
-      border-radius: 5px;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-      direction: rtl; /* راست‌چین کردن متون */
-      text-align: right; /* راست‌چین کردن متون */
-      background-color: #f0f0f0f;
-      color: #333333;
-    }
-    video:focus {
-    outline: none;
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9; /* نسبت طول به عرض ثابت */
+        }
+        video {
+            width: 100%;
+            height: 100%; /* ارتفاع 100% برای حفظ نسبت */
+            border-radius: 10px;
+        }
+        .dropdown {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .dropdown select {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            direction: rtl; /* راست‌چین کردن متون */
+            text-align: right; /* راست‌چین کردن متون */
+            background-color: #f0f0f0;
+            color: #333333;
+        }
+        video:focus {
+            outline: none;
+        }
+        .dropdown select option {
+            font-size: 16px;
+            padding: 5px;
+            background-color: #ffffff;
+            color: #333333;
+        }
+        @media (max-width: 600px) {
+            .dropdown select {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+        .search-container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .search-container button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            background-color: #2196F3;
+            color: white;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #1e88e5;
+        }
+        .notification {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .reset-button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            background-color: #ff5722;
+            color: white;
+            cursor: pointer;
+        }
+        .reset-button:hover {
+            background-color: #e64a19;
+        }
+        button, .search-container button, .reset-button {
+    background-color: #000000;
+    color: white;
+    border: none;
 }
-    .dropdown select option {
-      font-size: 16px;
-      padding: 5px;
-      background-color: #ffffff;
-      color: #333333;
-    }
-    @media (max-width: 600px) {
-      .dropdown select {
-        font-size: 14px;
-        padding: 8px;
-      }
-    }
-  </style>
+
+button:hover, .search-container button:hover, .reset-button:hover {
+    background-color: #333333;
+}
+        
+        
+        
+    </style>
 </head>
 <body>
-<h2>گلچین ایرانی</h2>
+    <h2>گلچین ایرانی</h2>
+    <div class="video-container">
+        <video id="videoPlayer" controls autoplay>
+            <source src="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Aref%20-%20Ye%20Khooneh%20Daram%20-%20720%20%5BGhofliMusic%5D.mp4" type="video/mp4">
+            مرورگر شما از ویدیو پلیر پشتیبانی نمی‌کند.
+        </video>
+    </div>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="جستجو...">
+        <button onclick="searchVideos()">جستجو</button>
+    </div>
+    <div class="dropdown">
+        <select id="videoList">
+        
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Aref%20-%20Ye%20Khooneh%20Daram%20-%20720%20%5BGhofliMusic%5D.mp4">عارف ■ یه خونه</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Bahman%20Mah/01/Saeed%20Shayesteh%20-%20Shabe%20Sarde%20Zemestooni%20-%20480%20%5BGhofliMusic%5D.mp4">سعید شایسته ■ شب سرد زمستونی</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Bahman%20Mah/01/Ahllam%20-%20Pesare%20Sheytoon%20-%20480%20%5BGhofliMusic%5D.mp4">احلام ■ پسر شیطون</option>
+            
+            <option value="https://www.googleapis.com/drive/v3/files/1wUFph9bgw--MlfQtlmtuuQlCf4Qbv9Cj?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">شادمهر عقیلی ■ کنسرت استانبول ۲۰۲۴</option>
+            
+            <option value="https://www.googleapis.com/drive/v3/files/1Qc0A8C7npD5YIaxRULA60kFzp6XYJXwz?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ گمگشته</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Andy%20-%20Avalin%20Gharar%20-%20480%20%5BGhofliMusic%5D.mp4">اندی ■ اولین قرار</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Dey%20Mah/01/Satin%20-%20Khoord%20-%20480%20%5BGhofliMusic%5D.mp4">ستین ■ خورد</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Moein%20-%20Live%20in%20Istanbul%20%28September%202024%29%20-%20480%20%5BGhofliMusic%5D.mp4">معین ■ استانبول</option>
+            
+            <option value="https://www.googleapis.com/drive/v3/files/1EqebaiaSZ94gglH-CI9Gvo7n_1BmpOJ3?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ عاقبت</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Mehr%20Mah/01/Helen%20-%20Jan%20Jane%20Man%20-%20480%20%5BGhofliMusic%5D.mp4">هلن ■ جان جانم</option>
+            
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Shahrokh%20-%20Gharibeh%20%28Live%20In%20Concert%29.mp4">شاهرخ ■ غریبه</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/01/Ebi%20-%20Be%20Salamatit%20-%20480%20%5BGhofliMusic%5D.mp4">ابی ■ بسلامتی</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Khordad%20Mah/Ahllam%20-%20Asheghe%20Khaste%20480%20%5BGhofliMusic%5D.mp4">احلام ■ عاشق خسته</option>
+            
+            <option value="https://www.googleapis.com/drive/v3/files/10-tp6USwK8-HtbikBwfHNl8HrB-_Obbo?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ نسیم</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/01/Moein%20-%20Eshareh%20Live%20in%20Los%20Angeles%20480%20%5BGhofliMusic%5D.mp4">معین ■ اشاره</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/02/Shahram%20Solati%20-%20Dalile%20Zendegi%20-%20480%20%5BGhofliMusic%5D.mp4">شهرام صولتی ■ دلیل زندگی</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/02/Moein%20-%20Ba%20To%20-%20480%20%5BGhofliMusic%5D.mp4">معین ■ با تو</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Odibehesht%20Mah/Siavash%20Ghomayshi%20-%20Sarab%20-%20480%20%5BGhofliMusic%5D.mp4">سیاوش قمیشی ■ سراب</option>
+            
+            <option value="https://www.googleapis.com/drive/v3/files/1cbjhcf0GcqeIJi3ph41YcjfpKt7PPHpa?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ نمیشه</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Helen%20-%20Doostet%20Daram%20-%20480%20%20%5BGhofliMusic%5D.mp4">هلن ■ دوستت دارم</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Shadmehr%20Aghili%20-%20Pishe%20To%20%28Unplugged%29%20720%5BGhofliMusic%5D.mp4">شامهر ■ پیش تو</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Shahram%20Solati%20-%20Elahi%20Bemiram%20720%20%5BGhofliMusic%5D.mp4">شهرام صولتی ■ الهی بمیرم</option>
+            
+            <option value="https://www.googleapis.com/drive/v3/files/1Zc9XUEExCva4L1gvhHIaP4lrxJK3wFY3?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ میرن آدما</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Dey%20Mah/01/Susan%20Roshan%20-%20Hol%20Shodam%20-%20480%20%20%5BGhofliMusic%5D.mp4">سوزان روشن ■ هول شدم</option>
+            
+            
+            
+            
+        </select>
+    </div>
+    <div class="notification" id="notification"></div>
+    <button class="reset-button" onclick="resetList()">بازگشت به لیست اصلی</button>
 
-  <div class="video-container">
-    <video id="videoPlayer" controls autoplay>
-      <source src="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Aref%20-%20Ye%20Khooneh%20Daram%20-%20720%20%5BGhofliMusic%5D.mp4" type="video/mp4">
-      مرورگر شما از ویدیو پلیر پشتیبانی نمی‌کند.
-    </video>
-  </div>
-  <div class="dropdown">
-    <select id="videoList">
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Aref%20-%20Ye%20Khooneh%20Daram%20-%20720%20%5BGhofliMusic%5D.mp4">عارف ■ یه خونه</option>
-      
-      
-      
-      <option      value="https://www.googleapis.com/drive/v3/files/1Qc0A8C7npD5YIaxRULA60kFzp6XYJXwz?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ گمگشته</option>
-       
-       
-       
-      
-      
-      
-      
-      <option      value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Andy%20-%20Avalin%20Gharar%20-%20480%20%5BGhofliMusic%5D.mp4">اندی ■ اولین قرار</option>
-       
-       
-       
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Dey%20Mah/01/Satin%20-%20Khoord%20-%20480%20%5BGhofliMusic%5D.mp4">ستین ■ خورد</option>
-      
-      
-      
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Moein%20-%20Live%20in%20Istanbul%20%28September%202024%29%20-%20480%20%5BGhofliMusic%5D.mp4">معین ■  استانبول</option>
-      
-      
-      
-      
-      <option      value="https://www.googleapis.com/drive/v3/files/1EqebaiaSZ94gglH-CI9Gvo7n_1BmpOJ3?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ عاقبت</option>
-      
-      
-      
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Mehr%20Mah/01/Helen%20-%20Jan%20Jane%20Man%20-%20480%20%5BGhofliMusic%5D.mp4">هلن ■ جان جانم</option>
-      
-     
-     
-     
-     <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Shahrokh%20-%20Gharibeh%20%28Live%20In%20Concert%29.mp4">شاهرخ ■ غریبه</option>
-      <option
-      
-      
-      
-      
-       value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/01/Ebi%20-%20Be%20Salamatit%20-%20480%20%5BGhofliMusic%5D.mp4">ابی ■ بسلامتی</option>
-      
-      
-      
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Khordad%20Mah/Ahllam%20-%20Asheghe%20Khaste%20480%20%5BGhofliMusic%5D.mp4">احلام ■  عاشق خسته
-      
-      
-      
-      
-      <option      value="https://www.googleapis.com/drive/v3/files/10-tp6USwK8-HtbikBwfHNl8HrB-_Obbo?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ نسیم</option>
-      
-      
-      
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/01/Moein%20-%20Eshareh%20Live%20in%20Los%20Angeles%20480%20%5BGhofliMusic%5D.mp4">معین ■ اشاره</option>
-     
-     
-     
-     <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/02/Shahram%20Solati%20-%20Dalile%20Zendegi%20-%20480%20%5BGhofliMusic%5D.mp4">شهرام صولتی ■ دلیل زندگی</option>
-      <option
-      
-       value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/02/Moein%20-%20Ba%20To%20-%20480%20%5BGhofliMusic%5D.mp4">معین ■ با تو</option>
-      
-      
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Odibehesht%20Mah/Siavash%20Ghomayshi%20-%20Sarab%20-%20480%20%5BGhofliMusic%5D.mp4">سیاوش قمیشی ■  سراب</option>
-      
-      
-      
-      
-      <option      value="https://www.googleapis.com/drive/v3/files/1cbjhcf0GcqeIJi3ph41YcjfpKt7PPHpa?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ نمیشه</option>
-      
-      
-      
-      
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Helen%20-%20Doostet%20Daram%20-%20480%20%20%5BGhofliMusic%5D.mp4">هلن ■ دوستت دارم</option>
-      <option
-      
-       value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Shadmehr%20Aghili%20-%20Pishe%20To%20%28Unplugged%29%20720%5BGhofliMusic%5D.mp4">شامهر ■ پیش تو</option>
-      
-      
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Shahram%20Solati%20-%20Elahi%20Bemiram%20720%20%5BGhofliMusic%5D.mp4">شهرام صولتی ■  الهی بمیرم</option>
-      
-      
-      
-      <option      value="https://www.googleapis.com/drive/v3/files/1Zc9XUEExCva4L1gvhHIaP4lrxJK3wFY3?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ میرن آدما</option>
-      
-      
-      
-      <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Dey%20Mah/01/Susan%20Roshan%20-%20Hol%20Shodam%20-%20480%20%20%5BGhofliMusic%5D.mp4"> سوزان روشن ■  هول شدم</option>
-      
-     
-     
-     
-    </select>
-  </div>
-  <script>
-    const videoPlayer = document.getElementById('videoPlayer');
-    const videoList = document.getElementById('videoList');
+    <script>
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoList = document.getElementById('videoList');
+        const notification = document.getElementById('notification');
+        let originalOptions = [];
 
-    videoList.addEventListener('change', function() {
-      videoPlayer.src = this.value;
-      videoPlayer.play();
-    });
+        document.addEventListener('DOMContentLoaded', function() {
+            originalOptions = Array.from(videoList.options);
+        });
 
-    videoPlayer.addEventListener('ended', function() {
-      const currentIndex = videoList.selectedIndex;
-      const nextIndex = (currentIndex + 1) % videoList.options.length;
-      videoList.selectedIndex = nextIndex;
-      videoPlayer.src = videoList.options[nextIndex].value;
-      videoPlayer.play();
-    });
-  </script>
+        videoList.addEventListener('change', function() {
+            playSelectedVideo();
+        });
+
+        videoPlayer.addEventListener('ended', function() {
+            playNextVideo();
+        });
+
+        function playSelectedVideo() {
+            videoPlayer.src = videoList.value;
+            videoPlayer.play();
+        }
+
+        function playNextVideo() {
+            const currentIndex = videoList.selectedIndex;
+            const nextIndex = (currentIndex + 1) % videoList.options.length;
+            videoList.selectedIndex = nextIndex;
+            playSelectedVideo();
+        }
+
+        function searchVideos() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            let found = false;
+            const searchResults = [];
+
+            for (let option of originalOptions) {
+                const optionText = option.textContent.toLowerCase();
+                if (optionText.includes(searchInput)) {
+                    searchResults.push(option);
+                    found = true;
+                }
+            }
+
+            videoList.innerHTML = '';
+            searchResults.forEach(option => videoList.appendChild(option));
+
+            if (found) {
+                notification.textContent = '';
+                playSelectedVideo();
+            } else {
+                notification.textContent = 'موردی یافت نشد';
+                videoPlayer.pause();
+                videoPlayer.src = '';
+            }
+        }
+
+        function resetList() {
+            videoList.innerHTML = '';
+            originalOptions.forEach(option => videoList.appendChild(option));
+            notification.textContent = '';
+            playSelectedVideo();
+        }
+    </script>
 </body>
 </html>
+            
