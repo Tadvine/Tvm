@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>گلچین ایرانی</title>
-    <!-- font awesome cdn link  -->
+    <!-- فونت‌ها و استایل‌ها -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
     <style>
@@ -27,11 +27,11 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             overflow: hidden;
-            aspect-ratio: 16 / 9; /* نسبت طول به عرض ثابت */
+            aspect-ratio: 16 / 9;
         }
         video {
             width: 100%;
-            height: 100%; /* ارتفاع 100% برای حفظ نسبت */
+            height: 100%;
             border-radius: 10px;
         }
         .dropdown {
@@ -48,8 +48,8 @@
             border: 1px solid #cccccc;
             border-radius: 5px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            direction: rtl; /* راست‌چین کردن متون */
-            text-align: right; /* راست‌چین کردن متون */
+            direction: rtl;
+            text-align: right;
             background-color: #f0f0f0;
             color: #333333;
         }
@@ -100,31 +100,19 @@
             font-size: 16px;
             margin-top: 10px;
         }
-        .reset-button {
+        .reset-button, .sort-button {
             margin-top: 20px;
             padding: 10px;
             font-size: 16px;
             border: 1px solid #cccccc;
             border-radius: 5px;
-            background-color: #ff5722;
+            background-color: #000000;
             color: white;
             cursor: pointer;
         }
-        .reset-button:hover {
-            background-color: #e64a19;
+        .reset-button:hover, .sort-button:hover {
+            background-color: #333333;
         }
-        button, .search-container button, .reset-button {
-    background-color: #000000;
-    color: white;
-    border: none;
-}
-
-button:hover, .search-container button:hover, .reset-button:hover {
-    background-color: #333333;
-}
-        
-        
-        
     </style>
 </head>
 <body>
@@ -141,7 +129,6 @@ button:hover, .search-container button:hover, .reset-button:hover {
     </div>
     <div class="dropdown">
         <select id="videoList">
-        
             <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Aref%20-%20Ye%20Khooneh%20Daram%20-%20720%20%5BGhofliMusic%5D.mp4">عارف ■ یه خونه</option>
             
             <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Bahman%20Mah/01/Saeed%20Shayesteh%20-%20Shabe%20Sarde%20Zemestooni%20-%20480%20%5BGhofliMusic%5D.mp4">سعید شایسته ■ شب سرد زمستونی</option>
@@ -162,8 +149,7 @@ button:hover, .search-container button:hover, .reset-button:hover {
             
             <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Mehr%20Mah/01/Helen%20-%20Jan%20Jane%20Man%20-%20480%20%5BGhofliMusic%5D.mp4">هلن ■ جان جانم</option>
             
-            
-            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Shahrokh%20-%20Gharibeh%20%28Live%20In%20Concert%29.mp4">شاهرخ ■ غریبه</option>
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Azar%20Mah/01/Shahrokh%20-%20Gharibeh%20%28Live%20In%20Concert%29.mp4">شهرام صولتی ■ غریبه</option>
             
             <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/01/Ebi%20-%20Be%20Salamatit%20-%20480%20%5BGhofliMusic%5D.mp4">ابی ■ بسلامتی</option>
             
@@ -172,6 +158,8 @@ button:hover, .search-container button:hover, .reset-button:hover {
             <option value="https://www.googleapis.com/drive/v3/files/10-tp6USwK8-HtbikBwfHNl8HrB-_Obbo?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ نسیم</option>
             
             <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/01/Moein%20-%20Eshareh%20Live%20in%20Los%20Angeles%20480%20%5BGhofliMusic%5D.mp4">معین ■ اشاره</option>
+            
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Dey%20Mah/01/Edvin%20-%20Ghalbe%20Mani%20-%20480%20%5BGhofliMusic%5D.mp4">ادوین ■ قلب منی</option>
             
             <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Aban%20Mah/02/Shahram%20Solati%20-%20Dalile%20Zendegi%20-%20480%20%5BGhofliMusic%5D.mp4">شهرام صولتی ■ دلیل زندگی</option>
             
@@ -183,21 +171,21 @@ button:hover, .search-container button:hover, .reset-button:hover {
             
             <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Helen%20-%20Doostet%20Daram%20-%20480%20%20%5BGhofliMusic%5D.mp4">هلن ■ دوستت دارم</option>
             
-            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Shadmehr%20Aghili%20-%20Pishe%20To%20%28Unplugged%29%20720%5BGhofliMusic%5D.mp4">شامهر ■ پیش تو</option>
+            <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Shadmehr%20Aghili%20-%20Pishe%20To%20%28Unplugged%29%20720%5BGhofliMusic%5D.mp4">شادمهر عقیلی ■ پیش تو</option>
             
             <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Farvardin%20Mah/Shahram%20Solati%20-%20Elahi%20Bemiram%20720%20%5BGhofliMusic%5D.mp4">شهرام صولتی ■ الهی بمیرم</option>
             
             <option value="https://www.googleapis.com/drive/v3/files/1Zc9XUEExCva4L1gvhHIaP4lrxJK3wFY3?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مهلبان ■ میرن آدما</option>
             
             <option value="https://www.ghoflimusic.com/Music%20Video/Sal%201403/Dey%20Mah/01/Susan%20Roshan%20-%20Hol%20Shodam%20-%20480%20%20%5BGhofliMusic%5D.mp4">سوزان روشن ■ هول شدم</option>
-            
-            
-            
-            
         </select>
     </div>
+    
+    
+    
     <div class="notification" id="notification"></div>
     <button class="reset-button" onclick="resetList()">بازگشت به لیست اصلی</button>
+    <button class="sort-button" onclick="sortPlaylist()">مرتب‌ سازی </button>
 
     <script>
         const videoPlayer = document.getElementById('videoPlayer');
@@ -261,7 +249,15 @@ button:hover, .search-container button:hover, .reset-button:hover {
             notification.textContent = '';
             playSelectedVideo();
         }
+
+        function sortPlaylist() {
+            const options = Array.from(videoList.options);
+            options.sort((a, b) => a.text.localeCompare(b.text, 'fa'));
+            videoList.innerHTML = '';
+            options.forEach(option => videoList.appendChild(option));
+            notification.textContent = 'لیست با موفقیت مرتب شد';
+            setTimeout(() => notification.textContent = '', 2000);
+        }
     </script>
 </body>
 </html>
-            
