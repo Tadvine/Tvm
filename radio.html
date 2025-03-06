@@ -98,79 +98,145 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
+
+        #radioLogo {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 20px auto; /* وسط‌چین کردن لوگو */
+            display: block; /* نمایش لوگو به صورت بلوک */
+        }
+
+        /* تنظیمات برای حالت افقی گوشی */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-right: 220px;
+            }
+            #radioLogo {
+                max-width: 100px;
+                max-height: 100px;
+                margin: 10px auto; /* فاصله کمتر در حالت افقی */
+            }
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <h1>کانال‌های رادیو</h1>
         <ul class="channel-list">
-        <li>
-                <span>رادیو دربست</span>
-                <button onclick="playRadio('http://live.radiodarbast.com:8443/stream.mp3', 'رادیو دربست')">پخش</button>
+            <li>
+                <span>رادیو خاطره</span>
+                <button onclick="playRadio('https://servidor22-5.brlogic.com:7160/live?source=website', 'رادیو خاطره', 'https://cdn-arch.shenoto.com/shenoto-album/e8dc3d2f-7957-4da4-a671-34b86e2bdb58/cover/500.jpg')">پخش</button>
             </li>
-        
+            
+            
+            <li>
+                <span>رادیو PMC</span>
+                <button onclick="playRadio('https://radiohls.pmc.live/hls/stream.m3u8', 'رادیو PMC', 'https://upload.wikimedia.org/wikipedia/en/thumb/1/1f/Persian_Media_Corporation.jpg/250px-Persian_Media_Corporation.jpg')">پخش</button>
+            </li>
+            
+            
+            <li>
+                <span>رادیو سرچشمه</span>
+                <button onclick="playRadio('https://sarcheshmeh.awsvps.com/stream', 'رادیو سرچشمه', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7C5eo_WL3eSE6PhLQECsw1ZbFNGmTEhrlaA&s')">پخش</button>
+            </li>
+            
+            
+            <li>
+                <span>رادیو دربست</span>
+                <button onclick="playRadio('http://live.radiodarbast.com:8443/stream.mp3', 'رادیو دربست', 'https://s3.castbox.fm/00/ae/8d/a2b2094610b16434656b901f23.jpg')">پخش</button>
+            </li>
+            
+            
             <li>
                 <span>رادیو ونک</span>
-                <button onclick="playRadio('https://s10.citrus3.com:8462/stream', 'رادیو ونک')">پخش</button>
+                <button onclick="playRadio('https://s10.citrus3.com:8462/stream', 'رادیو ونک', 'https://i1.sndcdn.com/artworks-000531893307-yksiww-t500x500.jpg')">پخش</button>
             </li>
+            
             
             <li>
                 <span>رادیو شادی</span>
-                <button onclick="playRadio('https://ice9.securenetsystems.net/SHADI', 'رادیو شادی')">پخش</button>
+                <button onclick="playRadio('https://ice9.securenetsystems.net/SHADI', 'رادیو شادی', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJhGtmA08wjRZ8WRbSIgukNr4nNpGUVeSnUQ&s')">پخش</button>
             </li>
             
-            
-                <li>
-                <span>رادیو جیبی</span>
-                <button onclick="playRadio('https://radiolivestream.net/listen/radio/radio.mp3', 'رادیو جیبی')">پخش</button>
-            </li>
-            
-                   
             
             <li>
-                <span>رادیو نوآهنگ</span>
-                <button onclick="playRadio('https://play.markaradyo.com:8002/stream', 'رادیو نوآهنگ')">پخش</button>
+                <span>رادیو جیبی</span>
+                <button onclick="playRadio('https://radiolivestream.net/listen/radio/radio.mp3', 'رادیو جیبی', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNsG_vFO4dF9NRg5oTqtLV0sj1zoqdWdEL0kP0nKbveYeUKszGSg57kLk&s')">پخش</button>
             </li>
             
             
-            
+            <li>
+                <span>رادیو نواهنگ</span>
+                <button onclick="playRadio('https://play.markaradyo.com:8002/stream', 'رادیو نواهنگ', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1_gfytxZs8EldeXj600cRD6O0vaDe8cNKfQ&s')">پخش</button>
+            </li>
             
             
             <li>
                 <span>رادیو ایران اینترنشنال</span>
-                <button onclick="playRadio('https://n0c.radiojar.com/dfnrphnr5f0uv?rj-ttl=5', 'رادیو ایران اینترنشنال')">پخش</button>
+                <button onclick="playRadio('https://n0c.radiojar.com/dfnrphnr5f0uv?rj-ttl=5', 'رادیو ایران اینترنشنال', 'https://kanaljavan.com/wp-content/uploads/2021/06/iranint800.jpg')">پخش</button>
             </li>
             
             
-            
-              <li>
+            <li>
                 <span>رادیو ۶۷۰</span>
-                <button onclick="playRadio('https://kirn.awsvps.com/KIRN', 'رادیو ۶۷۰')">پخش</button>
+                <button onclick="playRadio('https://kirn.awsvps.com/KIRN', 'رادیو ۶۷۰', 'https://www.radio.net/300/kirn.png?version=d207b450aa1bf28c692aab83b2410670')">پخش</button>
             </li>
-            
-            
-            
             
             
             <li>
                 <span>Super FM (Turkey)</span>
-                <button onclick="playRadio('https://playerservices.streamtheworld.com/api/livestream-redirect/SUPER_FM.mp3', 'Super FM (Turkey)')">پخش</button>
+                <button onclick="playRadio('https://playerservices.streamtheworld.com/api/livestream-redirect/SUPER_FM.mp3', 'Super FM (Turkey)', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTX3plIusoVomxU7qLlaUnTTi4xORqbcwN6XA&s')">پخش</button>
             </li>
+            
+            
         </ul>
     </div>
     <div class="main-content">
         <div class="player-container">
             <h2 id="radioTitle">پخش زنده رادیو</h2>
             <audio id="radioPlayer" controls class="player"></audio>
+            <button onclick="stopRadio()" style="margin-top: 10px; background-color: #e74c3c; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">توقف پخش</button>
+            <p id="status" style="margin-top: 10px; color: #2c3e50;">وضعیت: متوقف شده</p>
+            <img id="radioLogo" src="" alt="لوگوی رادیو" style="display: none;"> <!-- لوگوی رادیو -->
         </div>
     </div>
     <script>
-        function playRadio(url, title) {
+        // پخش رادیو
+        function playRadio(url, title, logoUrl) {
             const player = document.getElementById('radioPlayer');
             const radioTitle = document.getElementById('radioTitle');
+            const status = document.getElementById('status');
+            const radioLogo = document.getElementById('radioLogo');
+            
+            // توقف پخش قبلی
+            player.pause();
+
+            // تنظیم منبع صوتی جدید
             player.src = url;
             player.play();
             radioTitle.innerText = title;
+            status.innerText = "وضعیت: در حال پخش";
+
+            // نمایش لوگوی رادیو
+            radioLogo.src = logoUrl;
+            radioLogo.style.display = "block";
+        }
+
+        // توقف پخش
+        function stopRadio() {
+            const player = document.getElementById('radioPlayer');
+            const status = document.getElementById('status');
+            const radioLogo = document.getElementById('radioLogo');
+            player.pause();
+            player.src = "";
+            document.getElementById('radioTitle').innerText = "پخش زنده رادیو";
+            status.innerText = "وضعیت: متوقف شده";
+            radioLogo.style.display = "none"; // مخفی کردن لوگو
         }
     </script>
 </body>
