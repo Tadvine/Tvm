@@ -1,325 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Player</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            height: 100vh;
-            overflow: hidden; /* Prevents horizontal scroll */
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            transition: margin-left 0.3s;
-            margin-left: 0;
-        }
-        .sidebar {
-            width: 300px;
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px;
-            height: 100vh;
-            overflow-y: auto;
-            position: fixed;
-            left: -320px; /* Hide completely */
-            transition: left 0.3s;
-        }
-        .sidebar.open {
-            left: 0;
-        }
-        .toggle-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: #3498db;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            z-index: 1000;
-        }
-        .toggle-btn:hover {
-            background-color: #2980b9;
-        }
-        #videoPlayer {
-            width: 80%;
-            max-width: 800px;
-            height: auto;
-        }
-        #videoList {
-            margin-top: 20px;
-            padding: 0;
-            text-align: center;
-        }
-        .videoItem {
-            padding: 15px;
-            margin: 8px 0;
-            background-color: #34495e;
-            border: none;
-            cursor: pointer;
-            list-style-type: none;
-            color: white;
-            font-size: 20px; /* Larger font size */
-            font-family: 'Arial', sans-serif; /* Improved font */
-            text-align: center; /* Center align text */
-        }
-        .videoItem:hover {
-            background-color: #1abc9c;
-        }
-        .search-bar {
-            margin-bottom: 20px;
-            padding: 20px; /* Add padding to adjust size */
-            background-color: #2c3e50; /* Match sidebar background */
-            position: sticky; /* Fix position at the top */
-            top: 0;
-            z-index: 100; /* Ensure it is above other elements */
-        }
-        .search-bar input {
-            width: calc(100% - 40px); /* Full width within padding */
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px; /* Larger font size for input */
-            font-family: 'Arial', sans-serif;
-            text-align: right;
-        }
-        .buttons {
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .buttons button {
-            padding: 10px;
-            border: none;
-            background-color: #e74c3c;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 48%;
-            font-size: 18px; /* Larger font size for buttons */
-        }
-        .buttons button:hover {
-            background-color: #c0392b;
-        }
-        .live-btn {
-            padding: 10px;
-            border: none;
-            background-color: #27ae60;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
-            font-size: 18px; /* Larger font size for button */
-            display: block; /* Ensure it is displayed */
-        }
-        .live-btn:hover {
-            background-color: #1e8449;
-        }
-        @media (max-width: 768px) {
-            .container {
-                width: 100%;
-            }
-            .sidebar {
-                width: 250px;
-                left: -270px; /* Hide completely */
-            }
-            .sidebar.open {
-                left: 0;
-            }
-            .toggle-btn {
-                top: 10px;
-                left: 10px;
-                padding: 8px;
-            }
-            .live-btn {
-                font-size: 16px; /* Adjust font size for smaller screens */
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Manoto</title>
+  
+
+
+ 
+<body bgcolor='#000000'>
+
+
+  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+  <script src="https://unpkg.com/video.js/dist/video.js"></script>
+  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+   
 </head>
 <body>
-    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-    <div class="sidebar" id="sidebar">
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="... جستجو شبکه">
-            <div class="buttons">
-                <button onclick="searchMovie()">جستجو</button>
-                <button onclick="cancelSearch()">لغو</button>
-            </div>
-        </div>
-        <button class="live-btn" onclick="loadLiveStream()">پخش زنده</button>
-        <ul id="videoList"></ul>
-    </div>
-    <div class="container" id="mainContainer">
-        <video id="videoPlayer" controls></video>
-    </div>
-    <script>
-        const mainPlaylistUrl = 'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/Yahsat.m3u';
-        const secondaryPlaylistUrl = 'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/A08.m3u';
-        const liveStreams = [
-            { title: 'لنز اسپورت', url: 'http://92.42.50.27/wh7f454c46tw634975281_-1806740759/PLTV/88888888/224/3221226979/4.m3u8' },
-            { title: 'پخش زنده 2', url: 'http://example.com/live2.m3u8' },
-            { title: 'پخش زنده 3', url: 'http://example.com/live3.m3u8' }
-        ];
 
-        const videoItems = [
-            { title: '4U Tv', url: 'https://hls.4utv.live/hls/stream.m3u8' },
-            { title: 'T2 Tv', url: 'https://t2hls.wns.live/hls/stream.m3u8' },
-            { title: 'PMC', url: 'https://hls.pmchd.live/hls/stream.m3u8' }
-        ];
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadVideoList(videoItems);
-        });
-
-        function loadVideoList(items) {
-            const videoList = document.getElementById('videoList');
-            const videoPlayer = document.getElementById('videoPlayer');
-            videoList.innerHTML = ''; // Clear previous list
-            
-            items.forEach(item => {
-                const listItem = document.createElement('li');
-                listItem.className = 'videoItem';
-                listItem.textContent = item.title;
-                listItem.addEventListener('click', () => {
-                    videoPlayer.src = item.url;
-                    videoPlayer.play();
-                });
-                videoList.appendChild(listItem);
-            });
-
-            // باز کردن سایدبار لیست ویدیوها
-            toggleSidebar();
-        }
-
-        function loadPlaylist(url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    const videoList = document.getElementById('videoList');
-                    const videoPlayer = document.getElementById('videoPlayer');
-                    videoList.innerHTML = ''; // Clear previous list
-                    
-                    const lines = data.split('\n');
-                    let currentVideoTitle = '';
-                    const videoItems = [];
-
-                    lines.forEach(line => {
-                        line = line.trim();
-                        if (line.startsWith('#EXTINF')) {
-                            const match = line.match(/#EXTINF:.*,(.+)/);
-                            if (match) {
-                                currentVideoTitle = match[1].trim();
-                            }
-                        } else if (line && !line.startsWith('#') && currentVideoTitle) { 
-                            const listItem = document.createElement('li');
-                            listItem.className = 'videoItem';
-                            listItem.textContent = currentVideoTitle;
-                            listItem.addEventListener('click', () => {
-                                videoPlayer.src = line;
-                                videoPlayer.play();
-                            });
-                            videoItems.push(listItem);
-                            currentVideoTitle = '';
-                        }
-                    });
-
-                    // مرتب‌سازی آیتم‌ها بر اساس حروف الفبا
-                    videoItems.sort((a, b) => a.textContent.localeCompare(b.textContent));
-                    videoItems.forEach(item => videoList.appendChild(item));
-
-                    // باز کردن سایدبار لیست فیلم‌ها
-                    toggleSidebar();
-                })
-                .catch(error => console.error('Error fetching the m3u file:', error));
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContainer = document.getElementById('mainContainer');
-            sidebar.classList.toggle('open');
-            if (sidebar.classList.contains('open')) {
-                mainContainer.style.marginLeft = '300px';
-            } else {
-                mainContainer.style.marginLeft = '0';
-            }
-        }
-
-        function searchMovie() {
-            const sidebar = document.getElementById('sidebar');
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const videoItems = document.querySelectorAll('.videoItem');
-
-            if (query === '00@@007') { 
-                loadPlaylist(secondaryPlaylistUrl); 
-                sidebar.classList.add('open');
-                document.getElementById('mainContainer').style.marginLeft = '300px';
-                return;
-            }
-
-            let found = false;
-            videoItems.forEach(item => {
-                if (item.textContent.toLowerCase().includes(query)) {
-                    item.style.display = 'block';
-                    found = true;
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-
-            if (found) {
-                sidebar.classList.add('open');
-                document.getElementById('mainContainer').style.marginLeft = '300px';
-            } else {
-                cancelSearch();
-            }
-        }
-
-        function cancelSearch() {
-            const sidebar = document.getElementById('sidebar');
-            const searchInput = document.getElementById('searchInput');
-            searchInput.value = '';
-            loadVideoList(videoItems); 
-            sidebar.classList.remove('open');
-            document.getElementById('mainContainer').style.marginLeft = '0';
-        }
-
-        function loadLiveStream() {
-            const videoList = document.getElementById('videoList');
-            const videoPlayer = document.getElementById('videoPlayer');
-            videoList.innerHTML = ''; // Clear previous list
-
-            liveStreams.forEach(stream => {
-                const liveStreamItem = document.createElement('li');
-                liveStreamItem.className = 'videoItem';
-                liveStreamItem.textContent = stream.title;
-                liveStreamItem.addEventListener('click', () => {
-                    videoPlayer.src = stream.url;
-                    videoPlayer.play();
-                });
-                videoList.appendChild(liveStreamItem);
-            });
-
-            toggleSidebar(); // Open the sidebar to show the live stream option
-        }
-
-        function sortMoviesAlphabetically() {
-            const videoList = document.getElementById('videoList');
-            const videoItems = Array.from(videoList.getElementsByClassName('videoItem'));
-            videoItems.sort((a, b) => a.textContent.localeCompare(b.textContent));
-            videoItems.forEach(item => videoList.appendChild(item));
-        }
-    </script>
+  <video id="my_video_1" class="video-js vjs-fluid vjs-default-skin" controls 
+  preload="auto"
+  poster="https://www.diycraftsguide.com/uploads/tv_image/tapesh-tv-2.jpg"
+  data-setup='{}'>
+  
+    
+  
+    <source src="https://t2hls.wns.live/hls/stream.m3u8" type="application/x-mpegURL">
+  </video>
+  
+<script>
+var player = videojs('my_video_1');
+player.play();
+</script>
+  
 </body>
 </html>
