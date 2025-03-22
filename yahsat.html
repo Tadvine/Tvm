@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پلیر و لیست شبکه‌ها</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/font-face.css">
-    <link href="https://cdn.flowplayer.org/releases/native/stable/flowplayer.min.css" rel="stylesheet">
-    <script src="https://cdn.flowplayer.org/releases/native/stable/flowplayer.min.js" defer></script>
     <style>
         body {
             font-family: 'Vazir', sans-serif;
             margin: 0;
             padding: 0;
-            direction: rtl;
+            direction: rtl; /* تنظیم به راست به چپ */
             background-color: #f8f9fa;
             color: #343a40;
         }
@@ -20,7 +18,7 @@
         .container {
             display: flex;
             height: 100vh;
-            flex-direction: row-reverse;
+            flex-direction: row-reverse; /* سایدبار در سمت راست */
         }
 
         .sidebar {
@@ -48,7 +46,7 @@
 
         .sidebar ul li {
             margin: 10px 0;
-            border-bottom: 1px solid #555;
+            border-bottom: 1px solid #555; /* خط تفکیک */
             padding-bottom: 5px;
         }
 
@@ -63,8 +61,8 @@
         }
 
         .sidebar ul li a.active {
-            background-color: #ffc107;
-            color: #343a40;
+            background-color: #ffc107; /* رنگ پس‌زمینه هایلایت */
+            color: #343a40; /* تغییر رنگ متن */
         }
 
         .sidebar ul li a:hover {
@@ -81,15 +79,12 @@
             padding: 20px;
         }
 
-        .player {
-            .player {
-    width: 80%; /* عرض پلیر را کاهش دهید */
-    max-width: 600px; /* حداکثر عرض مشخص شود */
-    height: auto; /* نسبت ابعاد حفظ شود */
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    margin: auto; /* پلیر در مرکز قرار گیرد */
-}
+        .player video {
+            width: 100%;
+            max-width: 720px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -98,16 +93,22 @@
         <aside class="sidebar">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyQzBu1zDLA9YLvbyUqlyuXITh7-Rn9njEAQ&s" alt="یاهست">
             <ul>
-                <li><a onclick="changeChannel(this, 'https://t2hls.wns.live/hls/stream.m3u8')">T2 Tv</a></li>
-                <li><a onclick="changeChannel(this, 'https://hls.pmchd.live/hls/stream.m3u8')">PMC</a></li>
+                <li><a onclick="changeChannel(this, 'https://t2hls.wns.live/hls/stream.m3u8')"> T2 Tv</a></li>
+                
+                <li><a onclick="changeChannel(this, 'https://hls.pmchd.live/hls/stream.m3u8')"> PMC</a></li>
+                
                 <li><a onclick="changeChannel(this, 'https://hls.sunmusic.live/hls/stream.m3u8')">Sun Music</a></li>
+                
                 <li><a onclick="changeChannel(this, 'https://mtchls.wns.live/hls/stream.m3u8')">MTC</a></li>
-                <li><a onclick="changeChannel(this, 'https://rjtvhls.wns.live/hls/stream.m3u8')">Radio Javan</a></li>
+                
+                
+               <li><a onclick="changeChannel(this, 'https://rjtvhls.wns.live/hls/stream.m3u8')">Radio Javan</a></li> 
+                
             </ul>
         </aside>
         <main class="content">
-            <div id="player" class="player" data-flowplayer>
-                <video controls autoplay>
+            <div class="player">
+                <video id="player" controls autoplay>
                     <source src="https://t2hls.wns.live/hls/stream.m3u8" type="application/x-mpegURL">
                 </video>
             </div>
@@ -116,22 +117,23 @@
 
     <script>
         function changeChannel(element, url) {
-            const playerElement = document.querySelector('[data-flowplayer]');
-            const videoElement = playerElement.querySelector('video');
+            const player = document.getElementById('player');
+            const source = player.querySelector('source');
+            
+            // تغییر لینک پلیر
+            source.setAttribute('src', url);
+            player.load();
 
-            // تغییر لینک ویدیو
-            videoElement.pause(); // توقف پلیر قبل از تغییر
-            videoElement.setAttribute('src', url);
-            videoElement.load();
-
-            // پخش خودکار ویدیو
-            videoElement.play().catch(error => {
+            // اطمینان از پخش خودکار
+            player.play().catch(error => {
                 console.log("Autoplay failed:", error);
             });
 
-            // فعال‌سازی هایلایت لینک
+            // حذف کلاس "active" از سایر لینک‌ها
             const links = document.querySelectorAll('.sidebar ul li a');
             links.forEach(link => link.classList.remove('active'));
+
+            // افزودن کلاس "active" به لینک انتخاب‌شده
             element.classList.add('active');
         }
     </script>
