@@ -1,869 +1,254 @@
 <!DOCTYPE html>
-<html>
+<html lang="fa">
 <head>
-
-
-<meta charset="UTF-8">
-
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<META HTTP-EQUIV="Expires" CONTENT="-1">
-
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-
-
-
-
- <title>Tvm</title>
- 
-
- <style>
- 
-carouselOfImages
-{
-  max-width:960px;
-  margin:auto;
-  overflow:visible;
-}
-.carouselImage {
-  width: 200px;
-  height: 150px;
-  margin-top:5px;
-  margin-bottom:100px;
-  border-radius: 5px;
-  counter-increment: carousel-cell;
-  transition: transform 0.5s;
-  transform: scale(2);
-}
-.carouselImage img {
-  height:235px;
-}
-.carouselImage.is-selected {
-  z-index:10;
-  transform: scale(1.5);
-}
-.carouselImage.nextToSelected {
-  transform: scale(1.25);
-  z-index:5;
-}
-
-/*! Flickity v2.0.5
-https://flickity.metafizzy.co
----------------------------------------------- */
-
-.flickity-enabled {
-  position: relative;
-}
-
-.flickity-enabled:focus { outline: none; }
-
-.flickity-viewport {
-  overflow: hidden;
-  position: relative;
-  height: 100%;
-}
-
-.flickity-slider {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-/* draggable */
-
-.flickity-enabled.is-draggable {
-  -webkit-tap-highlight-color: transparent;
-          tap-highlight-color: transparent;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-.flickity-enabled.is-draggable .flickity-viewport {
-  cursor: move;
-  cursor: -webkit-grab;
-  cursor: grab;
-}
-
-.flickity-enabled.is-draggable .flickity-viewport.is-pointer-down {
-  cursor: -webkit-grabbing;
-  cursor: grabbing;
-}
-
-/* ---- previous/next buttons ---- */
-
-.flickity-prev-next-button {
-  position: absolute;
-  top: 50%;
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 50%;
-  background: white;
-  background: hsla(0, 0%, 100%, 0.75);
-  cursor: pointer;
-  /* vertically center */
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
-
-.flickity-prev-next-button:hover { background: white; }
-
-.flickity-prev-next-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 5px #09F;
-}
-
-.flickity-prev-next-button:active {
-  opacity: 0.6;
-}
-
-.flickity-prev-next-button.previous { left: 10px; }
-.flickity-prev-next-button.next { right: 10px; }
-/* right to left */
-.flickity-rtl .flickity-prev-next-button.previous {
-  left: auto;
-  right: 10px;
-}
-.flickity-rtl .flickity-prev-next-button.next {
-  right: auto;
-  left: 10px;
-}
-
-.flickity-prev-next-button:disabled {
-  opacity: 0.3;
-  cursor: auto;
-}
-
-.flickity-prev-next-button svg {
-  position: absolute;
-  left: 20%;
-  top: 20%;
-  width: 60%;
-  height: 60%;
-}
-
-.flickity-prev-next-button .arrow {
-  fill: #333;
-}
-
-/* ---- page dots ---- */
-
-.flickity-page-dots {
-  position: absolute;
-  width: 100%;
-  bottom: -25px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  text-align: center;
-  line-height: 1;
-}
-
-.flickity-rtl .flickity-page-dots { direction: rtl; }
-
-.flickity-page-dots .dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin: 0 8px;
-  background: #333;
-  border-radius: 50%;
-  opacity: 0.25;
-  cursor: pointer;
-}
-
-.flickity-page-dots .dot.is-selected {
-  opacity: 1;
-}
-.product-detail-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    cursor: pointer;
-    font-size:21px;
-    font-weight:700;
-}
-
-#lightbox {
-	display: none;
-	position: fixed;
-	top:0;
-	left:0;
-	bottom: 0;
-	right: 0;
-	margin: auto;
-	width:90vw;
-	height:90vh;
-	background-size: contain;
-	background-position: center center;
-	background-repeat: no-repeat;
-}
-#dark {
-	display: none;
-	position: fixed;
-	top: 0;
-	left: 0;
-	background:rgba(0,0,0,.9);
-	width:100vw;
-	height:100vh;
-}
-
-.product-detail {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow-y: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.7); }
-
-.product-detail-inner {
-  display: flex;  
-  background-color: white;
-  width: 75vw;
-  height: 75vh;
-  position: relative;
-  padding: 1rem;
-  overflow-y: auto; }
-
-.product-detail-image {
-  flex: 0 1 30%;
-  padding:15px;
-}
-  
-.product-detail-image  img {
-    width: 100%;
-} 
-
-.hide {
-  display: none; }
-
-.modal-dialog {
-      max-width: 800px;
-      margin: 30px auto;
-  }
-.modal-body {
-  position:relative;
-  padding:0px;
-}
-.modal-header {
-  padding:0;
-}
-
-a.btn.btn-primary {
-  color:#fff;
-}
-.close {
-  position:absolute;
-  right:-30px;
-  top:0;
-  z-index:999;
-  font-size:2rem;
-  font-weight: normal;
-  color:#fff;
-  opacity:1;
-}
-</style>
-
-    
-<style>
-        body {
-            font-family: 'Roboto Condensed', arial, sans-serif;
-            margin: 0;
-            background-image:                    url("https://bayanbox.ir/download/1793887276848709656/Background.jpg");
-            background-attachment: fixed;
-            background-color: #000000;
-            direction: rtl;
-        }
-
-        /* -- main content -- */
-        .content-container {
-            position: relative;
-            z-index: 0;
-            padding: 20px;
-            max-width: 1078px;
-            margin: 0 auto;
-            overflow: hidden;
-            transition: all 300ms ease-in-out;
-        }
-
-        .site-title {
-            text-align: center;
-            border-bottom: 4px solid #ffffff;
-            margin-bottom: 24px;
-        }
-
-        .site-title h1 {
-            font-weight: 300;
-            text-transform: uppercase;
-            letter-spacing: 10px;
-        }
-
-
-
-        .content p {
-            line-height: 1.6em;
-            margin-bottom: 24px;
-        }
-
-        /* -- Slideout Sidebar -- */
-
-        .slideout-sidebar {
-            position: fixed;
-            float: right;
-            top: 0;
-            left: -190px;
-            z-index: 0;
-            width: 150px;
-            height: 100%;
-            padding: 20px;
-            background-color: #212121;
-            transition: all 300ms ease-in-out;
-            font-family: "byekan"
-        }
-
-        .slideout-sidebar ul {
-            list-style: none;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tvm</title>
+    <!-- افزودن فونت Vazirmatn از Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset CSS */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        .slideout-sidebar ul li {
+        body {
+            font-family: 'Roboto Condensed', Arial, sans-serif;
+            background-image: url("https://bayanbox.ir/download/1793887276848709656/Background.jpg");
+            background-color: #000;
+            color: #fff;
+            direction: rtl;
+            padding-top: 50px; /* برای جلوگیری از همپوشانی با نوار ثابت */
+        }
+
+        /* نوار ثابت سرعت اینترنت */
+        #speed-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 15px;
+            color: #fff586;
+            z-index: 1000; /* مطمئن شوید نوار بالای همه عناصر دیگر است */
+        }
+
+        /* Main Container */
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px 0;
+            margin: 20px 0;
+        }
+
+        .image-gallery img {
+            flex: 0 0 auto;
+            margin: 0 10px;
+            border-radius: 10px;
+            box-shadow: -3px 3px 15px #fff;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .image-gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px gray;
+        }
+
+        /* Scroll Buttons */
+        .scroll-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            padding: 10px;
             cursor: pointer;
-            padding: 18px 0;
-            border-bottom: 1px solid rgba(244,244,244,0.4);
-            color: rgba(244,244,244,0.7);
+            z-index: 1;
         }
 
-        .slideout-sidebar ul li:last-child {
-            border-bottom: 0;
+        .scroll-button.left {
+            left: 0;
         }
 
-        .slideout-sidebar ul li:hover {
-            color: rgba(244,244,244,1);
+        .scroll-button.right {
+            right: 0;
         }
 
-        /* -- Menu Icon -- */
-
-        #menu-toggle {
+        /* Hide Scrollbar */
+        .image-gallery::-webkit-scrollbar {
             display: none;
         }
 
-        .menu-icon {
-            position: absolute;
-            top: 18px;
-            left: 30px;
-            font-size: 24px;
-            z-index: 1;
-            transition: all 300ms ease-in-out;
+        .image-gallery {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
 
-
-
-        /*-- The Magic --*/
-        #menu-toggle:checked ~ .slideout-sidebar {
-            left: 0px;
+        /* Existing Styles */
+        .mybutton {
+            background-color: #4d4d4d;
+            font-family: 'Vazirmatn', sans-serif; /* استفاده از فونت Vazirmatn */
+            padding: 14px;
+            border-radius: 15px;
+            box-shadow: 0 0 8px rgb(207, 207, 207);
+            color: #fff;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            width: 150px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        #menu-toggle:checked + .menu-icon {
-            left: 210px;
+        .mybutton:hover {
+            background-color: #cccccc;
+            color: #000;
         }
 
-        #menu-toggle:checked ~ .content-container {
-            padding-left: 190px;
+        hr {
+            border: 2px solid #f9f9f0;
+            margin: 20px auto;
+            width: 80%;
         }
 
-        /* -- Media Queries -- */
-
-        @media (max-width: 991px) {
-
-            .content-container {
-                max-width: 480px;
-            }
-
+        .custom-button {
+            text-decoration: none;
+            margin: 0 10px;
         }
-
-        @media (max-width: 1067px) {
-
-            .content-container {
-                max-width: 100%;
-                margin: 30px auto 0;
-            }
-
-            #menu-toggle:checked ~ .content-container {
-                padding-left: 0;
-            }
-
-            .slideout-sidebar ul {
-                text-align: center;
-                max-width: 200px;
-                margin: 30px auto 0;
-            }
-
-            .menu-icon {
-                left: 20px
-            }
-
-            #menu-toggle:checked ~ .slideout-sidebar {
-                width: 100%;
-            }
-
-            #menu-toggle:checked + .menu-icon {
-                left: 87%;
-                color: #fafafa;
-            }
-
-            @media screen
-            and (max-width: 936px)
-            and (orientation: landscape) {
-
-                .slideout-sidebar {
-                    padding: 0;
-                }
-
-                .slideout-sidebar ul {
-                    max-width: 100%;
-                    margin: 60px auto 0;
-                }
-
-                .slideout-sidebar ul li {
-                    display: inline-block;
-                    border-bottom: 0;
-                    width: 72px;
-                    padding: 18px 24px;
-                    margin: 0 6px 12px;
-                    color: #ffffff;
-                    background-color: #777;
-                }
-
-
-            }
-
-        }
-
-
     </style>
-
-
-    
-
-<style>
-ul {
-list-style-type: none;
-margin: 0;
-padding: 0;
-overflow: hidden;
-background-color: #333;
-}
-li {float: right;}
-li a, .dropbtn {
-display: inline-block;
-color: white;
-font-size: 18px;
-text-align: center;
-padding: 14px 20px;
-text-decoration: none;
-}
-li a:hover, .dropdown:hover .dropbtn {
-background-color:#2196F3;
-}
-li.dropdown {
-display: inline-block;
-}
-.dropdown-content {
-display: none;
-position: absolute;
-background-color: #f9f9f9;
-min-width: 1z60px;
-box-shadow: 0 18px 26px 0 rgba(0,0,0,5);
-z-index: 1;
-}
-.dropdown-content a {
-color: black;
-padding: 12px 16px;
-text-decoration: none;
-display: block;
-text-align: center;
-
-}
-.dropdown-content a:hover {background-color: #f1f1f1}
-.dropdown:hover .dropdown-content {display: block;}
-</style>
-
-<style>
-.mybutton{
- background-color:#4d4d4d;
- font-family: 'El Messiri', sans-serif;
- padding: 14px;
- border-radius: 15px;
- box-shadow: 0 0 8px rgb(207, 207, 207);
- color:#fff;
- font-size:18px;
-}
-.mybutton:hover{
-  background-color:#cccccc;
-  color:#000;
-  border: none;
-}
-</style>
-
-
-<style>
-video{
- border-radius: 10px;
- -webkit-transform:scale(1.1):( Webkit: Scale up image to 1.2x original size);
- -moz-border-radius:10px;
- -webkit-border-radius:10px;
- -moz-transform:scale(1.1):( Mozilla scale version);
- -moz-transform:scale(0.9):(Explorer scale version);
- box-shadow:-3px 3px 15px #fff;
- }
- video:out{
- border-radius: 10px;
- -webkit-transform:scale(0.9):( Webkit: Scale down image to 0.8x original size);
- padding:0px;
- float:center;
- -moz-transform:scale(0.9):(Mozilla scale version);
- -moz-transform:scale(0.9):(Explorer scale version);
- }
- video{
- -webkit-transform:scale(0.9);
- -moz-transform:scale(0.9);
- -o-transform:scale(0.9);
- -webkit-transition-duration: 0.5s;
- -moz-transition-duration: 0.5s;
- -o-transition-duration: 0.5s;
- margin: 0 0px 0px 0;
- }
- </style>
- 
-
-
-<style>
-img{
- border-radius: 10px;
- -webkit-transform:scale(1.1):( Webkit: Scale up image to 1.2x original size);
- -moz-border-radius:10px;
- -webkit-border-radius:10px;
- -moz-transform:scale(1.1):( Mozilla scale version);
- -moz-transform:scale(0.9):(Explorer scale version);
- box-shadow:-3px 3px 15px #fff;
- }
- img:out{
- border-radius: 10px;
- -webkit-transform:scale(0.9):( Webkit: Scale down image to 0.8x original size);
- padding:0px;
- float:center;
- -moz-transform:scale(0.9):(Mozilla scale version);
- -moz-transform:scale(0.9):(Explorer scale version);
- }
- img{
- -webkit-transform:scale(0.9);
- -moz-transform:scale(0.9);
- -o-transform:scale(0.9);
- -webkit-transition-duration: 0.5s;
- -moz-transition-duration: 0.5s;
- -o-transition-duration: 0.5s;
- margin: 0 0px 0px 0;
- }
- img:hover{
- -webkit-transform:scale(1.005);
- -moz-transform:scale(1.1);
- -o-transform:scale(1.1);
- box-shadow:0px 0px 3px gray;
- -webkit-box-shadow:0px 0px 30px gray;
- -moz-box-shadow:0px 0px 30px gray;
- -webkit-filter: grayscale(100%); /* Ch 23+, Saf 6.0+, BB 10.0+ */
-filter: grayscale(100%); /* FF 35+ */
- }
- 
-</style>
-
-
-<style>
- h2 { 
- font-family: 'El Messiri', sans-serif;
- color: white;
- text-shadow: 1px 1px 3px black, 0 0 25px     blue, 0 0 5px darkblue;
- font-size: 32px; 
- } 
-</style>
-
-<!-- Date Persian-->
-<style>
-#demo {
-  direction: rtl;
-  color: #ffffff; 
-  text-align: center;  
-  margin: 2em 0;
-  line-height: 1.42857;
-  font-size: 18px; 
-}
-</style>
- 
- <style>
- marquee{
- font-family: 'El Messiri', sans-serif;
- width: 2100px;
- height: 100px;
- font-size:22px;
- padding: 10px 0;
- color: #ffc107;
- text-align:center;
- }
-</style>
-
-
- <script>
- location.reload(forceGet)
-</script> 
- 
 </head>
-
-
 <body>
-
-  
-<center>
-
-<button type="button" class="mybutton"
- onClick="window.location.reload() "> بروز رسانی 
- 
-<br>
-
-<span> سرعت اینترنت :
-        <span id="information"></span> Mbps</span>
-
-</button> 
-</center>
-
-
-
-<div class="content-container">
-    <div class="site-title">
+    <!-- نوار ثابت سرعت اینترنت -->
+    <div id="speed-bar">
+        سرعت اینترنت: <span id="information"></span> Mbps
     </div>
-  
 
-<center>
-<h2> </h2>
+    <div class="content-container">
+        <!-- Speed Test Button -->
+        <center>
+            <button type="button" class="mybutton" onClick="window.location.reload()">
+                بروز رسانی
+            </button>
+        </center>
 
+        <!-- Series Section -->
+        <h2>سریال‌ها</h2>
+        <div class="image-gallery" id="seriesGallery">
+            <a href="saate_sefr.html">
+                <img src="https://ir-dl.com/wp-content/uploads/2024/03/saatesefr.jpg" alt="ساعت صفر" width="150" height="200">
+            </a>
+            <a href="belit.html">
+                <img src="https://www.doostihaa.com/img/uploads/2025/03/Yek-Yon-Bilet-E01.jpg" alt="بلیت" width="150" height="200">
+            </a>
+            <a href="aban.html">
+                <img src="https://cooldl.net/wp-content/uploads/2025/01/serial-aban-200x295.jpg" alt="آبان" width="150" height="200">
+            </a>
+            <a href="azaazil.html">
+                <img src="https://www.doostihaa.com/img/uploads/2025/01/Azaazil-Series.jpg" alt="آزازییل" width="150" height="200">
+            </a>
+        </div>
+        <button class="scroll-button left" onclick="scrollGallery('seriesGallery', -100)">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollGallery('seriesGallery', 100)">&#10095;</button>
 
-<a href="saate_sefr.html">
-<img src="https://ir-dl.com/wp-content/uploads/2024/03/saatesefr.jpg"
-width="150px" height="200px"
- alt="" class="" /></a>
- 
- 
- 
- <a href="belit.html">
-<img src="https://www.doostihaa.com/img/uploads/2025/03/Yek-Yon-Bilet-E01.jpg"
-width="150px" height="200px"
- alt="" class="" /></a>
- 
- 
- 
-<a href="aban.html">
-<img src="https://cooldl.net/wp-content/uploads/2025/01/serial-aban-200x295.jpg"
-width="150px" height="200px"
- alt="" class="" /></a>
+        <hr>
 
+        <!-- TV Channels Section -->
+        <h2>پخش زنده</h2>
+        <div class="image-gallery" id="tvGallery">
+            <a href="https://tadvine.github.io/Tvm/Tv/t2.html">
+                <img src="https://www.diycraftsguide.com/uploads/tv_image/tapesh-tv-2.jpg" alt="تپش" width="120" height="90">
+            </a>
+            <a href="https://tadvine.github.io/Tvm/Tv/pmc.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVkRSj1CGM6W-qUTFmR_mmk6fj6oG4s8s3fA&s" alt="PMC" width="120" height="90">
+            </a>
+            <a href="https://tadvine.github.io/Tvm/Tv/rjavan.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7EDhLwxsvyy7hz-XJPNdEk25d1vjrNl0ehg&s" alt="رادیو جوان" width="120" height="90">
+            </a>
+            <a href="https://tadvine.github.io/Tvm/Tv/suntv.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuPgzUrM9R-rKFJrSwYHUDMRqRCoUOjbJvXQ&s" alt="سان تی‌وی" width="120" height="90">
+            </a>
+            <a href="https://tadvine.github.io/Tvm/Tv/mtc.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZKMlxtdGwVatLkfZV2tRvqp-JFtKv7JjmA&s" alt="MTC" width="120" height="90">
+            </a>
+        </div>
+        <button class="scroll-button left" onclick="scrollGallery('tvGallery', -100)">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollGallery('tvGallery', 100)">&#10095;</button>
 
+        <hr>
 
-<a href="azaazil.html">
-<img src="https://www.doostihaa.com/img/uploads/2025/01/Azaazil-Series.jpg"
-width="150px" height="200px"
- alt="" class="" /></a>
- 
- 
+        <!-- Music Section -->
+        <h2>موزیک و ویدیو</h2>
+        <div class="image-gallery" id="musicGallery">
+            <a href="radio.html" class="custom-button">
+                <button class="mybutton">رادیو</button>
+            </a>
+            <a href="music.html" class="custom-button">
+                <button class="mybutton">موزیک</button>
+            </a>
+            
+            <a href="video.html" class="custom-button">
+                <button class="mybutton">ویدیو کلیپ</button>
+            </a>
+            
+        </div>
+        <button class="scroll-button left" onclick="scrollGallery('musicGallery', -100)">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollGallery('musicGallery', 100)">&#10095;</button>
 
- <hr style="border: 2px solid #f9f9f0; margin: 20px auto; width: 80%;">
+        <hr>
 
+        <!-- Other Sections (Serial, Cinema, Ghadimi) -->
+        <h2>فیلم و سریال</h2>
+        <div class="image-gallery" id="otherGallery">
+            <a href="serial.html">
+                <img src="https://mrdialog.com/wp-content/uploads/2023/11/Untitled-1-195.jpg" alt="سریال" width="240" height="175">
+            </a>
+            <a href="cinema.html">
+                <img src="https://www.filimo.com/shot/wp-content/uploads/2021/04/best-Iranian-comedy-film.jpg" alt="سینما" width="240" height="175">
+            </a>
+            <a href="ghadimi.html">
+                <img src="https://honarland.ir/wp-content/uploads/2020/10/Pict32ure1.jpg" alt="قدیمی" width="240" height="175">
+            </a>
+        </div>
+        <button class="scroll-button left" onclick="scrollGallery('otherGallery', -100)">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollGallery('otherGallery', 100)">&#10095;</button>
+    </div>
 
+    <script>
+        // Scroll Gallery Function
+        function scrollGallery(galleryId, offset) {
+            const gallery = document.getElementById(galleryId);
+            gallery.scrollBy({ left: offset, behavior: 'smooth' });
+        }
 
+        // Internet Speed Test
+        function updateSpeed() {
+            var netSpeed = navigator.connection.downlink;
+            document.querySelector('#information').innerHTML = netSpeed.toFixed(2);
+        }
 
-<a href="https://tadvine.github.io/Tvm/Tv/t2.html">
-<img src="https://www.diycraftsguide.com/uploads/tv_image/tapesh-tv-2.jpg"
- width="120px" height="90px"
- alt="" class="" /></a> 
-
-
-<a href="https://tadvine.github.io/Tvm/Tv/pmc.html">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVkRSj1CGM6W-qUTFmR_mmk6fj6oG4s8s3fA&s"
- width="120px" height="90px"
- alt="" class="" /></a> 
-
-
-
-<a href="https://tadvine.github.io/Tvm/Tv/rjavan.html">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7EDhLwxsvyy7hz-XJPNdEk25d1vjrNl0ehg&s"
- width="120px" height="90px"
- alt="" class="" /></a> 
-
-
-
-<a href="https://tadvine.github.io/Tvm/Tv/suntv.html">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuPgzUrM9R-rKFJrSwYHUDMRqRCoUOjbJvXQ&s"
- width="120px" height="90px"
- alt="" class="" /></a> 
-
-
-
-<a href="https://tadvine.github.io/Tvm/Tv/mtc.html">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZKMlxtdGwVatLkfZV2tRvqp-JFtKv7JjmA&s"
- width="120px" height="90px"
- alt="" class="" /></a> 
-
-
-
-
-
-
-<hr style="border: 2px solid #f9f9f0; margin: 20px auto; width: 80%;">
- 
-
-
-  <a href="radio.html">
-<img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/radio.webp"
-width="150px" height="200px"
- alt="" class="" /></a>
-
-
-
-    <a href="music.html">
-<img src="https://edge03.100.ir.cdn.ir/filo/video/TVRRd015OHdPUzh5Tnc9PQ==/V2tGT2RsbHpTdz09/ARrP-720X404.jpg"
-width="150px" height="200px"
- alt="" class="" /></a>
- 
-
- 
- <a href="video.html">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYYqAa60dNDJraHxtEro35cpre71EDiJjR9w&s"
-width="150px" height="200px"
- alt="" class="" /></a>
- 
- <hr style="border: 2px solid #f9f9f0; margin: 20px auto; width: 80%;">
- 
- 
-<a href="serial.html">
-<img src="https://mrdialog.com/wp-content/uploads/2023/11/Untitled-1-195.jpg"
-width="240px" height="175px"
- alt="" class="" /></a> 
- 
- 
- 
- <a href="cinema.html">
-<img src="https://www.filimo.com/shot/wp-content/uploads/2021/04/best-Iranian-comedy-film.jpg"
-width="240px" height="175px"
- alt="" class="" /></a> 
- 
- 
- <a href="ghadimi.html">
-<img src="https://honarland.ir/wp-content/uploads/2020/10/Pict32ure1.jpg"
- width="240px" height="175px"
- alt="" class="" /></a> 
-  
-  
- 
-<a href="https://tadvine.github.io/Tvm/Tv/rjavan.html">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7EDhLwxsvyy7hz-XJPNdEk25d1vjrNl0ehg&s"
- width="120px" height="90px"
- alt="" class="" /></a> 
-
-
-
-
-
-
-
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-<script src='https://npmcdn.com/flickity@2/dist/flickity.pkgd.js'></script>
-<script src='https://cdn.rawgit.com/JacobLett/bootstrap4-latest/master/bootstrap-4-latest.min.js'></script>
-<script>
-$(document).ready(function() {
-var $imagesCarousel = $('.carouselOfImages').flickity({
-  contain: true,
-  autoPlay: true,
-  wrapAround: true,
-  friction: 0.3
-});
-function resizeCells() {
-  var flkty = $imagesCarousel.data('flickity');
-  var $current = flkty.selectedIndex
-  var $length = flkty.cells.length
-  if ($length <='5') {
-    $imagesCarousel.flickity('destroy');
-  }
-  $('.carouselOfImages .carouselImage').removeClass("nextToSelected");
-  $('.carouselOfImages .carouselImage').eq($current-1).addClass("nextToSelected");
-  if ($current+1 == $length) {
-    var $endCell = "0"
-  } else {
-    var $endCell = $current+1
-  }
-   $('.carouselOfImages .carouselImage').eq($endCell).addClass("nextToSelected");
-  };
-resizeCells();
-
-$imagesCarousel.on('scroll.flickity', function() {
-    resizeCells();
-  });
-  
-  
-  
-  
-  
-$(".carouselImage img").click(function() { 
-  var $this = $(this);
-  var imageID = $this.attr('data-tab');
-  var imageSrc = $this.attr('src');
-  
-  $('.' + imageID).removeClass('hide');
-  $('.' + imageID + ' .product-detail-image img').attr('src', imageSrc);
-});
-
-$('.product-detail-close,.product-detail').on('click', function() {
-  $('.product-detail').addClass('hide');
-});
-
-  $('.modal-video').on('hidden.bs.modal', function (e) {
-    $('.modal-video iframe').attr('src', $('.modal-video iframe').attr('src'));
-  });
-
-autoPlayYouTubeModal();
-
-  function autoPlayYouTubeModal() {
-      var trigger = $("body").find('[data-the-video]');
-      trigger.click(function () {
-          var theModal = $(this).data("target"),
-              videoSRC = $(this).attr("data-the-video"),
-              videoSRCauto = videoSRC + "&autoplay=1";
-          $(theModal + ' iframe').attr('src', videoSRCauto);
-          $(theModal + ' button.close').click(function () {
-              $(theModal + ' iframe').attr('src', videoSRC);
-          });
-          $('.modal-video').click(function () {
-              $(theModal + ' iframe').attr('src', videoSRC);
-          });
-      });
-  }
-
-$(window).on('load resize', function(){
-  var $window = $(window);
-  $('.modal-fill-vert .modal-body > *').height(function(){
-      return $window.height()-60;
-    });
-  }); 
-});
-</script>
-
-
-<script>
-var netSpeed = navigator.connection.downlink
-document.querySelector('#information').innerHTML = netSpeed
-</script>
+        // Update speed every 3 seconds
+        setInterval(updateSpeed, 3000);
+        updateSpeed(); // Initial call
+    </script>
 </body>
+</html>
