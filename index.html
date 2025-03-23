@@ -23,8 +23,8 @@
             padding-top: 50px; /* برای جلوگیری از همپوشانی با نوار ثابت */
         }
 
-        /* نوار ثابت سرعت اینترنت */
-        #speed-bar {
+        /* نوار ثابت ساعت و تاریخ */
+        #info-bar {
             position: fixed;
             top: 0;
             left: 0;
@@ -33,11 +33,12 @@
             background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             font-family: 'Vazirmatn', sans-serif;
             font-size: 15px;
             color: #fff586;
             z-index: 1000; /* مطمئن شوید نوار بالای همه عناصر دیگر است */
+            padding: 0 20px;
         }
 
         /* Main Container */
@@ -51,6 +52,7 @@
         /* Image Gallery */
         .image-gallery {
             display: flex;
+            justify-content: center; /* تصاویر را وسط قرار می‌دهد */
             overflow-x: auto;
             scroll-behavior: smooth;
             padding: 10px 0;
@@ -138,9 +140,10 @@
     </style>
 </head>
 <body>
-    <!-- نوار ثابت سرعت اینترنت -->
-    <div id="speed-bar">
-        سرعت اینترنت: <span id="information"></span> Mbps
+    <!-- نوار ثابت ساعت و تاریخ -->
+    <div id="info-bar">
+        <span id="time"></span>
+        <span id="date"></span>
     </div>
 
     <div class="content-container">
@@ -155,16 +158,16 @@
         <h2>سریال‌ها</h2>
         <div class="image-gallery" id="seriesGallery">
             <a href="saate_sefr.html">
-                <img src="https://ir-dl.com/wp-content/uploads/2024/03/saatesefr.jpg" alt="ساعت صفر" width="200" height="250">
+                <img src="https://ir-dl.com/wp-content/uploads/2024/03/saatesefr.jpg" alt="ساعت صفر" width="150" height="200">
             </a>
             <a href="belit.html">
-                <img src="https://www.doostihaa.com/img/uploads/2025/03/Yek-Yon-Bilet-E01.jpg" alt="بلیت" width="200" height="250">
+                <img src="https://www.doostihaa.com/img/uploads/2025/03/Yek-Yon-Bilet-E01.jpg" alt="بلیت" width="150" height="200">
             </a>
             <a href="aban.html">
-                <img src="https://cooldl.net/wp-content/uploads/2025/01/serial-aban-200x295.jpg" alt="آبان" width="200" height="250">
+                <img src="https://cooldl.net/wp-content/uploads/2025/01/serial-aban-200x295.jpg" alt="آبان" width="150" height="200">
             </a>
             <a href="azaazil.html">
-                <img src="https://www.doostihaa.com/img/uploads/2025/01/Azaazil-Series.jpg" alt="آزازییل" width="200" height="250">
+                <img src="https://www.doostihaa.com/img/uploads/2025/01/Azaazil-Series.jpg" alt="آزازییل" width="150" height="200">
             </a>
         </div>
         <button class="scroll-button left" onclick="scrollGallery('seriesGallery', -100)">&#10094;</button>
@@ -240,15 +243,24 @@
             gallery.scrollBy({ left: offset, behavior: 'smooth' });
         }
 
-        // Internet Speed Test
-        function updateSpeed() {
-            var netSpeed = navigator.connection.downlink;
-            document.querySelector('#information').innerHTML = netSpeed.toFixed(2);
+        // Update Time and Date
+        function updateTime() {
+            const now = new Date();
+            const timeElement = document.getElementById('time');
+            const dateElement = document.getElementById('date');
+
+            // Format time (HH:MM)
+            const time = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit', hour12: false });
+            timeElement.textContent = time;
+
+            // Format date (YYYY/MM/DD)
+            const date = now.toLocaleDateString('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            dateElement.textContent = date;
         }
 
-        // Update speed every 3 seconds
-        setInterval(updateSpeed, 3000);
-        updateSpeed(); // Initial call
+        // Update time every second
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call
     </script>
 </body>
 </html>
