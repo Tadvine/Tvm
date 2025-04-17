@@ -1,372 +1,530 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <!-- font awesome cdn link  -->
+    <title>گلچین سینمایی</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- custom css file link  -->
     <style>
-        *{
+        * {
             font-family: 'Noto Kufi Arabic', sans-serif;
-            margin:0; padding:0;
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            outline: none; border:none;
+            outline: none;
+            border: none;
             text-decoration: none;
-            text-transform: capitalize;
-            transition: all .2s linear;
+            transition: all 0.2s linear;
         }
 
-        .container{
-            min-height: 100vh;
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #2196F3;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .container {
             display: flex;
-            align-items: center;
-            padding:0 10%;
-            background:linear-gradient(90deg, #fff 60%, #eee 40.1%);
+            min-height: calc(100vh - 80px);
         }
 
-        .container .side-bar{
-            width:400px;
+        /* Sidebar Styles */
+        .side-bar {
+            width: 300px;
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
             overflow-y: auto;
-            height: 100vh; /* Added to enable scrolling */
+            height: 100%;
+            transition: all 0.3s ease;
         }
 
-        .container .side-bar.active{
-            display: none;
-        }
-
-        .container .side-bar .list{
-            display: flex;
-            flex-flow: column;
-            align-items: flex-start;
-            max-height: calc(100vh - 100px); /* Added to fit 30 items */
-            overflow-y: auto;
-        }
-
-        .container .side-bar .list li{
-            padding:5px 0; /* Reduced padding to fit more items */
-            font-size: 16px; /* Reduced font size */
-            cursor: pointer;
-            position: relative;
-            list-style: none;
-        }
-
-        .container .side-bar .list li::before{
-            content: '';
-            position: absolute;
-            top:50%;
-            transform: translateY(-50%);
-            left:-5px;
-            width: 0%;
-            height: 0px;
-            background-color: #000;
-            transition: width .2s linear .2s;
-        }
-
-        .container .side-bar .list li.active,
-        .container .side-bar .list li:hover{
-            font-size: 18px; /* Adjusted font size for active state */
-        }
-
-        .container .side-bar .list li.active::before,
-        .container .side-bar .list li:hover::before{
-            right: -5px;
-            width: 105%;
-        }
-
-        .container .video-container{
-            flex:1;
-        }
-
-        .container .video-container video{
-            width: 100%;
-            object-fit: cover;
-        }
-
-        #menu-btn{
-            position: fixed;
-            top:0px; left:30px;
-            font-size: 40px;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        @media (max-width:1200px){
-            .container{
-                position: relative;
-            }
-
-            .container .side-bar{
-                position: absolute;
-                top:0; left:-110%;
-                height: 100%;
-                background-color: #fff;
-                z-index: 10;
-                padding:30px;
-            }
-
-            .container .side-bar .list{
-                height: 100%;
-                justify-content: center;
-            }
-
-            .container .side-bar.active{
-                box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
-                display: initial;
-                left:0;
-            }
-        }
-
-        @media (max-width:1200px){
-            .container{
-                padding:10px;
-            }
-
-            .container .side-bar{
-                width: 240px;
-            }
-
-            .container .side-bar .list li{
-                font-size: 16px; /* Further reduced font size for small screens */
-            }
-
-            .container .side-bar .list li.active{
-                font-size: 18px;
-                color: red;
-            }
-        }
-
-        .mybutton{
-            background-color:#2196F3;
-            border:none;
-            border-radius:7px;
-            color:#fff;
-            padding:10px 25px;
-            text-align:center;
-            font-size:18px;
-            cursor:pointer;
-        }
-
-        .mybutton:hover{
-            background-color:#4287BF;
+        .side-bar.active {
+            transform: translateX(-100%);
         }
 
         .search-bar {
-            margin-bottom: 20px;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
         }
 
         .search-bar input {
-            width: 100%; /* Adjusted width to fit cancel button */
+            width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-family: 'Noto Kufi Arabic', sans-serif;
         }
 
-        .search-bar .buttons {
-            margin-top: 10px;
+        .search-actions {
             display: flex;
-            justify-content: space-between;
+            margin-top: 10px;
+            gap: 10px;
         }
 
-        .search-bar button {
-            padding: 10px;
-            border: none;
-            background-color: #007BFF;
-            color: white;
+        .search-actions button {
+            flex: 1;
+            padding: 8px;
             border-radius: 5px;
             cursor: pointer;
-            flex: 1;
-            margin-right: 5px;
+            font-family: 'Noto Kufi Arabic', sans-serif;
         }
 
-        .search-bar .cancel-button {
-            padding: 10px;
+        .search-btn {
+            background-color: #4CAF50;
+            color: white;
             border: none;
+        }
+
+        .cancel-btn {
             background-color: #f44336;
             color: white;
+            border: none;
+        }
+
+        .movie-categories {
+            padding: 10px;
+        }
+
+        .category {
+            margin-bottom: 15px;
+        }
+
+        .category-header {
+            padding: 10px;
+            background-color: #f5f5f5;
             border-radius: 5px;
             cursor: pointer;
-            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: #333;
         }
 
-        .results {
-            margin-top: 20px;
+        .category-header:hover {
+            background-color: #eee;
         }
 
-        .result-item {
+        .category-content {
+            padding: 5px 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .category-content.show {
+            max-height: 1000px;
+        }
+
+        .movie-list {
+            list-style: none;
+        }
+
+        .movie-list li {
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 3px 0;
+        }
+
+        .movie-list li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .movie-list li.active {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .refresh-btn {
+            display: block;
+            width: calc(100% - 30px);
+            margin: 15px auto;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
+            background-color: #2196F3;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
             cursor: pointer;
         }
 
+        .refresh-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        /* Video Container Styles */
+        .video-container {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-wrapper {
+            flex: 1;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #moviePlayer {
+            width: 100%;
+            height: 100%;
+            max-height: 80vh;
+        }
+
+        /* Menu Button */
+        #menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .side-bar {
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 100;
+                height: 100vh;
+                transform: translateX(-100%);
+            }
+
+            .side-bar.active {
+                transform: translateX(0);
+            }
+
+            .video-container {
+                padding: 10px;
+                margin-top: 60px;
+            }
+
+            #menu-btn {
+                display: flex;
+            }
+        }
+
+        /* Hidden Movies */
         .hidden-movie {
-            display: none; /* Hide by default */
+            display: none;
         }
     </style>
 </head>
 <body>
 
-<center>
-<h2>گلچین سینمایی</h2>
+<div class="header">
+    <h1>گلچین سینمایی</h1>
+</div>
 
 <div id="menu-btn" class="fas fa-bars"></div>
 
 <div class="container">
     <div class="side-bar">
         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="... نام فیلم">
-            <div class="buttons">
-                <button onclick="searchMovie()">جستجو</button>
-                <button class="cancel-button" onclick="cancelSearch()">لغو</button>
+            <input type="text" id="searchInput" placeholder="جستجوی فیلم...">
+            <div class="search-actions">
+                <button class="search-btn" onclick="searchMovie()">جستجو</button>
+                <button class="cancel-btn" onclick="cancelSearch()">لغو</button>
             </div>
         </div>
-        <ul class="list" id="movieList">
-            <li class="active" data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>
-            <li data-src="https://www.googleapis.com/drive/v3/files/1mcTDonjq08o6VphRtfBCiYASPftjxwzA?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سال گربه</li>
-            <li data-src="https://www.googleapis.com/drive/v3/files/1AB8AMYMGL6SdS9x8EyiMLS1y98e9XCno?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">تگزاس ۳</li>
-            
-            
-            
-            <li data-src="https://www.googleapis.com/drive/v3/files/1nEKAtF-EKvQtklfzEe8P6SISCC9K0J0S?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ملاقات با جادوگر</li>
-            
-            
-            
-            
-            <li data-src="https://12dlredirecttorussiaandthenetherlands.93308.online/Movies/T/Temsah_Khouni_1403_480p.mp4">خجالت نکش ۲</li>
-            
-            
-            <li data-src="https://www.googleapis.com/drive/v3/files/1f4HzrWzUvXSdJL4URdYrVbNO40SQPJ9y?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">قیف</li>
-            
-            
-            
-            
-            
-            <li data-src="https://www.googleapis.com/drive/v3/files/1uQ3xfaVnlOjgJI6WbA80XomoNjNISou_?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">پول و پارتی</li>
-            
-        
-        <li data-src="https://d1.flnd.buzz/movies/1403/kharchang-720.new.mp4">خرچنگ</li>
-        
-        
-     <li data-src="https://d1.flnd.buzz/movies/1404/zoodpaz-720.new.mp4">زود پز</li>
-     
-     
-          <!-- Hidden movie -->
-   
-            
-            <li class="hidden-movie" data-src="https://doostihaa.upera.tv/3023541-0-480.mp4">همنشین</li> 
-     
-            
-            <li class="hidden-movie" data-src="https://s9.irdanlod.ir/Movies/2015/T/The.Revenant.2015.480p.Farsi.Dubbed.mkv">از گور برخاسته</li> <!-- Hidden movie -->
-            
-            
-            <li>
-                <button type="button" class="mybutton" onClick="window.location.reload()">بروز رسانی</button>
-            </li>
-        </ul>
+
+        <div class="movie-categories">
+            <!-- Iranian Movies -->
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory('iranian')">
+                    <span>فیلم های ایرانی</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="category-content show" id="iranian">
+                    <ul class="movie-list">
+                        <li class="active" data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>
+                        <li data-src="https://www.googleapis.com/drive/v3/files/1mcTDonjq08o6VphRtfBCiYASPftjxwzA?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سال گربه</li>
+                        <li data-src="https://www.googleapis.com/drive/v3/files/1AB8AMYMGL6SdS9x8EyiMLS1y98e9XCno?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">تگزاس ۳</li>
+                        <li data-src="https://www.googleapis.com/drive/v3/files/1nEKAtF-EKvQtklfzEe8P6SISCC9K0J0S?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ملاقات با جادوگر</li>
+                        <li data-src="https://12dlredirecttorussiaandthenetherlands.93308.online/Movies/T/Temsah_Khouni_1403_480p.mp4">خجالت نکش ۲</li>
+                        <li data-src="https://www.googleapis.com/drive/v3/files/1f4HzrWzUvXSdJL4URdYrVbNO40SQPJ9y?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">قیف</li>
+                        <li data-src="https://www.googleapis.com/drive/v3/files/1uQ3xfaVnlOjgJI6WbA80XomoNjNISou_?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">پول و پارتی</li>
+                        <li data-src="https://d1.flnd.buzz/movies/1403/kharchang-720.new.mp4">خرچنگ</li>
+                        <li data-src="https://d1.flnd.buzz/movies/1404/zoodpaz-720.new.mp4">زود پز</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Foreign Movies -->
+            <div class="category">
+                <div class="category-header" onclick="toggleCategory('foreign')">
+                    <span>فیلم های خارجی</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                
+                
+               
+                <div class="category-content" id="foreign">
+                    <ul class="movie-list">
+                    
+                        <li data-src="https://doostihaa.upera.tv/3023541-0-480.mp4">همنشین</li>
+                        
+                        <li data-src="https://s9.irdanlod.ir/Movies/2015/T/The.Revenant.2015.480p.Farsi.Dubbed.mkv">از گور برخاسته</li>
+                        
+                        
+                        
+                        
+                        <li class="hidden-movie" data-src="https://example.com/hidden-movie1.mp4">فیلم مخفی ۱</li>
+                        
+                        <li class="hidden-movie" data-src="https://example.com/hidden-movie2.mp4">فیلم مخفی ۲</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="refresh-btn" onclick="window.location.reload()">
+            بروزرسانی لیست
+        </div>
     </div>
+
     <div class="video-container">
-        <video id="moviePlayer" src="" loop autoplay controls></video>
+        <div class="video-wrapper">
+            <video id="moviePlayer" controls autoplay></video>
+        </div>
     </div>
 </div>
+
 <script>
-let sideBar = document.querySelector('.container .side-bar');
-let video = document.querySelector('.container .video-container video');
-let videoLinks = document.querySelectorAll('.container .side-bar .list li');
+    // DOM Elements
+    const menuBtn = document.getElementById('menu-btn');
+    const sideBar = document.querySelector('.side-bar');
+    const videoPlayer = document.getElementById('moviePlayer');
+    const movieItems = document.querySelectorAll('.movie-list li');
+    const searchInput = document.getElementById('searchInput');
+    const categories = document.querySelectorAll('.category');
 
-document.querySelector('#menu-btn').onclick = () => {
-    sideBar.classList.toggle('active');
-};
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set first movie as active
+        const firstMovie = document.querySelector('.movie-list li[data-src]');
+        if (firstMovie) {
+            playMovie(firstMovie);
+        }
+        
+        // Hide hidden movies initially
+        document.querySelectorAll('.hidden-movie').forEach(movie => {
+            movie.style.display = 'none';
+        });
+    });
 
-videoLinks.forEach(link => {
-    link.onclick = () => {
-        let src = link.getAttribute('data-src');
-        video.src = src;
-        video.dataset.index = Array.from(videoLinks).indexOf(link); // Store the index
-        sideBar.classList.remove('active');
-        videoLinks.forEach(remove => { remove.classList.remove('active') });
-        link.classList.add('active');
+    // Toggle sidebar on menu button click
+    menuBtn.addEventListener('click', function() {
+        sideBar.classList.toggle('active');
+    });
+
+    // Play selected movie
+    function playMovie(movieItem) {
+        const movieSrc = movieItem.getAttribute('data-src');
+        
+        // Update active state
+        movieItems.forEach(item => item.classList.remove('active'));
+        movieItem.classList.add('active');
+        
+        // Play the movie
+        videoPlayer.src = movieSrc;
+        videoPlayer.load();
+        videoPlayer.play().catch(e => console.log('Autoplay prevented:', e));
+        
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) {
+            sideBar.classList.remove('active');
+        }
     }
-});
 
-function searchMovie() {
-    const query = document.getElementById('searchInput').value.toLowerCase();
-    const movieList = document.getElementById('movieList');
-    const movies = movieList.querySelectorAll('li[data-src]');
-    const hiddenMovies = document.querySelectorAll('.hidden-movie');
+    // Toggle category visibility
+    function toggleCategory(categoryId) {
+        const category = document.getElementById(categoryId);
+        const icon = category.previousElementSibling.querySelector('i');
+        
+        category.classList.toggle('show');
+        
+        // Rotate icon
+        if (category.classList.contains('show')) {
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        } else {
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+        }
+    }
 
-    // Check for the secret code
-    if (query === '1234') { // Replace '1234' with your secret code
-        hiddenMovies.forEach(movie => movie.style.display = 'block');
-        movies.forEach(movie => {
-            if (!movie.classList.contains('hidden-movie')) {
-                movie.style.display = 'none'; // Hide regular movies
+    // Search movies
+    function searchMovie() {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        
+        if (searchTerm === '') {
+            cancelSearch();
+            return;
+        }
+
+        // Special code to show hidden movies
+        if (searchTerm === '1234') {
+            // Hide all regular movies
+            document.querySelectorAll('.movie-list li:not(.hidden-movie)').forEach(movie => {
+                movie.style.display = 'none';
+            });
+            
+            // Show all hidden movies
+            document.querySelectorAll('.hidden-movie').forEach(movie => {
+                movie.style.display = 'block';
+                const category = movie.closest('.category-content');
+                if (category) {
+                    category.classList.add('show');
+                    const icon = category.previousElementSibling.querySelector('i');
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+            return;
+        }
+
+        let foundResults = false;
+        
+        // Search in all non-hidden movies
+        document.querySelectorAll('.movie-list li:not(.hidden-movie)').forEach(item => {
+            const movieName = item.textContent.toLowerCase();
+            if (movieName.includes(searchTerm)) {
+                item.style.display = 'block';
+                foundResults = true;
+                
+                // Show parent category
+                const category = item.closest('.category-content');
+                if (category) {
+                    category.classList.add('show');
+                    const icon = category.previousElementSibling.querySelector('i');
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            } else {
+                item.style.display = 'none';
             }
         });
-        return;
+
+        if (!foundResults) {
+            alert('فیلمی با این نام یافت نشد');
+        }
     }
 
-    // Regular search
-    movies.forEach(movie => {
-        if (movie.textContent.toLowerCase().includes(query) && !movie.classList.contains('hidden-movie')) {
-            movie.style.display = 'block';
-        } else {
-            movie.style.display = 'none';
+    // Cancel search
+    function cancelSearch() {
+        searchInput.value = '';
+        
+        // Show all non-hidden movies
+        document.querySelectorAll('.movie-list li:not(.hidden-movie)').forEach(item => {
+            item.style.display = 'block';
+        });
+        
+        // Hide all hidden movies
+        document.querySelectorAll('.hidden-movie').forEach(item => {
+            item.style.display = 'none';
+        });
+        
+        // Expand all categories
+        categories.forEach(category => {
+            const content = category.querySelector('.category-content');
+            const icon = category.querySelector('i');
+            content.classList.add('show');
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        });
+    }
+
+    // Event delegation for movie items
+    document.querySelectorAll('.movie-list').forEach(list => {
+        list.addEventListener('click', function(e) {
+            if (e.target.tagName === 'LI') {
+                playMovie(e.target);
+            }
+        });
+    });
+
+    // Play next video when current ends
+    videoPlayer.addEventListener('ended', function() {
+        const currentItem = document.querySelector('.movie-list li.active');
+        if (currentItem) {
+            const nextItem = currentItem.nextElementSibling;
+            if (nextItem && nextItem.hasAttribute('data-src')) {
+                playMovie(nextItem);
+            } else {
+                // If no next item, play first movie
+                const firstItem = document.querySelector('.movie-list li[data-src]');
+                if (firstItem) playMovie(firstItem);
+            }
         }
     });
-}
 
-function cancelSearch() {
-    const movieList = document.getElementById('movieList');
-    const movies = movieList.querySelectorAll('li[data-src]');
-    const hiddenMovies = document.querySelectorAll('.hidden-movie');
-
-    movies.forEach(movie => {
-        if (!movie.classList.contains('hidden-movie')) {
-            movie.style.display = 'block'; // Show all regular movies
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Space for play/pause
+        if (e.key === ' ' && document.activeElement !== searchInput) {
+            e.preventDefault();
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+            } else {
+                videoPlayer.pause();
+            }
+        }
+        
+        // Right arrow for next movie
+        if (e.key === 'ArrowRight') {
+            const currentItem = document.querySelector('.movie-list li.active');
+            if (currentItem) {
+                const nextItem = currentItem.nextElementSibling;
+                if (nextItem && nextItem.hasAttribute('data-src')) {
+                    playMovie(nextItem);
+                }
+            }
+        }
+        
+        // Left arrow for previous movie
+        if (e.key === 'ArrowLeft') {
+            const currentItem = document.querySelector('.movie-list li.active');
+            if (currentItem) {
+                const prevItem = currentItem.previousElementSibling;
+                if (prevItem && prevItem.hasAttribute('data-src')) {
+                    playMovie(prevItem);
+                }
+            }
         }
     });
-
-    hiddenMovies.forEach(movie => {
-        movie.style.display = 'none'; // Hide hidden movies
-    });
-
-    document.getElementById('searchInput').value = ''; // Clear search input
-}
-
-// Alphabetically sort the movie list
-function sortMoviesAlphabetically() {
-    const movieList = document.getElementById('movieList');
-    const movies = Array.from(movieList.querySelectorAll('li[data-src]'));
-
-    movies.sort((a, b) => a.textContent.localeCompare(b.textContent));
-
-    movies.forEach(movie => movieList.appendChild(movie));
-}
-
-// Call the sorting function on page load
-document.addEventListener('DOMContentLoaded', () => {
-    sortMoviesAlphabetically();
-    // Hide hidden movies initially
-    const hiddenMovies = document.querySelectorAll('.hidden-movie');
-    hiddenMovies.forEach(movie => movie.style.display = 'none');
-});
-
-// Play the next video when the current one ends
-video.addEventListener('ended', () => {
-    const currentIndex = parseInt(video.dataset.index);
-    const nextIndex = (currentIndex + 1) % videoLinks.length; // Loop back to first video if at the end
-    const nextVideo = videoLinks[nextIndex];
-    video.src = nextVideo.getAttribute('data-src');
-    video.dataset.index = nextIndex;
-    video.load();
-    video.play();
-    videoLinks.forEach(link => link.classList.remove('active'));
-    nextVideo.classList.add('active');
-});
 </script>
 </body>
 </html>
