@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پلی لیست موسیقی</title>
+    <title>پلی لیست پاشایی</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: #121212;
+            color: #e0e0e0;
             padding-bottom: 90px;
         }
         
@@ -26,10 +27,10 @@
         }
         
         header {
-            background-color: #1e88e5;
+            background-color: #1e1e1e;
             color: white;
             padding: 15px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         
         .header-content {
@@ -41,21 +42,22 @@
         .logo {
             font-size: 24px;
             font-weight: bold;
+            color: #ffffff;
         }
         
         .playlist-header {
             display: flex;
             margin-top: 30px;
-            background-color: white;
+            background-color: #1e1e1e;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         
         .playlist-cover {
             width: 250px;
             height: 250px;
-            background-color: #e0e0e0;
+            background-color: #2d2d2d;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -79,10 +81,11 @@
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 10px;
+            color: #ffffff;
         }
         
         .playlist-description {
-            color: #666;
+            color: #b0b0b0;
             margin-bottom: 15px;
             line-height: 1.6;
         }
@@ -90,7 +93,7 @@
         .playlist-meta {
             display: flex;
             align-items: center;
-            color: #666;
+            color: #b0b0b0;
             font-size: 14px;
         }
         
@@ -100,27 +103,35 @@
         
         .tracks-list {
             margin-top: 30px;
-            background-color: white;
+            background-color: #1e1e1e;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         
         .track {
             display: flex;
             align-items: center;
             padding: 15px 20px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #2d2d2d;
             transition: background-color 0.2s;
             cursor: pointer;
         }
         
         .track:hover {
-            background-color: #f9f9f9;
+            background-color: #2a2a2a;
         }
         
         .track.active {
-            background-color: #e3f2fd;
+            background-color: #1e88e5;
+            color: white;
+        }
+        
+        .track.active .track-number,
+        .track.active .track-title,
+        .track.active .track-artist,
+        .track.active .track-duration {
+            color: white;
         }
         
         .track.active .track-play {
@@ -143,7 +154,7 @@
         
         .track-number {
             width: 30px;
-            color: #666;
+            color: #b0b0b0;
             font-size: 16px;
         }
         
@@ -155,15 +166,16 @@
         .track-title {
             font-weight: 500;
             margin-bottom: 5px;
+            color: #e0e0e0;
         }
         
         .track-artist {
-            color: #666;
+            color: #b0b0b0;
             font-size: 14px;
         }
         
         .track-duration {
-            color: #666;
+            color: #b0b0b0;
             font-size: 14px;
             min-width: 50px;
             text-align: right;
@@ -192,8 +204,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: white;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            background-color: #1e1e1e;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
             padding: 15px 20px;
             display: flex;
             align-items: center;
@@ -210,7 +222,7 @@
         .player-cover {
             width: 50px;
             height: 50px;
-            background-color: #e0e0e0;
+            background-color: #2d2d2d;
             border-radius: 5px;
             margin-right: 15px;
         }
@@ -230,10 +242,11 @@
         
         .player-track-title {
             font-weight: 500;
+            color: #ffffff;
         }
         
         .player-track-artist {
-            color: #666;
+            color: #b0b0b0;
             font-size: 13px;
         }
         
@@ -246,7 +259,7 @@
             background: none;
             border: none;
             font-size: 20px;
-            color: #1e88e5;
+            color: #ffffff;
             cursor: pointer;
             margin: 0 10px;
             width: 40px;
@@ -259,7 +272,7 @@
         }
         
         .player-btn:hover {
-            background-color: #e3f2fd;
+            background-color: rgba(255, 255, 255, 0.1);
         }
         
         .player-btn.play-pause {
@@ -275,7 +288,7 @@
         .progress-bar {
             flex: 1;
             height: 4px;
-            background-color: #e0e0e0;
+            background-color: #3d3d3d;
             border-radius: 2px;
             margin: 0 10px;
             cursor: pointer;
@@ -303,7 +316,7 @@
         
         .time {
             font-size: 13px;
-            color: #666;
+            color: #b0b0b0;
             width: 40px;
         }
         
@@ -339,9 +352,11 @@
 </head>
 <body>
     <header>
+    
         <div class="container header-content">
             <div class="logo">گلچین پاشایی</div>
         </div>
+        
     </header>
     
     <div class="container">
@@ -349,12 +364,14 @@
             <div class="playlist-cover">
                 <img src="https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg" alt="پلی لیست">
             </div>
+            <center>
             <div class="playlist-info">
                 <h1 class="playlist-title">گلچین آهنگ های پاشایی</h1>
                 <p class="playlist-description">مجموعه‌ای از بهترین آهنگ‌های پاشایی</p>
                 <div class="playlist-meta">
                     <span><i class="fas fa-music"></i> <span id="track-count">0</span> آهنگ</span>
                     <span><i class="fas fa-clock"></i> <span id="total-duration">0:00</span> دقیقه</span>
+                    </center>
                 </div>
             </div>
         </div>
@@ -367,7 +384,7 @@
     <div class="player-container">
         <div class="player-info">
             <div class="player-cover">
-                <img src="https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg" alt="کاور آهنگ">
+                <img id="current-track-cover" src="https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg" alt="کاور آهنگ">
             </div>
             <div class="player-track-info">
                 <div class="player-track-title">هیچ آهنگی در حال پخش نیست</div>
@@ -396,20 +413,49 @@
             const tracks = [
                 {
                     title: "نفس",
-                    artist: "مرتضی پاشایی",
-                    cover: "https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg",
+                    artist: "",
+                    cover: "https://rozmusic.com/wp-content/uploads/2021/09/Morteza-Pashaei-Nafas.jpg",
                     src: "https://dl.rozmusic.com/Music/1400/06/24/Morteza%20Pashaei%20-%20Nafas%20%28128%29.mp3"
                 },
+                
                 {
                     title: "می میرم",
-                    artist: "مرتضی پاشایی",
-                    cover: "https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg",
+                    artist: "",
+                    cover: "https://musicsfarsi.com/wp-content/uploads/2021/01/morteza-pashaei-mimiram_musicsfarsi.com_.jpg",
                     src: "https://dl.musicdel.ir/Music/1401/03/morteza_pashaei_mimiram%20128.mp3"
                 },
+                
+                
+                     {
+                    title: "نگران منی",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.rozmusic.com/Music/1396/01/08/Morteza%20Pashaei%20-%20Negarane%20Mani%20(128).mp3"
+                },
+                
+                
+                 {
+                    title: "خاطره ها",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.rozmusic.com/Music/1403/01/28/Morteza%20Pashaei%20-%20Khatereha%20%28128%29.mp3"
+                },
+                
+                
+                
+                {
+                    title: "یکی هست تو قلبم",
+                    artist: "",
+                    cover: "https://musics-fa.com/wp-content/uploads/2019/06/M-pashaei9375638256328754218.jpg",
+                    src: "https://dls.musics-fa.com/tagdl/downloads/Morteza%20Pashaei%20-%20Yeki%20Hast%20(128).mp3"
+                },
+                
+                
+                
                 {
                     title: "کجایی",
-                    artist: "مرتضی پاشایی",
-                    cover: "https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg",
+                    artist: "",
+                    cover: "",
                     src: "https://dl.rozmusic.com/Music/1400/06/24/Morteza%20Pashaei%20-%20Kojaei%20%28128%29.mp3"
                 }
             ];
@@ -430,9 +476,10 @@
             const durationEl = document.getElementById('duration');
             const playerTitle = document.querySelector('.player-track-title');
             const playerArtist = document.querySelector('.player-track-artist');
-            const playerCover = document.querySelector('.player-cover img');
+            const playerCover = document.getElementById('current-track-cover');
             const trackCountEl = document.getElementById('track-count');
             const totalDurationEl = document.getElementById('total-duration');
+            const defaultCover = "https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg";
             
             // تابع برای دریافت مدت زمان آهنگ
             function getAudioDuration(url, index, callback) {
@@ -481,7 +528,6 @@
                     
                     // رویداد کلیک برای هر آهنگ (روی کل آیتم)
                     trackEl.addEventListener('click', function(e) {
-                        // اگر کلیک روی دکمه پلی نبود
                         if (!e.target.closest('.track-play')) {
                             playTrack(index);
                         }
@@ -525,7 +571,7 @@
                 audio.src = track.src;
                 playerTitle.textContent = track.title;
                 playerArtist.textContent = track.artist;
-                playerCover.src = track.cover;
+                playerCover.src = track.cover || defaultCover;
                 
                 audio.play()
                     .then(() => {
