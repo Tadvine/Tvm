@@ -320,6 +320,17 @@
             width: 40px;
         }
         
+        .loading-skeleton {
+            animation: shimmer 1.5s infinite linear;
+            background: linear-gradient(to right, #2a2a2a 0%, #3d3d3d 50%, #2a2a2a 100%);
+            background-size: 200% 100%;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
         @media (max-width: 768px) {
             .playlist-header {
                 flex-direction: column;
@@ -327,7 +338,7 @@
             
             .playlist-cover {
                 width: 100%;
-                height: 100px;
+                height: 200px;
             }
             
             .player-container {
@@ -352,11 +363,9 @@
 </head>
 <body>
     <header>
-    
         <div class="container header-content">
             <div class="logo">گلچین پاشایی</div>
         </div>
-        
     </header>
     
     <div class="container">
@@ -364,14 +373,12 @@
             <div class="playlist-cover">
                 <img src="https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg" alt="پلی لیست">
             </div>
-            <center>
             <div class="playlist-info">
                 <h1 class="playlist-title">گلچین آهنگ های پاشایی</h1>
                 <p class="playlist-description">مجموعه‌ای از بهترین آهنگ‌های پاشایی</p>
                 <div class="playlist-meta">
                     <span><i class="fas fa-music"></i> <span id="track-count">0</span> آهنگ</span>
-                    <span><i class="fas fa-clock"></i> <span id="total-duration">0:00</span> دقیقه</span>
-                    </center>
+                    <span><i class="fas fa-clock"></i> <span id="total-duration">--:--</span> دقیقه</span>
                 </div>
             </div>
         </div>
@@ -403,7 +410,7 @@
             <div class="progress-bar" id="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
-            <span class="time" id="duration">0:00</span>
+            <span class="time" id="duration">--:--</span>
         </div>
     </div>
     
@@ -417,47 +424,25 @@
                     cover: "https://rozmusic.com/wp-content/uploads/2021/09/Morteza-Pashaei-Nafas.jpg",
                     src: "https://dl.rozmusic.com/Music/1400/06/24/Morteza%20Pashaei%20-%20Nafas%20%28128%29.mp3"
                 },
-                
                 {
                     title: "می میرم",
                     artist: "",
                     cover: "https://musicsfarsi.com/wp-content/uploads/2021/01/morteza-pashaei-mimiram_musicsfarsi.com_.jpg",
                     src: "https://dl.musicdel.ir/Music/1401/03/morteza_pashaei_mimiram%20128.mp3"
                 },
-                
-                
-                     {
-                    title: "نگران منی",
-                    artist: "",
-                    cover: "",
-                    src: "https://dl.rozmusic.com/Music/1396/01/08/Morteza%20Pashaei%20-%20Negarane%20Mani%20(128).mp3"
-                },
-                
-                
-                 {
-                    title: "خاطره ها",
-                    artist: "",
-                    cover: "",
-                    src: "https://dl.rozmusic.com/Music/1403/01/28/Morteza%20Pashaei%20-%20Khatereha%20%28128%29.mp3"
-                },
-                
-                
-                
                 {
                     title: "یکی هست تو قلبم",
                     artist: "",
                     cover: "https://musics-fa.com/wp-content/uploads/2019/06/M-pashaei9375638256328754218.jpg",
                     src: "https://dls.musics-fa.com/tagdl/downloads/Morteza%20Pashaei%20-%20Yeki%20Hast%20(128).mp3"
                 },
-                
-                
-                
                 {
                     title: "کجایی",
                     artist: "",
                     cover: "",
                     src: "https://dl.rozmusic.com/Music/1400/06/24/Morteza%20Pashaei%20-%20Kojaei%20%28128%29.mp3"
                 }
+                // می‌توانید آهنگ‌های بیشتری اضافه کنید
             ];
             
             // عناصر DOM
@@ -481,24 +466,13 @@
             const totalDurationEl = document.getElementById('total-duration');
             const defaultCover = "https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg";
             
-            // تابع برای دریافت مدت زمان آهنگ
-            function getAudioDuration(url, index, callback) {
-                const tempAudio = new Audio();
-                tempAudio.src = url;
-                
-                tempAudio.addEventListener('loadedmetadata', function() {
-                    callback(index, tempAudio.duration);
-                    tempAudio.remove();
-                });
-                
-                tempAudio.addEventListener('error', function() {
-                    callback(index, 0);
-                    tempAudio.remove();
-                });
-            }
+            // متغیرهای مدیریت بارگذاری
+            let loadingQueue = [];
+            let isProcessingQueue = false;
+            const loadedDurations = {};
             
-            // نمایش آهنگ‌ها در لیست
-            function renderTracks() {
+            // نمایش اولیه لیست آهنگ‌ها (بدون مدت زمان)
+            function renderInitialTracks() {
                 tracksListEl.innerHTML = '';
                 tracks.forEach((track, index) => {
                     const trackEl = document.createElement('div');
@@ -509,54 +483,121 @@
                             <div class="track-title">${track.title}</div>
                             <div class="track-artist">${track.artist}</div>
                         </div>
-                        <div class="track-duration" id="duration-${index}">درحال بارگذاری...</div>
+                        <div class="track-duration" id="duration-${index}">--:--</div>
                         <div class="track-play">
                             <i class="fas fa-play"></i>
                         </div>
                     `;
                     tracksListEl.appendChild(trackEl);
                     
-                    // دریافت مدت زمان آهنگ
-                    getAudioDuration(track.src, index, function(idx, duration) {
-                        const durationEl = document.getElementById(`duration-${idx}`);
-                        if (durationEl) {
-                            durationEl.textContent = formatTime(duration);
-                            tracks[idx].duration = duration;
-                            updateTotalDuration();
-                        }
-                    });
-                    
-                    // رویداد کلیک برای هر آهنگ (روی کل آیتم)
+                    // رویدادهای کلیک
                     trackEl.addEventListener('click', function(e) {
                         if (!e.target.closest('.track-play')) {
                             playTrack(index);
                         }
                     });
                     
-                    // رویداد کلیک برای دکمه پلی
                     trackEl.querySelector('.track-play').addEventListener('click', function(e) {
                         e.stopPropagation();
                         playTrack(index);
                     });
+                    
+                    // اضافه به صف بارگذاری
+                    loadingQueue.push(index);
                 });
                 
                 trackCountEl.textContent = tracks.length;
+                
+                // شروع پردازش صف بارگذاری
+                processLoadingQueue();
+            }
+            
+            // پردازش صف بارگذاری با تأخیر
+            function processLoadingQueue() {
+                if (isProcessingQueue || loadingQueue.length === 0) return;
+                
+                isProcessingQueue = true;
+                const index = loadingQueue.shift();
+                
+                // اگر مدت زمان قبلاً بارگذاری شده
+                if (loadedDurations[index]) {
+                    updateTrackDuration(index, loadedDurations[index]);
+                    isProcessingQueue = false;
+                    processLoadingQueue();
+                    return;
+                }
+                
+                loadTrackDuration(index, function(duration) {
+                    loadedDurations[index] = duration;
+                    updateTrackDuration(index, duration);
+                    updateTotalDuration();
+                    
+                    // تأخیر برای جلوگیری از مسدود شدن UI
+                    setTimeout(() => {
+                        isProcessingQueue = false;
+                        if (loadingQueue.length > 0) {
+                            processLoadingQueue();
+                        }
+                    }, 200);
+                });
+            }
+            
+            // بارگذاری مدت زمان یک آهنگ
+            function loadTrackDuration(index, callback) {
+                const track = tracks[index];
+                const durationEl = document.getElementById(`duration-${index}`);
+                
+                if (!durationEl) return callback(0);
+                
+                durationEl.textContent = "درحال بارگذاری...";
+                
+                const tempAudio = new Audio();
+                tempAudio.src = track.src;
+                
+                const timeout = setTimeout(() => {
+                    tempAudio.removeEventListener('loadedmetadata', loadedHandler);
+                    tempAudio.removeEventListener('error', errorHandler);
+                    callback(0);
+                }, 5000); // تایم‌اوت پس از 5 ثانیه
+                
+                function loadedHandler() {
+                    clearTimeout(timeout);
+                    callback(tempAudio.duration);
+                    tempAudio.remove();
+                }
+                
+                function errorHandler() {
+                    clearTimeout(timeout);
+                    callback(0);
+                    tempAudio.remove();
+                }
+                
+                tempAudio.addEventListener('loadedmetadata', loadedHandler, {once: true});
+                tempAudio.addEventListener('error', errorHandler, {once: true});
+            }
+            
+            // به‌روزرسانی مدت زمان نمایش داده شده
+            function updateTrackDuration(index, duration) {
+                const durationEl = document.getElementById(`duration-${index}`);
+                if (durationEl) {
+                    durationEl.textContent = duration > 0 ? formatTime(duration) : "--:--";
+                    tracks[index].duration = duration;
+                }
             }
             
             // محاسبه مدت زمان کل
             function updateTotalDuration() {
                 let totalSeconds = 0;
-                let allLoaded = true;
+                let loadedCount = 0;
                 
-                tracks.forEach(track => {
-                    if (track.duration) {
-                        totalSeconds += track.duration;
-                    } else {
-                        allLoaded = false;
+                tracks.forEach((track, index) => {
+                    if (loadedDurations[index] !== undefined) {
+                        totalSeconds += loadedDurations[index] || 0;
+                        loadedCount++;
                     }
                 });
                 
-                if (allLoaded) {
+                if (loadedCount > 0) {
                     totalDurationEl.textContent = formatTime(totalSeconds);
                 }
             }
@@ -581,14 +622,10 @@
                         
                         if (track.duration) {
                             durationEl.textContent = formatTime(track.duration);
+                        } else if (loadedDurations[index]) {
+                            durationEl.textContent = formatTime(loadedDurations[index]);
                         } else {
-                            getAudioDuration(track.src, index, function(idx, duration) {
-                                if (idx === currentTrackIndex) {
-                                    durationEl.textContent = formatTime(duration);
-                                }
-                                tracks[idx].duration = duration;
-                                updateTotalDuration();
-                            });
+                            durationEl.textContent = "--:--";
                         }
                     })
                     .catch(error => {
@@ -716,12 +753,28 @@
                 });
                 
                 progressBar.addEventListener('mousedown', startDrag);
+                
+                // بارگذاری مدت زمان‌ها هنگام اسکرول
+                window.addEventListener('scroll', function() {
+                    if (loadingQueue.length > 0 && !isProcessingQueue) {
+                        processLoadingQueue();
+                    }
+                });
             }
             
             // مقداردهی اولیه
             function init() {
-                renderTracks();
+                renderInitialTracks();
                 setupEventListeners();
+                
+                // بارگذاری مدت زمان آهنگ اول برای نمایش در پلیر
+                if (tracks.length > 0) {
+                    loadTrackDuration(0, function(duration) {
+                        loadedDurations[0] = duration;
+                        updateTrackDuration(0, duration);
+                        updateTotalDuration();
+                    });
+                }
             }
             
             init();
