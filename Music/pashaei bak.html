@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پلی لیست پاشایی</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            padding-bottom: 90px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #1e1e1e;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        
+        .playlist-header {
+            display: flex;
+            margin-top: 30px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .playlist-cover {
+            width: 250px;
+            height: 250px;
+            background-color: #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .playlist-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .playlist-info {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .playlist-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .playlist-description {
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .playlist-meta {
+            display: flex;
+            align-items: center;
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+        
+        .playlist-meta span {
+            margin-left: 15px;
+        }
+        
+        .tracks-list {
+            margin-top: 30px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .track {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #2d2d2d;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+        
+        .track:hover {
+            background-color: #2a2a2a;
+        }
+        
+        .track.active {
+            background-color: #1e88e5;
+            color: white;
+        }
+        
+        .track.active .track-number,
+        .track.active .track-title,
+        .track.active .track-artist,
+        .track.active .track-duration {
+            color: white;
+        }
+        
+        .track.active .track-play {
+            background-color: #0d47a1;
+        }
+        
+        .track.active .track-play i {
+            display: none;
+        }
+        
+        .track.active .track-play::after {
+            content: "";
+            display: block;
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E") no-repeat center;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E") no-repeat center;
+        }
+        
+        .track-number {
+            width: 30px;
+            color: #b0b0b0;
+            font-size: 16px;
+        }
+        
+        .track-info {
+            flex: 1;
+            margin-left: 20px;
+        }
+        
+        .track-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #e0e0e0;
+        }
+        
+        .track-artist {
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+        
+        .track-duration {
+            color: #b0b0b0;
+            font-size: 14px;
+            min-width: 50px;
+            text-align: right;
+        }
+        
+        .track-play {
+            width: 40px;
+            height: 40px;
+            background-color: #1e88e5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: all 0.2s;
+        }
+        
+        .track-play:hover {
+            transform: scale(1.05);
+        }
+        
+        .player-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1e1e1e;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            direction: ltr;
+        }
+        
+        .player-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .player-cover {
+            width: 50px;
+            height: 50px;
+            background-color: #2d2d2d;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+        
+        .player-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .player-track-info {
+            margin-left: 15px;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .player-track-title {
+            font-weight: 500;
+            color: #ffffff;
+        }
+        
+        .player-track-artist {
+            color: #b0b0b0;
+            font-size: 13px;
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        .player-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #ffffff;
+            cursor: pointer;
+            margin: 0 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        .player-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .player-btn.play-pause {
+            font-size: 24px;
+        }
+        
+        .progress-container {
+            flex: 2;
+            display: flex;
+            align-items: center;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background-color: #3d3d3d;
+            border-radius: 2px;
+            margin: 0 10px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #1e88e5;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+        
+        .progress-bar:hover .progress::after {
+            content: "";
+            position: absolute;
+            right: -5px;
+            top: -3px;
+            width: 10px;
+            height: 10px;
+            background-color: #1e88e5;
+            border-radius: 50%;
+        }
+        
+        .time {
+            font-size: 13px;
+            color: #b0b0b0;
+            width: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .playlist-header {
+                flex-direction: column;
+            }
+            
+            .playlist-cover {
+                width: 100%;
+                height: 100px;
+            }
+            
+            .player-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .player-info {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .progress-container {
+                width: 100%;
+            }
+            
+            .player-controls {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+    
+        <div class="container header-content">
+            <div class="logo">گلچین پاشایی</div>
+        </div>
+        
+    </header>
+    
+    <div class="container">
+        <div class="playlist-header">
+            <div class="playlist-cover">
+                <img src="https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg" alt="پلی لیست">
+            </div>
+            <center>
+            <div class="playlist-info">
+                <h1 class="playlist-title">گلچین آهنگ های پاشایی</h1>
+                <p class="playlist-description">مجموعه‌ای از بهترین آهنگ‌های پاشایی</p>
+                <div class="playlist-meta">
+                    <span><i class="fas fa-music"></i> <span id="track-count">0</span> آهنگ</span>
+                    <span><i class="fas fa-clock"></i> <span id="total-duration">0:00</span> دقیقه</span>
+                    </center>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tracks-list" id="tracks-list">
+            <!-- آهنگ‌ها به صورت دینامیک اضافه می‌شوند -->
+        </div>
+    </div>
+    
+    <div class="player-container">
+        <div class="player-info">
+            <div class="player-cover">
+                <img id="current-track-cover" src="https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg" alt="کاور آهنگ">
+            </div>
+            <div class="player-track-info">
+                <div class="player-track-title">هیچ آهنگی در حال پخش نیست</div>
+                <div class="player-track-artist">برای شروع روی آهنگ مورد نظر کلیک کنید</div>
+            </div>
+        </div>
+        
+        <div class="player-controls">
+            <button class="player-btn" id="prev-btn"><i class="fas fa-step-backward"></i></button>
+            <button class="player-btn play-pause" id="play-pause-btn"><i class="fas fa-play"></i></button>
+            <button class="player-btn" id="next-btn"><i class="fas fa-step-forward"></i></button>
+        </div>
+        
+        <div class="progress-container">
+            <span class="time" id="current-time">0:00</span>
+            <div class="progress-bar" id="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <span class="time" id="duration">0:00</span>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // لیست آهنگ‌ها
+            const tracks = [
+                {
+                    title: "نفس",
+                    artist: "",
+                    cover: "https://rozmusic.com/wp-content/uploads/2021/09/Morteza-Pashaei-Nafas.jpg",
+                    src: "https://dl.rozmusic.com/Music/1400/06/24/Morteza%20Pashaei%20-%20Nafas%20%28128%29.mp3"
+                },
+                
+                {
+                    title: "می میرم",
+                    artist: "",
+                    cover: "https://musicsfarsi.com/wp-content/uploads/2021/01/morteza-pashaei-mimiram_musicsfarsi.com_.jpg",
+                    src: "https://dl.musicdel.ir/Music/1401/03/morteza_pashaei_mimiram%20128.mp3"
+                },
+                
+                
+                     {
+                    title: "نگران منی",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.rozmusic.com/Music/1396/01/08/Morteza%20Pashaei%20-%20Negarane%20Mani%20(128).mp3"
+                },
+                
+                
+                 {
+                    title: "خاطره ها",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.rozmusic.com/Music/1403/01/28/Morteza%20Pashaei%20-%20Khatereha%20%28128%29.mp3"
+                },
+                
+                
+                
+                {
+                    title: "یکی هست تو قلبم",
+                    artist: "",
+                    cover: "https://musics-fa.com/wp-content/uploads/2019/06/M-pashaei9375638256328754218.jpg",
+                    src: "https://dls.musics-fa.com/tagdl/downloads/Morteza%20Pashaei%20-%20Yeki%20Hast%20(128).mp3"
+                },
+                
+                
+                
+                {
+                    title: "کجایی",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.rozmusic.com/Music/1400/06/24/Morteza%20Pashaei%20-%20Kojaei%20%28128%29.mp3"
+                }
+            ];
+            
+            // عناصر DOM
+            const audio = new Audio();
+            let currentTrackIndex = 0;
+            let isPlaying = false;
+            let isDragging = false;
+            
+            const tracksListEl = document.getElementById('tracks-list');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const progress = document.getElementById('progress');
+            const currentTimeEl = document.getElementById('current-time');
+            const durationEl = document.getElementById('duration');
+            const playerTitle = document.querySelector('.player-track-title');
+            const playerArtist = document.querySelector('.player-track-artist');
+            const playerCover = document.getElementById('current-track-cover');
+            const trackCountEl = document.getElementById('track-count');
+            const totalDurationEl = document.getElementById('total-duration');
+            const defaultCover = "https://cdn.fararu.com/files/fa/news/1401/8/23/1378266_420.jpg";
+            
+            // تابع برای دریافت مدت زمان آهنگ
+            function getAudioDuration(url, index, callback) {
+                const tempAudio = new Audio();
+                tempAudio.src = url;
+                
+                tempAudio.addEventListener('loadedmetadata', function() {
+                    callback(index, tempAudio.duration);
+                    tempAudio.remove();
+                });
+                
+                tempAudio.addEventListener('error', function() {
+                    callback(index, 0);
+                    tempAudio.remove();
+                });
+            }
+            
+            // نمایش آهنگ‌ها در لیست
+            function renderTracks() {
+                tracksListEl.innerHTML = '';
+                tracks.forEach((track, index) => {
+                    const trackEl = document.createElement('div');
+                    trackEl.className = 'track';
+                    trackEl.innerHTML = `
+                        <div class="track-number">${index + 1}</div>
+                        <div class="track-info">
+                            <div class="track-title">${track.title}</div>
+                            <div class="track-artist">${track.artist}</div>
+                        </div>
+                        <div class="track-duration" id="duration-${index}">درحال بارگذاری...</div>
+                        <div class="track-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    `;
+                    tracksListEl.appendChild(trackEl);
+                    
+                    // دریافت مدت زمان آهنگ
+                    getAudioDuration(track.src, index, function(idx, duration) {
+                        const durationEl = document.getElementById(`duration-${idx}`);
+                        if (durationEl) {
+                            durationEl.textContent = formatTime(duration);
+                            tracks[idx].duration = duration;
+                            updateTotalDuration();
+                        }
+                    });
+                    
+                    // رویداد کلیک برای هر آهنگ (روی کل آیتم)
+                    trackEl.addEventListener('click', function(e) {
+                        if (!e.target.closest('.track-play')) {
+                            playTrack(index);
+                        }
+                    });
+                    
+                    // رویداد کلیک برای دکمه پلی
+                    trackEl.querySelector('.track-play').addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        playTrack(index);
+                    });
+                });
+                
+                trackCountEl.textContent = tracks.length;
+            }
+            
+            // محاسبه مدت زمان کل
+            function updateTotalDuration() {
+                let totalSeconds = 0;
+                let allLoaded = true;
+                
+                tracks.forEach(track => {
+                    if (track.duration) {
+                        totalSeconds += track.duration;
+                    } else {
+                        allLoaded = false;
+                    }
+                });
+                
+                if (allLoaded) {
+                    totalDurationEl.textContent = formatTime(totalSeconds);
+                }
+            }
+            
+            // پخش آهنگ
+            function playTrack(index) {
+                if (index < 0 || index >= tracks.length) return;
+                
+                currentTrackIndex = index;
+                const track = tracks[currentTrackIndex];
+                
+                audio.src = track.src;
+                playerTitle.textContent = track.title;
+                playerArtist.textContent = track.artist;
+                playerCover.src = track.cover || defaultCover;
+                
+                audio.play()
+                    .then(() => {
+                        isPlaying = true;
+                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        updateActiveTrack();
+                        
+                        if (track.duration) {
+                            durationEl.textContent = formatTime(track.duration);
+                        } else {
+                            getAudioDuration(track.src, index, function(idx, duration) {
+                                if (idx === currentTrackIndex) {
+                                    durationEl.textContent = formatTime(duration);
+                                }
+                                tracks[idx].duration = duration;
+                                updateTotalDuration();
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('خطا در پخش آهنگ:', error);
+                    });
+            }
+            
+            // به‌روزرسانی آهنگ فعال در لیست
+            function updateActiveTrack() {
+                document.querySelectorAll('.track').forEach((trackEl, index) => {
+                    if (index === currentTrackIndex) {
+                        trackEl.classList.add('active');
+                    } else {
+                        trackEl.classList.remove('active');
+                    }
+                });
+            }
+            
+            // پخش یا توقف
+            function togglePlay() {
+                if (audio.paused) {
+                    if (audio.src) {
+                        audio.play()
+                            .then(() => {
+                                isPlaying = true;
+                                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                            });
+                    } else if (tracks.length > 0) {
+                        playTrack(0);
+                    }
+                } else {
+                    audio.pause();
+                    isPlaying = false;
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            }
+            
+            // آهنگ بعدی
+            function nextTrack() {
+                if (tracks.length === 0) return;
+                
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                playTrack(currentTrackIndex);
+            }
+            
+            // آهنگ قبلی
+            function prevTrack() {
+                if (tracks.length === 0) return;
+                
+                if (audio.currentTime > 3) {
+                    audio.currentTime = 0;
+                    return;
+                }
+                
+                currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+                playTrack(currentTrackIndex);
+            }
+            
+            // فرمت زمان
+            function formatTime(seconds) {
+                if (isNaN(seconds) || seconds === 0) return '0:00';
+                
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+            
+            // به‌روزرسانی نوار پیشرفت
+            function updateProgress() {
+                if (isNaN(audio.duration) || isDragging) return;
+                
+                const progressPercent = (audio.currentTime / audio.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+            
+            // شروع درگ کردن نوار پیشرفت
+            function startDrag(e) {
+                isDragging = true;
+                document.addEventListener('mousemove', handleDrag);
+                document.addEventListener('mouseup', stopDrag);
+                handleDrag(e);
+            }
+            
+            // درگ کردن
+            function handleDrag(e) {
+                if (!isDragging) return;
+                
+                const width = progressBar.clientWidth;
+                const clickX = e.clientX - progressBar.getBoundingClientRect().left;
+                const percent = Math.min(Math.max(clickX / width, 0), 1);
+                
+                progress.style.width = `${percent * 100}%`;
+                currentTimeEl.textContent = formatTime(audio.duration * percent);
+            }
+            
+            // توقف درگ کردن
+            function stopDrag() {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                document.removeEventListener('mousemove', handleDrag);
+                document.removeEventListener('mouseup', stopDrag);
+                
+                const width = progressBar.clientWidth;
+                const progressWidth = parseFloat(progress.style.width) / 100;
+                audio.currentTime = audio.duration * progressWidth;
+            }
+            
+            // تنظیم رویدادها
+            function setupEventListeners() {
+                playPauseBtn.addEventListener('click', togglePlay);
+                prevBtn.addEventListener('click', prevTrack);
+                nextBtn.addEventListener('click', nextTrack);
+                
+                audio.addEventListener('timeupdate', updateProgress);
+                audio.addEventListener('ended', nextTrack);
+                audio.addEventListener('pause', () => {
+                    isPlaying = false;
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                });
+                audio.addEventListener('play', () => {
+                    isPlaying = true;
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                });
+                
+                progressBar.addEventListener('mousedown', startDrag);
+            }
+            
+            // مقداردهی اولیه
+            function init() {
+                renderTracks();
+                setupEventListeners();
+            }
+            
+            init();
+        });
+    </script>
+</body>
+</html>
