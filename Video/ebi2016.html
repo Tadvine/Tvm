@@ -1,57 +1,91 @@
-﻿<!doctype html>
-
+<!doctype html>
 <html dir="rtl" lang="fa-IR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Live Tv</title>
 
-	<link id="plyr-io-css" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/plyr.css">
+    <link id="plyr-io-css" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/plyr.css">
+    <link id="plyr-io-customize" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/player.css">
+    <link id="playlist-scrollbar-css" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/scrollbar.css">
 
-<link id="plyr-io-customize" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/player.css">
+    <meta name="msapplication-TileImage" content="" />
+    <meta name="robots" content="noindex, nofollow">
+    
+    <style>
+        /* حذف outline در حالت focus برای ویدیو پلیر */
+        video:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* برای مرورگرهای مختلف */
+        video::-webkit-media-controls {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        
+        /* برای حالت تمام صفحه در مرورگرهای مختلف */
+        video:-webkit-full-screen {
+            outline: none !important;
+        }
+        
+        video:-moz-full-screen {
+            outline: none !important;
+        }
+        
+        video:-ms-fullscreen {
+            outline: none !important;
+        }
+        
+        video:fullscreen {
+            outline: none !important;
+        }
+        
+        /* استایل اضافی برای ظاهر بهتر */
+        .video-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #000;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        body {
+            background: #000;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
 
-<link id="playlist-scrollbar-css" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/scrollbar.css">
-
-
-
-<meta name="msapplication-TileImage"
- content="" />
-
-<meta name="robots" content="noindex, nofollow"></head>
-
-<body style="background: #f0f0f0;">
-            <div class="main">
-                        <div class="video-container">
-                <div class="post-info d" id="post-info">
-                    <div class="title-wrapper">
-                                            </div>
-                    
-                </div>
-                <video class="video-player"
-                
-                 <video controls poster="https://is2-ssl.mzstatic.com/image/thumb/Music124/v4/15/08/a5/1508a52d-5b00-8860-8908-095fe5aaa4d3/888295210607.jpg/486x486bb.png">
-                 
-id="video-player" controls width="100" height="100" playsinline>
-
-          <source src="https://www.googleapis.com/drive/v3/files/1sWXzbmlg7tjf3RhRXbLzWoOHX-bOc553?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU"  
-       
-       
-          
-         </video>
-         </div>
+<body>
+    <div class="main">
+        <div class="video-container">
+            <div class="post-info d" id="post-info">
+                <div class="title-wrapper"></div>
+            </div>
+            <video class="video-player" id="video-player" 
+                   controls 
+                   width="100%" 
+                   height="auto" 
+                   playsinline
+                   poster="https://is2-ssl.mzstatic.com/image/thumb/Music124/v4/15/08/a5/1508a52d-5b00-8860-8908-095fe5aaa4d3/888295210607.jpg/486x486bb.png">
+                   
+                <source src="https://www.googleapis.com/drive/v3/files/1sWXzbmlg7tjf3RhRXbLzWoOHX-bOc553?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU"
+                 type="video/mp4">
+            </video>
         </div>
+    </div>
 
     <script id="jquery-core" src="https://ifilmz.ir/wp-includes/js/jquery/jquery.js"></script>
-    
-<script id="plyr-io-js" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/plyr.js"></script>
-
-<script id="plyr-io-setup" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/plyr.setup.js">
-</script>
-
-
-<script id="playlist-scrollbar-js" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/scrollbar.min.js">
-</script>
-    
-    </body>
+    <script id="plyr-io-js" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/plyr.js"></script>
+    <script id="plyr-io-setup" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/plyr.setup.js"></script>
+    <script id="playlist-scrollbar-js" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/scrollbar.min.js"></script>
+</body>
 </html>
-    
