@@ -1,151 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
 <meta charset="UTF-8">
-
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Expires" CONTENT="-1">
-
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-
-<!--
-<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
--->
-
 <link href="https://fonts.googleapis.com/css2?family=Zain:wght@200;300;400;700;800;900&display=swap" rel="stylesheet">
-
-
-
- <title>Sharj</title>
- <style>
-        body {
-            font-family: Zain, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-             font-size: 15px; 
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 25px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-        }
-        h2 { 
- font-family: 'tahoma', sans-serif;        
- color: white;
- text-shadow: 1px 1px 3px black, 0 0 25px     blue, 0 0 5px darkblue;
- font-size: 32px; 
- } 
-        input[type="text"] {
-            width: 50%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 22px;
-        }
-        .mybutton{
- background-color:#4d4d4d;
- font-family: 'Zain', sans-serif;
- padding: 10px;
- border-radius: 16px;
- box-shadow: 0 0 9px rgb(207, 207, 207);
- color:#fff;
- font-size:16px;
-}
-.mybutton:hover{
-  background-color:#cccccc;
-  color:#000;
-  border: none;
-}
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-family: 'Noto Kufi Arabic', sans-serif;
-      
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-            color: #333;
-        }
-                .input-field {
-            margin: 10px 0;
-        }
-          .icon {
-            margin-left: 5px;
-            width: 50px; /* Width of the icon */
-            height: 50px; /* Height of the icon */
-            vertical-align: middle;
-        }
-        .tabs {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-        .tabs button {
-            font-family: 'Zain', sans-serif;
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #4d4d4d;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-        }
-        .tabs button.active {
-            background-color: #9992D7;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        
-    </style>
-
-
-
- <!-- اضافه کردن کتابخانه SweetAlert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<title>Sharj</title>
+<style>
+    body {
+        font-family: Zain, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: 15px; 
+    }
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 25px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+    h2 { 
+        font-family: 'tahoma', sans-serif;        
+        color: white;
+        text-shadow: 1px 1px 3px black, 0 0 25px blue, 0 0 5px darkblue;
+        font-size: 32px; 
+    } 
+    input[type="text"], select {
+        width: 50%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 2px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-size: 22px;
+    }
+    .mybutton{
+        background-color:#4d4d4d;
+        font-family: 'Zain', sans-serif;
+        padding: 10px;
+        border-radius: 16px;
+        box-shadow: 0 0 9px rgb(207, 207, 207);
+        color:#fff;
+        font-size:16px;
+    }
+    .mybutton:hover{
+        background-color:#cccccc;
+        color:#000;
+        border: none;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-family: 'Noto Kufi Arabic', sans-serif;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+    .input-field {
+        margin: 10px 0;
+    }
+    .icon {
+        margin-left: 5px;
+        width: 50px;
+        height: 50px;
+        vertical-align: middle;
+    }
+    .tabs {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+    .tabs button {
+        font-family: 'Zain', sans-serif;
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #4d4d4d;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+    }
+    .tabs button.active {
+        background-color: #9992D7;
+    }
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-   
-  
 <body>
-
-    
-
 <div class="container">
-<div class="tabs">
-            <button class="tab-link active" onclick="openTab(event, 'tab1')">تهیه لیست</button>
-            <button class="tab-link" onclick="openTab(event, 'tab2')">اطلاعات ساختمان</button>
-            <button class="tab-link" onclick="openTab(event, 'tab3')">مبلغ شارژ</button>
-        </div>
-        
-        <div id="tab1" class="tab-content active">
-           
-       
-        
-
+    <div class="tabs">
+        <button class="tab-link active" onclick="openTab(event, 'tab1')">تهیه لیست</button>
+        <button class="tab-link" onclick="openTab(event, 'tab2')">اطلاعات ساختمان</button>
+        <button class="tab-link" onclick="openTab(event, 'tab3')">مبلغ شارژ</button>
+    </div>
+    
+    <div id="tab1" class="tab-content active">
         <center>
             <h2>لیست شارژ ساختمان</h2>
-           
             <br>
             <form id="inputForm">
                 <label for="num1">
@@ -154,18 +124,31 @@
                 </label>
                 <input type="text" id="num1" name="num1" value="۰" oninput="validateAndFormatNumber(this)">
                 <br>
+                
+                <label for="season">
+                    فـصـــــل
+                    <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/gaz.png" alt="" class="icon">
+                </label>
+                <select id="season" name="season" style="padding: 10px; border-radius: 6px; font-size: 16px;">
+                    <option value="winter">زمستانه</option>
+                    <option value="summer">تابستانه</option>
+                </select>
+                <br>
+                
                 <label for="num2">
                     مبلغ گاز
                     <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/gaz.png" alt="" class="icon">
                 </label>
                 <input type="text" id="num2" name="num2" value="۰" oninput="validateAndFormatNumber(this)">
                 <br>
+                
                 <label for="num3">
                     مبلغ آب
                     <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/ab.jpg" alt="" class="icon">
                 </label>
                 <input type="text" id="num3" name="num3" value="۰" oninput="validateAndFormatNumber(this)">
                 <br>
+                
                 <label for="num4">
                     مبلغ برق
                     <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/bargh.png" alt="" class="icon">
@@ -173,6 +156,7 @@
                 <input type="text" id="num4" name="num4" value="۰" oninput="validateAndFormatNumber(this)">
                 <br><br><br>
             </form>
+            
             <table id="myTable">
                 <tr style="background-color: #d3d3d3;">
                     <th>جمع</th>
@@ -184,11 +168,13 @@
                     <th>واحد</th>
                 </tr>
             </table>
+            
             <button type="button" class="mybutton" onClick="createTable()"> محاسبه</button>
             <button type="button" class="mybutton" onClick="printTable()">چاپ لیست</button>
             <button type="button" class="mybutton" onClick="window.location.reload()">از ابتدا</button>
         </center>
     </div>
+    
     <script>
         const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
         const englishDigits = "0123456789";
@@ -221,12 +207,12 @@
                     text: ' ! لطفاً فقط عدد وارد کنید',
                     confirmButtonText: 'باشه'
                 });
-                input.value = ''; // پاک کردن ورودی اشتباه
+                input.value = '';
             } else {
                 value = formatNumberWithComma(value);
                 value = toPersianNumber(value);
                 if (value.startsWith('۰') && value.length > 1) {
-                    value = value.slice(1); // حذف صفر ابتدایی
+                    value = value.slice(1);
                 }
                 input.value = value;
             }
@@ -239,216 +225,98 @@
             return parseFloat(englishNum.replace(/,/g, '')) || 0;
         }
 
+        function calculateUnitCost(baseCost, unitPeople, totalPeople) {
+            if (totalPeople === 0) return 0;
+            return Math.round((baseCost / totalPeople) * unitPeople / 10000) * 10000;
+        }
+
         function createTable() {
             var num1 = parseNumber(document.getElementById('num1').value);
             var num2 = parseNumber(document.getElementById('num2').value);
             var num3 = parseNumber(document.getElementById('num3').value);
             var num4 = parseNumber(document.getElementById('num4').value);
-    // عملیات روی متغیرهای گرد شده
+            var season = document.getElementById('season').value;
 
-   
-    
-var a = "اول شرقی";
-var a1 = 3;
+            // اطلاعات واحدها
+            var units = [
+                {name: "اول شرقی", people: 3, owner: "آقای وحید رنجبران"},
+                {name: "اول غربی", people: 1, owner: "خانم نورکیهانی"},
+                {name: "دوم شرقی", people: 1, owner: "آقای ایروانی"},
+                {name: "دوم غربی", people: 3, owner: "آقای رنجبران"},
+                {name: "سوم شرقی", people: 2, owner: "خانم زهری"},
+                {name: "سوم غربی", people: 3, owner: "آقای عضایی"},
+                {name: "چهارم شرقی", people: 0, owner: ""},
+                {name: "چهارم غربی", people: 4, owner: "آقای حاجیا"},
+                {name: "پنجم شرقی", people: 2, owner: "آقای اسکویی"},
+                {name: "پنجم غربی", people: 5, owner: "آقای معماریان"}
+            ];
 
+            var totalPeople = units.reduce((sum, unit) => sum + unit.people, 0);
+            var makharej = Math.round(num1 / 10 / 10000) * 10000;
+            var sharj = 2500000;
 
-var b = "اول غربی";
-var b1 = 1;
+            // محاسبه گاز بر اساس فصل
+            var gasBaseCost, gasFixedCost;
+            if (season === 'winter') {
+                gasBaseCost = num2 / 2;
+                gasFixedCost = Math.round((num2 / 2) / 10 / 10000) * 10000;
+            } else {
+                gasBaseCost = num2;
+                gasFixedCost = 0;
+            }
 
+            // محاسبه هزینه‌های هر واحد
+            var data = [];
+            units.forEach(unit => {
+                var gasCost = 0;
+                // فقط اگر تعداد نفرات بیشتر از صفر باشد گاز محاسبه می‌شود
+                if (unit.people > 0) {
+                    gasCost = calculateUnitCost(gasBaseCost, unit.people, totalPeople) + gasFixedCost;
+                }
+                
+                var abCost = calculateUnitCost(num3, unit.people, totalPeople);
+                var barghCost = calculateUnitCost(num4, unit.people, totalPeople);
+                var jam = sharj + gasCost + abCost + barghCost + makharej;
+                
+                data.push(
+                    jam, makharej, barghCost, abCost, gasCost, sharj, unit.name
+                );
+            });
 
-var c = "دوم شرقی";
-var c1 = 1;
+            function formatNumber(num) {
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
 
-var d = "دوم غربی";
-var d1 = 3;
-
-var e = "سوم شرقی";
-var e1 = 2;
-
-var f = "سوم غربی";
-var f1 = 3;
-
-var g = "چهارم شرقی";
-var g1 = 0;
-
-var h = "چهارم غربی";
-var h1 = 4;
-
-var i = "پنجم شرقی";
-var i1 = 2;
-
-var j= "پنجم غربی";
-var j1 = 5;
-
-
-var kol = a1+b1+c1+d1+e1+f1+g1+h1+i1+j1;
-    
-var makharej =  roundToTen(num1 / 10);
-
-var sharj =2000000;
-
-
-// محاسبه گاز زمستانه
-var gazz= roundToTen(num2 / 2);
-var gazzz= roundToTen(gazz / 10);
-
-
-
-
-  // روند کردن توابع
-function roundToTen(num) {
-    return Math.round(num / 1000) * 1000;
-  }
-
-  
-
-
-
-      // اول شرقی
-   // var gaz1= roundToTen(num2 /kol)*a1);
-    var gaz1= roundToTen(((gazz/kol)*a1)+gazzz);
-    var ab1 = roundToTen(num3 / kol)*a1;
-    var bargh1 = roundToTen(num4 / kol)*a1;
-    var jam1 = roundToTen(sharj + gaz1 + ab1 + bargh1 + makharej);
-    
-    
-
- // اول غربی
-    var gaz2 = roundToTen(((gazz/kol)*b1)+gazzz);
-    var ab2 = roundToTen(num3 / kol)*b1;
-    var bargh2 = roundToTen(num4 / kol)*b1;
-    var jam2 = roundToTen(sharj + gaz2 + ab2 + bargh2 + makharej);
-
-
-
-
-
- // دوم شرقی
-    var gaz3 = roundToTen(((gazz/kol)*c1)+gazzz);
-    var ab3 = roundToTen(num3 / kol)*c1;
-    var bargh3 = roundToTen(num4 / kol)*c1;
-    var jam3 = roundToTen(sharj + gaz3 + ab3 + bargh3 + makharej);
-
-
-
-// دوم غربی
-    var gaz4 = roundToTen(((gazz/kol)*d1)+gazzz);
-    var ab4 = roundToTen(num3 / kol)*d1;
-    var bargh4 = roundToTen(num4 / kol)*d1;
-    var jam4 = roundToTen(sharj + gaz4 + ab4 + bargh4 + makharej);
-
-
-
-
-// سوم شرقی
-    var gaz5 = roundToTen(((gazz/kol)*e1)+gazzz);
-    var ab5 = roundToTen(num3 / kol)*e1;
-    var bargh5 = roundToTen(num4 / kol)*e1;
-    var jam5 = roundToTen(sharj + gaz5 + ab5 + bargh5 + makharej);
-
-
-
-// سوم غربی
-    var gaz6 = roundToTen(((gazz/kol)*f1)+gazzz);
-    var ab6 = roundToTen(num3 / kol)*f1;
-    var bargh6 = roundToTen(num4 / kol)*f1;
-    var jam6 = roundToTen(sharj + gaz6 + ab6 + bargh6 + makharej);
-
-
-
-
-// چهارم شرقی
-    var gaz7 = roundToTen((gazz/kol)*g1);
-   // var gaz7 = roundToTen(((gazz/kol)*g1)+gazzz);
-    var ab7 = roundToTen(num3 / kol)*g1;
-    var bargh7 = roundToTen(num4 / kol)*g1;
-    var jam7 = roundToTen(sharj + gaz7 + ab7 + bargh7 + makharej);
-    
-    
-    
-    
-// چهارم غربی
-    var gaz8 = roundToTen(((gazz/kol)*h1)+gazzz);
-    var ab8 = roundToTen(num3 / kol)*h1;
-    var bargh8 = roundToTen(num4 / kol)*h1;
-    var jam8 = roundToTen(sharj + gaz8 + ab8 + bargh8 + makharej);
-    
-    
-    
-    
-// پنجم شرقی
-    var gaz9 = roundToTen(((gazz/kol)*i1)+gazzz);
-    var ab9 = roundToTen(num3 / kol)*i1;
-    var bargh9 = roundToTen(num4 / kol)*i1;
-    var jam9 = roundToTen(sharj + gaz9 + ab9 + bargh9 + makharej);
-    
-    
-    
-    
-    
-// پنجم غربی
-    var gaz10 = roundToTen(((gazz/kol)*j1)+gazzz);
-    var ab10 = roundToTen(num3 / kol)*j1;
-    var bargh10 = roundToTen(num4 / kol)*j1;
-    var jam10 = roundToTen(sharj + gaz10 + ab10 + bargh10 + makharej);
-    
-    
-    
-
-    // آرایه‌ای از نتایج
-    var data = [
-    jam1,makharej, bargh1, ab1, gaz1, sharj, a,
-    jam2,makharej, bargh2, ab2, gaz2, sharj, b,
-    jam3,makharej, bargh3, ab3, gaz3, sharj, c,
-    jam4,makharej, bargh4, ab4, gaz4, sharj, d,
-    jam5,makharej, bargh5, ab5, gaz5, sharj, e,
-    jam6,makharej, bargh6, ab6, gaz6, sharj, f,
-    jam7,makharej, bargh7, ab7, gaz7, sharj, g,
-    jam8,makharej, bargh8, ab8, gaz8, sharj, h,
-    jam9,makharej, bargh9, ab9, gaz9, sharj, i,
-    jam10,makharej, bargh10, ab10, gaz10, sharj, j,
-    ];
-
-
-// فرمت کردن اعداد برای جدا کردن هر سه رقم
-    function formatNumber(num) {
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
-         var table = document.getElementById("myTable");
-            // حذف تمام ردیف‌های جدول به جز تیترها
+            var table = document.getElementById("myTable");
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
-            var rows = 10;
-            var cols = 7;
-            var dataIndex = 0;
-            for (var i = 0; i < rows; i++) {
+
+            for (var i = 0; i < units.length; i++) {
                 var row = table.insertRow();
-                for (var j = 0; j < cols; j++) {
+                for (var j = 0; j < 7; j++) {
                     var cell = row.insertCell();
-                    cell.innerHTML = toPersianNumber(formatNumber(data[dataIndex++])) || "";
+                    var value = data[i * 7 + j];
+                    cell.innerHTML = value !== undefined ? toPersianNumber(formatNumber(value)) : "";
                 }
             }
         }
 
+        function printTable() {
+            var printWindow = window.open('', '', 'height=400,width=600');
+            printWindow.document.write('<html><head><title>لیست شارژ</title>');
+            printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; }');
+            printWindow.document.write('th, td { border: 1px solid black; padding: 15px; text-align: center; font-size: 28px; }');
+            printWindow.document.write('th { font-size: 30px; }');
+            printWindow.document.write('</style></head><body>');
+            printWindow.document.write(document.getElementById("myTable").outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
 
-// تابع پرینت گرفتن از جدول
-function printTable() {
-    var printWindow = window.open('', '', 'height=400,width=600');
-    printWindow.document.write('<html><head><title>لیست شارژ</title>');
-    printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; }');
-    printWindow.document.write('th, td { border: 1px solid black; padding: 15px; text-align: center; font-size: 28px; }'); // تنظیم سایز فونت برای تیتر و سلول‌ها
-    printWindow.document.write('th { font-size: 30px; }'); // تنظیم سایز فونت برای تیترها
-    printWindow.document.write('</style></head><body>');
-    printWindow.document.write(document.getElementById("myTable").outerHTML);
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.print();
-}
-</script>
-
-  <script>
+    <script>
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tab-content");
@@ -463,130 +331,68 @@ function printTable() {
             evt.currentTarget.className += " active";
         }
     </script> 
-</center>
-
-        
-        
-        
-           <div id="tab3" class="tab-content">
-<center>
-         <h2>مبلغ شارژ  ۲,۰۰۰,۰۰۰ ریال</h2>
-</center>
-
-
-        </div>
-          
-        
-        
-        
-        
-        
-        
-        
-        <div id="tab2" class="tab-content">
-<center>
- <h2>تعداد نفرات ۲۴ نفر</h2>
- 
-  <br> 
-
-  <table border="1">
-    <thead>
-      <tr>
-        <th>تعداد نفرات</th>
-        <th>مالک</th>
-        <th>واحد</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody">
-
-    </tbody>
-  </table>
-
-  <script>
-    // متغیرهای از پیش تعریف شده
-var a = "اول شرقی";
-var a1 = 3;
-var a2 = "آقای وحید رنجبران"
     
-var b = "اول غربی";
-var b1 = 1;
-var b2 = "خانم نورکیهانی"
+    <div id="tab3" class="tab-content">
+        <center>
+            <h2>مبلغ شارژ  ۲,۵۰۰,۰۰۰ ریال</h2>
+        </center>
+    </div>
+    
+    <div id="tab2" class="tab-content">
+        <center>
+            <h2>تعداد نفرات ۲۴ نفر</h2>
+            <br> 
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>تعداد نفرات</th>
+                        <th>مالک</th>
+                        <th>واحد</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+            <script>
+                var units = [
+                    {name: "اول شرقی", people: 3, owner: "آقای وحید رنجبران"},
+                    {name: "اول غربی", people: 1, owner: "خانم نورکیهانی"},
+                    {name: "دوم شرقی", people: 1, owner: "آقای ایروانی"},
+                    {name: "دوم غربی", people: 3, owner: "آقای رنجبران"},
+                    {name: "سوم شرقی", people: 2, owner: "خانم زهری"},
+                    {name: "سوم غربی", people: 3, owner: "آقای عضایی"},
+                    {name: "چهارم شرقی", people: 0, owner: ""},
+                    {name: "چهارم غربی", people: 4, owner: "آقای حاجیا"},
+                    {name: "پنجم شرقی", people: 2, owner: "آقای اسکویی"},
+                    {name: "پنجم غربی", people: 5, owner: "آقای معماریان"}
+                ];
 
-var c = "دوم شرقی";
-var c1 = 1;
-var c2 = "آقای ایروانی"
+                function toPersianNumber(number) {
+                    return number.toString().replace(/\d/g, function(d) {
+                        return '۰۱۲۳۴۵۶۷۸۹'[d];
+                    });
+                }
 
-var d = "دوم غربی";
-var d1 = 3;
-var d2 = "آقای رنجبران"
-
-var e = "سوم شرقی";
-var e1 = 2;
-var e2 = "خانم زهری"
-
-var f = "سوم غربی";
-var f1 = 3;
-var f2 = "آقای عضایی"
-
-var g = "چهارم شرقی";
-var g1 = 0;
-var g2 = ""
-
-var h = "چهارم غربی";
-var h1 = 4;
-var h2 = "آقای حاجیا"
-
-
-var i = "پنجم شرقی";
-var i1 = 2;
-var i2 = "آقای اسکویی"
-
-
-var j= "پنجم غربی";
-var j1 = 5;
-var j2 = "آقای معماریان"
-
-
-
-
-    // تابع تبدیل اعداد انگلیسی به فارسی
-    function toPersianNumber(number) {
-      return number.toString().replace(/\d/g, function(d) {
-        return '۰۱۲۳۴۵۶۷۸۹'[d];
-      });
-    }
-
-
-    // آرایه‌ای از متغیرها
-    var data = [
-      [toPersianNumber(a1),a2, a],
-      [toPersianNumber(b1),b2, b],
-      [toPersianNumber(c1),c2, c],
-      [toPersianNumber(d1),d2, d],
-      [toPersianNumber(e1),e2, e],
-      [toPersianNumber(f1),f2, f],
-      [toPersianNumber(g1),g2, g],
-      [toPersianNumber(h1),h2, h],
-      [toPersianNumber(i1),i2, i],
-      [toPersianNumber(j1),j2, j],
-    ];
-
-    // ایجاد و افزودن ردیف‌ها به جدول
-    const tableBody = document.getElementById('tableBody');
-    data.forEach(rowData => {
-      const row = document.createElement('tr');
-      rowData.forEach(cellData => {
-        const cell = document.createElement('td');
-        cell.textContent = cellData;
-        row.appendChild(cell);
-      });
-      tableBody.appendChild(row);
-    });
-  </script>
-  </center>
-  
-        </div>
-          </div> 
-          
+                const tableBody = document.getElementById('tableBody');
+                units.forEach(unit => {
+                    const row = document.createElement('tr');
+                    
+                    const peopleCell = document.createElement('td');
+                    peopleCell.textContent = toPersianNumber(unit.people);
+                    row.appendChild(peopleCell);
+                    
+                    const ownerCell = document.createElement('td');
+                    ownerCell.textContent = unit.owner;
+                    row.appendChild(ownerCell);
+                    
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = unit.name;
+                    row.appendChild(nameCell);
+                    
+                    tableBody.appendChild(row);
+                });
+            </script>
+        </center>
+    </div>
+</div>
 </body>
 </html>
