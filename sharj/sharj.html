@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<link href="https://fonts.googleapis.com/css2?family=Zain:wght@200;300;400;700;800;900&display=swap" rel="stylesheet">
+<title>Sharj</title>
+<style>
+    body {
+        font-family: Zain, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: 15px; 
+    }
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 25px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+    h2 { 
+        font-family: 'tahoma', sans-serif;        
+        color: white;
+        text-shadow: 1px 1px 3px black, 0 0 25px blue, 0 0 5px darkblue;
+        font-size: 32px; 
+    } 
+    input[type="text"], select {
+        width: 50%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 2px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-size: 22px;
+    }
+    .mybutton{
+        background-color:#4d4d4d;
+        font-family: 'Zain', sans-serif;
+        padding: 10px;
+        border-radius: 16px;
+        box-shadow: 0 0 9px rgb(207, 207, 207);
+        color:#fff;
+        font-size:16px;
+    }
+    .mybutton:hover{
+        background-color:#cccccc;
+        color:#000;
+        border: none;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-family: 'Noto Kufi Arabic', sans-serif;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+    .input-field {
+        margin: 10px 0;
+    }
+    .icon {
+        margin-left: 5px;
+        width: 50px;
+        height: 50px;
+        vertical-align: middle;
+    }
+    .tabs {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+    .tabs button {
+        font-family: 'Zain', sans-serif;
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #4d4d4d;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+    }
+    .tabs button.active {
+        background-color: #9992D7;
+    }
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div class="container">
+    <div class="tabs">
+        <button class="tab-link active" onclick="openTab(event, 'tab1')">تهیه لیست</button>
+        <button class="tab-link" onclick="openTab(event, 'tab2')">اطلاعات ساختمان</button>
+        <button class="tab-link" onclick="openTab(event, 'tab3')">مبلغ شارژ</button>
+    </div>
+    
+    <div id="tab1" class="tab-content active">
+        <center>
+            <h2>لیست شارژ ساختمان</h2>
+            <br>
+            <form id="inputForm">
+                <label for="num1">
+                    متفرقه
+                    <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/mo.png" alt="" class="icon">
+                </label>
+                <input type="text" id="num1" name="num1" value="۰" oninput="validateAndFormatNumber(this)">
+                <br>
+                
+                <label for="season">
+                    فـصـــــل
+                    <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/gaz.png" alt="" class="icon">
+                </label>
+                <select id="season" name="season" style="padding: 10px; border-radius: 6px; font-size: 16px;">
+                    <option value="winter">زمستانه</option>
+                    <option value="summer">تابستانه</option>
+                </select>
+                <br>
+                
+                <label for="num2">
+                    مبلغ گاز
+                    <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/gaz.png" alt="" class="icon">
+                </label>
+                <input type="text" id="num2" name="num2" value="۰" oninput="validateAndFormatNumber(this)">
+                <br>
+                
+                <label for="num3">
+                    مبلغ آب
+                    <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/ab.jpg" alt="" class="icon">
+                </label>
+                <input type="text" id="num3" name="num3" value="۰" oninput="validateAndFormatNumber(this)">
+                <br>
+                
+                <label for="num4">
+                    مبلغ برق
+                    <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/bargh.png" alt="" class="icon">
+                </label>
+                <input type="text" id="num4" name="num4" value="۰" oninput="validateAndFormatNumber(this)">
+                <br><br><br>
+            </form>
+            
+            <table id="myTable">
+                <tr style="background-color: #d3d3d3;">
+                    <th>جمع</th>
+                    <th>متفرقه</th>
+                    <th>برق</th>
+                    <th>آب</th>
+                    <th>گاز</th>
+                    <th>شارژ</th>
+                    <th>واحد</th>
+                </tr>
+            </table>
+            
+            <button type="button" class="mybutton" onClick="createTable()"> محاسبه</button>
+            <button type="button" class="mybutton" onClick="printTable()">چاپ لیست</button>
+            <button type="button" class="mybutton" onClick="window.location.reload()">از ابتدا</button>
+        </center>
+    </div>
+    
+    <script>
+        const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+        const englishDigits = "0123456789";
+
+        function toPersianNumber(input) {
+            return input.replace(/\d/g, function(d) {
+                return persianDigits[d];
+            });
+        }
+
+        function toEnglishNumber(input) {
+            return input.replace(/[۰-۹]/g, function(d) {
+                return englishDigits[persianDigits.indexOf(d)];
+            });
+        }
+
+        function formatNumberWithComma(input) {
+            let parts = input.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join(".");
+        }
+
+        function validateAndFormatNumber(input) {
+            let value = input.value.replace(/,/g, '');
+            value = toEnglishNumber(value);
+            if (isNaN(value)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطا',
+                    text: ' ! لطفاً فقط عدد وارد کنید',
+                    confirmButtonText: 'باشه'
+                });
+                input.value = '';
+            } else {
+                value = formatNumberWithComma(value);
+                value = toPersianNumber(value);
+                if (value.startsWith('۰') && value.length > 1) {
+                    value = value.slice(1);
+                }
+                input.value = value;
+            }
+        }
+
+        function parseNumber(num) {
+            let englishNum = num.replace(/[۰-۹]/g, function(d) {
+                return englishDigits[persianDigits.indexOf(d)];
+            });
+            return parseFloat(englishNum.replace(/,/g, '')) || 0;
+        }
+
+        function calculateUnitCost(baseCost, unitPeople, totalPeople) {
+            if (totalPeople === 0) return 0;
+            return Math.round((baseCost / totalPeople) * unitPeople / 10000) * 10000;
+        }
+
+        function createTable() {
+            var num1 = parseNumber(document.getElementById('num1').value);
+            var num2 = parseNumber(document.getElementById('num2').value);
+            var num3 = parseNumber(document.getElementById('num3').value);
+            var num4 = parseNumber(document.getElementById('num4').value);
+            var season = document.getElementById('season').value;
+
+            // اطلاعات واحدها
+            var units = [
+                {name: "اول شرقی", people: 3, owner: "آقای وحید رنجبران"},
+                {name: "اول غربی", people: 1, owner: "خانم نورکیهانی"},
+                {name: "دوم شرقی", people: 1, owner: "آقای ایروانی"},
+                {name: "دوم غربی", people: 3, owner: "آقای رنجبران"},
+                {name: "سوم شرقی", people: 2, owner: "خانم زهری"},
+                {name: "سوم غربی", people: 3, owner: "آقای عضایی"},
+                {name: "چهارم شرقی", people: 0, owner: ""},
+                {name: "چهارم غربی", people: 4, owner: "آقای حاجیا"},
+                {name: "پنجم شرقی", people: 2, owner: "آقای اسکویی"},
+                {name: "پنجم غربی", people: 5, owner: "آقای معماریان"}
+            ];
+
+            var totalPeople = units.reduce((sum, unit) => sum + unit.people, 0);
+            var makharej = Math.round(num1 / 10 / 10000) * 10000;
+            var sharj = 2500000;
+
+            // محاسبه گاز بر اساس فصل
+            var gasBaseCost, gasFixedCost;
+            if (season === 'winter') {
+                gasBaseCost = num2 / 2;
+                gasFixedCost = Math.round((num2 / 2) / 10 / 10000) * 10000;
+            } else {
+                gasBaseCost = num2;
+                gasFixedCost = 0;
+            }
+
+            // محاسبه هزینه‌های هر واحد
+            var data = [];
+            units.forEach(unit => {
+                var gasCost = 0;
+                // فقط اگر تعداد نفرات بیشتر از صفر باشد گاز محاسبه می‌شود
+                if (unit.people > 0) {
+                    gasCost = calculateUnitCost(gasBaseCost, unit.people, totalPeople) + gasFixedCost;
+                }
+                
+                var abCost = calculateUnitCost(num3, unit.people, totalPeople);
+                var barghCost = calculateUnitCost(num4, unit.people, totalPeople);
+                var jam = sharj + gasCost + abCost + barghCost + makharej;
+                
+                data.push(
+                    jam, makharej, barghCost, abCost, gasCost, sharj, unit.name
+                );
+            });
+
+            function formatNumber(num) {
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            var table = document.getElementById("myTable");
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+
+            for (var i = 0; i < units.length; i++) {
+                var row = table.insertRow();
+                for (var j = 0; j < 7; j++) {
+                    var cell = row.insertCell();
+                    var value = data[i * 7 + j];
+                    cell.innerHTML = value !== undefined ? toPersianNumber(formatNumber(value)) : "";
+                }
+            }
+        }
+
+        function printTable() {
+            var printWindow = window.open('', '', 'height=400,width=600');
+            printWindow.document.write('<html><head><title>لیست شارژ</title>');
+            printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; }');
+            printWindow.document.write('th, td { border: 1px solid black; padding: 15px; text-align: center; font-size: 28px; }');
+            printWindow.document.write('th { font-size: 30px; }');
+            printWindow.document.write('</style></head><body>');
+            printWindow.document.write(document.getElementById("myTable").outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script> 
+    
+    <div id="tab3" class="tab-content">
+        <center>
+            <h2>مبلغ شارژ  ۲,۵۰۰,۰۰۰ ریال</h2>
+        </center>
+    </div>
+    
+    <div id="tab2" class="tab-content">
+        <center>
+            <h2>تعداد نفرات ۲۴ نفر</h2>
+            <br> 
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>تعداد نفرات</th>
+                        <th>مالک</th>
+                        <th>واحد</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+            <script>
+                var units = [
+                    {name: "اول شرقی", people: 3, owner: "آقای وحید رنجبران"},
+                    {name: "اول غربی", people: 1, owner: "خانم نورکیهانی"},
+                    {name: "دوم شرقی", people: 1, owner: "آقای ایروانی"},
+                    {name: "دوم غربی", people: 3, owner: "آقای رنجبران"},
+                    {name: "سوم شرقی", people: 2, owner: "خانم زهری"},
+                    {name: "سوم غربی", people: 3, owner: "آقای عضایی"},
+                    {name: "چهارم شرقی", people: 0, owner: ""},
+                    {name: "چهارم غربی", people: 4, owner: "آقای حاجیا"},
+                    {name: "پنجم شرقی", people: 2, owner: "آقای اسکویی"},
+                    {name: "پنجم غربی", people: 5, owner: "آقای معماریان"}
+                ];
+
+                function toPersianNumber(number) {
+                    return number.toString().replace(/\d/g, function(d) {
+                        return '۰۱۲۳۴۵۶۷۸۹'[d];
+                    });
+                }
+
+                const tableBody = document.getElementById('tableBody');
+                units.forEach(unit => {
+                    const row = document.createElement('tr');
+                    
+                    const peopleCell = document.createElement('td');
+                    peopleCell.textContent = toPersianNumber(unit.people);
+                    row.appendChild(peopleCell);
+                    
+                    const ownerCell = document.createElement('td');
+                    ownerCell.textContent = unit.owner;
+                    row.appendChild(ownerCell);
+                    
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = unit.name;
+                    row.appendChild(nameCell);
+                    
+                    tableBody.appendChild(row);
+                });
+            </script>
+        </center>
+    </div>
+</div>
+</body>
+</html>
