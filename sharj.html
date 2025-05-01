@@ -122,8 +122,9 @@
     .resident-table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
+        margin: 20px auto;
         font-family: 'Zain', sans-serif;
+        direction: rtl;
     }
     .resident-table th {
         background-color: #4d4d4d;
@@ -134,13 +135,26 @@
     .resident-table td {
         padding: 10px;
         border-bottom: 1px solid #ddd;
-        text-align: right;
+        text-align: center;
     }
     .resident-table tr:nth-child(even) {
         background-color: #f9f9f9;
     }
     .resident-table tr:hover {
         background-color: #f1f1f1;
+    }
+    .resident-table-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    .save-path {
+        margin: 10px 0;
+        padding: 8px;
+        background-color: #f8f8f8;
+        border-radius: 4px;
+        font-family: 'Zain', sans-serif;
+        direction: rtl;
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -159,7 +173,7 @@
             <br>
             <form id="inputForm">
                 <label for="month">
-                    مـــــــــــاه
+                    مـــاه
                     <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/calendar.png" alt="" class="icon">
                 </label>
                 <select id="month" name="month" style="padding: 10px; border-radius: 6px; font-size: 16px;" required>
@@ -241,7 +255,7 @@
         </center>
     </div>
     
- <div id="tab2" class="tab-content">
+    <div id="tab2" class="tab-content">
         <center>
             <h2>اطلاعات ساختمان</h2>
             <h3>لیست ساکنین (جمع کل: ۲۴ نفر)</h3>
@@ -314,7 +328,7 @@
     
     <div id="tab3" class="tab-content">
         <center>
-            <h2>مبلغ شارژ : ۲,۵۰۰,۰۰۰ ریال</h2>
+            <h2>مبلغ شارژ پایه: ۲,۵۰۰,۰۰۰ ریال</h2>
             <div class="info-box">
                 <h3>نحوه محاسبه هزینه گاز:</h3>
                 
@@ -329,7 +343,7 @@
                 <p>• هر واحد به نسبت تعداد ساکنین خود هزینه پرداخت می‌کند</p>
                 
                 <h4>📌 نکات مهم:</h4>
-                <p>• واحدهای بدون ساکن از پرداخت هزینه گاز و آب و برق معاف هستند</p>
+                <p>• واحدهای بدون ساکن از پرداخت هزینه گاز معاف هستند</p>
                 <p>• آب و برق همیشه بر اساس تعداد نفرات محاسبه می‌شود</p>
                 <p>• هزینه متفرقه به صورت مساوی بین واحدها تقسیم می‌شود</p>
             </div>
@@ -508,92 +522,91 @@
         printWindow.print();
     }
 
-    function saveData() {
+    async function saveData() {
         if (!validateForm()) return;
         
         const month = document.getElementById('month').value;
         
-        Swal.fire({
-            title: 'نام فایل ذخیره',
-            input: 'text',
-            inputValue: `شارژ-${month}`,
-            inputLabel: 'می‌توانید نام فایل را تغییر دهید',
-            showCancelButton: true,
-            confirmButtonText: 'ذخیره',
-            cancelButtonText: 'انصراف',
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'لطفاً نام فایل را وارد کنید';
-                }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const filename = result.value;
-                
-                const data = {
-                    month: month,
-                    num1: document.getElementById('num1').value,
-                    num2: document.getElementById('num2').value,
-                    num3: document.getElementById('num3').value,
-                    num4: document.getElementById('num4').value,
-                    season: document.getElementById('season').value,
-                    timestamp: new Date().toLocaleString('fa-IR')
-                };
-                
-                const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${filename}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
+        try {
+            // درخواست دسترسی به سیستم فایل
+            const fileHandle = await window.showSaveFilePicker({
+                suggestedName: `شارژ-${month}.json`,
+                types: [{
+                    description: 'فایل JSON',
+                    accept: {'application/json': ['.json']},
+                }],
+            });
+            
+            const data = {
+                month: month,
+                num1: document.getElementById('num1').value,
+                num2: document.getElementById('num2').value,
+                num3: document.getElementById('num3').value,
+                num4: document.getElementById('num4').value,
+                season: document.getElementById('season').value,
+                timestamp: new Date().toLocaleString('fa-IR')
+            };
+            
+            const writable = await fileHandle.createWritable();
+            await writable.write(JSON.stringify(data, null, 2));
+            await writable.close();
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'ذخیره شد',
+                text: `داده‌ها با موفقیت ذخیره شدند`,
+                confirmButtonText: 'باشه'
+            });
+        } catch (error) {
+            if (error.name !== 'AbortError') {
                 Swal.fire({
-                    icon: 'success',
-                    title: 'ذخیره شد',
-                    text: `فایل ${filename} با موفقیت ذخیره شد`,
+                    icon: 'error',
+                    title: 'خطا در ذخیره',
+                    text: 'ذخیره فایل انجام نشد. ممکن است کاربر از انجام عملیات صرف نظر کرده باشد.',
                     confirmButtonText: 'باشه'
                 });
             }
-        });
+        }
     }
 
-    function loadData() {
-        Swal.fire({
-            title: 'بازیابی داده‌ها',
-            text: ' برای بازیابی فایل به فولدر دانلود مراجعه کنید ',
-            icon: 'info',
-            confirmButtonText: 'انتخاب فایل'
-        }).then(() => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
+    async function loadData() {
+        try {
+            // نمایش پیام راهنما
+            const { value: accept } = await Swal.fire({
+                title: 'بازیابی داده‌ها',
+                text: 'لطفاً فایل ذخیره شده (با پسوند .json) را انتخاب کنید',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'انتخاب فایل',
+                cancelButtonText: 'انصراف'
+            });
             
-            input.onchange = e => {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = event => {
-                    try {
-                        const data = JSON.parse(event.target.result);
-                        loadDataIntoForm(data);
-                    } catch (error) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'خطا',
-                            text: 'فایل انتخاب شده معتبر نیست',
-                            confirmButtonText: 'باشه'
-                        });
-                    }
-                };
-                
-                reader.readAsText(file);
-            };
+            if (!accept) return;
             
-            input.click();
-        });
+            // درخواست دسترسی به سیستم فایل
+            const [fileHandle] = await window.showOpenFilePicker({
+                types: [{
+                    description: 'فایل JSON',
+                    accept: {'application/json': ['.json']},
+                }],
+                multiple: false
+            });
+            
+            const file = await fileHandle.getFile();
+            const contents = await file.text();
+            const data = JSON.parse(contents);
+            
+            loadDataIntoForm(data);
+        } catch (error) {
+            if (error.name !== 'AbortError') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطا',
+                    text: 'فایل انتخاب شده معتبر نیست یا کاربر از انجام عملیات صرف نظر کرده است',
+                    confirmButtonText: 'باشه'
+                });
+            }
+        }
     }
 
     function loadDataIntoForm(data) {
