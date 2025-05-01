@@ -16,7 +16,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
         font-size: 15px; 
     }
     .container {
@@ -24,6 +24,9 @@
         padding: 20px;
         border-radius: 25px;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 800px;
+        margin: 20px auto;
     }
     h2 { 
         font-family: 'tahoma', sans-serif;        
@@ -48,11 +51,13 @@
         box-shadow: 0 0 9px rgb(207, 207, 207);
         color:#fff;
         font-size:16px;
+        margin: 5px;
     }
     .mybutton:hover{
         background-color:#cccccc;
         color:#000;
         border: none;
+        cursor: pointer;
     }
     table {
         width: 100%;
@@ -102,6 +107,41 @@
     .tab-content.active {
         display: block;
     }
+    .button-container {
+        margin-top: 20px;
+    }
+    .info-box {
+        text-align: right;
+        direction: rtl;
+        padding: 15px;
+        margin: 20px;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+        font-family: 'Zain', sans-serif;
+    }
+    .resident-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-family: 'Zain', sans-serif;
+    }
+    .resident-table th {
+        background-color: #4d4d4d;
+        color: white;
+        padding: 12px;
+        text-align: center;
+    }
+    .resident-table td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        text-align: right;
+    }
+    .resident-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .resident-table tr:hover {
+        background-color: #f1f1f1;
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -118,6 +158,27 @@
             <h2>لیست شارژ ساختمان</h2>
             <br>
             <form id="inputForm">
+                <label for="month">
+                    مـــــــــــاه
+                    <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/calendar.png" alt="" class="icon">
+                </label>
+                <select id="month" name="month" style="padding: 10px; border-radius: 6px; font-size: 16px;" required>
+                    <option value="">انتخاب ماه</option>
+                    <option value="فروردین">فروردین</option>
+                    <option value="اردیبهشت">اردیبهشت</option>
+                    <option value="خرداد">خرداد</option>
+                    <option value="تیر">تیر</option>
+                    <option value="مرداد">مرداد</option>
+                    <option value="شهریور">شهریور</option>
+                    <option value="مهر">مهر</option>
+                    <option value="آبان">آبان</option>
+                    <option value="آذر">آذر</option>
+                    <option value="دی">دی</option>
+                    <option value="بهمن">بهمن</option>
+                    <option value="اسفند">اسفند</option>
+                </select>
+                <br>
+                
                 <label for="num1">
                     متفرقه
                     <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/mo.png" alt="" class="icon">
@@ -130,6 +191,7 @@
                     <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/sharj/gaz.png" alt="" class="icon">
                 </label>
                 <select id="season" name="season" style="padding: 10px; border-radius: 6px; font-size: 16px;">
+                    <option value="">انتخاب کنید</option>
                     <option value="winter">زمستانه</option>
                     <option value="summer">تابستانه</option>
                 </select>
@@ -169,230 +231,411 @@
                 </tr>
             </table>
             
-            <button type="button" class="mybutton" onClick="createTable()"> محاسبه</button>
-            <button type="button" class="mybutton" onClick="printTable()">چاپ لیست</button>
-            <button type="button" class="mybutton" onClick="window.location.reload()">از ابتدا</button>
+            <div class="button-container">
+                <button type="button" class="mybutton" onClick="createTable()">محاسبه</button>
+                <button type="button" class="mybutton" onClick="printTable()">چاپ لیست</button>
+                <button type="button" class="mybutton" onClick="saveData()">ذخیره داده‌ها</button>
+                <button type="button" class="mybutton" onClick="loadData()">بازیابی داده‌ها</button>
+                <button type="button" class="mybutton" onClick="resetPage()">از ابتدا</button>
+            </div>
         </center>
     </div>
     
-    <script>
-        const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
-        const englishDigits = "0123456789";
-
-        function toPersianNumber(input) {
-            return input.replace(/\d/g, function(d) {
-                return persianDigits[d];
-            });
-        }
-
-        function toEnglishNumber(input) {
-            return input.replace(/[۰-۹]/g, function(d) {
-                return englishDigits[persianDigits.indexOf(d)];
-            });
-        }
-
-        function formatNumberWithComma(input) {
-            let parts = input.toString().split(".");
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            return parts.join(".");
-        }
-
-        function validateAndFormatNumber(input) {
-            let value = input.value.replace(/,/g, '');
-            value = toEnglishNumber(value);
-            if (isNaN(value)) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'خطا',
-                    text: ' ! لطفاً فقط عدد وارد کنید',
-                    confirmButtonText: 'باشه'
-                });
-                input.value = '';
-            } else {
-                value = formatNumberWithComma(value);
-                value = toPersianNumber(value);
-                if (value.startsWith('۰') && value.length > 1) {
-                    value = value.slice(1);
-                }
-                input.value = value;
-            }
-        }
-
-        function parseNumber(num) {
-            let englishNum = num.replace(/[۰-۹]/g, function(d) {
-                return englishDigits[persianDigits.indexOf(d)];
-            });
-            return parseFloat(englishNum.replace(/,/g, '')) || 0;
-        }
-
-        function calculateUnitCost(baseCost, unitPeople, totalPeople) {
-            if (totalPeople === 0) return 0;
-            return Math.round((baseCost / totalPeople) * unitPeople / 10000) * 10000;
-        }
-
-        function createTable() {
-            var num1 = parseNumber(document.getElementById('num1').value);
-            var num2 = parseNumber(document.getElementById('num2').value);
-            var num3 = parseNumber(document.getElementById('num3').value);
-            var num4 = parseNumber(document.getElementById('num4').value);
-            var season = document.getElementById('season').value;
-
-            // اطلاعات واحدها
-            var units = [
-                {name: "اول شرقی", people: 3, owner: "آقای وحید رنجبران"},
-                {name: "اول غربی", people: 1, owner: "خانم نورکیهانی"},
-                {name: "دوم شرقی", people: 1, owner: "آقای ایروانی"},
-                {name: "دوم غربی", people: 3, owner: "آقای رنجبران"},
-                {name: "سوم شرقی", people: 2, owner: "خانم زهری"},
-                {name: "سوم غربی", people: 3, owner: "آقای عضایی"},
-                {name: "چهارم شرقی", people: 0, owner: ""},
-                {name: "چهارم غربی", people: 4, owner: "آقای حاجیا"},
-                {name: "پنجم شرقی", people: 2, owner: "آقای اسکویی"},
-                {name: "پنجم غربی", people: 5, owner: "آقای معماریان"}
-            ];
-
-            var totalPeople = units.reduce((sum, unit) => sum + unit.people, 0);
-            var makharej = Math.round(num1 / 10 / 10000) * 10000;
-            var sharj = 2500000;
-
-            // محاسبه گاز بر اساس فصل
-            var gasBaseCost, gasFixedCost;
-            if (season === 'winter') {
-                gasBaseCost = num2 / 2;
-                gasFixedCost = Math.round((num2 / 2) / 10 / 10000) * 10000;
-            } else {
-                gasBaseCost = num2;
-                gasFixedCost = 0;
-            }
-
-            // محاسبه هزینه‌های هر واحد
-            var data = [];
-            units.forEach(unit => {
-                var gasCost = 0;
-                // فقط اگر تعداد نفرات بیشتر از صفر باشد گاز محاسبه می‌شود
-                if (unit.people > 0) {
-                    gasCost = calculateUnitCost(gasBaseCost, unit.people, totalPeople) + gasFixedCost;
-                }
-                
-                var abCost = calculateUnitCost(num3, unit.people, totalPeople);
-                var barghCost = calculateUnitCost(num4, unit.people, totalPeople);
-                var jam = sharj + gasCost + abCost + barghCost + makharej;
-                
-                data.push(
-                    jam, makharej, barghCost, abCost, gasCost, sharj, unit.name
-                );
-            });
-
-            function formatNumber(num) {
-                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
-
-            var table = document.getElementById("myTable");
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
-
-            for (var i = 0; i < units.length; i++) {
-                var row = table.insertRow();
-                for (var j = 0; j < 7; j++) {
-                    var cell = row.insertCell();
-                    var value = data[i * 7 + j];
-                    cell.innerHTML = value !== undefined ? toPersianNumber(formatNumber(value)) : "";
-                }
-            }
-        }
-
-        function printTable() {
-            var printWindow = window.open('', '', 'height=400,width=600');
-            printWindow.document.write('<html><head><title>لیست شارژ</title>');
-            printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; }');
-            printWindow.document.write('th, td { border: 1px solid black; padding: 15px; text-align: center; font-size: 28px; }');
-            printWindow.document.write('th { font-size: 30px; }');
-            printWindow.document.write('</style></head><body>');
-            printWindow.document.write(document.getElementById("myTable").outerHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        }
-    </script>
-
-    <script>
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tab-link");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-    </script> 
+ <div id="tab2" class="tab-content">
+        <center>
+            <h2>اطلاعات ساختمان</h2>
+            <h3>لیست ساکنین (جمع کل: ۲۴ نفر)</h3>
+            
+            <div class="resident-table-container">
+                <table class="resident-table">
+                    <thead>
+                        <tr>
+                            <th>تعداد نفرات</th>
+                            <th>مالک</th>
+                            <th>واحد</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>۳</td>
+                            <td>آقای وحید رنجبران</td>
+                            <td>اول شرقی</td>
+                        </tr>
+                        <tr>
+                            <td>۱</td>
+                            <td>خانم نورکیهانی</td>
+                            <td>اول غربی</td>
+                        </tr>
+                        <tr>
+                            <td>۱</td>
+                            <td>آقای ایروانی</td>
+                            <td>دوم شرقی</td>
+                        </tr>
+                        <tr>
+                            <td>۳</td>
+                            <td>آقای رنجبران</td>
+                            <td>دوم غربی</td>
+                        </tr>
+                        <tr>
+                            <td>۲</td>
+                            <td>خانم زهری</td>
+                            <td>سوم شرقی</td>
+                        </tr>
+                        <tr>
+                            <td>۳</td>
+                            <td>آقای عضایی</td>
+                            <td>سوم غربی</td>
+                        </tr>
+                        <tr>
+                            <td>۰</td>
+                            <td>خالی</td>
+                            <td>چهارم شرقی</td>
+                        </tr>
+                        <tr>
+                            <td>۴</td>
+                            <td>آقای حاجیا</td>
+                            <td>چهارم غربی</td>
+                        </tr>
+                        <tr>
+                            <td>۲</td>
+                            <td>آقای اسکویی</td>
+                            <td>پنجم شرقی</td>
+                        </tr>
+                        <tr>
+                            <td>۵</td>
+                            <td>آقای معماریان</td>
+                            <td>پنجم غربی</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </center>
+    </div>
     
     <div id="tab3" class="tab-content">
         <center>
-            <h2>مبلغ شارژ  ۲,۵۰۰,۰۰۰ ریال</h2>
-        </center>
-    </div>
-    
-    <div id="tab2" class="tab-content">
-        <center>
-            <h2>تعداد نفرات ۲۴ نفر</h2>
-            <br> 
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>تعداد نفرات</th>
-                        <th>مالک</th>
-                        <th>واحد</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-            <script>
-                var units = [
-                    {name: "اول شرقی", people: 3, owner: "آقای وحید رنجبران"},
-                    {name: "اول غربی", people: 1, owner: "خانم نورکیهانی"},
-                    {name: "دوم شرقی", people: 1, owner: "آقای ایروانی"},
-                    {name: "دوم غربی", people: 3, owner: "آقای رنجبران"},
-                    {name: "سوم شرقی", people: 2, owner: "خانم زهری"},
-                    {name: "سوم غربی", people: 3, owner: "آقای عضایی"},
-                    {name: "چهارم شرقی", people: 0, owner: ""},
-                    {name: "چهارم غربی", people: 4, owner: "آقای حاجیا"},
-                    {name: "پنجم شرقی", people: 2, owner: "آقای اسکویی"},
-                    {name: "پنجم غربی", people: 5, owner: "آقای معماریان"}
-                ];
-
-                function toPersianNumber(number) {
-                    return number.toString().replace(/\d/g, function(d) {
-                        return '۰۱۲۳۴۵۶۷۸۹'[d];
-                    });
-                }
-
-                const tableBody = document.getElementById('tableBody');
-                units.forEach(unit => {
-                    const row = document.createElement('tr');
-                    
-                    const peopleCell = document.createElement('td');
-                    peopleCell.textContent = toPersianNumber(unit.people);
-                    row.appendChild(peopleCell);
-                    
-                    const ownerCell = document.createElement('td');
-                    ownerCell.textContent = unit.owner;
-                    row.appendChild(ownerCell);
-                    
-                    const nameCell = document.createElement('td');
-                    nameCell.textContent = unit.name;
-                    row.appendChild(nameCell);
-                    
-                    tableBody.appendChild(row);
-                });
-            </script>
+            <h2>مبلغ شارژ : ۲,۵۰۰,۰۰۰ ریال</h2>
+            <div class="info-box">
+                <h3>نحوه محاسبه هزینه گاز:</h3>
+                
+                <h4>🔹 محاسبه در فصل زمستان:</h4>
+                <p>• مبلغ گاز به دو بخش مساوی تقسیم می‌شود</p>
+                <p>• نصف اول به صورت مساوی بین همه واحدها تقسیم می‌شود</p>
+                <p>• نصف دوم بر اساس تعداد نفرات هر واحد محاسبه می‌گردد</p>
+                <p>• سهم ثابت هر واحد: یک دهم نصف مبلغ گاز (گرد شده به مضرب ۱۰,۰۰۰ ریال)</p>
+                
+                <h4>🔹 محاسبه در فصل تابستان:</h4>
+                <p>• کل مبلغ گاز فقط بر اساس تعداد نفرات محاسبه می‌شود</p>
+                <p>• هر واحد به نسبت تعداد ساکنین خود هزینه پرداخت می‌کند</p>
+                
+                <h4>📌 نکات مهم:</h4>
+                <p>• واحدهای بدون ساکن از پرداخت هزینه گاز و آب و برق معاف هستند</p>
+                <p>• آب و برق همیشه بر اساس تعداد نفرات محاسبه می‌شود</p>
+                <p>• هزینه متفرقه به صورت مساوی بین واحدها تقسیم می‌شود</p>
+            </div>
         </center>
     </div>
 </div>
+
+<script>
+    const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+    const englishDigits = "0123456789";
+
+    function toPersianNumber(input) {
+        return input.replace(/\d/g, function(d) {
+            return persianDigits[d];
+        });
+    }
+
+    function toEnglishNumber(input) {
+        return input.replace(/[۰-۹]/g, function(d) {
+            return englishDigits[persianDigits.indexOf(d)];
+        });
+    }
+
+    function formatNumberWithComma(input) {
+        let parts = input.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+    }
+
+    function validateAndFormatNumber(input) {
+        let value = input.value.replace(/,/g, '');
+        value = toEnglishNumber(value);
+        if (isNaN(value)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'خطا',
+                text: ' ! لطفاً فقط عدد وارد کنید',
+                confirmButtonText: 'باشه'
+            });
+            input.value = '';
+        } else {
+            value = formatNumberWithComma(value);
+            value = toPersianNumber(value);
+            if (value.startsWith('۰') && value.length > 1) {
+                value = value.slice(1);
+            }
+            input.value = value;
+        }
+    }
+
+    function parseNumber(num) {
+        let englishNum = num.replace(/[۰-۹]/g, function(d) {
+            return englishDigits[persianDigits.indexOf(d)];
+        });
+        return parseFloat(englishNum.replace(/,/g, '')) || 0;
+    }
+
+    function calculateUnitCost(baseCost, unitPeople, totalPeople) {
+        if (totalPeople === 0) return 0;
+        return Math.round((baseCost / totalPeople) * unitPeople / 10000) * 10000;
+    }
+
+    function validateForm() {
+        const month = document.getElementById('month').value;
+        if (!month) {
+            Swal.fire({
+                icon: 'error',
+                title: 'خطا',
+                text: 'لطفاً ماه را انتخاب کنید',
+                confirmButtonText: 'باشه'
+            });
+            return false;
+        }
+
+        const num2 = parseNumber(document.getElementById('num2').value);
+        const season = document.getElementById('season').value;
+        if (num2 > 0 && !season) {
+            Swal.fire({
+                icon: 'error',
+                title: 'خطا',
+                text: 'لطفاً برای مبلغ گاز، فصل مربوطه را انتخاب کنید',
+                confirmButtonText: 'باشه'
+            });
+            return false;
+        }
+
+        return true;
+    }
+
+    function createTable() {
+        if (!validateForm()) return;
+        
+        var num1 = parseNumber(document.getElementById('num1').value);
+        var num2 = parseNumber(document.getElementById('num2').value);
+        var num3 = parseNumber(document.getElementById('num3').value);
+        var num4 = parseNumber(document.getElementById('num4').value);
+        var season = document.getElementById('season').value;
+
+        // اطلاعات واحدها
+        var units = [
+            {name: "اول شرقی", people: 3, owner: "آقای وحید رنجبران"},
+            {name: "اول غربی", people: 1, owner: "خانم نورکیهانی"},
+            {name: "دوم شرقی", people: 1, owner: "آقای ایروانی"},
+            {name: "دوم غربی", people: 3, owner: "آقای رنجبران"},
+            {name: "سوم شرقی", people: 2, owner: "خانم زهری"},
+            {name: "سوم غربی", people: 3, owner: "آقای عضایی"},
+            {name: "چهارم شرقی", people: 0, owner: ""},
+            {name: "چهارم غربی", people: 4, owner: "آقای حاجیا"},
+            {name: "پنجم شرقی", people: 2, owner: "آقای اسکویی"},
+            {name: "پنجم غربی", people: 5, owner: "آقای معماریان"}
+        ];
+
+        var totalPeople = units.reduce((sum, unit) => sum + unit.people, 0);
+        var makharej = Math.round(num1 / 10 / 10000) * 10000;
+        var sharj = 2500000;
+
+        // محاسبه گاز بر اساس فصل
+        var gasBaseCost, gasFixedCost;
+        if (season === 'winter') {
+            gasBaseCost = num2 / 2;
+            gasFixedCost = Math.round((num2 / 2) / 10 / 10000) * 10000;
+        } else if (season === 'summer') {
+            gasBaseCost = num2;
+            gasFixedCost = 0;
+        } else {
+            gasBaseCost = 0;
+            gasFixedCost = 0;
+        }
+
+        // محاسبه هزینه‌های هر واحد
+        var data = [];
+        units.forEach(unit => {
+            var gasCost = 0;
+            if (unit.people > 0) {
+                gasCost = calculateUnitCost(gasBaseCost, unit.people, totalPeople) + gasFixedCost;
+            }
+            
+            var abCost = calculateUnitCost(num3, unit.people, totalPeople);
+            var barghCost = calculateUnitCost(num4, unit.people, totalPeople);
+            var jam = sharj + gasCost + abCost + barghCost + makharej;
+            
+            data.push(
+                jam, makharej, barghCost, abCost, gasCost, sharj, unit.name
+            );
+        });
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        var table = document.getElementById("myTable");
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+
+        for (var i = 0; i < units.length; i++) {
+            var row = table.insertRow();
+            for (var j = 0; j < 7; j++) {
+                var cell = row.insertCell();
+                var value = data[i * 7 + j];
+                cell.innerHTML = value !== undefined ? toPersianNumber(formatNumber(value)) : "";
+            }
+        }
+    }
+
+    function printTable() {
+        var printWindow = window.open('', '', 'height=400,width=600');
+        printWindow.document.write('<html><head><title>لیست شارژ</title>');
+        printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; }');
+        printWindow.document.write('th, td { border: 1px solid black; padding: 15px; text-align: center; font-size: 28px; }');
+        printWindow.document.write('th { font-size: 30px; }');
+        printWindow.document.write('</style></head><body>');
+        printWindow.document.write(document.getElementById("myTable").outerHTML);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    function saveData() {
+        if (!validateForm()) return;
+        
+        const month = document.getElementById('month').value;
+        
+        Swal.fire({
+            title: 'نام فایل ذخیره',
+            input: 'text',
+            inputValue: `شارژ-${month}`,
+            inputLabel: 'می‌توانید نام فایل را تغییر دهید',
+            showCancelButton: true,
+            confirmButtonText: 'ذخیره',
+            cancelButtonText: 'انصراف',
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'لطفاً نام فایل را وارد کنید';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const filename = result.value;
+                
+                const data = {
+                    month: month,
+                    num1: document.getElementById('num1').value,
+                    num2: document.getElementById('num2').value,
+                    num3: document.getElementById('num3').value,
+                    num4: document.getElementById('num4').value,
+                    season: document.getElementById('season').value,
+                    timestamp: new Date().toLocaleString('fa-IR')
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${filename}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ذخیره شد',
+                    text: `فایل ${filename} با موفقیت ذخیره شد`,
+                    confirmButtonText: 'باشه'
+                });
+            }
+        });
+    }
+
+    function loadData() {
+        Swal.fire({
+            title: 'بازیابی داده‌ها',
+            text: ' برای بازیابی فایل به فولدر دانلود مراجعه کنید ',
+            icon: 'info',
+            confirmButtonText: 'انتخاب فایل'
+        }).then(() => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = e => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = event => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        loadDataIntoForm(data);
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطا',
+                            text: 'فایل انتخاب شده معتبر نیست',
+                            confirmButtonText: 'باشه'
+                        });
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        });
+    }
+
+    function loadDataIntoForm(data) {
+        document.getElementById('month').value = data.month;
+        document.getElementById('num1').value = data.num1;
+        document.getElementById('num2').value = data.num2;
+        document.getElementById('num3').value = data.num3;
+        document.getElementById('num4').value = data.num4;
+        document.getElementById('season').value = data.season;
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'بازیابی شد',
+            html: `داده‌های ${data.month} با موفقیت بارگذاری شدند<br><small>آخرین ذخیره: ${data.timestamp}</small>`,
+            confirmButtonText: 'باشه'
+        });
+    }
+
+    function resetPage() {
+        document.getElementById("inputForm").reset();
+        
+        var table = document.getElementById("myTable");
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
 </body>
 </html>
