@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شعبده بازی با کارت پاسور</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #dc3545;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+            border: 2px solid #dc3545;
+        }
+        
+        .game-container {
+            display: none;
+        }
+        
+        .card-question {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .card-question h3 {
+            color: #dc3545;
+            margin-top: 0;
+            text-align: center;
+            font-size: 1.4rem;
+        }
+        
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            width: 80px;
+            height: 120px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: white;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: scale(1.05);
+        }
+        
+        .answer-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .answer-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .answer-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .result-container {
+            background-color: #dc3545;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.8rem;
+            display: none;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .result-card {
+            width: 150px;
+            height: 220px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: white;
+            animation: flip 1s ease-in-out;
+        }
+        
+        @keyframes flip {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        
+        .start-btn, .reset-btn {
+            display: block;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 30px auto;
+            transition: all 0.3s;
+        }
+        
+        .start-btn:hover, .reset-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            height: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #dc3545;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .question-counter {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 600px) {
+            .card {
+                width: 70px;
+                height: 105px;
+            }
+            
+            .answer-options {
+                flex-direction: column;
+            }
+            
+            .answer-btn {
+                width: 100%;
+            }
+            
+            .result-card {
+                width: 120px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>تردستی با ورق</h1>
+    
+    <div class="intro" id="intro">
+        <h2>به بازی حدس کارت خوش آمدید!</h2>
+        <p>یک کارت از بین 52 کارت پاسور را در ذهن خود انتخاب کنید.</p>
+        <p>با پاسخ به 6 سوال ساده، من کارت شما را حدس خواهم زد!</p>
+        <button class="start-btn" id="start-btn">شروع بازی</button>
+    </div>
+    
+    <div class="game-container" id="game-container">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="question-counter" id="question-counter">سوال 1 از 6</div>
+        
+        <div id="questions-container">
+            <!-- سوالات به صورت دینامیک ساخته می‌شوند -->
+        </div>
+    </div>
+    
+    <div class="result-container" id="result-container">
+        <h2>کارت مورد نظر شما:</h2>
+        <div class="result-card" id="result-card"></div>
+        <p id="result-message"></p>
+        <button class="reset-btn" id="reset-btn">بازی مجدد</button>
+    </div>
+    
+    <script>
+        // ایجاد 52 کارت پاسور با تصاویر واقعی
+        const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+        const values = ['ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king'];
+        
+        const cards = [];
+        suits.forEach(suit => {
+            values.forEach(value => {
+                cards.push({
+                    suit: suit,
+                    value: value,
+                    imageUrl: `https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/svg-cards/${value}_of_${suit}.svg`
+                });
+            });
+        });
+
+        // تابع برای ایجاد عنصر کارت با تصویر واقعی
+        function createCardElement(card) {
+            const cardEl = document.createElement('div');
+            cardEl.className = 'card';
+            cardEl.style.backgroundImage = `url('${card.imageUrl}')`;
+            cardEl.style.backgroundSize = 'contain';
+            return cardEl;
+        }
+
+        // تابع برای تصادفی کردن آرایه (Fisher-Yates shuffle)
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // ایجاد 6 گروه سوال با الگوی باینری
+        function createQuestionGroups() {
+            const groups = [];
+            
+            // ایجاد 6 گروه (برای 52 کارت، 6 سوال کافی است - 2^6 = 64)
+            for (let i = 0; i < 6; i++) {
+                groups.push({
+                    title: `آیا کارت شما در این مجموعه است؟ (مجموعه ${i+1})`,
+                    filter: index => (index & (1 << i)) !== 0
+                });
+            }
+            
+            return groups;
+        }
+        
+        // متغیرهای بازی
+        let currentQuestion = 0;
+        let selectedCardIndex = 0;
+        let questionGroups = [];
+        
+        // عناصر DOM
+        const introSection = document.getElementById('intro');
+        const gameContainer = document.getElementById('game-container');
+        const questionsContainer = document.getElementById('questions-container');
+        const questionCounter = document.getElementById('question-counter');
+        const resultContainer = document.getElementById('result-container');
+        const resultCard = document.getElementById('result-card');
+        const resultMessage = document.getElementById('result-message');
+        const progressBar = document.getElementById('progress-bar');
+        const startBtn = document.getElementById('start-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        
+        // شروع بازی
+        startBtn.addEventListener('click', () => {
+            introSection.style.display = 'none';
+            gameContainer.style.display = 'block';
+            currentQuestion = 0;
+            selectedCardIndex = 0;
+            questionGroups = createQuestionGroups();
+            showQuestion(currentQuestion);
+        });
+        
+        // نمایش سوال
+        function showQuestion(index) {
+            if (index >= questionGroups.length) {
+                calculateResult();
+                return;
+            }
+            
+            progressBar.style.width = `${(index / questionGroups.length) * 100}%`;
+            questionCounter.textContent = `سوال ${index + 1} از ${questionGroups.length}`;
+            
+            const group = questionGroups[index];
+            const groupCards = cards.filter((_, i) => group.filter(i));
+            
+            questionsContainer.innerHTML = `
+                <div class="card-question">
+                    <h3>${group.title}</h3>
+                    <div class="cards-container" id="cards-container"></div>
+                    <div class="answer-options">
+                        <button class="answer-btn" data-answer="yes">بله ✅</button>
+                        <button class="answer-btn" data-answer="no">خیر ❌</button>
+                    </div>
+                </div>
+            `;
+            
+            const cardsContainer = document.getElementById('cards-container');
+            // نمایش کارت‌های این گروه به صورت تصادفی
+            shuffleArray([...groupCards]).forEach(card => {
+                cardsContainer.appendChild(createCardElement(card));
+            });
+            
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const answer = btn.dataset.answer === 'yes';
+                    
+                    // به‌روزرسانی ایندکس کارت انتخاب شده بر اساس پاسخ
+                    if (answer) {
+                        selectedCardIndex |= (1 << index);
+                    }
+                    
+                    setTimeout(() => {
+                        currentQuestion++;
+                        showQuestion(currentQuestion);
+                    }, 300);
+                });
+            });
+        }
+        
+        // محاسبه نتیجه
+        function calculateResult() {
+            gameContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            const selectedCard = selectedCardIndex < cards.length ? 
+                cards[selectedCardIndex] : {
+                    value: "unknown",
+                    suit: "unknown",
+                    imageUrl: "https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/svg-cards/back.svg"
+                };
+            
+            resultCard.style.backgroundImage = `url('${selectedCard.imageUrl}')`;
+            
+            if (selectedCardIndex < cards.length) {
+                resultMessage.textContent = "کارت شما را پیدا کردم!";
+            } else {
+                resultMessage.textContent = "نتوانستم کارت شما را حدس بزنم!";
+            }
+        }
+        
+        // ریست بازی
+        resetBtn.addEventListener('click', () => {
+            resultContainer.style.display = 'none';
+            introSection.style.display = 'block';
+            
+            currentQuestion = 0;
+            selectedCardIndex = 0;
+            progressBar.style.width = '0%';
+        });
+    </script>
+</body>
+</html>
