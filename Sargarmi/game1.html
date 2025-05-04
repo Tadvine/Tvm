@@ -29,6 +29,20 @@
             margin-bottom: 24px;
             font-size: 1.8rem;
         }
+        .timer-container {
+            margin: 20px 0;
+            font-size: 1.5rem;
+        }
+        .timer {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 2.5rem;
+            padding: 10px 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            display: inline-block;
+            min-width: 100px;
+        }
         .word-display {
             font-size: 2rem;
             margin: 24px 0;
@@ -95,6 +109,7 @@
         .score {
             color: #2ecc71;
             font-weight: bold;
+            font-size: 1.3rem;
         }
         .message {
             margin-top: 16px;
@@ -121,12 +136,18 @@
                 font-size: 1.5rem;
                 letter-spacing: 4px;
             }
+            .timer {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>بازی حدس زدن نام کشور</h1>
+        <div class="timer-container">
+            زمان باقیمانده: <span class="timer" id="timer">90</span> ثانیه
+        </div>
         <div class="word-display" id="word-display"></div>
         <div class="keyboard" id="keyboard"></div>
         <div class="game-info">
@@ -137,7 +158,7 @@
     </div>
 
     <script>
-        // لیست کشورها (همان لیست اصلی با حفظ ترتیب)
+        // لیست کشورها
         const countries = [
             "ژاپن", "فرانسه", "ایران", "المان", "مصر", 
             "امریکا", "کانادا", "چین", "هند", "برزیل",
@@ -179,6 +200,7 @@
         const maxAttemptsEl = document.getElementById('max-attempts');
         const scoreEl = document.getElementById('score');
         const messageEl = document.getElementById('message');
+        const timerEl = document.getElementById('timer');
 
         // متغیرهای بازی
         let currentCountry = '';
@@ -186,6 +208,9 @@
         let attempts = 0;
         let maxAttempts = 0;
         let score = 0;
+        let timer = 90;
+        let timerInterval;
+        let gameActive = true;
 
         // حروف فارسی
         const persianLetters = [
@@ -208,7 +233,7 @@
             
             // استفاده از event delegation
             keyboard.addEventListener('click', (e) => {
-                if (e.target.classList.contains('key')) {
+                if (e.target.classList.contains('key') && gameActive) {
                     const letter = e.target.dataset.letter;
                     handleGuess(letter, e.target);
                 }
@@ -217,20 +242,48 @@
 
         // شروع بازی جدید
         function startNewGame() {
+            if (score < 0) {
+                endGame();
+                return;
+            }
+            
             currentCountry = countries[Math.floor(Math.random() * countries.length)];
             maxAttempts = currentCountry.length + 3;
             attempts = 0;
             guessedLetters = [];
+            timer = 90;
             
             updateWordDisplay();
             attemptsEl.textContent = attempts;
             maxAttemptsEl.textContent = maxAttempts;
             messageEl.textContent = '';
             messageEl.className = 'message';
+            timerEl.textContent = timer;
             
             document.querySelectorAll('.key').forEach(key => {
                 key.className = 'key';
             });
+            
+            clearInterval(timerInterval);
+            startTimer();
+            gameActive = true;
+        }
+
+        // شروع تایمر
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timer--;
+                timerEl.textContent = timer;
+                
+                if (timer <= 10) {
+                    timerEl.style.color = '#e74c3c';
+                }
+                
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeOut();
+                }
+            }, 1000);
         }
 
         // به‌روزرسانی نمایش کلمه
@@ -280,10 +333,21 @@
 
         // پردازش برد
         function handleWin() {
-            score += 10;
-            scoreEl.textContent = score;
+            clearInterval(timerInterval);
+            gameActive = false;
+            timerEl.style.color = '#3498db';
             
-            messageEl.textContent = 'آفرین! شما نام کشور را درست حدس زدید!';
+            // اگر بدون خطا جواب داده شود 20 امتیاز
+            const wrongGuesses = document.querySelectorAll('.key.wrong').length;
+            if (wrongGuesses === 0) {
+                score += 20;
+                messageEl.textContent = 'عالی! شما بدون هیچ خطایی نام کشور را حدس زدید! +20 امتیاز';
+            } else {
+                score += 10;
+                messageEl.textContent = 'آفرین! شما نام کشور را درست حدس زدید! +10 امتیاز';
+            }
+            
+            scoreEl.textContent = score;
             messageEl.classList.add('success');
             
             setTimeout(startNewGame, 2000);
@@ -291,10 +355,44 @@
 
         // پردازش باخت
         function handleLoss() {
-            messageEl.textContent = `بازی تمام شد! نام کشور "${currentCountry}" بود.`;
+            clearInterval(timerInterval);
+            gameActive = false;
+            timerEl.style.color = '#3498db';
+            
+            messageEl.textContent = `متاسفانه حدس‌های شما تمام شد! نام کشور "${currentCountry}" بود.`;
             messageEl.classList.add('failure');
             
-            setTimeout(startNewGame, 3000);
+            endGame();
+        }
+
+        // پردازش زمان تمام شده
+        function handleTimeOut() {
+            gameActive = false;
+            timerEl.style.color = '#3498db';
+            score -= 10;
+            scoreEl.textContent = score;
+            
+            if (score < 0) {
+                messageEl.textContent = `زمان شما تمام شد! امتیاز شما منفی شد. بازی تمام شد.`;
+                endGame();
+            } else {
+                messageEl.textContent = `زمان شما تمام شد! 10 امتیاز از شما کسر شد. نام کشور "${currentCountry}" بود.`;
+                messageEl.classList.add('failure');
+                setTimeout(startNewGame, 3000);
+            }
+        }
+
+        // پایان بازی
+        function endGame() {
+            messageEl.textContent = `بازی تمام شد! امتیاز نهایی شما: ${score}`;
+            messageEl.classList.add('failure');
+            gameActive = false;
+            clearInterval(timerInterval);
+            
+            // غیرفعال کردن صفحه کلید
+            document.querySelectorAll('.key').forEach(key => {
+                key.classList.add('used');
+            });
         }
 
         // راه‌اندازی بازی
