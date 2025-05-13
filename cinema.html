@@ -186,9 +186,6 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            position: absolute;
-            top: 0;
-            left: 0;
         }
 
         /* Menu Button */
@@ -270,7 +267,7 @@
                     <span>فیلم های ایرانی</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="category-content show" id="iranian">
+                <div class="category-content" id="iranian">
                     <ul class="movie-list">
                         <li class="active" data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>
                         <li data-src="https://www.googleapis.com/drive/v3/files/1mcTDonjq08o6VphRtfBCiYASPftjxwzA?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سال گربه</li>
@@ -290,7 +287,7 @@
                     <span>فیلم های خارجی</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="category-content" id="foreign">
+                <div class="category-content show" id="foreign">
                     <ul class="movie-list">
                         <li data-src="https://doostihaa.upera.tv/3023541-0-480.mp4">همنشین</li>
                         <li data-src="https://s9.irdanlod.ir/Movies/2015/T/The.Revenant.2015.480p.Farsi.Dubbed.mkv">از گور برخاسته</li>
@@ -327,8 +324,8 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
-        // Set first movie as active
-        const firstMovie = document.querySelector('.movie-list li[data-src]');
+        // Set first movie as active (from foreign category)
+        const firstMovie = document.querySelector('.category-content.show .movie-list li[data-src]');
         if (firstMovie) {
             playMovie(firstMovie);
         }
@@ -455,10 +452,19 @@
         categories.forEach(category => {
             const content = category.querySelector('.category-content');
             const icon = category.querySelector('i');
-            content.classList.add('show');
+            content.classList.remove('show');
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+        });
+        
+        // Keep foreign category open by default
+        const foreignCategory = document.getElementById('foreign');
+        if (foreignCategory) {
+            foreignCategory.classList.add('show');
+            const icon = foreignCategory.previousElementSibling.querySelector('i');
             icon.classList.remove('fa-chevron-up');
             icon.classList.add('fa-chevron-down');
-        });
+        }
     }
 
     // Event delegation for movie items
