@@ -109,10 +109,29 @@
             align-items: center;
             font-weight: bold;
             color: #333;
+            position: relative;
         }
 
         .category-header:hover {
             background-color: #eee;
+        }
+
+        .category-poster {
+            position: absolute;
+            left: -310px;
+            top: 0;
+            width: 300px;
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 100;
+        }
+
+        .category-header:hover .category-poster {
+            display: block;
         }
 
         .category-content {
@@ -234,6 +253,10 @@
             #menu-btn {
                 display: flex;
             }
+
+            .category-poster {
+                display: none !important;
+            }
         }
 
         /* Hidden Movies */
@@ -266,10 +289,11 @@
                 <div class="category-header" onclick="toggleCategory('iranian')">
                     <span>فیلم های ایرانی</span>
                     <i class="fas fa-chevron-down"></i>
+                    <div class="category-poster" style="background-image: url('https://via.placeholder.com/300x150?text=پوستر+فیلم+های+ایرانی')"></div>
                 </div>
                 <div class="category-content" id="iranian">
                     <ul class="movie-list">
-                        <li class="active" data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>
+                        <li data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>
                         <li data-src="https://www.googleapis.com/drive/v3/files/1mcTDonjq08o6VphRtfBCiYASPftjxwzA?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سال گربه</li>
                         <li data-src="https://www.googleapis.com/drive/v3/files/1AB8AMYMGL6SdS9x8EyiMLS1y98e9XCno?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">تگزاس ۳</li>
                         <li data-src="https://www.googleapis.com/drive/v3/files/1nEKAtF-EKvQtklfzEe8P6SISCC9K0J0S?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ملاقات با جادوگر</li>
@@ -286,8 +310,9 @@
                 <div class="category-header" onclick="toggleCategory('foreign')">
                     <span>فیلم های خارجی</span>
                     <i class="fas fa-chevron-down"></i>
+                    <div class="category-poster" style="background-image: url('https://via.placeholder.com/300x150?text=پوستر+فیلم+های+خارجی')"></div>
                 </div>
-                <div class="category-content show" id="foreign">
+                <div class="category-content" id="foreign">
                     <ul class="movie-list">
                         <li data-src="https://doostihaa.upera.tv/3023541-0-480.mp4">همنشین</li>
                         <li data-src="https://s9.irdanlod.ir/Movies/2015/T/The.Revenant.2015.480p.Farsi.Dubbed.mkv">از گور برخاسته</li>
@@ -296,6 +321,21 @@
                         <li data-src="https://doostihaa.upera.tv/2943974-0-480.mp4">نقشه خانوادگی</li>
                         <li class="hidden-movie" data-src="https://example.com/hidden-movie1.mp4">فیلم مخفی ۱</li>
                         <li class="hidden-movie" data-src="https://example.com/hidden-movie2.mp4">فیلم مخفی ۲</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Hidden Movies (only visible after search with code 1234) -->
+            <div class="category hidden-movie">
+                <div class="category-header" onclick="toggleCategory('hidden')">
+                    <span>فیلم های مخفی</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="category-poster" style="background-image: url('https://via.placeholder.com/300x150?text=پوستر+فیلم+های+مخفی')"></div>
+                </div>
+                <div class="category-content" id="hidden">
+                    <ul class="movie-list">
+                        <li data-src="https://example.com/hidden-movie1.mp4">فیلم مخفی ۱</li>
+                        <li data-src="https://example.com/hidden-movie2.mp4">فیلم مخفی ۲</li>
                     </ul>
                 </div>
             </div>
@@ -308,7 +348,7 @@
 
     <div class="video-container">
         <div class="video-wrapper">
-            <video id="moviePlayer" controls autoplay></video>
+            <video id="moviePlayer" controls></video>
         </div>
     </div>
 </div>
@@ -324,16 +364,11 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
-        // Set first movie as active (from foreign category)
-        const firstMovie = document.querySelector('.category-content.show .movie-list li[data-src]');
-        if (firstMovie) {
-            playMovie(firstMovie);
-        }
+        // Remove autoplay from video player
+        videoPlayer.autoplay = false;
         
-        // Hide hidden movies initially
-        document.querySelectorAll('.hidden-movie').forEach(movie => {
-            movie.style.display = 'none';
-        });
+        // Hide hidden category initially
+        document.querySelector('.category.hidden-movie').style.display = 'none';
     });
 
     // Toggle sidebar on menu button click
@@ -352,7 +387,6 @@
         // Play the movie
         videoPlayer.src = movieSrc;
         videoPlayer.load();
-        videoPlayer.play().catch(e => console.log('Autoplay prevented:', e));
         
         // Close sidebar on mobile
         if (window.innerWidth <= 768) {
@@ -392,6 +426,10 @@
             document.querySelectorAll('.movie-list li:not(.hidden-movie)').forEach(movie => {
                 movie.style.display = 'none';
             });
+            
+            // Show hidden category
+            const hiddenCategory = document.querySelector('.category.hidden-movie');
+            hiddenCategory.style.display = 'block';
             
             // Show all hidden movies
             document.querySelectorAll('.hidden-movie').forEach(movie => {
@@ -443,28 +481,24 @@
             item.style.display = 'block';
         });
         
-        // Hide all hidden movies
+        // Hide all hidden movies and category
         document.querySelectorAll('.hidden-movie').forEach(item => {
             item.style.display = 'none';
         });
+        document.querySelector('.category.hidden-movie').style.display = 'none';
         
-        // Expand all categories
+        // Collapse all categories
         categories.forEach(category => {
             const content = category.querySelector('.category-content');
-            const icon = category.querySelector('i');
-            content.classList.remove('show');
-            icon.classList.remove('fa-chevron-down');
-            icon.classList.add('fa-chevron-up');
+            if (content) {
+                content.classList.remove('show');
+                const icon = category.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+            }
         });
-        
-        // Keep foreign category open by default
-        const foreignCategory = document.getElementById('foreign');
-        if (foreignCategory) {
-            foreignCategory.classList.add('show');
-            const icon = foreignCategory.previousElementSibling.querySelector('i');
-            icon.classList.remove('fa-chevron-up');
-            icon.classList.add('fa-chevron-down');
-        }
     }
 
     // Event delegation for movie items
