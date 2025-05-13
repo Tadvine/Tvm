@@ -120,29 +120,10 @@
             align-items: center;
             font-weight: bold;
             color: #333;
-            position: relative;
         }
 
         .category-header:hover {
             background-color: #eee;
-        }
-
-        .category-poster {
-            position: fixed;
-            left: 20px;
-            top: 100px;
-            width: 280px;
-            height: 400px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            display: none;
-            z-index: 1000;
-        }
-
-        .category-header:hover .category-poster {
-            display: block;
         }
 
         .category-content {
@@ -199,12 +180,7 @@
             background-color: #f9f9f9;
             display: flex;
             flex-direction: column;
-            margin-left: 0;
-            transition: margin-left 0.3s ease;
-        }
-
-        .video-container.sidebar-open {
-            margin-left: -300px;
+            position: relative;
         }
 
         .video-wrapper {
@@ -222,6 +198,18 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
+        }
+
+        .video-poster {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: none;
+            z-index: 10;
         }
 
         /* Menu Button */
@@ -274,16 +262,8 @@
                 padding: 10px;
             }
 
-            .video-container.sidebar-open {
-                margin-left: 0;
-            }
-
             #menu-btn {
                 display: flex;
-            }
-
-            .category-poster {
-                display: none !important;
             }
         }
 
@@ -316,8 +296,7 @@
             <!-- Iranian Movies -->
             <div class="category">
                 <div class="category-header" onclick="toggleCategory('iranian')" 
-                     onmouseenter="showPoster('https://www.technolife.com/wp-content/uploads/2022/03/amhadfywqisg.jpeg')"
-                     onmouseleave="hidePoster()">
+                     data-poster="https://www.technolife.com/wp-content/uploads/2022/03/amhadfywqisg.jpeg">
                     <span>فیلم های ایرانی</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
@@ -338,8 +317,7 @@
             <!-- Foreign Movies -->
             <div class="category">
                 <div class="category-header" onclick="toggleCategory('foreign')"
-                     onmouseenter="showPoster('https://via.placeholder.com/280x400?text=پوستر+فیلم+های+خارجی')"
-                     onmouseleave="hidePoster()">
+                     data-poster="https://zoomlife.ir/uploads/posts/2021-09/1630768873-most-popular-movies.jpg">
                     <span>فیلم های خارجی</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
@@ -359,8 +337,7 @@
             <!-- Hidden Movies (only visible after search with code 1234) -->
             <div class="category hidden-movie">
                 <div class="category-header" onclick="toggleCategory('hidden')"
-                     onmouseenter="showPoster('https://via.placeholder.com/280x400?text=پوستر+فیلم+های+مخفی')"
-                     onmouseleave="hidePoster()">
+                     data-poster="https://via.placeholder.com/800x450?text=پوستر+فیلم+های+مخفی">
                     <span>فیلم های مخفی</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
@@ -381,11 +358,10 @@
     <div class="video-container" id="videoContainer">
         <div class="video-wrapper">
             <video id="moviePlayer" controls></video>
+            <div class="video-poster" id="videoPoster"></div>
         </div>
     </div>
 </div>
-
-<div id="posterContainer" class="category-poster"></div>
 
 <script>
     // DOM Elements
@@ -395,9 +371,9 @@
     const movieItems = document.querySelectorAll('.movie-list li');
     const searchInput = document.getElementById('searchInput');
     const categories = document.querySelectorAll('.category');
-    const videoContainer = document.getElementById('videoContainer');
     const sidebarOverlay = document.querySelector('.sidebar-overlay');
-    const posterContainer = document.getElementById('posterContainer');
+    const videoPoster = document.getElementById('videoPoster');
+    const categoryHeaders = document.querySelectorAll('.category-header');
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
@@ -406,31 +382,42 @@
         
         // Hide hidden category initially
         document.querySelector('.category.hidden-movie').style.display = 'none';
+        
+        // Show default poster (Iranian movies)
+        showCategoryPoster('https://via.placeholder.com/800x450?text=پوستر+فیلم+های+ایرانی');
     });
 
     // Toggle sidebar on menu button click
     menuBtn.addEventListener('click', function() {
         sideBar.classList.toggle('active');
         sidebarOverlay.classList.toggle('active');
-        videoContainer.classList.toggle('sidebar-open');
     });
 
     // Close sidebar when clicking on overlay
     sidebarOverlay.addEventListener('click', function() {
         sideBar.classList.remove('active');
         sidebarOverlay.classList.remove('active');
-        videoContainer.classList.remove('sidebar-open');
     });
 
-    // Show poster on hover
-    function showPoster(imageUrl) {
-        posterContainer.style.backgroundImage = `url('${imageUrl}')`;
-        posterContainer.style.display = 'block';
+    // Show category poster when clicking on category header
+    categoryHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            const posterUrl = this.getAttribute('data-poster');
+            showCategoryPoster(posterUrl);
+        });
+    });
+
+    // Show category poster in video player
+    function showCategoryPoster(imageUrl) {
+        videoPoster.style.backgroundImage = `url('${imageUrl}')`;
+        videoPoster.style.display = 'block';
+        videoPlayer.style.display = 'none';
     }
 
-    // Hide poster when not hovering
+    // Hide poster and show video when playing
     function hidePoster() {
-        posterContainer.style.display = 'none';
+        videoPoster.style.display = 'none';
+        videoPlayer.style.display = 'block';
     }
 
     // Play selected movie
@@ -444,11 +431,11 @@
         // Play the movie
         videoPlayer.src = movieSrc;
         videoPlayer.load();
+        hidePoster();
         
         // Close sidebar
         sideBar.classList.remove('active');
         sidebarOverlay.classList.remove('active');
-        videoContainer.classList.remove('sidebar-open');
     }
 
     // Toggle category visibility
