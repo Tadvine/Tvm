@@ -96,10 +96,40 @@
             border: none;
         }
 
+        .sort-btn {
+            background-color: #FF9800;
+            color: white;
+            border: none;
+        }
+
         .cancel-btn {
             background-color: #f44336;
             color: white;
             border: none;
+        }
+
+        .custom-link-section {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .custom-link-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-family: 'Noto Kufi Arabic', sans-serif;
+        }
+
+        .play-custom-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #FF9800;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
         }
 
         .movie-categories {
@@ -135,6 +165,11 @@
 
         .category-content.show {
             max-height: 1000px;
+        }
+
+        .sub-category {
+            margin-right: 15px;
+            margin-top: 5px;
         }
 
         .movie-list {
@@ -208,8 +243,20 @@
             height: 100%;
             background-size: cover;
             background-position: center;
-            display: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             z-index: 10;
+            background-image: url('https://via.placeholder.com/800x450?text=گلچین+سینمایی');
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .video-poster h2 {
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         /* Menu Button */
@@ -246,6 +293,27 @@
             display: block;
         }
 
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .side-bar {
@@ -266,11 +334,6 @@
                 display: flex;
             }
         }
-
-        /* Hidden Movies */
-        .hidden-movie {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -288,8 +351,14 @@
             <input type="text" id="searchInput" placeholder="جستجوی فیلم...">
             <div class="search-actions">
                 <button class="search-btn" onclick="searchMovie()">جستجو</button>
+                <button class="sort-btn" onclick="toggleSort()">مرتب کردن</button>
                 <button class="cancel-btn" onclick="cancelSearch()">لغو</button>
             </div>
+        </div>
+
+        <div class="custom-link-section">
+            <input type="text" id="customLinkInput" class="custom-link-input" placeholder="لینک فیلم مورد نظر...">
+            <div class="play-custom-btn" onclick="playCustomLink()">پخش لینک</div>
         </div>
 
         <div class="movie-categories">
@@ -301,8 +370,15 @@
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="category-content" id="iranian">
-                    <ul class="movie-list">
-                        <li data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>
+                    <!-- New Movies Subcategory -->
+                    <div class="sub-category">
+                        <div class="category-header" onclick="toggleCategory('new-movies')">
+                            <span>فیلم های جدید</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="category-content" id="new-movies">
+                            <ul class="movie-list">
+                                <li data-src="https://www.googleapis.com/drive/v3/files/1Im9qRcfujmF2HMIvuImc9XAz3QprllNv?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ورود و خروج ممنوع</li>
                         <li data-src="https://www.googleapis.com/drive/v3/files/1mcTDonjq08o6VphRtfBCiYASPftjxwzA?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">سال گربه</li>
                         <li data-src="https://www.googleapis.com/drive/v3/files/1AB8AMYMGL6SdS9x8EyiMLS1y98e9XCno?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">تگزاس ۳</li>
                         <li data-src="https://www.googleapis.com/drive/v3/files/1nEKAtF-EKvQtklfzEe8P6SISCC9K0J0S?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">ملاقات با جادوگر</li>
@@ -311,8 +387,46 @@
                         <li data-src="https://www.googleapis.com/drive/v3/files/1EQ9kw85hFw--EmJZwefrtwkZj8sXmXQa?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">هفتاد سی</li>
                         <li data-src="https://www.googleapis.com/drive/v3/files/1BIQ-JZKiqdCn0_TR9Zt6eMysgl4U2un_?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">عینک قرمز</li>
                     </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Comedi Iranian Movies -->
+                    <ul class="movie-list">
+                        <li data-src="https://doostihaa.upera.tv/2701305-0-480.mp4">چهار انگشت</li>
+                        
+                        <li data-src="https://zardfilm.upera.tv/2718473-0-480.mp4">مطرب</li>
+                        
+                        <li data-src="https://zardfilm.upera.tv/2724456-0-480.mp4">چشم و گوش بسته</li>
+                        
+                        <li data-src="https://fcdn17.salamcinama.ir/video/63f691de205da02be5507dc6/aa3da692-177f-4858-be56-0954923ab9f2/Ayne_Baghal-480.mp4?mediaId=63f73987205da02be5507dd7&contentId=640db85bcfdc5a72a9788d73&aggregatorId=63e89cc234f3d832e4226483">آینه بغل</li>
+                        
+                        <li data-src="https://t.tarahipro.ir/98/05/Oxidan-480p.mkv">اکسیدان</li>
+                        
+                        <li data-src="https://zardfilm.upera.tv/2717295-0-480.mp4">رحمان ۱۴۰۰</li>
+                        
+                        <li data-src="https://zardfilm.upera.tv/2996928-0-480.mp4">دشمن زن</li>
+                        
+                        <li data-src="https://t.tarahipro.ir/96/07/movie/Khob%20Bad%20Jelf%20480.mkv">خوب بد جلف ۱</li>
+                        
+                        
+                        <li data-src="https://t.tarahipro.ir/99/05/Khoob_Bad_Jelfe_2_480p.mkv">خوب بد جلف ۲</li>
+                        
+                        
+                                   <li data-src="https://s3.irdanlod.ir/Films/Irani/Hezarpa.Part1.480p.mp4">هزارپا ۱</li>
+                                   
+                        
+                        <li data-src="http://dl.zardfilm.com/98/03/Hezarpa_E02_480.mp4">هزارپا ۲</li>
+                        
+                        
+                        
+                    </ul>
                 </div>
             </div>
+
+
+
+
+
 
             <!-- Foreign Movies -->
             <div class="category">
@@ -324,12 +438,14 @@
                 <div class="category-content" id="foreign">
                     <ul class="movie-list">
                         <li data-src="https://doostihaa.upera.tv/3023541-0-480.mp4">همنشین</li>
-                        <li data-src="https://s9.irdanlod.ir/Movies/2015/T/The.Revenant.2015.480p.Farsi.Dubbed.mkv">از گور برخاسته</li>
+                        <li
+                         data-src="https://s9.irdanlod.ir/Movies/2015/T/The.Revenant.2015.480p.Farsi.Dubbed.mkv">از گور برخاسته</li>
+                         
                         <li data-src="https://aec-337.pishtazmovie.ir/s4irdanlod/irdanlod/s4/files/Movie/2011/M/Mr.Poppers.Penguins.2011.480p.Farsi.Dubbed.mp4">پنگوئن های آقای پاپر</li>
+                        
                         <li data-src="https://s2.irdanlod.ir/Movies/2012/T/The.Three.Stooges.2012.480p.Farsi.Dubbed.mkv">سه کله پوک</li>
+                        
                         <li data-src="https://doostihaa.upera.tv/2943974-0-480.mp4">نقشه خانوادگی</li>
-                        <li class="hidden-movie" data-src="https://example.com/hidden-movie1.mp4">فیلم مخفی ۱</li>
-                        <li class="hidden-movie" data-src="https://example.com/hidden-movie2.mp4">فیلم مخفی ۲</li>
                     </ul>
                 </div>
             </div>
@@ -358,10 +474,16 @@
     <div class="video-container" id="videoContainer">
         <div class="video-wrapper">
             <video id="moviePlayer" controls></video>
-            <div class="video-poster" id="videoPoster"></div>
+            <div class="video-poster" id="videoPoster">
+                <h2>گلچین سینمایی</h2>
+                <p>لطفاً یک فیلم از لیست سمت راست انتخاب کنید</p>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
 
 <script>
     // DOM Elements
@@ -370,10 +492,12 @@
     const videoPlayer = document.getElementById('moviePlayer');
     const movieItems = document.querySelectorAll('.movie-list li');
     const searchInput = document.getElementById('searchInput');
+    const customLinkInput = document.getElementById('customLinkInput');
     const categories = document.querySelectorAll('.category');
     const sidebarOverlay = document.querySelector('.sidebar-overlay');
     const videoPoster = document.getElementById('videoPoster');
     const categoryHeaders = document.querySelectorAll('.category-header');
+    const toast = document.getElementById('toast');
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
@@ -383,8 +507,18 @@
         // Hide hidden category initially
         document.querySelector('.category.hidden-movie').style.display = 'none';
         
-        // Show default poster (Iranian movies)
-        showCategoryPoster('https://via.placeholder.com/800x450?text=پوستر+فیلم+های+ایرانی');
+        // Show default poster
+        showCategoryPoster('https://via.placeholder.com/800x450?text=گلچین+سینمایی');
+        
+        // Collapse all categories by default
+        document.querySelectorAll('.category-content').forEach(content => {
+            content.classList.remove('show');
+            const icon = content.previousElementSibling.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        });
     });
 
     // Toggle sidebar on menu button click
@@ -403,14 +537,16 @@
     categoryHeaders.forEach(header => {
         header.addEventListener('click', function() {
             const posterUrl = this.getAttribute('data-poster');
-            showCategoryPoster(posterUrl);
+            if (posterUrl) {
+                showCategoryPoster(posterUrl);
+            }
         });
     });
 
     // Show category poster in video player
     function showCategoryPoster(imageUrl) {
         videoPoster.style.backgroundImage = `url('${imageUrl}')`;
-        videoPoster.style.display = 'block';
+        videoPoster.style.display = 'flex';
         videoPlayer.style.display = 'none';
     }
 
@@ -438,6 +574,28 @@
         sidebarOverlay.classList.remove('active');
     }
 
+    // Play custom link from user input
+    function playCustomLink() {
+        const customLink = customLinkInput.value.trim();
+        
+        if (!customLink) {
+            alert('لطفا لینک فیلم را وارد کنید');
+            return;
+        }
+        
+        // Clear active state from all movies
+        movieItems.forEach(item => item.classList.remove('active'));
+        
+        // Play the custom link
+        videoPlayer.src = customLink;
+        videoPlayer.load();
+        hidePoster();
+        
+        // Close sidebar
+        sideBar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+    }
+
     // Toggle category visibility
     function toggleCategory(categoryId) {
         const category = document.getElementById(categoryId);
@@ -455,6 +613,16 @@
         }
     }
 
+    // Show toast notification
+    function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
     // Search movies
     function searchMovie() {
         const searchTerm = searchInput.value.trim().toLowerCase();
@@ -467,7 +635,7 @@
         // Special code to show hidden movies
         if (searchTerm === '1234') {
             // Hide all regular movies
-            document.querySelectorAll('.movie-list li:not(.hidden-movie)').forEach(movie => {
+            document.querySelectorAll('.movie-list li').forEach(movie => {
                 movie.style.display = 'none';
             });
             
@@ -476,23 +644,21 @@
             hiddenCategory.style.display = 'block';
             
             // Show all hidden movies
-            document.querySelectorAll('.hidden-movie').forEach(movie => {
+            document.querySelectorAll('.hidden-movie .movie-list li').forEach(movie => {
                 movie.style.display = 'block';
-                const category = movie.closest('.category-content');
-                if (category) {
-                    category.classList.add('show');
-                    const icon = category.previousElementSibling.querySelector('i');
-                    icon.classList.remove('fa-chevron-up');
-                    icon.classList.add('fa-chevron-down');
-                }
             });
+            
+            // Expand hidden category
+            document.getElementById('hidden').classList.add('show');
             return;
         }
 
         let foundResults = false;
         
         // Search in all non-hidden movies
-        document.querySelectorAll('.movie-list li:not(.hidden-movie)').forEach(item => {
+        document.querySelectorAll('.movie-list li').forEach(item => {
+            if (item.closest('.hidden-movie')) return;
+            
             const movieName = item.textContent.toLowerCase();
             if (movieName.includes(searchTerm)) {
                 item.style.display = 'block';
@@ -519,30 +685,56 @@
     // Cancel search
     function cancelSearch() {
         searchInput.value = '';
+        customLinkInput.value = '';
         
         // Show all non-hidden movies
-        document.querySelectorAll('.movie-list li:not(.hidden-movie)').forEach(item => {
-            item.style.display = 'block';
-        });
-        
-        // Hide all hidden movies and category
-        document.querySelectorAll('.hidden-movie').forEach(item => {
-            item.style.display = 'none';
-        });
-        document.querySelector('.category.hidden-movie').style.display = 'none';
-        
-        // Collapse all categories
-        categories.forEach(category => {
-            const content = category.querySelector('.category-content');
-            if (content) {
-                content.classList.remove('show');
-                const icon = category.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-up');
-                }
+        document.querySelectorAll('.movie-list li').forEach(item => {
+            if (!item.closest('.hidden-movie')) {
+                item.style.display = 'block';
             }
         });
+        
+        // Hide hidden category and movies
+        document.querySelector('.category.hidden-movie').style.display = 'none';
+        document.getElementById('hidden').classList.remove('show');
+        
+        // Collapse all categories
+        document.querySelectorAll('.category-content').forEach(content => {
+            content.classList.remove('show');
+            const icon = content.previousElementSibling.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        });
+    }
+
+    // Sort movies alphabetically
+    let isSortedAsc = false;
+
+    function toggleSort() {
+        const movieLists = document.querySelectorAll('.movie-list');
+        
+        movieLists.forEach(list => {
+            const movies = Array.from(list.querySelectorAll('li'));
+            
+            movies.sort((a, b) => {
+                const nameA = a.textContent.trim().toLowerCase();
+                const nameB = b.textContent.trim().toLowerCase();
+                return isSortedAsc ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+            });
+            
+            // Clear current list
+            list.innerHTML = '';
+            
+            // Add sorted items
+            movies.forEach(movie => {
+                list.appendChild(movie);
+            });
+        });
+        
+        isSortedAsc = !isSortedAsc;
+        showToast(`مرتب‌سازی ${isSortedAsc ? 'صعودی (الف-ی)' : 'نزولی (ی-الف)'} اعمال شد`);
     }
 
     // Event delegation for movie items
@@ -572,7 +764,7 @@
     // Keyboard shortcuts
     document.addEventListener('keydown', function(e) {
         // Space for play/pause
-        if (e.key === ' ' && document.activeElement !== searchInput) {
+        if (e.key === ' ' && document.activeElement !== searchInput && document.activeElement !== customLinkInput) {
             e.preventDefault();
             if (videoPlayer.paused) {
                 videoPlayer.play();
