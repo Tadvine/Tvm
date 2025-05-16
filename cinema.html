@@ -164,7 +164,8 @@
         }
 
         .category-content.show {
-            max-height: 1000px;
+            max-height: 500px; /* تغییر این مقدار */
+            overflow-y: auto; /* اضافه کردن این خط */
         }
 
         .sub-category {
@@ -174,6 +175,8 @@
 
         .movie-list {
             list-style: none;
+            max-height: 400px; /* اضافه کردن این خط */
+            overflow-y: auto; /* اضافه کردن این خط */
         }
 
         .movie-list li {
@@ -396,22 +399,70 @@
                     <!-- Comedi Iranian Movies Subcategory -->
                     <div class="sub-category">
                         <div class="category-header" onclick="toggleCategory('comedy-movies')">
+                        
+                        
                             <span>فیلم های کمدی</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="category-content" id="comedy-movies">
                             <ul class="movie-list">
+                            
+                            
+                            <li data-src="https://dl.serverdl.one/movie/iranian/2024/03/Fossil_480p.mkv">فسیل</li>
+                                                      
                                 <li data-src="https://doostihaa.upera.tv/2701305-0-480.mp4">چهار انگشت</li>
                                 <li data-src="https://zardfilm.upera.tv/2718473-0-480.mp4">مطرب</li>
                                 <li data-src="https://zardfilm.upera.tv/2724456-0-480.mp4">چشم و گوش بسته</li>
-                                <li data-src="https://fcdn17.salamcinama.ir/video/63f691de205da02be5507dc6/aa3da692-177f-4858-be56-0954923ab9f2/Ayne_Baghal-480.mp4?mediaId=63f73987205da02be5507dd7&contentId=640db85bcfdc5a72a9788d73&aggregatorId=63e89cc234f3d832e4226483">آینه بغل</li>
-                                <li data-src="https://t.tarahipro.ir/98/05/Oxidan-480p.mkv">اکسیدان</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2021/02/Ayneh_Baghal_480p.mkv">آینه بغل</li>
+                                <li data-src="https://doostihaa.upera.tv/2101335-0-480.mp4">اکسیدان</li>
                                 <li data-src="https://zardfilm.upera.tv/2717295-0-480.mp4">رحمان ۱۴۰۰</li>
                                 <li data-src="https://zardfilm.upera.tv/2996928-0-480.mp4">دشمن زن</li>
-                                <li data-src="https://t.tarahipro.ir/96/07/movie/Khob%20Bad%20Jelf%20480.mkv">خوب بد جلف ۱</li>
-                                <li data-src="https://t.tarahipro.ir/99/05/Khoob_Bad_Jelfe_2_480p.mkv">خوب بد جلف ۲</li>
-                                <li data-src="https://s3.irdanlod.ir/Films/Irani/Hezarpa.Part1.480p.mp4">هزارپا ۱</li>
-                                <li data-src="http://dl.zardfilm.com/98/03/Hezarpa_E02_480.mp4">هزارپا ۲</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2020/10/Khoob_Bad_Jelf_480p.mkv">خوب بد جلف ۱</li>
+                                <li data-src="https://dl.serverdl.asia/serial/iranian/good-bad-corny/Khoob_Bad_Jelf_Radioactive_E02_480p.mkv">خوب بد جلف ۲</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2021/03/Hezarpa_E01_480p.mkv">هزارپا ۱</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2021/03/Hezarpa_E02_480p.mkv">هزارپا ۲</li>
+
+                                <li data-src="https://dl.serverdl.asia/movie/iranian/2022/03/Dynamite_480p.mkv">دینامیت</li>
+                                <li data-src="https://s5.irdanlod.ir/files/Movie/Irani/Gashte_Ershad_(Doostiha.NET).mkv">گشت ارشاد ۱</li>
+                                <li data-src="https://s5.irdanlod.ir/files/Movie/Irani/Gasht.2.480p.DVDRip.mkv">گشت ارشاد ۲</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2022/04/Gashte_3_480p.mkv">گشت ارشاد ۳</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2023/01/Enferadi_480p.mkv">انفرادی</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2022/07/Shadravan_480p.mkv">شادروان</li>
+                                <li data-src="https://dl.serverdl.asia/movie/iranian/2022/03/Dynamite_480p.mkv">دینامیت</li>
+                                
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2020/05/Zire_Nazar_720p.mp4">زیر نظر</li>
+                                
+                                     <li data-src="https://s5.irdanlod.ir/files/Movie/Irani/Tabagheye.Hasaas.mkv">طبقه حساس</li>
+                      
+                                <li data-src="https://zardfilm.upera.tv/2634972-0-480.mp4">تگزاس ۱</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2019/12/Texas_2_480p.mp4">تگزاس ۲</li>
+                                <li data-src="https://s5.irdanlod.ir/files/Movie/Irani/Zanha.Fereshteh.And.LQ.mp4">زن ها فرشته اند ۱</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2020/09/Zanha_Fereshtehand_2_480P.mkv">زن ها فرشته اند ۲</li>
+                                <li data-src="https://zardfilm.upera.tv/2724456-0-480.mp4">چشم و گوش بسته</li>
+                                <li data-src="https://s5.irdanlod.ir/files/Movie/Irani/Vorode.Aghaian.Mamnoo.mkv">ورود آقایان ممنوع</li>
+                                <li data-src="https://s5.irdanlod.ir/files/Movie/Irani/Nahange.Anbar.DVDRip.480p.mp4">نهنگ عنبر ۱</li>
+                                     <li data-src="https://doostihaa.upera.tv/1885617-0-480.mp4?ref=3m8">نهنگ عنبر ۲</li>
+                                     <li data-src="https://doostihaa.upera.tv/2617315-0-480.mp4">من سالوادور نیستم</li>
+
+                                <li data-src="https://upera.uptv.ir/?f=2646758-0-480.mp4">پنجاه کیلو آلبالو</li>
+                                <li data-src="https://doostihaa.upera.tv/2716695-0-480.mp4">کاتیوشا</li>
+                                <li data-src="https://s5.irdanlod.ir/files/Movie/Irani/Iran.Berger.480p.mp4">ایران برگر</li>
+                                <li data-src="https://dl.cooldl.net/2021/Irani/Poopak.Va.Mash.Mashala.480p_CoolDl.Net.mkv">پوپک و مش ماشالا</li>
+                                <li data-src="https://s5.irdanlod.ir/files/Movie/Irani/Barcode.480p.DVDRi.mkv">بارکد</li>
+                                     <li data-src="https://doostihaa.upera.tv/2707383-0-480.mp4">سامورایی در برلین</li>
+                                     <li data-src="https://doostihaa.upera.tv/2681415-0-480.mp4">ماموریت غیر ممکن</li>
+                         
+                                <li data-src="https://mono.filespacer.ir/movies/2019/T/Takhte.Gaz/Takhte.Gaz.480p.filmr.mkv">تخته گاز</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2020/03/Motreb_480p.mp4">مطرب</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2020/12/Khejalat_Nakesh_480p.mkv">خجالت نکش</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2021/01/Ma_Hame_Ba_Ham_Hastim_480p.mkv">ما همه با هم هستیم</li>
+                                <li data-src="https://cld7.hostdl.net/movie/iranian/2020/10/Looneh_Zanboor_480p.mkv">لونه زنبور</li>
+                                     <li data-src="https://s5.irdanlod.ir/files/Movie/Irani/Red.Carpet.mp4">ردکارپت</li>
+                                     <li data-src="https://dl3.3rver.org/hex/film/ir/1400/04/LosAnjeles.Tehran.720p.mkv">لس انجلس تهران</li>
+                                                                
+                                
+                                
+                                
                             </ul>
                         </div>
                     </div>
