@@ -1,224 +1,364 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <!-- font awesome cdn link  -->
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
-
-
-    <!-- custom css file link  -->
-  <style>
-
-*{
-  font-family: 'Noto Kufi Arabic', sans-serif;
-  margin:0; padding:0;
-  box-sizing: border-box;
-  outline: none; border:none;
-  text-decoration: none;
-  text-transform: capitalize;
-  transition: all .2s linear;
-}
-
-.container{
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding:0 10%;
-  background:linear-gradient(90deg, #fff 60%, #eee 40.1%);
-}
-
-.container .side-bar{
-  width:400px;
-}
-
-.container .side-bar.active{
-  display: none;
-}
-
-.container .side-bar .list{
-  display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-}
-
-.container .side-bar .list li{
-  padding:10px 0;
-  font-size: 20px;
-  cursor: pointer;
-  position: relative;
-  list-style: none;
-}
-
-.container .side-bar .list li::before{
-  content: '';
-  position: absolute;
-  top:50%;
-  transform: translateY(-50%);
-  left:-5px;
-  width: 0%;
-  height: 0px;
-  background-color: #000;
-  transition: width .2s linear .2s;
-}
-
-.container .side-bar .list li.active,
-.container .side-bar .list li:hover{
-  font-size: 30px;
-}
-
-.container .side-bar .list li.active::before,
-.container .side-bar .list li:hover::before{
-  right: -5px;
-  width: 105%;
-}
-
-.container .video-container{
-  flex:1;
-}
-
-.container .video-container video{
-  width: 100%;
-  object-fit: cover;
-}
-
-#menu-btn{
-  position: fixed;
-  top:0px; left:30px;
-  font-size: 40px;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-@media (max-width:1200px){
-  .container{
-    position: relative;
-  }
-
-  .container .side-bar{
-    position: absolute;
-    top:0; left:-110%;
-    height: 100%;
-    background-color: #fff;
-    z-index: 10;
-    padding:30px;
-  }
-
-  .container .side-bar .list{
-    height: 100%;
-    justify-content: center;
-  }
-
-  .container .side-bar.active{
-    box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
-    display: initial;
-    left:0;
-  }
-}
-
-@media (max-width:1200px){
-
-  .container{
-    padding:10px;
-  }
-
-  .container .side-bar{
-    width: 240px;
-  }
-
-  .container .side-bar .list li{
-    font-size: 16px;
-  
-  }
-
-  .container .side-bar .list li.active{
-    font-size: 18px;
-    color: red;
-  }
-
-}
-</style>
-
-
-<style>
-.mybutton{
- background-color:#2196F3;
- border:none;
- border-radius:7px;
-color:#fff;
- padding:10px 25px;
- text-align:center;
- font-size:18px;
- cursor:pointer;
-}
-.mybutton:hover{
- background-color:#4287BF;
-}
-</style>
-
-
+    <title>پخش کننده سریال</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Sahel', sans-serif;
+        }
+        
+        body {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            padding: 10px 15px;
+            background-color: #222;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        
+        .series-title {
+            text-align: center;
+            padding: 15px 0;
+            font-size: 1.8rem;
+            color: #fff;
+            background-color: #222;
+        }
+        
+        .hamburger-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 100;
+            background-color: #333;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+        
+        .hamburger-line {
+            width: 24px;
+            height: 2px;
+            background-color: #fff;
+            margin: 3px 0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger-btn.active .hamburger-line:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        
+        .hamburger-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger-btn.active .hamburger-line:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+        
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .video-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            outline: none;
+        }
+        
+        .video-poster {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.doostihaa.com/img/uploads/2025/05/Joker-2-Season-7.jpg');
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .video-poster::after {
+            content: '▶';
+            font-size: 60px;
+            color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(0, 0, 0, 0.4);
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .playlist-container {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 320px;
+            height: 100%;
+            background-color: #252525;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            z-index: 90;
+            padding-top: 60px;
+        }
+        
+        .playlist-container.active {
+            right: 0;
+        }
+        
+        .playlist {
+            padding: 15px;
+        }
+        
+        .playlist-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #333;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .playlist-item.active {
+            background-color: #2a4b8d;
+            color: #fff;
+        }
+        
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 80;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        @media (max-width: 768px) {
+            .series-title {
+                font-size: 1.4rem;
+                padding: 10px 0;
+            }
+            
+            .playlist-container {
+                width: 280px;
+            }
+            
+            .video-container {
+                padding: 10px;
+            }
+            
+            .control-btn {
+                padding: 8px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<center>
-<h2>جوکر ۲ فصل ۷</h2>
-
-<div id="menu-btn" class="fas fa-bars"></div>
-
-<div class="container">
-
-    <div class="side-bar">
-
-        <ul class="list">
-            <li class="active" 
+    <div class="header">
+        <button class="hamburger-btn" id="hamburger-btn">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </div>
+    
+    <div class="series-title">جوکر: فصل ۷ قسمت ۲</div>
+    
+    <div class="main-container">
+        <div class="playlist-container" id="playlist-container">
+            <div class="playlist" id="playlist">
+                <!-- Playlist items will be added dynamically -->
+            </div>
+        </div>
+        
+        <div class="video-container">
+            <div class="video-wrapper">
+                <video id="video-player" controls poster="https://www.doostihaa.com/img/uploads/2025/05/Joker-2-Season-7.jpg">
+                    <source src="" type="video/mp4">
+                    مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                </video>
+                <div class="video-poster" id="video-poster"></div>
+            </div>
             
+            <div class="video-controls">
+                <button class="control-btn" id="play-btn">پخش</button>
+                <button class="control-btn" id="pause-btn">توقف</button>
+                <button class="control-btn" id="fullscreen-btn">تمام صفحه</button>
+            </div>
+        </div>
+        
+        <div class="overlay" id="overlay"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const videoPlayer = document.getElementById('video-player');
+            const videoPoster = document.getElementById('video-poster');
+            const playBtn = document.getElementById('play-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const playlistContainer = document.getElementById('playlist-container');
+            const playlist = document.getElementById('playlist');
+            const overlay = document.getElementById('overlay');
             
-            
-                             
-                             <li
-                                                      data-src="https://www.googleapis.com/drive/v3/files/1hrZJIOaKAM2MfZhjoirpSHmrIcR-3hTl?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">قسمت اول  </li>
-                             
-                             
+            // Sample episodes data
+            const episodes = [
+                { title: "قسمت ۱", url: "https://www.googleapis.com/drive/v3/files/1hrZJIOaKAM2MfZhjoirpSHmrIcR-3hTl?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" },
                 
-                             
-                                                          
-    
-    
-    </div>
-
-    <div class="video-container">
-        <video src="" loop  autoplay controls></video>
-    </div>
-
-</div>
-
-<script>
-
-let sideBar = document.querySelector('.container .side-bar');
-
-document.querySelector('#menu-btn').onclick = () =>{
-    sideBar.classList.toggle('active');
-};
-
-let video = document.querySelector('.container .video-container video');
-let videoLinks = document.querySelectorAll('.container .side-bar .list li');
-
-videoLinks.forEach(link =>{
-    link.onclick = () =>{
-        let src = link.getAttribute('data-src');
-        video.src = src;
-        sideBar.classList.remove('active');
-        videoLinks.forEach(remove =>{remove.classList.remove('active')});
-        link.classList.add('active');
-    }
-})
-
-</script>
-    
+                { title: "قسمت ۲", url: "episode2.mp4" },
+  
+            ];
+            
+            // Create playlist items
+            episodes.forEach((episode, index) => {
+                const item = document.createElement('div');
+                item.className = 'playlist-item';
+                item.textContent = episode.title;
+                item.dataset.url = episode.url;
+                
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.playlist-item').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    videoPlayer.src = this.dataset.url;
+                    videoPlayer.load();
+                    videoPoster.style.display = 'none';
+                    videoPlayer.play().catch(e => console.log(e));
+                    
+                    if (window.innerWidth <= 768) {
+                        toggleMenu();
+                    }
+                });
+                
+                playlist.appendChild(item);
+                
+                if (index === 0) {
+                    item.classList.add('active');
+                    videoPlayer.src = episode.url;
+                }
+            });
+            
+            // Video poster click handler
+            videoPoster.addEventListener('click', function() {
+                this.style.display = 'none';
+                videoPlayer.play().catch(e => console.log(e));
+            });
+            
+            // Show poster when video ends
+            videoPlayer.addEventListener('ended', function() {
+                videoPoster.style.display = 'flex';
+            });
+            
+            // Control buttons
+            playBtn.addEventListener('click', function() {
+                videoPoster.style.display = 'none';
+                videoPlayer.play();
+            });
+            
+            pauseBtn.addEventListener('click', function() {
+                videoPlayer.pause();
+            });
+            
+            fullscreenBtn.addEventListener('click', function() {
+                if (videoPlayer.requestFullscreen) {
+                    videoPlayer.requestFullscreen();
+                } else if (videoPlayer.webkitRequestFullscreen) {
+                    videoPlayer.webkitRequestFullscreen();
+                } else if (videoPlayer.msRequestFullscreen) {
+                    videoPlayer.msRequestFullscreen();
+                }
+            });
+            
+            // Toggle menu function
+            function toggleMenu() {
+                hamburgerBtn.classList.toggle('active');
+                playlistContainer.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+            
+            // Hamburger menu click handler
+            hamburgerBtn.addEventListener('click', toggleMenu);
+            
+            // Overlay click handler
+            overlay.addEventListener('click', toggleMenu);
+        });
+    </script>
 </body>
 </html>
