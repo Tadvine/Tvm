@@ -63,7 +63,7 @@
             position: relative;
             width: 100%;
             height: 0;
-            padding-bottom: 56.25%; /* نسبت 16:9 */
+            padding-bottom: 56.25%;
             background-color: #000;
             overflow: hidden;
         }
@@ -135,11 +135,13 @@
             right: -320px;
             width: 320px;
             height: 100%;
-            background-color: #252525;
+            background-color: rgba(37, 37, 37, 0.1);
+            backdrop-filter: blur(10px);
             transition: right 0.3s ease;
             overflow-y: auto;
             z-index: 90;
             padding-top: 70px;
+            border-left: 1px solid rgba(255,255,255,0.1);
         }
         
         .playlist-container.active {
@@ -153,14 +155,19 @@
         .playlist-item {
             padding: 12px 15px;
             margin-bottom: 8px;
-            background-color: #333;
+            background-color: rgba(51, 51, 51, 0.7);
             border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .playlist-item:hover {
+            background-color: rgba(58, 58, 58, 0.8);
         }
         
         .playlist-item.active {
-            background-color: #2a4b8d;
+            background-color: rgba(42, 75, 141, 0.8);
             color: #fff;
         }
         
@@ -200,6 +207,24 @@
             pointer-events: all;
         }
         
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(42, 42, 42, 0.5);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(85, 85, 85, 0.7);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 102, 102, 0.8);
+        }
+        
         @media (min-width: 768px) {
             .content-wrapper {
                 padding: 20px;
@@ -212,7 +237,11 @@
             }
             
             .video-wrapper {
-                padding-bottom: 45%; /* ارتفاع کمتر در صفحه‌های بزرگ */
+                padding-bottom: 45%;
+            }
+            
+            .playlist-container {
+                width: 350px;
             }
         }
     </style>
@@ -271,7 +300,9 @@
             // Sample episodes data
             const episodes = [
                 { title: "قسمت ۱", url: "https://www.googleapis.com/drive/v3/files/1hrZJIOaKAM2MfZhjoirpSHmrIcR-3hTl?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" },
-                { title: "قسمت ۲", url: "episode2.mp4" }
+                
+                { title: "قسمت ۲", url: "episode2.mp4" },
+             
             ];
             
             // Create playlist items
@@ -292,9 +323,11 @@
                     videoPoster.style.display = 'none';
                     videoPlayer.play().catch(e => console.log(e));
                     
-                    if (window.innerWidth <= 768) {
-                        toggleMenu();
-                    }
+                    // Close menu after selection
+                    toggleMenu();
+                    
+                    // Scroll to top if needed
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
                 
                 playlist.appendChild(item);
