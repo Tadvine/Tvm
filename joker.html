@@ -129,23 +129,40 @@
             transition: all 0.3s ease;
         }
         
+        .hamburger-btn.active .hamburger-line:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        
+        .hamburger-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger-btn.active .hamburger-line:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+        
         .playlist-container {
             position: fixed;
             top: 0;
-            right: -320px;
+            right: 0;
             width: 320px;
             height: 100%;
-            background-color: rgba(37, 37, 37, 0.1);
+            background-color: rgba(37, 37, 37, 0.15);
             backdrop-filter: blur(10px);
-            transition: right 0.3s ease;
+            transition: transform 0.3s ease;
             overflow-y: auto;
             z-index: 90;
             padding-top: 70px;
             border-left: 1px solid rgba(255,255,255,0.1);
+            transform: translateX(100%);
         }
         
         .playlist-container.active {
-            right: 0;
+            transform: translateX(0);
+        }
+        
+        .playlist-container.closed {
+            transform: translateX(100%);
         }
         
         .playlist {
@@ -167,7 +184,7 @@
         }
         
         .playlist-item.active {
-            background-color: rgba(42, 75, 141, 0.8);
+            background-color: rgba(42, 75, 91, 0.8);
             color: #fff;
         }
         
@@ -248,7 +265,7 @@
 </head>
 <body>
     <div class="header">
-        <button class="hamburger-btn" id="hamburger-btn">
+        <button class="hamburger-btn active" id="hamburger-btn">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
@@ -258,7 +275,7 @@
     <div class="series-title">جوکر: فصل ۷ قسمت ۲</div>
     
     <div class="content-wrapper">
-        <div class="playlist-container" id="playlist-container">
+        <div class="playlist-container active" id="playlist-container">
             <div class="playlist" id="playlist">
                 <!-- Playlist items will be added dynamically -->
             </div>
@@ -280,7 +297,7 @@
             </div>
         </div>
         
-        <div class="overlay" id="overlay"></div>
+        <div class="overlay active" id="overlay"></div>
     </div>
 
     <script>
@@ -335,11 +352,6 @@
                 if (index === 0) {
                     item.classList.add('active');
                     videoPlayer.src = episode.url;
-                    
-                    // Scroll to show video player
-                    setTimeout(() => {
-                        seriesTitle.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
                 }
             });
             
@@ -379,6 +391,13 @@
                 hamburgerBtn.classList.toggle('active');
                 playlistContainer.classList.toggle('active');
                 overlay.classList.toggle('active');
+                
+                // برای اطمینان از بسته شدن کامل در تلویزیون
+                if (!hamburgerBtn.classList.contains('active')) {
+                    playlistContainer.classList.add('closed');
+                } else {
+                    playlistContainer.classList.remove('closed');
+                }
             }
             
             // Hamburger menu click handler
