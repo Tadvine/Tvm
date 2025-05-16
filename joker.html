@@ -33,77 +33,39 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
         
         .series-title {
             text-align: center;
-            padding: 10px 0;
-            font-size: 1.5rem;
+            padding: 10px 15px;
+            font-size: 1.3rem;
             color: #fff;
             background-color: #222;
-            position: sticky;
-            top: 60px;
-            z-index: 99;
         }
         
-        .hamburger-btn {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            padding: 8px;
-            background-color: #333;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-        }
-        
-        .hamburger-line {
-            width: 24px;
-            height: 2px;
-            background-color: #fff;
-            margin: 3px 0;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-        
-        .hamburger-btn.active .hamburger-line:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
-        }
-        
-        .hamburger-btn.active .hamburger-line:nth-child(2) {
-            opacity: 0;
-        }
-        
-        .hamburger-btn.active .hamburger-line:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg);
-        }
-        
-        .main-container {
+        .content-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
             padding: 15px;
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
             width: 100%;
+        }
+        
+        .video-container {
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
         }
         
         .video-wrapper {
             position: relative;
             width: 100%;
             height: 0;
-            padding-bottom: 45%; /* کاهش ارتفاع نسبت به قبل */
+            padding-bottom: 56.25%; /* نسبت 16:9 */
             background-color: #000;
-            border-radius: 8px;
             overflow: hidden;
-            margin-bottom: 15px;
         }
         
         video {
@@ -143,6 +105,30 @@
             align-items: center;
         }
         
+        .hamburger-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            background-color: #333;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+        
+        .hamburger-line {
+            width: 24px;
+            height: 2px;
+            background-color: #fff;
+            margin: 3px 0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
         .playlist-container {
             position: fixed;
             top: 0;
@@ -153,7 +139,7 @@
             transition: right 0.3s ease;
             overflow-y: auto;
             z-index: 90;
-            padding-top: 60px;
+            padding-top: 70px;
         }
         
         .playlist-container.active {
@@ -182,8 +168,8 @@
             display: flex;
             justify-content: center;
             gap: 10px;
+            margin-top: 15px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
         }
         
         .control-btn {
@@ -214,32 +200,19 @@
             pointer-events: all;
         }
         
-        @media (max-width: 768px) {
-            .series-title {
-                font-size: 1.3rem;
-                top: 50px;
-            }
-            
-            .video-wrapper {
-                padding-bottom: 56.25%; /* نسبت 16:9 در موبایل */
-            }
-            
-            .playlist-container {
-                width: 280px;
-            }
-            
-            .control-btn {
-                padding: 8px 15px;
-            }
-        }
-        
-        @media (min-width: 1200px) {
-            .video-wrapper {
-                padding-bottom: 40%; /* ارتفاع کمتر در تلویزیون */
+        @media (min-width: 768px) {
+            .content-wrapper {
+                padding: 20px;
+                max-width: 1200px;
             }
             
             .series-title {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
+                padding: 15px;
+            }
+            
+            .video-wrapper {
+                padding-bottom: 45%; /* ارتفاع کمتر در صفحه‌های بزرگ */
             }
         }
     </style>
@@ -255,25 +228,27 @@
     
     <div class="series-title">جوکر: فصل ۷ قسمت ۲</div>
     
-    <div class="main-container">
+    <div class="content-wrapper">
         <div class="playlist-container" id="playlist-container">
             <div class="playlist" id="playlist">
                 <!-- Playlist items will be added dynamically -->
             </div>
         </div>
         
-        <div class="video-wrapper">
-            <video id="video-player" controls poster="https://www.doostihaa.com/img/uploads/2025/05/Joker-2-Season-7.jpg">
-                <source src="" type="video/mp4">
-                مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
-            </video>
-            <div class="video-poster" id="video-poster"></div>
-        </div>
-        
-        <div class="video-controls">
-            <button class="control-btn" id="play-btn">پخش</button>
-            <button class="control-btn" id="pause-btn">توقف</button>
-            <button class="control-btn" id="fullscreen-btn">تمام صفحه</button>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <video id="video-player" controls poster="https://www.doostihaa.com/img/uploads/2025/05/Joker-2-Season-7.jpg">
+                    <source src="" type="video/mp4">
+                    مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                </video>
+                <div class="video-poster" id="video-poster"></div>
+            </div>
+            
+            <div class="video-controls">
+                <button class="control-btn" id="play-btn">پخش</button>
+                <button class="control-btn" id="pause-btn">توقف</button>
+                <button class="control-btn" id="fullscreen-btn">تمام صفحه</button>
+            </div>
         </div>
         
         <div class="overlay" id="overlay"></div>
@@ -291,6 +266,7 @@
             const playlistContainer = document.getElementById('playlist-container');
             const playlist = document.getElementById('playlist');
             const overlay = document.getElementById('overlay');
+            const seriesTitle = document.querySelector('.series-title');
             
             // Sample episodes data
             const episodes = [
@@ -326,6 +302,11 @@
                 if (index === 0) {
                     item.classList.add('active');
                     videoPlayer.src = episode.url;
+                    
+                    // Scroll to show video player
+                    setTimeout(() => {
+                        seriesTitle.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
                 }
             });
             
@@ -372,6 +353,17 @@
             
             // Overlay click handler
             overlay.addEventListener('click', toggleMenu);
+            
+            // Adjust layout for TV screens
+            function adjustForTV() {
+                if (window.innerWidth >= 1200) {
+                    document.querySelector('.video-wrapper').style.paddingBottom = '40%';
+                }
+            }
+            
+            // Initial adjustment
+            adjustForTV();
+            window.addEventListener('resize', adjustForTV);
         });
     </script>
 </body>
