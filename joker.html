@@ -23,7 +23,7 @@
         }
         
         .header {
-            padding: 10px 15px;
+            padding: 15px;
             background-color: #222;
             border-bottom: 1px solid #333;
             display: flex;
@@ -33,39 +33,40 @@
         
         .series-title {
             text-align: center;
-            padding: 15px 0;
-            font-size: 1.8rem;
+            padding: 20px 0;
+            font-size: 2.5rem;
             color: #fff;
             background-color: #222;
+            margin-bottom: 10px;
         }
         
         .hamburger-btn {
-            width: 40px;
-            height: 40px;
+            width: 60px;
+            height: 60px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            padding: 8px;
+            padding: 10px;
             z-index: 100;
             background-color: #333;
-            border-radius: 5px;
+            border-radius: 8px;
             border: none;
             outline: none;
         }
         
         .hamburger-line {
-            width: 24px;
-            height: 2px;
+            width: 30px;
+            height: 3px;
             background-color: #fff;
-            margin: 3px 0;
+            margin: 4px 0;
             border-radius: 2px;
             transition: all 0.3s ease;
         }
         
         .hamburger-btn.active .hamburger-line:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
+            transform: translateY(10px) rotate(45deg);
         }
         
         .hamburger-btn.active .hamburger-line:nth-child(2) {
@@ -73,7 +74,7 @@
         }
         
         .hamburger-btn.active .hamburger-line:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg);
+            transform: translateY(-10px) rotate(-45deg);
         }
         
         .main-container {
@@ -87,7 +88,10 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 15px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
         
         .video-wrapper {
@@ -98,6 +102,7 @@
             background-color: #000;
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
         
         video {
@@ -126,28 +131,34 @@
         
         .video-poster::after {
             content: '▶';
-            font-size: 60px;
+            font-size: 80px;
             color: rgba(255, 255, 255, 0.9);
             background-color: rgba(0, 0, 0, 0.4);
-            width: 90px;
-            height: 90px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .video-poster:hover::after {
+            transform: scale(1.1);
+            background-color: rgba(0, 0, 0, 0.6);
         }
         
         .playlist-container {
             position: fixed;
             top: 0;
-            right: -320px;
-            width: 320px;
+            right: -400px;
+            width: 400px;
             height: 100%;
             background-color: #252525;
             transition: right 0.3s ease;
             overflow-y: auto;
             z-index: 90;
-            padding-top: 60px;
+            padding-top: 90px;
         }
         
         .playlist-container.active {
@@ -155,37 +166,58 @@
         }
         
         .playlist {
-            padding: 15px;
+            padding: 20px;
         }
         
         .playlist-item {
-            padding: 12px 15px;
-            margin-bottom: 8px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
             background-color: #333;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            border: 1px solid #444;
+        }
+        
+        .playlist-item:hover {
+            background-color: #3a3a3a;
+            transform: translateX(-5px);
         }
         
         .playlist-item.active {
             background-color: #2a4b8d;
             color: #fff;
+            border-color: #4a90e2;
         }
         
         .video-controls {
             display: flex;
             justify-content: center;
-            margin-top: 15px;
-            gap: 10px;
+            margin-top: 25px;
+            gap: 20px;
         }
         
         .control-btn {
             background-color: #333;
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 15px 30px;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 1.2rem;
+            min-width: 150px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .control-btn:hover {
+            background-color: #444;
+            transform: translateY(-3px);
+        }
+        
+        .control-btn:active {
+            transform: translateY(0);
         }
         
         .overlay {
@@ -194,7 +226,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.7);
             z-index: 80;
             opacity: 0;
             pointer-events: none;
@@ -208,21 +240,69 @@
         
         @media (max-width: 768px) {
             .series-title {
-                font-size: 1.4rem;
-                padding: 10px 0;
+                font-size: 1.8rem;
+                padding: 15px 0;
+            }
+            
+            .hamburger-btn {
+                width: 50px;
+                height: 50px;
             }
             
             .playlist-container {
-                width: 280px;
+                width: 300px;
+                right: -300px;
             }
             
             .video-container {
-                padding: 10px;
+                padding: 15px;
+            }
+            
+            .playlist-item {
+                padding: 15px;
+                font-size: 1rem;
             }
             
             .control-btn {
-                padding: 8px 15px;
+                padding: 12px 20px;
+                font-size: 1rem;
+                min-width: 120px;
             }
+            
+            .video-poster::after {
+                width: 90px;
+                height: 90px;
+                font-size: 60px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .series-title {
+                font-size: 1.5rem;
+            }
+            
+            .control-btn {
+                padding: 10px 15px;
+                min-width: 100px;
+            }
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #2a2a2a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
 </head>
@@ -279,9 +359,7 @@
             // Sample episodes data
             const episodes = [
                 { title: "قسمت ۱", url: "https://www.googleapis.com/drive/v3/files/1hrZJIOaKAM2MfZhjoirpSHmrIcR-3hTl?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" },
-                
-                { title: "قسمت ۲", url: "episode2.mp4" },
-  
+                { title: "قسمت ۲", url: "episode2.mp4" }
             ];
             
             // Create playlist items
@@ -358,6 +436,24 @@
             
             // Overlay click handler
             overlay.addEventListener('click', toggleMenu);
+            
+            // Adjust for TV screens
+            function adjustForTV() {
+                if (window.innerWidth >= 1200) {
+                    document.querySelector('.video-container').style.maxWidth = '80%';
+                    document.querySelector('.series-title').style.fontSize = '3rem';
+                    document.querySelectorAll('.control-btn').forEach(btn => {
+                        btn.style.padding = '20px 40px';
+                        btn.style.fontSize = '1.5rem';
+                    });
+                }
+            }
+            
+            // Initial adjustment
+            adjustForTV();
+            
+            // Adjust on resize
+            window.addEventListener('resize', adjustForTV);
         });
     </script>
 </body>
