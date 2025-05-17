@@ -42,6 +42,13 @@
             padding: 0 20px;
         }
 
+        /* آیتم روز هفته در وسط */
+        #day-name {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
         /* Main Container */
         .content-container {
             max-width: 1200px;
@@ -144,6 +151,7 @@
     <!-- نوار ثابت ساعت و تاریخ -->
     <div id="info-bar">
         <span id="time"></span>
+        <span id="day-name"></span>
         <span id="date"></span>
     </div>
 
@@ -286,11 +294,15 @@
             gallery.scrollBy({ left: offset, behavior: 'smooth' });
         }
 
+        // نام روزهای هفته به فارسی
+        const persianWeekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'];
+
         // Update Time and Date
         function updateTime() {
             const now = new Date();
             const timeElement = document.getElementById('time');
             const dateElement = document.getElementById('date');
+            const dayNameElement = document.getElementById('day-name');
 
             // Format time (HH:MM)
             const time = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -299,6 +311,10 @@
             // Format date (YYYY/MM/DD)
             const date = now.toLocaleDateString('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' });
             dateElement.textContent = date;
+
+            // Get Persian day name
+            const dayOfWeek = now.getDay(); // 0 for Sunday, 1 for Monday, etc.
+            dayNameElement.textContent = persianWeekdays[dayOfWeek];
         }
 
         // Update time every second
