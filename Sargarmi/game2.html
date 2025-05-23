@@ -262,10 +262,24 @@
             
             // ایجاد 6 گروه (برای 52 کارت، 6 سوال کافی است - 2^6 = 64)
             for (let i = 0; i < 6; i++) {
-                groups.push({
-                    title: `آیا کارت شما در این مجموعه است؟ (مجموعه ${i+1})`,
-                    filter: index => (index & (1 << i)) !== 0
-                });
+                if (i === 5) {
+                    // مرحله ششم: ترکیبی از کارت‌های قرمز و مشکی
+                    groups.push({
+                        title: "آیا کارت شما در این مجموعه است؟ ",
+                        filter: index => {
+                            const card = cards[index];
+                            // انتخاب تصادفی برخی از کارت‌های قرمز و برخی از کارت‌های مشکی
+                            return (card.suit === 'hearts' || card.suit === 'diamonds') 
+                                ? Math.random() > 0.5 
+                                : Math.random() > 0.5;
+                        }
+                    });
+                } else {
+                    groups.push({
+                        title: `آیا کارت شما در این مجموعه است؟ (مجموعه ${i+1})`,
+                        filter: index => (index & (1 << i)) !== 0
+                    });
+                }
             }
             
             return groups;
