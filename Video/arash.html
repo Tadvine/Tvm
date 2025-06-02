@@ -53,7 +53,7 @@
          border-radius: 12px;
          overflow: hidden;
          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-         background: var(--secondary-color);
+         background: #000; /* Changed to black */
          transition: all 0.3s ease;
       }
       
@@ -62,6 +62,7 @@
          padding-bottom: 56.25%; /* 16:9 aspect ratio */
          height: 0;
          overflow: hidden;
+         background: #000; /* Ensure black background */
       }
       
       .main-video {
@@ -70,11 +71,12 @@
          left: 0;
          width: 100%;
          height: 100%;
-         background: #000;
+         background: #000; /* Black background for video */
       }
       
       .video-info {
          padding: 20px;
+         background: #000; /* Black background for info area */
       }
       
       .main-vid-title {
@@ -182,12 +184,14 @@
          border-radius: 4px;
          overflow: hidden;
          flex-shrink: 0;
+         background: #000; /* Black background for thumbnails */
       }
       
       .list-video {
          width: 100%;
          height: 100%;
          object-fit: cover;
+         background: #000; /* Black background for videos */
       }
       
       .list-play-icon {
@@ -453,6 +457,7 @@
          const fullscreenBtn = document.querySelector('.fullscreen-btn');
          const spinner = document.querySelector('.spinner');
          const container = document.querySelector('.container');
+         const mainVideoWrapper = document.querySelector('.main-video-wrapper');
          
          let currentVideoIndex = 0;
          let isPlaying = false;
@@ -490,9 +495,10 @@
             const videoSrc = activeVideo.querySelector('.list-video').src;
             const videoName = activeVideo.querySelector('.list-title').textContent;
             
-            // Show loading spinner
+            // Show loading spinner and set black background
             spinner.style.display = 'block';
-            mainVideo.style.opacity = '0.5';
+            mainVideo.style.opacity = '0';
+            mainVideoWrapper.style.backgroundColor = '#000';
             
             // Load new video
             mainVideo.src = videoSrc;
@@ -506,6 +512,13 @@
                   mainVideo.play();
                   playBtn.innerHTML = '<i class="fas fa-pause"></i>';
                }
+            };
+            
+            // Error handling
+            mainVideo.onerror = function() {
+               spinner.style.display = 'none';
+               mainVideoWrapper.style.backgroundColor = '#000';
+               videoTitle.textContent = 'Error loading video';
             };
             
             // Scroll to active video in playlist
