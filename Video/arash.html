@@ -53,7 +53,7 @@
          border-radius: 12px;
          overflow: hidden;
          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-         background: #000; /* Changed to black */
+         background: #000;
          transition: all 0.3s ease;
       }
       
@@ -62,7 +62,7 @@
          padding-bottom: 56.25%; /* 16:9 aspect ratio */
          height: 0;
          overflow: hidden;
-         background: #000; /* Ensure black background */
+         background: #000;
       }
       
       .main-video {
@@ -71,12 +71,12 @@
          left: 0;
          width: 100%;
          height: 100%;
-         background: #000; /* Black background for video */
+         background: #000;
       }
       
       .video-info {
          padding: 20px;
-         background: #000; /* Black background for info area */
+         background: #000;
       }
       
       .main-vid-title {
@@ -108,11 +108,6 @@
       .control-btn:hover {
          background: rgba(255, 255, 255, 0.2);
          transform: scale(1.1);
-      }
-      
-      .fullscreen-btn {
-         margin-left: auto;
-         margin-right: 15px;
       }
       
       /* Playlist Styles */
@@ -177,38 +172,6 @@
          color: rgba(255, 255, 255, 0.8);
       }
       
-      .list-thumbnail {
-         position: relative;
-         width: 80px;
-         height: 50px;
-         border-radius: 4px;
-         overflow: hidden;
-         flex-shrink: 0;
-         background: #000; /* Black background for thumbnails */
-      }
-      
-      .list-video {
-         width: 100%;
-         height: 100%;
-         object-fit: cover;
-         background: #000; /* Black background for videos */
-      }
-      
-      .list-play-icon {
-         position: absolute;
-         top: 50%;
-         left: 50%;
-         transform: translate(-50%, -50%);
-         color: white;
-         font-size: 16px;
-         opacity: 0;
-         transition: opacity 0.2s ease;
-      }
-      
-      .list:hover .list-play-icon {
-         opacity: 1;
-      }
-      
       .list-info {
          flex-grow: 1;
          overflow: hidden;
@@ -259,6 +222,37 @@
          display: none;
       }
       
+      /* Video Title Overlay */
+      .video-title-overlay {
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         font-family: 'Playfair Display', serif;
+         font-size: 2.5vw;
+         font-weight: 700;
+         color: white;
+         text-align: center;
+         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+         opacity: 0;
+         z-index: 5;
+         animation: titleFade 8s ease-in-out;
+         pointer-events: none;
+         width: 90%;
+      }
+      
+      .fullscreen .video-title-overlay {
+         font-size: 3.5vw;
+         display: block !important;
+      }
+      
+      @keyframes titleFade {
+         0% { opacity: 0; transform: translate(-50%, -40%); }
+         15% { opacity: 1; transform: translate(-50%, -50%); }
+         85% { opacity: 1; transform: translate(-50%, -50%); }
+         100% { opacity: 0; transform: translate(-50%, -60%); }
+      }
+      
       /* Responsive styles */
       @media (max-width: 992px) {
          .container {
@@ -268,6 +262,10 @@
          .video-list-container {
             height: auto;
             max-height: 400px;
+         }
+         
+         .video-title-overlay {
+            font-size: 4vw;
          }
       }
       
@@ -281,24 +279,13 @@
             gap: 10px;
          }
          
-         .list-thumbnail {
-            width: 60px;
-            height: 40px;
-         }
-         
          .list-title {
             font-size: 13px;
          }
-      }
-      
-      /* Animations */
-      @keyframes fadeIn {
-         from { opacity: 0; }
-         to { opacity: 1; }
-      }
-      
-      .fade-in {
-         animation: fadeIn 0.5s ease-in-out;
+         
+         .video-title-overlay {
+            font-size: 6vw;
+         }
       }
       
       /* Loading spinner */
@@ -329,6 +316,7 @@
          <div class="main-video-wrapper">
             <video class="main-video" controls></video>
             <div class="spinner"></div>
+            <div class="video-title-overlay"></div>
          </div>
          <div class="video-info">
             <h3 class="main-vid-title">Select a video from the playlist</h3>
@@ -343,102 +331,60 @@
             <button class="control-btn next-btn" title="Next video">
                <i class="fas fa-step-forward"></i>
             </button>
-            <button class="control-btn fullscreen-btn" title="Fullscreen">
-               <i class="fas fa-expand"></i>
-            </button>
          </div>
       </div>
       
       <div class="video-list-container">
          <div class="playlist-header">
             <h3 class="playlist-title">Playlist</h3>
-            <span class="playlist-count">8 videos</span>
+            <span class="playlist-count">7 videos</span>
          </div>
          
-         <div class="list active">
-            <div class="list-thumbnail">
-               <video src="https://www.googleapis.com/drive/v3/files/1cXs63KPcGGtQs3IQrLg7DECE0XF2owmF?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" class="list-video"></video>
-               <i class="fas fa-play list-play-icon"></i>
-            </div>
+         <div class="list active" data-src="https://www.googleapis.com/drive/v3/files/1cXs63KPcGGtQs3IQrLg7DECE0XF2owmF?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
             <div class="list-info">
                <h3 class="list-title">01. Broken Angel</h3>
                <span class="list-duration">3:45</span>
             </div>
          </div>
          
-         <div class="list">
-            <div class="list-thumbnail">
-               <video src="https://www.googleapis.com/drive/v3/files/146YfAHnqz0E1wieMppHQdY1xwy6pd0GU?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" class="list-video"></video>
-               <i class="fas fa-play list-play-icon"></i>
-            </div>
+         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/146YfAHnqz0E1wieMppHQdY1xwy6pd0GU?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
             <div class="list-info">
                <h3 class="list-title">02. Pure Love Moscow</h3>
                <span class="list-duration">4:12</span>
             </div>
          </div>
          
-         <div class="list">
-            <div class="list-thumbnail">
-               <video src="https://www.uplooder.net/f/tl/73/e8e8d7e00345a1c66bb924835738d975/Arash---Helena-Broken-Angel-2016.mp4" class="list-video"></video>
-               <i class="fas fa-play list-play-icon"></i>
-            </div>
+         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/11t7o-ktb1y3CBsPBTZt-e2HAd22ZUFTw?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
             <div class="list-info">
-               <h3 class="list-title">03. Broken Angel Moscow</h3>
-               <span class="list-duration">3:58</span>
-            </div>
-         </div>
-         
-         <div class="list">
-            <div class="list-thumbnail">
-               <video src="https://www.googleapis.com/drive/v3/files/11t7o-ktb1y3CBsPBTZt-e2HAd22ZUFTw?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" class="list-video"></video>
-               <i class="fas fa-play list-play-icon"></i>
-            </div>
-            <div class="list-info">
-               <h3 class="list-title">04. One Day</h3>
+               <h3 class="list-title">03. One Day</h3>
                <span class="list-duration">4:30</span>
             </div>
          </div>
          
-         <div class="list">
-            <div class="list-thumbnail">
-               <video src="https://www.googleapis.com/drive/v3/files/1GSN8FJ7fI_Qu2jnVrmkkM-xHf2FqsHuH?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" class="list-video"></video>
-               <i class="fas fa-play list-play-icon"></i>
-            </div>
+         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/1GSN8FJ7fI_Qu2jnVrmkkM-xHf2FqsHuH?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
             <div class="list-info">
-               <h3 class="list-title">05. Pure Love</h3>
+               <h3 class="list-title">04. Pure Love</h3>
                <span class="list-duration">3:22</span>
             </div>
          </div>
          
-         <div class="list">
-            <div class="list-thumbnail">
-               <video src="https://www.googleapis.com/drive/v3/files/1TCTFQVByVB3ck12tQpwJH7HnD9UlYn7g?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" class="list-video"></video>
-               <i class="fas fa-play list-play-icon"></i>
-            </div>
+         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/1TCTFQVByVB3ck12tQpwJH7HnD9UlYn7g?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
             <div class="list-info">
-               <h3 class="list-title">06. Angels Lullaby</h3>
+               <h3 class="list-title">05. Angels Lullaby</h3>
                <span class="list-duration">5:15</span>
             </div>
          </div>
          
-         <div class="list">
-            <div class="list-thumbnail">
-               <video src="https://www.googleapis.com/drive/v3/files/1M2DEROlGX6-daOsZxWOvyyn4JZQm1e2L?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" class="list-video"></video>
-               <i class="fas fa-play list-play-icon"></i>
-            </div>
+         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/1TCTFQVByVB3ck12tQpwJH7HnD9UlYn7g?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
             <div class="list-info">
-               <h3 class="list-title">07. Dooset Daram</h3>
+               <h3 class="list-title">06. Dooset Daram</h3>
                <span class="list-duration">3:40</span>
             </div>
          </div>
          
-         <div class="list">
-            <div class="list-thumbnail">
-               <video src="https://www.googleapis.com/drive/v3/files/1HGyuX1CJ_oESwu_LC5yqMVk_6wFScF6q?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" class="list-video"></video>
-               <i class="fas fa-play list-play-icon"></i>
-            </div>
+         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/1HGyuX1CJ_oESwu_LC5yqMVk_6wFScF6q?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
             <div class="list-info">
-               <h3 class="list-title">08. One Night Dubai</h3>
+               <h3 class="list-title">07. One Night Dubai</h3>
                <span class="list-duration">4:05</span>
             </div>
          </div>
@@ -454,16 +400,17 @@
          const playBtn = document.querySelector('.play-btn');
          const prevBtn = document.querySelector('.prev-btn');
          const nextBtn = document.querySelector('.next-btn');
-         const fullscreenBtn = document.querySelector('.fullscreen-btn');
          const spinner = document.querySelector('.spinner');
          const container = document.querySelector('.container');
          const mainVideoWrapper = document.querySelector('.main-video-wrapper');
+         const titleOverlay = document.querySelector('.video-title-overlay');
          
          let currentVideoIndex = 0;
          let isPlaying = false;
+         let isAutoPlayingNext = false;
          
-         // Video durations in seconds (for demo, you might want to get these dynamically)
-         const videoDurations = [225, 252, 238, 270, 202, 315, 220, 245];
+         // Video durations in seconds
+         const videoDurations = [225, 252, 270, 202, 315, 220, 245];
          
          // Format time from seconds to MM:SS
          function formatTime(seconds) {
@@ -478,8 +425,17 @@
             durationElement.textContent = formatTime(videoDurations[index]);
          });
          
+         // Show title overlay animation
+         function showTitleOverlay(title) {
+            titleOverlay.textContent = title;
+            titleOverlay.style.animation = 'none';
+            void titleOverlay.offsetWidth; // Trigger reflow
+            titleOverlay.style.animation = 'titleFade 8s ease-in-out';
+            titleOverlay.style.display = 'block';
+         }
+         
          // Load video function
-         function loadVideo(index) {
+         function loadVideo(index, autoPlay = true) {
             if (index < 0) index = videoLists.length - 1;
             if (index >= videoLists.length) index = 0;
             
@@ -492,7 +448,7 @@
             
             // Get video data
             const activeVideo = videoLists[index];
-            const videoSrc = activeVideo.querySelector('.list-video').src;
+            const videoSrc = activeVideo.dataset.src;
             const videoName = activeVideo.querySelector('.list-title').textContent;
             
             // Show loading spinner and set black background
@@ -504,13 +460,28 @@
             mainVideo.src = videoSrc;
             videoTitle.textContent = videoName;
             
+            // Show title overlay
+            showTitleOverlay(videoName);
+            
             // When video is loaded
             mainVideo.onloadeddata = function() {
                spinner.style.display = 'none';
                mainVideo.style.opacity = '1';
-               if (isPlaying) {
-                  mainVideo.play();
-                  playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+               
+               if (autoPlay) {
+                  const playPromise = mainVideo.play();
+                  
+                  if (playPromise !== undefined) {
+                     playPromise.then(_ => {
+                        isPlaying = true;
+                        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                     })
+                     .catch(error => {
+                        console.log("Autoplay prevented:", error);
+                        isPlaying = false;
+                        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                     });
+                  }
                }
             };
             
@@ -528,13 +499,21 @@
          // Play/pause toggle
          function togglePlay() {
             if (mainVideo.paused) {
-               mainVideo.play();
-               playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-               isPlaying = true;
+               const playPromise = mainVideo.play();
+               
+               if (playPromise !== undefined) {
+                  playPromise.then(_ => {
+                     isPlaying = true;
+                     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                  })
+                  .catch(error => {
+                     console.log("Play prevented:", error);
+                  });
+               }
             } else {
                mainVideo.pause();
-               playBtn.innerHTML = '<i class="fas fa-play"></i>';
                isPlaying = false;
+               playBtn.innerHTML = '<i class="fas fa-play"></i>';
             }
          }
          
@@ -551,7 +530,8 @@
             loadVideo(currentVideoIndex + 1);
          });
          
-         fullscreenBtn.addEventListener('click', () => {
+         // Double click for fullscreen
+         mainVideo.addEventListener('dblclick', function() {
             if (!document.fullscreenElement) {
                container.classList.add('fullscreen');
                document.documentElement.requestFullscreen().catch(err => {
@@ -567,13 +547,12 @@
          videoLists.forEach((list, index) => {
             list.addEventListener('click', () => {
                loadVideo(index);
-               isPlaying = true;
-               playBtn.innerHTML = '<i class="fas fa-pause"></i>';
             });
          });
          
          // Auto play next video when current ends
          mainVideo.addEventListener('ended', () => {
+            isAutoPlayingNext = true;
             loadVideo(currentVideoIndex + 1);
          });
          
@@ -587,12 +566,25 @@
             } else if (e.code === 'ArrowLeft') {
                loadVideo(currentVideoIndex - 1);
             } else if (e.code === 'KeyF') {
-               fullscreenBtn.click();
+               if (!document.fullscreenElement) {
+                  container.classList.add('fullscreen');
+                  document.documentElement.requestFullscreen();
+               } else {
+                  document.exitFullscreen();
+                  container.classList.remove('fullscreen');
+               }
             }
          });
          
          // Load first video initially
-         loadVideo(0);
+         loadVideo(0, false);
+         
+         // Enable fullscreen change detection
+         document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+               container.classList.remove('fullscreen');
+            }
+         });
       });
    </script>
 </body>
