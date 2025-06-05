@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tvm</title>
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- افزودن فونت Vazirmatn از Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Preload background image -->
+    <link rel="preload" href="https://bayanbox.ir/download/1793887276848709656/Background.jpg" as="image">
     <style>
         /* Reset CSS */
         * {
@@ -15,12 +20,16 @@
         }
 
         body {
-            font-family: 'Roboto Condensed', Arial, sans-serif;
+            font-family: 'Vazirmatn', 'Roboto Condensed', Arial, sans-serif;
             background-image: url("https://bayanbox.ir/download/1793887276848709656/Background.jpg");
             background-color: #000;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
             color: #fff;
-            direction: rtl;
-            padding-top: 50px; /* برای جلوگیری از همپوشانی با نوار ثابت */
+            min-height: 100vh;
+            padding-top: 60px; /* برای جلوگیری از همپوشانی با نوار ثابت */
+            line-height: 1.6;
         }
 
         /* نوار ثابت ساعت و تاریخ */
@@ -29,17 +38,19 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 50px;
-            background-color: rgba(0, 0, 0, 0.5);
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-family: 'Vazirmatn', sans-serif;
-            font-size: 18px;
+            font-size: clamp(14px, 4vw, 18px);
             color: #fff586;
             font-weight: bold;
-            z-index: 1000; /* مطمئن شوید نوار بالای همه عناصر دیگر است */
-            padding: 0 20px;
+            z-index: 1000;
+            padding: 0 15px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         /* آیتم روز هفته در وسط */
@@ -53,31 +64,55 @@
         .content-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 20px 15px;
             position: relative;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: clamp(18px, 5vw, 24px);
+            color: #fff586;
         }
 
         /* Image Gallery */
         .image-gallery {
             display: flex;
-            justify-content: center; /* تصاویر را وسط قرار می‌دهد */
+            flex-wrap: nowrap;
             overflow-x: auto;
             scroll-behavior: smooth;
-            padding: 10px 0;
+            padding: 15px 0;
             margin: 20px 0;
+            gap: 15px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .image-gallery a {
+            scroll-snap-align: start;
+            flex: 0 0 auto;
+            text-decoration: none;
+            transition: transform 0.3s;
         }
 
         .image-gallery img {
-            flex: 0 0 auto;
-            margin: 0 10px;
             border-radius: 10px;
-            box-shadow: -3px 3px 15px #fff;
+            box-shadow: -3px 3px 15px rgba(255, 255, 255, 0.3);
             transition: transform 0.3s, box-shadow 0.3s;
+            width: 150px;
+            height: 200px;
+            object-fit: cover;
         }
 
         .image-gallery img:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 30px gray;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        /* TV Channel Images */
+        #tvGallery img {
+            width: 120px;
+            height: 90px;
         }
 
         /* Scroll Buttons */
@@ -85,21 +120,32 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
             border: none;
             color: #fff;
             font-size: 24px;
-            padding: 10px;
+            width: 40px;
+            height: 60px;
             cursor: pointer;
             z-index: 1;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .scroll-button:hover {
+            opacity: 1;
         }
 
         .scroll-button.left {
-            left: 0;
+            right: 0;
         }
 
         .scroll-button.right {
-            right: 0;
+            left: 0;
         }
 
         /* Hide Scrollbar */
@@ -108,42 +154,103 @@
         }
 
         .image-gallery {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
-        /* Existing Styles */
+        /* Buttons */
         .mybutton {
-            background-color: #4d4d4d;
-            font-family: 'Vazirmatn', sans-serif; /* استفاده از فونت Vazirmatn */
+            background-color: rgba(77, 77, 77, 0.8);
+            font-family: 'Vazirmatn', sans-serif;
             padding: 14px;
             border-radius: 15px;
-            box-shadow: 0 0 8px rgb(207, 207, 207);
+            box-shadow: 0 0 8px rgba(207, 207, 207, 0.5);
             color: #fff;
-            font-size: 18px;
+            font-size: clamp(14px, 4vw, 18px);
             border: none;
             cursor: pointer;
-            width: 150px;
+            min-width: 120px;
+            width: auto;
+            max-width: 200px;
             height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 10px auto;
+            transition: all 0.3s;
         }
 
         .mybutton:hover {
             background-color: #cccccc;
             color: #000;
+            transform: translateY(-2px);
         }
 
         hr {
-            border: 2px solid #f9f9f0;
-            margin: 20px auto;
-            width: 80%;
+            border: 1px solid rgba(249, 249, 240, 0.5);
+            margin: 25px auto;
+            width: 90%;
+            max-width: 800px;
         }
 
         .custom-button {
             text-decoration: none;
-            margin: 0 10px;
+            margin: 0 5px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            #info-bar {
+                height: 50px;
+                font-size: clamp(12px, 3.5vw, 16px);
+            }
+            
+            .content-container {
+                padding: 15px 10px;
+            }
+            
+            .image-gallery {
+                gap: 10px;
+                padding: 10px 0;
+            }
+            
+            .image-gallery img {
+                width: 120px;
+                height: 160px;
+            }
+            
+            #tvGallery img {
+                width: 100px;
+                height: 75px;
+            }
+            
+            .scroll-button {
+                width: 35px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #info-bar {
+                padding: 0 10px;
+            }
+            
+            .image-gallery img {
+                width: 100px;
+                height: 140px;
+            }
+            
+            #tvGallery img {
+                width: 80px;
+                height: 60px;
+            }
+            
+            .mybutton {
+                min-width: 100px;
+                height: 45px;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -166,35 +273,24 @@
         <!-- Series Section -->
         <h2>سریال‌ها</h2>
         <div class="image-gallery" id="seriesGallery">
-            
             <a href="belit.html">
-                <img src="https://www.doostihaa.com/img/uploads/2025/03/Yek-Yon-Bilet-E01.jpg" alt="بلیت" width="150" height="200">
+                <img src="https://www.doostihaa.com/img/uploads/2025/03/Yek-Yon-Bilet-E01.jpg" alt="بلیت" loading="lazy">
             </a>
             
             <a href="ajale moalagh.html">
-                <img src="https://www.doostihaa.com/img/uploads/2025/05/A-Delayed-Death-Episode-01.jpg" alt="اجل معلق" width="150" height="200">
+                <img src="https://www.doostihaa.com/img/uploads/2025/05/A-Delayed-Death-Episode-01.jpg" alt="اجل معلق" loading="lazy">
             </a>
-            
             
             <a href="joker.html">
-                <img src="https://www.doostihaa.com/img/uploads/2025/05/Joker-2-Season-7.jpg" alt="جوکر" width="150" height="200">
+                <img src="https://www.doostihaa.com/img/uploads/2025/05/Joker-2-Season-7.jpg" alt="جوکر" loading="lazy">
             </a>
-            
             
             <a href="tasian.html">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHcjPby_2YlpsxkXTbA86Us2WeOzoSfuI-Hg&s " alt="تاسیان" width="150" height="200">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHcjPby_2YlpsxkXTbA86Us2WeOzoSfuI-Hg&s" alt="تاسیان" loading="lazy">
             </a>
-            
-            
-            
-          
-            
-            
-            
-            
         </div>
-        <button class="scroll-button left" onclick="scrollGallery('seriesGallery', -100)">&#10094;</button>
-        <button class="scroll-button right" onclick="scrollGallery('seriesGallery', 100)">&#10095;</button>
+        <button class="scroll-button left" onclick="scrollGallery('seriesGallery', -300)">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollGallery('seriesGallery', 300)">&#10095;</button>
 
         <hr>
 
@@ -202,44 +298,37 @@
         <h2>پخش زنده</h2>
         <div class="image-gallery" id="tvGallery">
             <a href="https://tadvine.github.io/Tvm/Tv/t2.html">
-                <img src="https://www.diycraftsguide.com/uploads/tv_image/tapesh-tv-2.jpg" alt="تپش" width="120" height="90">
+                <img src="https://www.diycraftsguide.com/uploads/tv_image/tapesh-tv-2.jpg" alt="تپش" loading="lazy">
             </a>
             <a href="https://tadvine.github.io/Tvm/Tv/pmc.html">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVkRSj1CGM6W-qUTFmR_mmk6fj6oG4s8s3fA&s" alt="PMC" width="120" height="90">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVkRSj1CGM6W-qUTFmR_mmk6fj6oG4s8s3fA&s" alt="PMC" loading="lazy">
             </a>
             <a href="https://tadvine.github.io/Tvm/Tv/rjavan.html">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7EDhLwxsvyy7hz-XJPNdEk25d1vjrNl0ehg&s" alt="رادیو جوان" width="120" height="90">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7EDhLwxsvyy7hz-XJPNdEk25d1vjrNl0ehg&s" alt="رادیو جوان" loading="lazy">
             </a>
             
             <a href="https://www.aparat.com/AparatMusic/live">
-                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/download.jpeg" alt="آپارات موزیک" width="120" height="90">
+                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/download.jpeg" alt="آپارات موزیک" loading="lazy">
             </a>
             
-            
-           <a href="https://tadvine.github.io/Tvm/Tv/pmusic.html">
-                <img src="https://static.wikia.nocookie.net/logopedia/images/a/ae/Persiana-music-fr.png" alt="پرشین موزیک" width="120" height="90">
+            <a href="https://tadvine.github.io/Tvm/Tv/pmusic.html">
+                <img src="https://static.wikia.nocookie.net/logopedia/images/a/ae/Persiana-music-fr.png" alt="پرشین موزیک" loading="lazy">
             </a>
-            
             
             <a href="https://tadvine.github.io/Tvm/Tv/mtc.html">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZKMlxtdGwVatLkfZV2tRvqp-JFtKv7JjmA&s" alt="MTC" width="120" height="90">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZKMlxtdGwVatLkfZV2tRvqp-JFtKv7JjmA&s" alt="MTC" loading="lazy">
             </a>
             
-            
-         <a href="https://tadvine.github.io/Tvm/Tv/itn.html">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaDzlDGuYjhgrw233FF3pqfcYmsVJLb0XvmA&s" alt="itn" width="120" height="90">
+            <a href="https://tadvine.github.io/Tvm/Tv/itn.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaDzlDGuYjhgrw233FF3pqfcYmsVJLb0XvmA&s" alt="itn" loading="lazy">
             </a>
          
-            
-           <a href="https://tadvine.github.io/Tvm/Tv/khaterh.html">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7_kauwLf2jD49Nl4Z5lLUy_SBWmGAPWBtlg&s" alt="خاطره" width="120" height="90">
+            <a href="https://tadvine.github.io/Tvm/Tv/khaterh.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7_kauwLf2jD49Nl4Z5lLUy_SBWmGAPWBtlg&s" alt="خاطره" loading="lazy">
             </a>
-            
-            
-            
         </div>
-        <button class="scroll-button left" onclick="scrollGallery('tvGallery', -100)">&#10094;</button>
-        <button class="scroll-button right" onclick="scrollGallery('tvGallery', 100)">&#10095;</button>
+        <button class="scroll-button left" onclick="scrollGallery('tvGallery', -300)">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollGallery('tvGallery', 300)">&#10095;</button>
 
         <hr>
 
@@ -257,17 +346,12 @@
                 <button class="mybutton">ویدیو کلیپ</button>
             </a>
             
-            
-            
             <a href="sargarmi.html" class="custom-button">
                 <button class="mybutton">سرگرمی</button>
             </a>
-            
-            
-            
         </div>
-        <button class="scroll-button left" onclick="scrollGallery('musicGallery', -100)">&#10094;</button>
-        <button class="scroll-button right" onclick="scrollGallery('musicGallery', 100)">&#10095;</button>
+        <button class="scroll-button left" onclick="scrollGallery('musicGallery', -300)">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollGallery('musicGallery', 300)">&#10095;</button>
 
         <hr>
 
@@ -275,17 +359,17 @@
         <h2>فیلم و سریال</h2>
         <div class="image-gallery" id="otherGallery">
             <a href="serial.html">
-                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/serial.jpg" alt="سریال" width="150" height="200">
+                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/serial.jpg" alt="سریال" loading="lazy">
             </a>
             <a href="cinema.html">
-                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/film%20irani.jpg" alt="سینما" width="150" height="200">
+                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/film%20irani.jpg" alt="سینما" loading="lazy">
             </a>
             <a href="ghadimi.html">
-                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/ghadimi.jpg" alt="قدیمی" width="150" height="200">
+                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/ghadimi.jpg" alt="قدیمی" loading="lazy">
             </a>
         </div>
-        <button class="scroll-button left" onclick="scrollGallery('otherGallery', -100)">&#10094;</button>
-        <button class="scroll-button right" onclick="scrollGallery('otherGallery', 100)">&#10095;</button>
+        <button class="scroll-button left" onclick="scrollGallery('otherGallery', -300)">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollGallery('otherGallery', 300)">&#10095;</button>
     </div>
 
     <script>
@@ -306,21 +390,77 @@
             const dayNameElement = document.getElementById('day-name');
 
             // Format time (HH:MM)
-            const time = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit', hour12: false });
+            const time = now.toLocaleTimeString('fa-IR', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: false 
+            });
             timeElement.textContent = time;
 
             // Format date (YYYY/MM/DD)
-            const date = now.toLocaleDateString('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const date = now.toLocaleDateString('fa-IR', { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit' 
+            });
             dateElement.textContent = date;
 
             // Get Persian day name
-            const dayOfWeek = now.getDay(); // 0 for Sunday, 1 for Monday, etc.
+            const dayOfWeek = now.getDay();
             dayNameElement.textContent = persianWeekdays[dayOfWeek];
         }
 
         // Update time every second
         setInterval(updateTime, 1000);
         updateTime(); // Initial call
+
+        // Touch event support for mobile scrolling
+        document.querySelectorAll('.image-gallery').forEach(gallery => {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            gallery.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - gallery.offsetLeft;
+                scrollLeft = gallery.scrollLeft;
+            });
+
+            gallery.addEventListener('mouseleave', () => {
+                isDown = false;
+            });
+
+            gallery.addEventListener('mouseup', () => {
+                isDown = false;
+            });
+
+            gallery.addEventListener('mousemove', (e) => {
+                if(!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - gallery.offsetLeft;
+                const walk = (x - startX) * 2;
+                gallery.scrollLeft = scrollLeft - walk;
+            });
+
+            // Touch events for mobile
+            gallery.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - gallery.offsetLeft;
+                scrollLeft = gallery.scrollLeft;
+            });
+
+            gallery.addEventListener('touchend', () => {
+                isDown = false;
+            });
+
+            gallery.addEventListener('touchmove', (e) => {
+                if(!isDown) return;
+                e.preventDefault();
+                const x = e.touches[0].pageX - gallery.offsetLeft;
+                const walk = (x - startX) * 2;
+                gallery.scrollLeft = scrollLeft - walk;
+            });
+        });
     </script>
 </body>
 </html>
