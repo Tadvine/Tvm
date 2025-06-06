@@ -281,7 +281,7 @@
         </div>
         
         <div id="score-input-section" class="players-container">
-           
+            <h2>امتیازهای هر ست را وارد کنید</h2>
             
             <!-- دکمه و پنل جدول امتیازات -->
             <button id="scoreboard-toggle" class="scoreboard-toggle">نمایش جدول امتیازات ▼</button>
@@ -476,13 +476,50 @@
         
         // تابع بررسی برنده
         function checkForWinner() {
-            for (let i = 0; i < players.length; i++) {
-                if (players[i].total >= 150) {
-                    showWinner(players[i]);
-                    return true;
-                }
+            // بررسی آیا حداقل یک بازیکن به 150 امتیاز رسیده است
+            const potentialWinners = players.filter(player => player.total >= 150);
+            
+            if (potentialWinners.length === 0) {
+                return false;
             }
-            return false;
+            
+            // اگر فقط یک بازیکن به 150 رسیده باشد
+            if (potentialWinners.length === 1) {
+                showWinner(potentialWinners[0]);
+                return true;
+            }
+            
+            // اگر چند بازیکن به 150 رسیده باشند، بازیکن با امتیاز بالاتر برنده است
+            const sortedWinners = potentialWinners.sort((a, b) => b.total - a.total);
+            
+            // اگر امتیازها مساوی باشند، اولین کسی که به 150 رسیده برنده است
+            if (sortedWinners[0].total === sortedWinners[1].total) {
+                // پیدا کردن بازیکنی که زودتر به 150 رسیده
+                let earliestWinner = sortedWinners[0];
+                let earliestSet = players.length; // یک عدد بزرگ برای شروع
+                
+                for (const player of sortedWinners) {
+                    // پیدا کردن ست‌ای که مجموع امتیاز به 150 رسیده
+                    let runningTotal = 0;
+                    for (let i = 0; i < player.scores.length; i++) {
+                        runningTotal += player.scores[i];
+                        if (runningTotal >= 150) {
+                            if (i < earliestSet) {
+                                earliestSet = i;
+                                earliestWinner = player;
+                            }
+                            break;
+                        }
+                    }
+                }
+                
+                showWinner(earliestWinner);
+                return true;
+            }
+            
+            // در غیر این صورت بازیکن با امتیاز بالاتر برنده است
+            showWinner(sortedWinners[0]);
+            return true;
         }
         
         // تابع نمایش برنده
