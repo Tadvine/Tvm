@@ -93,14 +93,18 @@
             flex: 0 0 auto;
             text-decoration: none;
             transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .image-gallery img {
             border-radius: 10px;
             box-shadow: -3px 3px 15px rgba(255, 255, 255, 0.3);
             transition: transform 0.3s, box-shadow 0.3s;
-            width: 150px;
-            height: 200px;
+            width: 180px; /* افزایش سایز تصاویر */
+            height: 240px; /* افزایش سایز تصاویر */
             object-fit: cover;
         }
 
@@ -111,8 +115,16 @@
 
         /* TV Channel Images */
         #tvGallery img {
-            width: 120px;
-            height: 90px;
+            width: 150px; /* افزایش سایز تصاویر */
+            height: 110px; /* افزایش سایز تصاویر */
+        }
+
+        /* Music Buttons */
+        #musicGallery .mybutton {
+            width: 180px; /* افزایش سایز دکمه‌ها */
+            height: 60px; /* افزایش سایز دکمه‌ها */
+            font-size: clamp(16px, 4vw, 20px); /* افزایش سایز فونت */
+            margin: 0 10px;
         }
 
         /* Scroll Buttons */
@@ -123,9 +135,9 @@
             background-color: rgba(0, 0, 0, 0.7);
             border: none;
             color: #fff;
-            font-size: 24px;
-            width: 40px;
-            height: 60px;
+            font-size: 30px; /* افزایش سایز آیکن‌ها */
+            width: 50px; /* افزایش سایز دکمه‌ها */
+            height: 80px; /* افزایش سایز دکمه‌ها */
             cursor: pointer;
             z-index: 1;
             border-radius: 5px;
@@ -215,19 +227,24 @@
             }
             
             .image-gallery img {
-                width: 120px;
-                height: 160px;
+                width: 140px;
+                height: 190px;
             }
             
             #tvGallery img {
-                width: 100px;
-                height: 75px;
+                width: 120px;
+                height: 90px;
+            }
+            
+            #musicGallery .mybutton {
+                width: 150px;
+                height: 50px;
             }
             
             .scroll-button {
-                width: 35px;
-                height: 50px;
-                font-size: 20px;
+                width: 40px;
+                height: 60px;
+                font-size: 24px;
             }
         }
 
@@ -237,13 +254,20 @@
             }
             
             .image-gallery img {
-                width: 100px;
-                height: 140px;
+                width: 120px;
+                height: 160px;
             }
             
             #tvGallery img {
-                width: 80px;
-                height: 60px;
+                width: 100px;
+                height: 70px;
+            }
+            
+            #musicGallery .mybutton {
+                width: 130px;
+                height: 45px;
+                font-size: 14px;
+                margin: 0 5px;
             }
             
             .mybutton {
@@ -349,6 +373,16 @@
             <a href="sargarmi.html" class="custom-button">
                 <button class="mybutton">سرگرمی</button>
             </a>
+            
+            
+            
+            <a href="https://tv.garden/" class="custom-button">
+                <button 
+class="mybutton">شبکه های تلویزیونی</button>
+            </a>
+            
+            
+            
         </div>
         <button class="scroll-button left" onclick="scrollGallery('musicGallery', -300)">&#10094;</button>
         <button class="scroll-button right" onclick="scrollGallery('musicGallery', 300)">&#10095;</button>
