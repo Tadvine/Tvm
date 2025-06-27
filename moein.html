@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پلی لیست  معین</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            padding-bottom: 90px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #1e1e1e;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        
+        .playlist-header {
+            display: flex;
+            margin-top: 30px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .playlist-cover {
+            width: 250px;
+            height: 250px;
+            background-color: #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .playlist-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .playlist-info {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .playlist-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .playlist-description {
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .playlist-meta {
+            display: flex;
+            align-items: center;
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+        
+        .playlist-meta span {
+            margin-left: 15px;
+        }
+        
+        .tracks-list {
+            margin-top: 30px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .track {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #2d2d2d;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+        
+        .track:hover {
+            background-color: #2a2a2a;
+        }
+        
+        .track.active {
+            background-color: #1e88e5;
+            color: white;
+        }
+        
+        .track.active .track-number,
+        .track.active .track-title,
+        .track.active .track-artist,
+        .track.active .track-duration {
+            color: white;
+        }
+        
+        .track.active .track-play {
+            background-color: #0d47a1;
+        }
+        
+        .track.active .track-play i {
+            display: none;
+        }
+        
+        .track.active .track-play::after {
+            content: "";
+            display: block;
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E") no-repeat center;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E") no-repeat center;
+        }
+        
+        .track-number {
+            width: 30px;
+            color: #b0b0b0;
+            font-size: 16px;
+        }
+        
+        .track-info {
+            flex: 1;
+            margin-left: 20px;
+        }
+        
+        .track-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #e0e0e0;
+        }
+        
+        .track-artist {
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+        
+        .track-duration {
+            color: #b0b0b0;
+            font-size: 14px;
+            min-width: 50px;
+            text-align: right;
+        }
+        
+        .track-play {
+            width: 40px;
+            height: 40px;
+            background-color: #1e88e5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: all 0.2s;
+        }
+        
+        .track-play:hover {
+            transform: scale(1.05);
+        }
+        
+        .player-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1e1e1e;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            direction: ltr;
+        }
+        
+        .player-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .player-cover {
+            width: 90px;
+            height: 90px;
+            background-color: #2d2d2d;
+            border-radius: 5px;
+            margin-right: 15px;
+            display: none;
+        }
+        
+        .player-cover.has-cover {
+            display: flex;
+        }
+        
+        .player-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .player-track-info {
+            margin-left: 15px;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .player-track-title {
+            font-weight: 500;
+            color: #ffffff;
+        }
+        
+        .player-track-artist {
+            color: #b0b0b0;
+            font-size: 13px;
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        .player-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #ffffff;
+            cursor: pointer;
+            margin: 0 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        .player-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .player-btn.play-pause {
+            font-size: 24px;
+        }
+        
+        .progress-container {
+            flex: 2;
+            display: flex;
+            align-items: center;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background-color: #3d3d3d;
+            border-radius: 2px;
+            margin: 0 10px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #1e88e5;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+        
+        .progress-bar:hover .progress::after {
+            content: "";
+            position: absolute;
+            right: -5px;
+            top: -3px;
+            width: 10px;
+            height: 10px;
+            background-color: #1e88e5;
+            border-radius: 50%;
+        }
+        
+        .time {
+            font-size: 13px;
+            color: #b0b0b0;
+            width: 40px;
+        }
+        
+        .loading-skeleton {
+            animation: shimmer 1.5s infinite linear;
+            background: linear-gradient(to right, #2a2a2a 0%, #3d3d3d 50%, #2a2a2a 100%);
+            background-size: 200% 100%;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .playlist-header {
+                flex-direction: column;
+            }
+            
+            .playlist-cover {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .player-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .player-info {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .progress-container {
+                width: 100%;
+            }
+            
+            .player-controls {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">گلچین آهنگ های معین
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="playlist-header">
+            <div class="playlist-cover">
+                <img src="https://cinemaetemad.ir/wp-content/uploads/2024/01/moein-3.jpg" alt="پلی لیست">
+            </div>
+            <div class="playlist-info">
+                <h1 class="playlist-title">گلچین آهنگ های معین</h1>
+                <p class="playlist-description">  بهترین آهنگ‌های معین</p>
+                <div class="playlist-meta">
+                    <span><i class="fas fa-music"></i> <span id="track-count">0</span> آهنگ</span>
+                    <span><i class="fas fa-clock"></i> <span id="total-duration">--:--</span> دقیقه</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tracks-list" id="tracks-list">
+            <!-- آهنگ‌ها به صورت دینامیک اضافه می‌شوند -->
+        </div>
+    </div>
+    
+    <div class="player-container">
+        <div class="player-info">
+            <div class="player-cover" id="current-track-cover">
+                <img src="" alt="کاور آهنگ">
+            </div>
+            <div class="player-track-info">
+                <div class="player-track-title">هیچ آهنگی در حال پخش نیست</div>
+                <div class="player-track-artist">برای شروع روی آهنگ مورد نظر کلیک کنید</div>
+            </div>
+        </div>
+        
+        <div class="player-controls">
+            <button class="player-btn" id="prev-btn"><i class="fas fa-step-backward"></i></button>
+            <button class="player-btn play-pause" id="play-pause-btn"><i class="fas fa-play"></i></button>
+            <button class="player-btn" id="next-btn"><i class="fas fa-step-forward"></i></button>
+        </div>
+        
+        <div class="progress-container">
+            <span class="time" id="current-time">0:00</span>
+            <div class="progress-bar" id="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <span class="time" id="duration">--:--</span>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // لیست آهنگ‌ها
+            const tracks = [
+                {
+                    title: "باتو",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Moein-Ba-To-.mp3"
+                },
+                
+                
+                
+                {
+                    title: "نشست موهاشو شونه کرد",
+                    artist: " ",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Neshast-Moohasho-Shone-Kard-(320).mp3"
+                },
+                
+                
+                
+                
+                {
+                    title: "جان تو جان من",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Moein-Jane-Man-(128).mp3"
+                },
+                
+                
+                
+                
+                
+                
+                    {
+                    title: "ای عشق",
+                    artist: " ",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Moein-Jane-Man-(128).mp3"
+                },                
+                
+                
+                
+                
+                {
+                    title: "مجنون",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Moein-Majnoon-(128).mp3"
+                },
+                
+                
+                {
+                    title: "دوستت دارم",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Moein-Ghasam-Be-Eshgh.mp3"
+                },
+                
+                
+                 
+                {
+                    title: "بی بی گل",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Bi-Bi-Gol-II.mp3"
+                },
+                
+                
+                
+                
+                
+                {
+                    title: "دلم گرفت",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Delam-Gereft.mp3"
+                },
+                
+                {
+                    title: "صبحت بخیر عزیزم",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Sobhet-Bekheyr-Azizam.mp3"
+                },
+                
+                
+                  {
+                    title: "راز",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Moein-Raz-320-.mp3"
+                },
+                
+                
+                
+                {
+                    title: "پریچه",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Paricheh.mp3"
+                },
+                
+                
+                
+                {
+                    title: "قسم به عشق",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Ghasam-Be-Eshgh[128].mp3"
+                },
+                
+                
+                
+                 {
+                    title: "یاد تو ",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/yade-to.mp3"
+                },
+                
+                
+                
+                
+                
+                
+                 {
+                    title: "سفر ",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Saffar.mp3"
+                },
+                
+                
+                       {
+                    title: "یکی را دوست میدارم",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/Yeki-Ra-Doost-Midaram.mp3"
+                },
+                
+                
+                
+                
+                
+                
+                 {
+                    title: "لحظه ها",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/7/moein-Lahzeha.mp3"
+                },
+                
+                
+                
+                
+                {
+                    title: "همـــدم",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/11/Moein-Hamdaam.mp3"
+                },
+                
+                
+                {
+                    title: "خون سیاوش",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/11/Moein-Khoone-Siavash.mp3"
+                },
+                
+                
+                
+                
+                
+                   {
+                    title: "دل بلا",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/10/Moein-Dele-Bala.mp3"
+                },
+                
+                
+                
+                
+                 {
+                    title: "نیاز",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/10/Moein-Niyaz.mp3"
+                },
+                
+                
+                
+                        {
+                    title: "پا به پای تو",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/10/Moein-Pabepaye-Tou.mp3"
+                },
+                
+                
+                         {
+                    title: "ننه",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/9/Moein-Naneh.mp3"
+                },
+                
+                
+                
+                        {
+                    title: "بیقراری",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/11/Moein-Bigharar-[320].mp3"
+                },
+                
+                
+                
+                
+                         {
+                    title: "بت پرست",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Khoshbinee.mp3"
+                },
+                
+                
+                
+                
+                
+                        {
+                    title: "جدایی",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Jodaee.mp3"
+                },
+                
+                
+                         {
+                    title: "دیوونتم هنوز",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Divoonatam-Hanooz.mp3"
+                },
+                
+                
+                     {
+                    title: "ملاقات‌",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/-Molaghat.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "به تو گفتم نگفتم",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Be-To-Goftam-Nagoftam.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "هوادار تو",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Havadare-To.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "زوزگار",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/moein-Roozegar.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "وقتی چشات بارونیه",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Vaghti-Cheshat-Barooniye.mp3"
+                },
+                
+                
+                
+                 {
+                    title: "دلسوز من باش",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Moein-Delsooze-Man-Bash.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "ماندگار",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Maandegar.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "باز عاشقم باش",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Baz-Ashegham-Bash.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "هوای خونه",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Moein_-_Havaye_Khooneh.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "کل دنیامی",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Kolle-Donyami.mp3"
+                },
+                
+                
+                
+                
+                 {
+                    title: "الهه ناز",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Elaheye-Naz.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "تا از در اومد",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Taa-Az-Dar-Oumad.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "نیرنگ",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Moein-Donyaye-Neyrang.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "پرنده",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Moein-Ft-Siavash-Parandeh.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "قصر آرزوها",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Ghasre-Arezouha.mp3"
+                },
+                
+                
+                
+                
+                 {
+                    title: "ای آنکه",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Ey-Anke.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "با من باش",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Ba-Man-Bash.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "چگونه چگونه",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Chegoneh-Chegoneh.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "فداتم",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Fadatam-moein.mp3"
+                },
+                
+                
+                
+                     {
+                    title: "گناه",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Moein-gonah.mp3"
+                },
+                
+                
+                
+                       {
+                    title: "چه کنم عاشق ایرانم",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1404/1/Chekonam-Ashegh-Iran-Am.mp3"
+                },
+
+                
+                
+                 
+                                
+                
+                {
+                    title: "به دیدارم بیا",
+                    artist: "",
+                    cover: "",
+                    src: "https://dl.beroosic.ir/music/1403/9/Moein-Be-Didaram.mp3"
+                }
+                
+                // می‌توانید آهنگ‌های بیشتری اضافه کنید
+            ];
+            
+            // عناصر DOM
+            const audio = new Audio();
+            let currentTrackIndex = 0;
+            let isPlaying = false;
+            let isDragging = false;
+            
+            const tracksListEl = document.getElementById('tracks-list');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const progress = document.getElementById('progress');
+            const currentTimeEl = document.getElementById('current-time');
+            const durationEl = document.getElementById('duration');
+            const playerTitle = document.querySelector('.player-track-title');
+            const playerArtist = document.querySelector('.player-track-artist');
+            const playerCover = document.getElementById('current-track-cover');
+            const playerCoverImg = playerCover.querySelector('img');
+            const trackCountEl = document.getElementById('track-count');
+            const totalDurationEl = document.getElementById('total-duration');
+            
+            // متغیرهای مدیریت بارگذاری
+            let loadingQueue = [];
+            let isProcessingQueue = false;
+            const loadedDurations = {};
+            
+            // نمایش اولیه لیست آهنگ‌ها (بدون مدت زمان)
+            function renderInitialTracks() {
+                tracksListEl.innerHTML = '';
+                tracks.forEach((track, index) => {
+                    const trackEl = document.createElement('div');
+                    trackEl.className = 'track';
+                    trackEl.innerHTML = `
+                        <div class="track-number">${index + 1}</div>
+                        <div class="track-info">
+                            <div class="track-title">${track.title}</div>
+                            <div class="track-artist">${track.artist}</div>
+                        </div>
+                        <div class="track-duration" id="duration-${index}">--:--</div>
+                        <div class="track-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    `;
+                    tracksListEl.appendChild(trackEl);
+                    
+                    // رویدادهای کلیک
+                    trackEl.addEventListener('click', function(e) {
+                        if (!e.target.closest('.track-play')) {
+                            playTrack(index);
+                        }
+                    });
+                    
+                    trackEl.querySelector('.track-play').addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        playTrack(index);
+                    });
+                    
+                    // اضافه به صف بارگذاری
+                    loadingQueue.push(index);
+                });
+                
+                trackCountEl.textContent = tracks.length;
+                
+                // شروع پردازش صف بارگذاری
+                processLoadingQueue();
+            }
+            
+            // پردازش صف بارگذاری با تأخیر
+            function processLoadingQueue() {
+                if (isProcessingQueue || loadingQueue.length === 0) return;
+                
+                isProcessingQueue = true;
+                const index = loadingQueue.shift();
+                
+                // اگر مدت زمان قبلاً بارگذاری شده
+                if (loadedDurations[index]) {
+                    updateTrackDuration(index, loadedDurations[index]);
+                    isProcessingQueue = false;
+                    processLoadingQueue();
+                    return;
+                }
+                
+                loadTrackDuration(index, function(duration) {
+                    loadedDurations[index] = duration;
+                    updateTrackDuration(index, duration);
+                    updateTotalDuration();
+                    
+                    // تأخیر برای جلوگیری از مسدود شدن UI
+                    setTimeout(() => {
+                        isProcessingQueue = false;
+                        if (loadingQueue.length > 0) {
+                            processLoadingQueue();
+                        }
+                    }, 200);
+                });
+            }
+            
+            // بارگذاری مدت زمان یک آهنگ
+            function loadTrackDuration(index, callback) {
+                const track = tracks[index];
+                const durationEl = document.getElementById(`duration-${index}`);
+                
+                if (!durationEl) return callback(0);
+                
+                durationEl.textContent = "درحال بارگذاری...";
+                
+                const tempAudio = new Audio();
+                tempAudio.src = track.src;
+                
+                const timeout = setTimeout(() => {
+                    tempAudio.removeEventListener('loadedmetadata', loadedHandler);
+                    tempAudio.removeEventListener('error', errorHandler);
+                    callback(0);
+                }, 5000); // تایم‌اوت پس از 5 ثانیه
+                
+                function loadedHandler() {
+                    clearTimeout(timeout);
+                    callback(tempAudio.duration);
+                    tempAudio.remove();
+                }
+                
+                function errorHandler() {
+                    clearTimeout(timeout);
+                    callback(0);
+                    tempAudio.remove();
+                }
+                
+                tempAudio.addEventListener('loadedmetadata', loadedHandler, {once: true});
+                tempAudio.addEventListener('error', errorHandler, {once: true});
+            }
+            
+            // به‌روزرسانی مدت زمان نمایش داده شده
+            function updateTrackDuration(index, duration) {
+                const durationEl = document.getElementById(`duration-${index}`);
+                if (durationEl) {
+                    durationEl.textContent = duration > 0 ? formatTime(duration) : "--:--";
+                    tracks[index].duration = duration;
+                }
+            }
+            
+            // محاسبه مدت زمان کل
+            function updateTotalDuration() {
+                let totalSeconds = 0;
+                let loadedCount = 0;
+                
+                tracks.forEach((track, index) => {
+                    if (loadedDurations[index] !== undefined) {
+                        totalSeconds += loadedDurations[index] || 0;
+                        loadedCount++;
+                    }
+                });
+                
+                if (loadedCount > 0) {
+                    totalDurationEl.textContent = formatTime(totalSeconds);
+                }
+            }
+            
+            // پخش آهنگ
+            function playTrack(index) {
+                if (index < 0 || index >= tracks.length) return;
+                
+                currentTrackIndex = index;
+                const track = tracks[currentTrackIndex];
+                
+                audio.src = track.src;
+                playerTitle.textContent = track.title;
+                playerArtist.textContent = track.artist;
+                
+                // مدیریت نمایش کاور
+                if (track.cover) {
+                    playerCoverImg.src = track.cover;
+                    playerCover.classList.add('has-cover');
+                } else {
+                    playerCover.classList.remove('has-cover');
+                }
+                
+                audio.play()
+                    .then(() => {
+                        isPlaying = true;
+                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        updateActiveTrack();
+                        
+                        if (track.duration) {
+                            durationEl.textContent = formatTime(track.duration);
+                        } else if (loadedDurations[index]) {
+                            durationEl.textContent = formatTime(loadedDurations[index]);
+                        } else {
+                            durationEl.textContent = "--:--";
+                        }
+                    })
+                    .catch(error => {
+                        console.error('خطا در پخش آهنگ:', error);
+                    });
+            }
+            
+            // به‌روزرسانی آهنگ فعال در لیست
+            function updateActiveTrack() {
+                document.querySelectorAll('.track').forEach((trackEl, index) => {
+                    if (index === currentTrackIndex) {
+                        trackEl.classList.add('active');
+                    } else {
+                        trackEl.classList.remove('active');
+                    }
+                });
+            }
+            
+            // پخش یا توقف
+            function togglePlay() {
+                if (audio.paused) {
+                    if (audio.src) {
+                        audio.play()
+                            .then(() => {
+                                isPlaying = true;
+                                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                            });
+                    } else if (tracks.length > 0) {
+                        playTrack(0);
+                    }
+                } else {
+                    audio.pause();
+                    isPlaying = false;
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            }
+            
+            // آهنگ بعدی
+            function nextTrack() {
+                if (tracks.length === 0) return;
+                
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                playTrack(currentTrackIndex);
+            }
+            
+            // آهنگ قبلی
+            function prevTrack() {
+                if (tracks.length === 0) return;
+                
+                if (audio.currentTime > 3) {
+                    audio.currentTime = 0;
+                    return;
+                }
+                
+                currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+                playTrack(currentTrackIndex);
+            }
+            
+            // فرمت زمان
+            function formatTime(seconds) {
+                if (isNaN(seconds) || seconds === 0) return '0:00';
+                
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+            
+            // به‌روزرسانی نوار پیشرفت
+            function updateProgress() {
+                if (isNaN(audio.duration) || isDragging) return;
+                
+                const progressPercent = (audio.currentTime / audio.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+            
+            // شروع درگ کردن نوار پیشرفت
+            function startDrag(e) {
+                isDragging = true;
+                document.addEventListener('mousemove', handleDrag);
+                document.addEventListener('mouseup', stopDrag);
+                handleDrag(e);
+            }
+            
+            // درگ کردن
+            function handleDrag(e) {
+                if (!isDragging) return;
+                
+                const width = progressBar.clientWidth;
+                const clickX = e.clientX - progressBar.getBoundingClientRect().left;
+                const percent = Math.min(Math.max(clickX / width, 0), 1);
+                
+                progress.style.width = `${percent * 100}%`;
+                currentTimeEl.textContent = formatTime(audio.duration * percent);
+            }
+            
+            // توقف درگ کردن
+            function stopDrag() {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                document.removeEventListener('mousemove', handleDrag);
+                document.removeEventListener('mouseup', stopDrag);
+                
+                const width = progressBar.clientWidth;
+                const progressWidth = parseFloat(progress.style.width) / 100;
+                audio.currentTime = audio.duration * progressWidth;
+            }
+            
+            // تنظیم رویدادها
+            function setupEventListeners() {
+                playPauseBtn.addEventListener('click', togglePlay);
+                prevBtn.addEventListener('click', prevTrack);
+                nextBtn.addEventListener('click', nextTrack);
+                
+                audio.addEventListener('timeupdate', updateProgress);
+                audio.addEventListener('ended', nextTrack);
+                audio.addEventListener('pause', () => {
+                    isPlaying = false;
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                });
+                audio.addEventListener('play', () => {
+                    isPlaying = true;
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                });
+                
+                progressBar.addEventListener('mousedown', startDrag);
+                
+                // بارگذاری مدت زمان‌ها هنگام اسکرول
+                window.addEventListener('scroll', function() {
+                    if (loadingQueue.length > 0 && !isProcessingQueue) {
+                        processLoadingQueue();
+                    }
+                });
+            }
+            
+            // مقداردهی اولیه
+            function init() {
+                renderInitialTracks();
+                setupEventListeners();
+                
+                // بارگذاری مدت زمان آهنگ اول برای نمایش در پلیر
+                if (tracks.length > 0) {
+                    loadTrackDuration(0, function(duration) {
+                        loadedDurations[0] = duration;
+                        updateTrackDuration(0, duration);
+                        updateTotalDuration();
+                    });
+                }
+            }
+            
+            init();
+        });
+    </script>
+</body>
+</html>
