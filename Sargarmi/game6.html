@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بازی ورق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            padding: 0 10px;
+        }
+        
+        .game-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        .input-section {
+            margin-bottom: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .card {
+            width: 80px;
+            height: 112px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hidden-card {
+            background-image: url('https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/svg-cards/back.svg') !important;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        
+        .controls button {
+            flex: 1;
+        }
+        
+        .removed-cards {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: rgba(255, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .removed-cards-title {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .removed-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .hidden-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .hidden-card-result {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hidden-card-amount {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        @media (min-width: 600px) {
+            .card {
+                width: 100px;
+                height: 140px;
+            }
+            
+            .controls {
+                padding: 15px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>بازی ورق</h1>
+        
+        <div class="game-area">
+            <div id="step1" class="input-section">
+                <label for="amount">مبلغ به تومان:</label>
+                <input type="number" id="amount" placeholder="مبلغ را وارد کنید">
+                <button id="next1">مرحله بعد</button>
+            </div>
+            
+            <div id="step2" class="input-section" style="display: none;">
+                <label for="removed">تعداد ورق های حذف شده:</label>
+                <select id="removed">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <button id="next2">مرحله بعد</button>
+            </div>
+            
+            <div id="step3" class="input-section" style="display: none;">
+                <label for="hidden">تعداد ورق های مخفی شده (بین 3 تا 5):</label>
+                <select id="hidden">
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <button id="start">شروع بازی</button>
+            </div>
+            
+            <div id="game" style="display: none;">
+                <div id="removedCardsSection" class="removed-cards" style="display: none;">
+                    <div class="removed-cards-title">کارت های حذف شده:</div>
+                    <div class="removed-cards-container" id="removedCardsContainer"></div>
+                </div>
+                
+                <div class="cards-container" id="cards"></div>
+            </div>
+            
+            <div id="result" class="result">
+                <h2>نتیجه نهایی</h2>
+                <div class="hidden-cards-container" id="hiddenCardsResult"></div>
+                <div style="text-align: center; margin-top: 20px; font-size: 18px;" id="amounts-result"></div>
+            </div>
+        </div>
+        
+        <div id="controls" class="controls" style="display: none;">
+            <button id="nextCard">نمایش کارت بعدی</button>
+            <button id="showResult" disabled>نمایش نتیجه</button>
+        </div>
+    </div>
+
+    <script>
+        // Game variables
+        let totalAmount = 0;
+        let removedCardsCount = 0;
+        let hiddenCardsCount = 0;
+        let deck = [];
+        let removedCards = [];
+        let hiddenCards = [];
+        let shownCards = [];
+        let currentCardIndex = 0;
+        let amounts = [];
+        
+        // DOM elements
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+        const game = document.getElementById('game');
+        const result = document.getElementById('result');
+        const controls = document.getElementById('controls');
+        const cardsContainer = document.getElementById('cards');
+        const removedCardsSection = document.getElementById('removedCardsSection');
+        const removedCardsContainer = document.getElementById('removedCardsContainer');
+        const nextCardBtn = document.getElementById('nextCard');
+        const showResultBtn = document.getElementById('showResult');
+        const hiddenCardsResult = document.getElementById('hiddenCardsResult');
+        const amountsResult = document.getElementById('amounts-result');
+        
+        // Event listeners
+        document.getElementById('next1').addEventListener('click', () => {
+            totalAmount = parseInt(document.getElementById('amount').value);
+            if (isNaN(totalAmount) || totalAmount <= 0) {
+                alert('لطفا مبلغ معتبر وارد کنید');
+                return;
+            }
+            step1.style.display = 'none';
+            step2.style.display = 'block';
+        });
+        
+        document.getElementById('next2').addEventListener('click', () => {
+            removedCardsCount = parseInt(document.getElementById('removed').value);
+            step2.style.display = 'none';
+            step3.style.display = 'block';
+        });
+        
+        document.getElementById('start').addEventListener('click', () => {
+            hiddenCardsCount = parseInt(document.getElementById('hidden').value);
+            initializeGame();
+            step3.style.display = 'none';
+            game.style.display = 'block';
+            controls.style.display = 'flex';
+        });
+        
+        nextCardBtn.addEventListener('click', showNextCard);
+        showResultBtn.addEventListener('click', showFinalResult);
+        
+        // Initialize the game
+        function initializeGame() {
+            // Create a full deck
+            const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+            const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king', 'ace'];
+            
+            deck = [];
+            for (const suit of suits) {
+                for (const value of values) {
+                    deck.push({ suit, value });
+                }
+            }
+            
+            // Remove random cards and store them
+            removedCards = [];
+            for (let i = 0; i < removedCardsCount; i++) {
+                const randomIndex = Math.floor(Math.random() * deck.length);
+                removedCards.push(deck[randomIndex]);
+                deck.splice(randomIndex, 1);
+            }
+            
+            // Show removed cards if any
+            if (removedCards.length > 0) {
+                removedCardsSection.style.display = 'block';
+                removedCardsContainer.innerHTML = '';
+                removedCards.forEach(card => {
+                    const cardElement = document.createElement('div');
+                    cardElement.className = 'card';
+                    cardElement.style.backgroundImage = `url(https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/svg-cards/${card.value}_of_${card.suit}.svg)`;
+                    removedCardsContainer.appendChild(cardElement);
+                });
+            } else {
+                removedCardsSection.style.display = 'none';
+            }
+            
+            // Shuffle the deck
+            deck = shuffleArray(deck);
+            
+            // Select hidden cards
+            hiddenCards = deck.slice(0, hiddenCardsCount);
+            
+            // The rest are shown cards
+            shownCards = deck.slice(hiddenCardsCount);
+            
+            // Calculate amounts for hidden cards with minimum 20% of total amount
+            amounts = distributeAmountsWithMinimum(totalAmount, hiddenCardsCount);
+            
+            // Display the deck count
+            alert(`تعداد ورق های باقی مانده: ${deck.length} کارت (${removedCardsCount} کارت حذف شده)`);
+            
+            // Render initial view (all cards hidden)
+            renderCards();
+        }
+        
+        // Shuffle array
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+        
+        // Distribute amounts with minimum 20% of total amount for each card
+        function distributeAmountsWithMinimum(total, count) {
+            // Calculate minimum amount (20% of total)
+            const minAmount = Math.floor(total * 0.2);
+            
+            // If minimum amount * count is more than total, adjust minimum amount
+            const adjustedMinAmount = Math.min(minAmount, Math.floor(total / count));
+            
+            // Assign minimum amount to each card
+            const amounts = Array(count).fill(adjustedMinAmount);
+            let remaining = total - (adjustedMinAmount * count);
+            
+            // Distribute remaining amount randomly but in ascending order
+            if (remaining > 0) {
+                // Create random weights for distribution
+                const weights = [];
+                for (let i = 0; i < count; i++) {
+                    weights.push(Math.random());
+                }
+                
+                // Sort weights ascending
+                weights.sort((a, b) => a - b);
+                
+                // Calculate sum of weights
+                const sumWeights = weights.reduce((a, b) => a + b, 0);
+                
+                // Distribute remaining amount based on weights
+                for (let i = 0; i < count; i++) {
+                    const portion = Math.round((weights[i] / sumWeights) * remaining);
+                    amounts[i] += portion;
+                    remaining -= portion;
+                }
+                
+                // Add any remaining due to rounding errors to the last card
+                if (remaining > 0) {
+                    amounts[count - 1] += remaining;
+                }
+            }
+            
+            // Round amounts to nearest 10,000
+            const roundedAmounts = amounts.map(amount => Math.round(amount / 10000) * 10000);
+            
+            // Adjust sum to match exactly
+            const sum = roundedAmounts.reduce((a, b) => a + b, 0);
+            if (sum !== total) {
+                const diff = total - sum;
+                roundedAmounts[count - 1] += diff;
+            }
+            
+            // Ensure amounts are in ascending order
+            roundedAmounts.sort((a, b) => a - b);
+            
+            return roundedAmounts;
+        }
+        
+        // Render cards
+        function renderCards() {
+            cardsContainer.innerHTML = '';
+            
+            // Show already revealed cards
+            for (let i = 0; i < currentCardIndex; i++) {
+                const card = shownCards[i];
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.style.backgroundImage = `url(https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/svg-cards/${card.value}_of_${card.suit}.svg)`;
+                
+                // Check if this card is one of the hidden cards
+                const isHidden = hiddenCards.some(hc => hc.suit === card.suit && hc.value === card.value);
+                if (isHidden) {
+                    cardElement.classList.add('hidden-card');
+                }
+                
+                cardsContainer.appendChild(cardElement);
+            }
+            
+            // Show back of remaining cards
+            for (let i = currentCardIndex; i < shownCards.length; i++) {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card hidden-card';
+                cardElement.style.backgroundImage = 'url(https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/svg-cards/back.svg)';
+                cardsContainer.appendChild(cardElement);
+            }
+            
+            // Update button states
+            nextCardBtn.disabled = currentCardIndex >= shownCards.length;
+            showResultBtn.disabled = currentCardIndex < shownCards.length;
+        }
+        
+        // Show next card
+        function showNextCard() {
+            if (currentCardIndex < shownCards.length) {
+                currentCardIndex++;
+                renderCards();
+                
+                if (currentCardIndex >= shownCards.length) {
+                    nextCardBtn.disabled = true;
+                    showResultBtn.disabled = false;
+                }
+            }
+        }
+        
+        // Show final result
+        function showFinalResult() {
+            game.style.display = 'none';
+            controls.style.display = 'none';
+            result.style.display = 'block';
+            
+            // Show hidden cards with amounts
+            hiddenCardsResult.innerHTML = '';
+            hiddenCards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'hidden-card-result';
+                cardElement.innerHTML = `
+                    <div class="card" style="background-image: url(https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/svg-cards/${card.value}_of_${card.suit}.svg)"></div>
+                    <div class="hidden-card-amount">${amounts[index].toLocaleString()} تومان</div>
+                `;
+                hiddenCardsResult.appendChild(cardElement);
+            });
+            
+            // Show total amount
+            amountsResult.innerHTML = `مجموع مبالغ اختصاص داده شده: ${amounts.reduce((a, b) => a + b, 0).toLocaleString()} تومان`;
+            
+            // Verify minimum amount
+            const minAmount = Math.min(...amounts);
+            const oneFifth = Math.floor(totalAmount / 5);
+            if (minAmount < oneFifth) {
+                alert(`توجه: حداقل مبلغ هر کارت باید حداقل یک پنجم کل مبلغ (${oneFifth.toLocaleString()} تومان) باشد، اما ${minAmount.toLocaleString()} تومان است. لطفا مبلغ بالاتری وارد کنید.`);
+            }
+        }
+    </script>
+</body>
+</html>
