@@ -368,7 +368,6 @@
     <script>
         // Video data array
         const videos = [
-            
             {
                 artist: "زند وکیلی",
                 title: "لالایی",
@@ -698,16 +697,25 @@
                
         ];
 
+  
         // Current video index for playback
         let currentVideoIndex = 0;
         let filteredVideos = [...videos];
-        let currentVideoPlayer = null;
+        let currentVideoElement = null;
         let isFullscreenBeforeChange = false;
         
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
             renderVideos(videos);
             setupFilterButtons();
+            
+            // Create video element once and reuse it
+            const videoPlayer = document.getElementById('video-player');
+            currentVideoElement = document.createElement('video');
+            currentVideoElement.controls = true;
+            currentVideoElement.style.width = '100%';
+            currentVideoElement.style.height = '100%';
+            videoPlayer.appendChild(currentVideoElement);
         });
         
         // Render videos to the grid
@@ -780,68 +788,16 @@
             renderVideos(filteredVideos);
         }
         
-        // Modal functions
-        function openModal(index) {
-            // Check if we're currently in fullscreen mode
-            isFullscreenBeforeChange = isFullscreen();
-            
-            currentVideoIndex = index;
-            const modal = document.getElementById('video-modal');
-            const videoPlayer = document.getElementById('video-player');
-            const videoTitle = document.getElementById('video-title');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const video = filteredVideos[index];
-            
-            // Clear previous video player
-            videoPlayer.innerHTML = '';
-            
-            // Create new video element
-            const videoElement = document.createElement('video');
-            videoElement.src = video.url;
-            videoElement.controls = true;
-            videoElement.autoplay = true;
-            videoElement.style.width = '100%';
-            videoElement.style.height = '100%';
-            
-            videoPlayer.appendChild(videoElement);
-            currentVideoPlayer = videoElement;
-            
-            videoTitle.textContent = `${video.artist} - ${video.title}`;
-            
-            // Update button states
-            prevBtn.disabled = index === 0;
-            nextBtn.disabled = index === filteredVideos.length - 1;
-            
-            // Handle video end to play next automatically
-            videoElement.onended = function() {
-                if (currentVideoIndex < filteredVideos.length - 1) {
-                    playNextVideo();
-                }
-            };
-            
-            modal.style.display = 'block';
-            
-            // If we were in fullscreen before, re-enter fullscreen after the new video loads
-            videoElement.onloadeddata = function() {
-                if (isFullscreenBeforeChange) {
-                    enterFullscreen(videoElement);
-                }
-            };
-            
-            // Handle fullscreen change
-            document.addEventListener('fullscreenchange', handleFullscreenChange);
-            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-            document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-            document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+        // Check if element is in fullscreen mode
+        function isFullscreen(element) {
+            return !!(document.fullscreenElement || 
+                    document.webkitFullscreenElement || 
+                    document.mozFullScreenElement || 
+                    document.msFullscreenElement);
         }
         
-        function isFullscreen() {
-            return !!(document.fullscreenElement || document.webkitFullscreenElement || 
-                     document.mozFullScreenElement || document.msFullscreenElement);
-        }
-        
-        function enterFullscreen(element) {
+        // Request fullscreen for element
+        function requestFullscreen(element) {
             if (element.requestFullscreen) {
                 element.requestFullscreen();
             } else if (element.webkitRequestFullscreen) {
@@ -853,30 +809,68 @@
             }
         }
         
-        function handleFullscreenChange() {
-            if (!document.fullscreenElement && !document.webkitIsFullScreen && 
-                !document.mozFullScreen && !document.msFullscreenElement) {
-                // User exited fullscreen, check if we need to play next video
-                if (currentVideoPlayer && currentVideoPlayer.ended && 
-                    currentVideoIndex < filteredVideos.length - 1) {
+        // Exit fullscreen
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+        
+        // Modal functions
+        function openModal(index) {
+            // Check current fullscreen status
+            isFullscreenBeforeChange = isFullscreen(currentVideoElement);
+            
+            currentVideoIndex = index;
+            const modal = document.getElementById('video-modal');
+            const videoTitle = document.getElementById('video-title');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const video = filteredVideos[index];
+            
+            // Pause current video and change source
+            currentVideoElement.pause();
+            currentVideoElement.src = video.url;
+            currentVideoElement.currentTime = 0;
+            
+            videoTitle.textContent = `${video.artist} - ${video.title}`;
+            
+            // Update button states
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === filteredVideos.length - 1;
+            
+            // Play the new video
+            currentVideoElement.play().catch(e => console.log('Auto-play prevented', e));
+            
+            // Handle video end to play next automatically
+            currentVideoElement.onended = function() {
+                if (currentVideoIndex < filteredVideos.length - 1) {
                     playNextVideo();
                 }
+            };
+            
+            modal.style.display = 'block';
+            
+            // Re-enter fullscreen if needed after video loads
+            if (isFullscreenBeforeChange) {
+                currentVideoElement.onloadeddata = function() {
+                    requestFullscreen(currentVideoElement);
+                };
             }
         }
         
         function closeModal() {
             const modal = document.getElementById('video-modal');
             
-            if (currentVideoPlayer) {
-                currentVideoPlayer.pause();
-                currentVideoPlayer = null;
+            if (currentVideoElement) {
+                currentVideoElement.pause();
             }
-            
-            // Remove event listeners
-            document.removeEventListener('fullscreenchange', handleFullscreenChange);
-            document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
-            document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
-            document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
             
             modal.style.display = 'none';
         }
