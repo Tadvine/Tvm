@@ -691,19 +691,18 @@
                 artist: "امین بانی و فرناز ملکی",
                 title: "نشد",
                 cover: "https://mifa-music.ir/wp-content/uploads/2020/12/5225552.jpg",
-                url: "https://cdn.imgurl.ir/uploads/e9617_.mp4",
+                url: "https://uploadkon.ir/uploads/6d2208_25Amin-Bani-Nashod.mp4",
                 category: "امین بانی"
             }
        
                
         ];
 
-
-
         // Current video index for playback
         let currentVideoIndex = 0;
         let filteredVideos = [...videos];
         let currentVideoPlayer = null;
+        let isFullscreenBeforeChange = false;
         
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
@@ -783,6 +782,9 @@
         
         // Modal functions
         function openModal(index) {
+            // Check if we're currently in fullscreen mode
+            isFullscreenBeforeChange = isFullscreen();
+            
             currentVideoIndex = index;
             const modal = document.getElementById('video-modal');
             const videoPlayer = document.getElementById('video-player');
@@ -820,11 +822,35 @@
             
             modal.style.display = 'block';
             
+            // If we were in fullscreen before, re-enter fullscreen after the new video loads
+            videoElement.onloadeddata = function() {
+                if (isFullscreenBeforeChange) {
+                    enterFullscreen(videoElement);
+                }
+            };
+            
             // Handle fullscreen change
             document.addEventListener('fullscreenchange', handleFullscreenChange);
             document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
             document.addEventListener('mozfullscreenchange', handleFullscreenChange);
             document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+        }
+        
+        function isFullscreen() {
+            return !!(document.fullscreenElement || document.webkitFullscreenElement || 
+                     document.mozFullScreenElement || document.msFullscreenElement);
+        }
+        
+        function enterFullscreen(element) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
         }
         
         function handleFullscreenChange() {
