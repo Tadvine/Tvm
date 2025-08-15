@@ -36,7 +36,6 @@
             font-size: 2.5rem;
         }
         
-        /* Search Box */
         .search-container {
             margin: 20px auto;
             max-width: 600px;
@@ -81,7 +80,6 @@
             background: #006600;
         }
         
-        /* Filter Menu */
         .filter-menu {
             display: flex;
             flex-wrap: wrap;
@@ -107,7 +105,6 @@
             background: #ff7979;
         }
         
-        /* Video Grid */
         .video-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -157,7 +154,6 @@
             opacity: 0.9;
         }
         
-        /* Video Player Modal */
         .modal {
             display: none;
             position: fixed;
@@ -191,21 +187,21 @@
             z-index: 1001;
         }
         
-        .video-player {
+        .video-player-container {
             width: 100%;
             aspect-ratio: 16/9;
             background: #000;
             position: relative;
         }
         
-        .video-player video {
+        .video-player {
             width: 100%;
             height: 100%;
             display: block;
         }
         
-        .video-loading {
-            position: absolute;
+        .video-loading-overlay {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -215,26 +211,15 @@
             justify-content: center;
             align-items: center;
             color: white;
-            font-size: 1.2rem;
-            z-index: 10;
+            font-size: 1.5rem;
+            z-index: 1002;
             pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
-        /* برای حالت فول اسکرین */
-        .video-player:-webkit-full-screen .video-loading {
-            font-size: 2rem;
-        }
-        
-        .video-player:-moz-full-screen .video-loading {
-            font-size: 2rem;
-        }
-        
-        .video-player:-ms-fullscreen .video-loading {
-            font-size: 2rem;
-        }
-        
-        .video-player:fullscreen .video-loading {
-            font-size: 2rem;
+        .video-loading-overlay.active {
+            opacity: 1;
         }
         
         .video-nav {
@@ -271,7 +256,6 @@
             font-size: 1.3rem;
         }
         
-        /* Buttons */
         .mybutton {
             background-color: #009933;
             font-family: 'El Messiri', sans-serif;
@@ -299,7 +283,6 @@
             opacity: 0.5;
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -348,7 +331,6 @@
         
         <h1>گلچین موزیک ویدیو</h1>
         
-        <!-- Search Box -->
         <div class="search-container">
             <input type="text" id="search-input" placeholder="جستجو در موزیک ویدیوها..." onkeyup="handleSearchInput()">
             <button class="search-btn" onclick="searchVideos()">
@@ -359,10 +341,9 @@
             </button>
         </div>
         
-        <!-- Filter Menu -->
         <ul class="filter-menu">
             <li data-target="all" class="current">همه</li>
-            <li data-target="متفرقه">متفرقه</li>
+            
             <li data-target="آرش و مسیح">آرش و مسیح</li>
             <li data-target="امین بانی">امین بانی</li>
             <li data-target="امو بند">امو بند</li>
@@ -377,22 +358,21 @@
             <li data-target="طلیسچی">طلیسچی</li>
             <li data-target="فرزاد فرزین">فرزاد فرزین</li>
             <li data-target="ماکان بند">ماکان بند</li>
+            <li data-target="متفرقه">متفرقه</li>
         </ul>
         
-        <!-- Video Grid -->
         <div class="video-grid" id="video-grid">
             <!-- Videos will be inserted here by JavaScript -->
         </div>
     </div>
     
-    <!-- Video Player Modal -->
     <div id="video-modal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
         <div class="modal-content">
-            <div class="video-player" id="video-player">
-                <!-- Video will be loaded here -->
-                <div class="video-loading" id="video-loading">در حال بارگذاری ویدیو...</div>
+            <div class="video-player-container">
+                <video class="video-player" id="video-element"></video>
             </div>
+            <div class="video-loading-overlay" id="video-loading">در حال بارگذاری ویدیو...</div>
             <h2 class="video-title" id="video-title"></h2>
             <div class="video-nav">
                 <button class="nav-btn" id="prev-btn" onclick="playPrevVideo()">قبلی</button>
@@ -400,9 +380,9 @@
             </div>
         </div>
     </div>
-    
+
     <script>
-        // Video data array
+            // Video data array
         const videos = [
          {
                 artist: "رضا صادقی",
@@ -880,52 +860,33 @@
             }
         ];
 
-        // Current video index for playback
         let currentVideoIndex = 0;
         let filteredVideos = [...videos];
-        let currentVideoElement = null;
-        let isFullscreenBeforeChange = false;
         
-        // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
             renderVideos(videos);
             setupFilterButtons();
             
-            // Create video element once and reuse it
-            const videoPlayer = document.getElementById('video-player');
-            currentVideoElement = document.createElement('video');
-            currentVideoElement.controls = true;
-            currentVideoElement.style.width = '100%';
-            currentVideoElement.style.height = '100%';
-            videoPlayer.appendChild(currentVideoElement);
+            const videoElement = document.getElementById('video-element');
+            const loadingOverlay = document.getElementById('video-loading');
             
-            // Hide loading when video can play
-            currentVideoElement.oncanplay = function() {
-                document.getElementById('video-loading').style.display = 'none';
+            videoElement.onwaiting = function() {
+                loadingOverlay.classList.add('active');
             };
             
-            // Show loading when source changes
-            currentVideoElement.onloadstart = function() {
-                document.getElementById('video-loading').style.display = 'flex';
+            videoElement.onplaying = function() {
+                loadingOverlay.classList.remove('active');
             };
             
-            // Handle waiting event
-            currentVideoElement.onwaiting = function() {
-                document.getElementById('video-loading').style.display = 'flex';
+            videoElement.oncanplay = function() {
+                loadingOverlay.classList.remove('active');
             };
             
-            // Handle playing event
-            currentVideoElement.onplaying = function() {
-                document.getElementById('video-loading').style.display = 'none';
-            };
-            
-            // Handle errors
-            currentVideoElement.onerror = function() {
-                document.getElementById('video-loading').textContent = 'خطا در بارگذاری ویدیو';
+            videoElement.onerror = function() {
+                loadingOverlay.textContent = 'خطا در بارگذاری ویدیو';
             };
         });
         
-        // Render videos to the grid
         function renderVideos(videosToRender) {
             const videoGrid = document.getElementById('video-grid');
             videoGrid.innerHTML = '';
@@ -947,13 +908,11 @@
             });
         }
         
-        // Setup filter buttons
         function setupFilterButtons() {
             const filterButtons = document.querySelectorAll('.filter-menu li');
             
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Update active button
                     filterButtons.forEach(btn => btn.classList.remove('current'));
                     this.classList.add('current');
                     
@@ -970,7 +929,6 @@
             });
         }
         
-        // Handle search input
         function handleSearchInput() {
             const searchTerm = document.getElementById('search-input').value.trim();
             if (searchTerm === '') {
@@ -978,7 +936,6 @@
             }
         }
         
-        // Search functionality
         function searchVideos() {
             const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
             
@@ -995,119 +952,46 @@
             renderVideos(filteredVideos);
         }
         
-        // Check if element is in fullscreen mode
-        function isFullscreen(element) {
-            return !!(document.fullscreenElement || 
-                    document.webkitFullscreenElement || 
-                    document.mozFullScreenElement || 
-                    document.msFullscreenElement);
-        }
-        
-        // Request fullscreen for element
-        function requestFullscreen(element) {
-            if (element.requestFullscreen) {
-                element.requestFullscreen();
-            } else if (element.webkitRequestFullscreen) {
-                element.webkitRequestFullscreen();
-            } else if (element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-            } else if (element.msRequestFullscreen) {
-                element.msRequestFullscreen();
-            }
-            
-            // اضافه کردن event listener برای تغییرات حالت فول اسکرین
-            document.addEventListener('fullscreenchange', handleFullscreenChange);
-            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-            document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-            document.addEventListener('MSFullscreenChange', handleFullscreenChange);
-        }
-        
-        // Exit fullscreen
-        function exitFullscreen() {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
-            
-            // حذف event listenerها
-            document.removeEventListener('fullscreenchange', handleFullscreenChange);
-            document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
-            document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
-            document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
-        }
-        
-        function handleFullscreenChange() {
-            const loadingElement = document.getElementById('video-loading');
-            if (isFullscreen(currentVideoElement)) {
-                loadingElement.style.fontSize = '2rem';
-            } else {
-                loadingElement.style.fontSize = '1.2rem';
-            }
-        }
-        
-        // Modal functions
         function openModal(index) {
-            // Check current fullscreen status
-            isFullscreenBeforeChange = isFullscreen(currentVideoElement);
-            
             currentVideoIndex = index;
             const modal = document.getElementById('video-modal');
             const videoTitle = document.getElementById('video-title');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const video = filteredVideos[index];
+            const videoElement = document.getElementById('video-element');
+            const loadingOverlay = document.getElementById('video-loading');
             
-            // Show loading indicator
-            const loadingElement = document.getElementById('video-loading');
-            loadingElement.style.display = 'flex';
-            loadingElement.textContent = 'در حال بارگذاری ویدیو...';
-            
-            // Pause current video and change source
-            currentVideoElement.pause();
-            currentVideoElement.src = video.url;
-            currentVideoElement.currentTime = 0;
+            loadingOverlay.classList.add('active');
+            loadingOverlay.textContent = 'در حال بارگذاری ویدیو...';
             
             videoTitle.textContent = `${video.artist} - ${video.title}`;
             
-            // Update button states
             prevBtn.disabled = index === 0;
             nextBtn.disabled = index === filteredVideos.length - 1;
             
-            // Play the new video
-            currentVideoElement.play().catch(e => {
-                console.log('Auto-play prevented', e);
-                loadingElement.style.display = 'none';
-            });
+            videoElement.src = video.url;
+            videoElement.currentTime = 0;
             
-            // Handle video end to play next automatically
-            currentVideoElement.onended = function() {
+            modal.style.display = 'block';
+            
+            videoElement.onended = function() {
                 if (currentVideoIndex < filteredVideos.length - 1) {
                     playNextVideo();
                 }
             };
             
-            modal.style.display = 'block';
-            
-            // Re-enter fullscreen if needed after video loads
-            if (isFullscreenBeforeChange) {
-                currentVideoElement.onloadeddata = function() {
-                    requestFullscreen(currentVideoElement);
-                };
-            }
+            videoElement.play().catch(e => {
+                console.log('Auto-play prevented', e);
+                loadingOverlay.classList.remove('active');
+            });
         }
         
         function closeModal() {
             const modal = document.getElementById('video-modal');
+            const videoElement = document.getElementById('video-element');
             
-            if (currentVideoElement) {
-                currentVideoElement.pause();
-            }
-            
+            videoElement.pause();
             modal.style.display = 'none';
         }
         
@@ -1125,7 +1009,34 @@
             }
         }
         
-        // Close modal when clicking outside
+        function toggleFullscreen() {
+            const videoContainer = document.querySelector('.video-player-container');
+            
+            if (!document.fullscreenElement) {
+                if (videoContainer.requestFullscreen) {
+                    videoContainer.requestFullscreen();
+                } else if (videoContainer.webkitRequestFullscreen) {
+                    videoContainer.webkitRequestFullscreen();
+                } else if (videoContainer.mozRequestFullScreen) {
+                    videoContainer.mozRequestFullScreen();
+                } else if (videoContainer.msRequestFullscreen) {
+                    videoContainer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+        
+        document.getElementById('video-element').addEventListener('dblclick', toggleFullscreen);
+        
         window.addEventListener('click', function(event) {
             const modal = document.getElementById('video-modal');
             if (event.target === modal) {
@@ -1133,7 +1044,6 @@
             }
         });
         
-        // Handle Enter key in search input
         document.getElementById('search-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 searchVideos();
