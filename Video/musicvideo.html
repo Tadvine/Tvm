@@ -6,15 +6,6 @@
     <meta http-equiv="Expires" content="-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500&display=swap" rel="stylesheet">
-    
-    
-     <!-- متا تگ‌های جلوگیری از کش -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    
-    
     <title>گلچین موزیک ویدیو</title>
     <style>
         * {
@@ -226,6 +217,24 @@
             color: white;
             font-size: 1.2rem;
             z-index: 10;
+            pointer-events: none;
+        }
+        
+        /* برای حالت فول اسکرین */
+        .video-player:-webkit-full-screen .video-loading {
+            font-size: 2rem;
+        }
+        
+        .video-player:-moz-full-screen .video-loading {
+            font-size: 2rem;
+        }
+        
+        .video-player:-ms-fullscreen .video-loading {
+            font-size: 2rem;
+        }
+        
+        .video-player:fullscreen .video-loading {
+            font-size: 2rem;
         }
         
         .video-nav {
@@ -358,12 +367,11 @@
             <li data-target="امین بانی">امین بانی</li>
             <li data-target="امو بند">امو بند</li>
             <li data-target="ایوان بند">ایوان بند</li>
-           
             <li data-target="بهنام بانی">بهنام بانی</li>
             <li data-target="حامیم">حامیم</li>
             <li data-target="خواجه امیری">خواجه امیری</li>
             <li data-target="راغب">راغب</li>       
-                <li data-target="رضا صادقی">رضا صادقی</li>  
+            <li data-target="رضا صادقی">رضا صادقی</li>  
             <li data-target="زانکو">زانکو</li>
             <li data-target="زند وکیلی">زند وکیلی</li>     
             <li data-target="طلیسچی">طلیسچی</li>
@@ -900,6 +908,21 @@
             currentVideoElement.onloadstart = function() {
                 document.getElementById('video-loading').style.display = 'flex';
             };
+            
+            // Handle waiting event
+            currentVideoElement.onwaiting = function() {
+                document.getElementById('video-loading').style.display = 'flex';
+            };
+            
+            // Handle playing event
+            currentVideoElement.onplaying = function() {
+                document.getElementById('video-loading').style.display = 'none';
+            };
+            
+            // Handle errors
+            currentVideoElement.onerror = function() {
+                document.getElementById('video-loading').textContent = 'خطا در بارگذاری ویدیو';
+            };
         });
         
         // Render videos to the grid
@@ -991,6 +1014,12 @@
             } else if (element.msRequestFullscreen) {
                 element.msRequestFullscreen();
             }
+            
+            // اضافه کردن event listener برای تغییرات حالت فول اسکرین
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+            document.addEventListener('MSFullscreenChange', handleFullscreenChange);
         }
         
         // Exit fullscreen
@@ -1003,6 +1032,21 @@
                 document.mozCancelFullScreen();
             } else if (document.msExitFullscreen) {
                 document.msExitFullscreen();
+            }
+            
+            // حذف event listenerها
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+            document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+            document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+        }
+        
+        function handleFullscreenChange() {
+            const loadingElement = document.getElementById('video-loading');
+            if (isFullscreen(currentVideoElement)) {
+                loadingElement.style.fontSize = '2rem';
+            } else {
+                loadingElement.style.fontSize = '1.2rem';
             }
         }
         
@@ -1019,7 +1063,9 @@
             const video = filteredVideos[index];
             
             // Show loading indicator
-            document.getElementById('video-loading').style.display = 'flex';
+            const loadingElement = document.getElementById('video-loading');
+            loadingElement.style.display = 'flex';
+            loadingElement.textContent = 'در حال بارگذاری ویدیو...';
             
             // Pause current video and change source
             currentVideoElement.pause();
@@ -1033,7 +1079,10 @@
             nextBtn.disabled = index === filteredVideos.length - 1;
             
             // Play the new video
-            currentVideoElement.play().catch(e => console.log('Auto-play prevented', e));
+            currentVideoElement.play().catch(e => {
+                console.log('Auto-play prevented', e);
+                loadingElement.style.display = 'none';
+            });
             
             // Handle video end to play next automatically
             currentVideoElement.onended = function() {
