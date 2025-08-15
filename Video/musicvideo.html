@@ -6,6 +6,15 @@
     <meta http-equiv="Expires" content="-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500&display=swap" rel="stylesheet">
+    
+    
+     <!-- متا تگ‌های جلوگیری از کش -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    
+    
     <title>گلچین موزیک ویدیو</title>
     <style>
         * {
@@ -195,11 +204,28 @@
             width: 100%;
             aspect-ratio: 16/9;
             background: #000;
+            position: relative;
         }
         
         .video-player video {
             width: 100%;
             height: 100%;
+            display: block;
+        }
+        
+        .video-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+            z-index: 10;
         }
         
         .video-nav {
@@ -357,6 +383,7 @@
         <div class="modal-content">
             <div class="video-player" id="video-player">
                 <!-- Video will be loaded here -->
+                <div class="video-loading" id="video-loading">در حال بارگذاری ویدیو...</div>
             </div>
             <h2 class="video-title" id="video-title"></h2>
             <div class="video-nav">
@@ -843,11 +870,8 @@
                 url: "https://sv2.mybia2music.com/s2/Music/1399/11/05/02/Amin%20Bani%20-%20Nashod%20%28480%29.mp4",
                 category: "امین بانی"
             }
-       
-               
         ];
 
-  
         // Current video index for playback
         let currentVideoIndex = 0;
         let filteredVideos = [...videos];
@@ -866,6 +890,16 @@
             currentVideoElement.style.width = '100%';
             currentVideoElement.style.height = '100%';
             videoPlayer.appendChild(currentVideoElement);
+            
+            // Hide loading when video can play
+            currentVideoElement.oncanplay = function() {
+                document.getElementById('video-loading').style.display = 'none';
+            };
+            
+            // Show loading when source changes
+            currentVideoElement.onloadstart = function() {
+                document.getElementById('video-loading').style.display = 'flex';
+            };
         });
         
         // Render videos to the grid
@@ -983,6 +1017,9 @@
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const video = filteredVideos[index];
+            
+            // Show loading indicator
+            document.getElementById('video-loading').style.display = 'flex';
             
             // Pause current video and change source
             currentVideoElement.pause();
