@@ -363,6 +363,7 @@
         <ul class="filter-menu">
             <li data-target="all" class="current">همه</li>
             <li data-target="متفرقه">متفرقه</li>
+            <li data-target="گروهی">گروهی</li>
             <li data-target="آرش و مسیح">آرش و مسیح</li>
             <li data-target="امین بانی">امین بانی</li>
             <li data-target="امو بند">امو بند</li>
@@ -404,6 +405,18 @@
     <script>
            // Video data array
         const videos = [
+        
+        
+            {
+                artist: "علی حسینی",
+                title: "دختر پاییز",
+                cover: "https://rozmusic.com/wp-content/uploads/2021/09/Ali-Hosseini-Dokhtare-Paeez.jpg",
+                url: "https://persian5.cdn.asset.aparat.com/aparat-video/809535084e3a651c926ebff1b552aa3848262983-720p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6ImJmNmYwMWQyNjUxNGFlNzQwZDU4MDEwMWE3NGIzNzk5IiwiZXhwIjoxNzU1NjA1NjQ2LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.khp3moMvYgwZbUExAKPSM5sPEM-ghX9jBZ2mxQpIHtI",
+                category: "گروهی"
+            },    
+        
+        
+        
          {
                 artist: "رضا صادقی",
                 title: "بغلم کن",
@@ -411,6 +424,12 @@
                 url: "https://dl.rozmusic.com/Music%20Video/1404/05/12/Reza%20Sadeghi%20-%20Baghalam%20Kon%20480p_RozMusic.mp4",
                 category: "رضا صادقی"
             },
+        
+        
+        
+        
+        
+        
         
             {
                 artist: "زند وکیلی",
@@ -469,6 +488,19 @@
                 url: "https://dl.rozmusic.com/Music%20Video/1401/05/07/Alireza%20Talischi%20-%20Ye%20Darya%20Narim%20480p_RozMusic.mp4",
                 category: "طلیسچی"
             },
+            
+           
+        
+        
+         {
+                artist: "گرشا رضایی",
+                title: "دریا دریا",
+                cover: "https://gisomusic.com/wp-content/uploads/2021/08/Darya-Darya-Guitar.jpg",
+                url: "https://aspb31.cdn.asset.aparat.com/aparat-video/68611389e78f0523fbfad9dc844f4ddb36226788-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjhmNjY3NTdkNGVlOTZkMGJmNTVmYzcwOWNhNDcxZjBkIiwiZXhwIjoxNzU1NjM0ODY3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.jrl-S8DsJt4Jlhb9dsjOR-nGn0svwQPih9a7z3z5l7U",
+                category: "گروهی"
+            },
+        
+            
             {
                 artist: "رضا صادقی",
                 title: "خط و نشون",
@@ -505,6 +537,14 @@
                 cover: "https://musicsweb.ir/wp-content/uploads/2023/10/20Behnam20Bani20-20Khastam.jpg",
                 url: "https://mehrdl.musitraf.com/Video/A/1/Behnam%20Bani%20-%20Khastam%20(Live)%20480p.mp4",
                 category: "بهنام بانی"
+            },
+            
+                 {
+                artist: "گرشا رضایی",
+                title: "دریا نمیرم",
+                cover: "https://static.cdn.asset.aparat.com/avt/36227301-6275-b__5183.jpg",
+                url: "https://aspb30.cdn.asset.aparat.com/aparat-video/627ceadff03ab546ca398ba303c4594236227301-720p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6ImE0OTM2MDUyMzkyOTA2NmU2ZDc1ZGZiYWRkZTQ5ZDZjIiwiZXhwIjoxNzU1NjM1MTQ5LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.QzlFZtJuUvft2kssk5SZrIlIqx5tL3xX1YR71O46dIo",
+                category: "گروهی"
             },
               {
                 artist: "ایوان بند",
@@ -543,6 +583,16 @@
                 url: "https://dl.rozmusic.com/Music%20Video/1401/01/29/Macan%20Band%20-%20Narenji%20480p_RozMusic.mp4",
                 category: "ماکان بند"
             },
+            
+                {
+                artist: "کسری زاهدی",
+                title: "رز مشکی",
+                cover: "https://rozmusic.com/wp-content/uploads/2021/07/Kasra-Zahedi-Roze-Meshki.jpg",
+                url: "https://persian6.cdn.asset.aparat.com/aparat-video/35dd898bed3d0af690b7e5402f3656b554968977-720p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjhlMTAxYTMwNTY0MmFhN2MyNDlkMWE2ZmI1YmNjYWFkIiwiZXhwIjoxNzU1NjM1NDI0LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.AZmoM2MwIMfs_TYJNpzNhh10xVb3ZLId1QaF9HW3rWY",
+                category: "گروهی"
+            },
+            
+            
             {
                 artist: "زانکو",
                 title: "عشقم اینه",
@@ -573,6 +623,15 @@
                 url: "https://mehrdl.musitraf.com/Video/A/1/Masih%20&%20Arash%20AP%20-%20Range%20Khoda%20480p.mp4",
                 category: "آرش و مسیح"
             },
+            
+                {
+                artist: "رضا ملک زاده",
+                title: "آرام آرام",
+                cover: "https://www.rebec.ir/wp-content/uploads/2025/04/Reza-Malekzadeh-Aram-Aram-remix.jpg",
+                url: "https://aspb34.cdn.asset.aparat.com/aparat-video/327fe43d0b399246d4a1a6e3066abdec39273526-720p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6ImVjYTk2N2QwNWM2MjYzMzRhZDljN2UzZDBjMzlmYmYxIiwiZXhwIjoxNzU1NjM1NjYzLCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.BT4f33mbrTwZz99RrzO92l_O2kH-W8tgMJ1xfIUTruc",
+                category: "گروهی"
+            },
+            
             {
                 artist: "امین بانی",
                 title: "دل من یه خدایی داره",
@@ -587,6 +646,16 @@
                 url: "https://dl.teh-music.co/Music/Video/Alireza%20Talischi%20-%20Gharar%20Nabood%20480p%20Teh-Music.com.mp4",
                 category: "طلیسچی"
             },
+            
+              {
+                artist: "مرتضی پاشایی",
+                title: "جاده یک طرفه",
+                cover: "https://static.cdn.asset.aparat.com/avt/55290511-9333-l__8572.jpg",
+                url: "https://persian10.cdn.asset.aparat.com/aparat-video/67bd3586380f1834ce1ce1da6cf4cf2d54595794-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjIyOTFmOWZmM2QzZmE1YTIyOGZjOGVkZmM3MzM4ODVjIiwiZXhwIjoxNzU1NjM3MjMzLCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.0UJ7r-L9xsihHxQLhrkG96N3gqy0NUWJN96jcXlASFI",
+                category: "گروهی"
+            },
+        
+            
             {
                 artist: "راغب",
                 title: "همینه عشق",
@@ -594,6 +663,15 @@
                 url: "https://dl.rozmusic.com/Music%20Video/1400/08/29/Ragheb%20-%20Hamine%20Eshgh%20480p_RozMusic.mp4",
                 category: "راغب"
             },
+            
+             {
+                artist: "مهراد جم",
+                title: "آرام آرام",
+                cover: "https://edge02.94.ir.cdn.ir/filo/video/TVRRd01pOHdOaTh5Tnc9PQ==/UW1aeVdHNVpTdz09/JWFb-720X404.jpg",
+                url: "https://aspb35.cdn.asset.aparat.com/aparat-video/e79e5d65b8c419711b53d8feae8fb66f36228728-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjJmMmUxNzE1MGJiZWFmMTQ5YWUyZTQ5NDAwZjQ4MDJmIiwiZXhwIjoxNzU1NjM1OTI3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.-z6_ifLB0mr2Bz10odmtxLvIc_2V_yvW_iXa5MZtSkg",
+                category: "گروهی"
+            },
+            
               {
                 artist: "بهنام بانی",
                 title: "خوشحالم",
@@ -631,6 +709,15 @@
             },
             
             {
+                artist: "میثاق راد",
+                title: "گل سرخ",
+                cover: "https://rozmusic.com/wp-content/uploads/2021/04/Misagh-Raad-Gole-Sorkh.jpg",
+                url: "https://persian3.cdn.asset.aparat.com/aparat-video/73e592d183283f0b298c94300c88685b44110432-720p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjU5MTdkZjE3OGVhNzlhZWVmMjMyMjI2NzhlNTYxMjk1IiwiZXhwIjoxNzU1NjM2MzU1LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.8wjwAQcLW7A6eZJ9GTIsMD4jaaZzxO0moX8n3qgmXYg",
+                category: "گروهی"
+            },
+            
+            
+            {
                 artist: "سینا شعبان خانی",
                 title: "جادوی سیاه",
                 cover: "https://rozmusic.com/wp-content/uploads/2021/10/Sina-Shabankhani-Jadooye-Siah.jpg",
@@ -658,6 +745,11 @@
                 url: "https://dl.rozmusic.com/Music%20Video/1401/02/05/Masih%20%26%20Arash%20AP%20-%20Shah%20Beyt%20480p_RozMusic.mp4",
                 category: "آرش و مسیح"
             },
+            
+            
+              
+            
+            
             {
                 artist: "علیرضا طلیسچی",
                 title: "دیوونه دوست داشتنی",
@@ -722,6 +814,24 @@
                 url: "https://dl.rozmusic.com/Music%20Video/1400/28/Behnam%20Bani%20-%20Baroon%20480p_RozMusic.mp4",
                 category: "بهنام بانی"
             },
+            
+               {
+                artist: "نوان",
+                title: "مگه میشه",
+                cover: "https://edge02.98.ir.cdn.ir/filo/video/TVRRd015OHdNeTh5TWc9PQ==/ZVc5clptOUpRdz09/Cncm-720X404.jpg",
+                url: "https://hw7.cdn.asset.aparat.com/aparat-video/f19c59016c87daaaa6f445cc616851ac42115981-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6ImE1YzM5NTY2NDRlODg1Y2RlNTEyNWJmMTJkZmNmZDlhIiwiZXhwIjoxNzU1NjM2NTM4LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.HR8eybFn1RnrPvay_OxXlptlOlQB8QCQwrwwSxSOgP8",
+                category: "گروهی"
+            },
+            
+            
+            {
+                artist: "آرش و مسیح",
+                title: "شاه بیت",
+                cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGNTHyggDjlkmuhpuSN84hQut8Ei8yF4hMpQ&s",
+                url: "https://caspian2.cdn.asset.aparat.com/aparat-video/edc54144d688163887dcf63416d39b3945757072-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6ImRjYmM4MzRjYTQ0MzUwNTIyOTVlN2RlNTc0YWFmNjVjIiwiZXhwIjoxNzU1NjM2ODIyLCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.YNLgzSBwJZeRPHBBw064ccUfuVLLNsCL_DitS7SVYWs",
+                category: "گروهی"
+            },
+            
             {
                 artist: "میثم ابراهیمی",
                 title: "کی مثل منه",
