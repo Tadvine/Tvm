@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Manoto</title>
+  
+
+
+ 
+<body bgcolor='#000000'>
+
+
+  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+  <script src="https://unpkg.com/video.js/dist/video.js"></script>
+  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+   
+</head>
+<body>
+
+
+  <video id="my_video_1" class="video-js vjs-fluid vjs-default-skin" controls 
+  preload="auto"
+  poster="https://static.wikia.nocookie.net/cartoonnetwork/images/b/b5/Tom-and-jerry-1-.jpg/revision/latest/thumbnail/width/360/height/450?cb=20110312161830"
+  data-setup='{}'>
+  
+    
+  
+    <source src="https://live20.bozztv.com/giatvplayout7/giatv-208314/playlist.m3u8">
+  </video>
+  
+<script>
+var player = videojs('my_video_1');
+player.play();
+</script>
+  
+</body>
+</html>
