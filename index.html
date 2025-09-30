@@ -32,9 +32,7 @@
             left: 0;
             right: 0;
             width: 100%; /* عرض کامل */
-            height: 30vh; /* ارتفاع نسبی بر اساس viewport */
-            min-height: 200px; /* حداقل ارتفاع */
-            max-height: 400px; /* حداکثر ارتفاع */
+            height: 180px; /* ارتفاع ثابت برای 1024x768 */
             z-index: 95;
             overflow: hidden;
             display: block;
@@ -84,17 +82,17 @@
 
         .slideshow-controls {
             position: absolute;
-            bottom: 20px;
+            bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 12px;
+            gap: 10px;
             z-index: 2;
         }
 
         .slideshow-dot {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
@@ -104,7 +102,7 @@
 
         .slideshow-dot.active {
             background-color: #FFD700;
-            transform: scale(1.3);
+            transform: scale(1.2);
         }
 
         /* نوار ثابت ساعت و تاریخ */
@@ -146,7 +144,7 @@
             bottom: 150px;
             display: none;
             z-index: 90;
-            padding: 30px;
+            padding: 20px; /* کاهش padding برای 1024x768 */
         }
 
         .content-section.active {
@@ -164,8 +162,8 @@
 
         h2 {
             text-align: center;
-            margin: 30px 0;
-            font-size: clamp(28px, 6vw, 42px);
+            margin: 20px 0; /* کاهش margin برای 1024x768 */
+            font-size: clamp(24px, 5vw, 36px); /* کاهش سایز فونت */
             color: #FFD700;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
             font-weight: bold;
@@ -175,7 +173,7 @@
         .image-gallery-container {
             position: relative;
             width: 100%;
-            max-width: 1400px;
+            max-width: 1200px; /* کاهش max-width برای 1024x768 */
             margin: 0 auto;
         }
 
@@ -184,9 +182,9 @@
             flex-wrap: nowrap;
             overflow-x: auto;
             scroll-behavior: smooth;
-            padding: 25px 0;
-            margin: 30px 0;
-            gap: 25px;
+            padding: 20px 0; /* کاهش padding */
+            margin: 20px 0; /* کاهش margin */
+            gap: 20px; /* کاهش gap */
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
         }
@@ -203,25 +201,25 @@
         }
 
         .image-gallery img {
-            border-radius: 15px;
-            box-shadow: -4px 4px 20px rgba(255, 255, 255, 0.4);
+            border-radius: 12px; /* کاهش border-radius */
+            box-shadow: -4px 4px 15px rgba(255, 255, 255, 0.4);
             transition: all 0.4s ease;
-            width: 240px;
-            height: 320px;
+            width: 200px; /* کاهش عرض */
+            height: 280px; /* کاهش ارتفاع */
             object-fit: cover;
             border: 2px solid rgba(255, 215, 0, 0.3);
         }
 
         .image-gallery img:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+            transform: scale(1.05); /* کاهش scale */
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
             border-color: #FFD700;
         }
 
         /* TV Channel Images */
         #tvGallery img {
-            width: 200px;
-            height: 150px;
+            width: 180px; /* کاهش عرض */
+            height: 120px; /* کاهش ارتفاع */
         }
 
         /* Scroll Buttons */
@@ -232,12 +230,12 @@
             background-color: rgba(255, 215, 0, 0.8);
             border: none;
             color: #000;
-            font-size: 40px;
-            width: 70px;
-            height: 100px;
+            font-size: 30px; /* کاهش سایز فونت */
+            width: 60px; /* کاهش عرض */
+            height: 80px; /* کاهش ارتفاع */
             cursor: pointer;
             z-index: 1;
-            border-radius: 10px;
+            border-radius: 8px; /* کاهش border-radius */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -249,15 +247,15 @@
         .scroll-button:hover {
             opacity: 1;
             background-color: #FFD700;
-            transform: translateY(-50%) scale(1.1);
+            transform: translateY(-50%) scale(1.05); /* کاهش scale */
         }
 
         .scroll-button.left {
-            right: -80px;
+            right: -60px; /* کاهش فاصله */
         }
 
         .scroll-button.right {
-            left: -80px;
+            left: -60px; /* کاهش فاصله */
         }
 
         /* Hide Scrollbar */
@@ -274,7 +272,7 @@
         .container {
             display: flex;
             width: 100%;
-            height: 150px;
+            height: 130px; /* کاهش ارتفاع */
             position: fixed;
             bottom: 0;
             left: 0;
@@ -291,7 +289,7 @@
             position: relative;
             overflow: hidden;
             border-right: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 -6px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4); /* کاهش shadow */
             text-decoration: none;
         }
 
@@ -301,9 +299,9 @@
 
         .box.active {
             flex-grow: 1.5;
-            transform: skewX(-20deg) translateY(-20px);
+            transform: skewX(-20deg) translateY(-15px); /* کاهش translate */
             z-index: 10;
-            box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.7); /* کاهش shadow */
         }
 
         .box-content {
@@ -314,11 +312,11 @@
             justify-content: center;
             align-items: center;
             font-weight: bold;
-            font-size: 20px;
+            font-size: 16px; /* کاهش سایز فونت */
             color: white;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
             text-align: center;
-            padding: 0 15px;
+            padding: 0 12px; /* کاهش padding */
         }
 
         /* رنگ‌های مختلف برای کادرها - طیف طوسی */
@@ -333,63 +331,75 @@
         .box:nth-child(9) { background-color: #151515; }
         .box:nth-child(10) { background-color: #0A0A0A; } /* نزدیک به مشکی */
 
-        /* Responsive Adjustments */
-        @media (max-width: 1200px) {
+        /* تنظیمات ویژه برای 1024x768 */
+        @media (max-width: 1024px) and (min-width: 769px) {
             #slideshow {
-                height: 25vh; /* کاهش ارتفاع نسبی برای صفحه‌های متوسط */
-                min-height: 180px;
-                max-height: 300px;
+                height: 160px; /* کاهش بیشتر ارتفاع */
+                top: 55px; /* کاهش فاصله از نوار ساعت */
+            }
+            
+            #info-bar {
+                height: 55px; /* کاهش ارتفاع نوار ساعت */
+                font-size: clamp(14px, 3.5vw, 20px);
+                padding: 0 12px;
+            }
+            
+            .content-section {
+                top: 55px;
+                bottom: 130px;
+                padding: 15px;
+            }
+            
+            h2 {
+                margin: 15px 0;
+                font-size: clamp(22px, 4.5vw, 32px);
+            }
+            
+            .image-gallery {
+                padding: 15px 0;
+                margin: 15px 0;
+                gap: 15px;
             }
             
             .image-gallery img {
-                width: 200px;
-                height: 280px;
-            }
-            
-            #tvGallery img {
                 width: 180px;
-                height: 130px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            #slideshow {
-                height: 22vh;
-                min-height: 160px;
-                max-height: 250px;
-            }
-            
-            .image-gallery img {
-                width: 180px;
-                height: 240px;
+                height: 250px;
             }
             
             #tvGallery img {
                 width: 160px;
-                height: 120px;
+                height: 110px;
             }
             
             .scroll-button {
-                width: 60px;
-                height: 90px;
-                font-size: 35px;
+                width: 50px;
+                height: 70px;
+                font-size: 25px;
             }
 
             .scroll-button.left {
-                right: -70px;
+                right: -50px;
             }
 
             .scroll-button.right {
-                left: -70px;
+                left: -50px;
+            }
+
+            .container {
+                height: 120px;
+            }
+            
+            .box-content {
+                font-size: 14px;
+                padding: 0 10px;
             }
         }
 
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
             #slideshow {
                 top: 50px;
-                height: 20vh;
-                min-height: 140px;
-                max-height: 220px;
+                height: 140px;
             }
             
             #info-bar {
@@ -401,53 +411,53 @@
             .content-section {
                 top: 50px;
                 bottom: 120px;
-                padding: 20px;
+                padding: 15px;
             }
             
             .image-gallery {
-                gap: 15px;
-                padding: 20px 0;
+                gap: 12px;
+                padding: 15px 0;
+                margin: 15px 0;
             }
             
             .image-gallery img {
-                width: 160px;
-                height: 220px;
+                width: 150px;
+                height: 200px;
             }
             
             #tvGallery img {
-                width: 140px;
-                height: 100px;
+                width: 130px;
+                height: 90px;
             }
             
             .scroll-button {
-                width: 50px;
-                height: 80px;
-                font-size: 30px;
+                width: 45px;
+                height: 65px;
+                font-size: 22px;
             }
 
             .scroll-button.left {
-                right: -60px;
+                right: -40px;
             }
 
             .scroll-button.right {
-                left: -60px;
+                left: -40px;
             }
 
             .container {
-                height: 120px;
+                height: 110px;
             }
             
             .box-content {
-                font-size: 16px;
+                font-size: 13px;
+                padding: 0 8px;
             }
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 480px) {
             #slideshow {
                 top: 40px;
-                height: 18vh;
-                min-height: 120px;
-                max-height: 180px;
+                height: 120px;
             }
             
             #info-bar {
@@ -461,51 +471,102 @@
             }
             
             .content-section {
-                padding: 15px;
+                padding: 10px;
                 top: 40px;
                 bottom: 100px;
             }
             
             .image-gallery img {
-                width: 140px;
-                height: 190px;
+                width: 120px;
+                height: 160px;
             }
             
             #tvGallery img {
-                width: 120px;
-                height: 90px;
+                width: 100px;
+                height: 70px;
             }
 
             .scroll-button {
-                width: 40px;
-                height: 60px;
-                font-size: 24px;
+                width: 35px;
+                height: 50px;
+                font-size: 18px;
             }
 
             .scroll-button.left {
-                right: -45px;
+                right: -30px;
             }
 
             .scroll-button.right {
-                left: -45px;
+                left: -30px;
             }
 
             .container {
-                height: 100px;
+                height: 90px;
             }
             
             .box-content {
-                font-size: 14px;
-                padding: 0 8px;
+                font-size: 12px;
+                padding: 0 6px;
             }
         }
 
-        /* تنظیمات برای صفحه‌های 4K و بزرگ */
+        /* تنظیمات برای صفحه‌های بزرگ */
+        @media (min-width: 1200px) {
+            #slideshow {
+                height: 200px;
+            }
+            
+            .content-section {
+                padding: 25px;
+            }
+            
+            .image-gallery img {
+                width: 220px;
+                height: 300px;
+            }
+            
+            #tvGallery img {
+                width: 200px;
+                height: 140px;
+            }
+        }
+
         @media (min-width: 1600px) {
             #slideshow {
-                height: 35vh;
-                min-height: 250px;
-                max-height: 500px;
+                height: 240px;
+            }
+            
+            .image-gallery img {
+                width: 250px;
+                height: 340px;
+            }
+            
+            #tvGallery img {
+                width: 220px;
+                height: 160px;
+            }
+        }
+
+        @media (min-width: 2000px) {
+            #slideshow {
+                height: 280px;
+                top: 70px;
+            }
+            
+            #info-bar {
+                height: 70px;
+                font-size: 28px;
+                padding: 0 25px;
+            }
+            
+            .content-section {
+                top: 70px;
+                bottom: 180px;
+                padding: 40px;
+            }
+            
+            #day-name {
+                font-size: 22px;
             }
             
             .image-gallery img {
@@ -516,70 +577,6 @@
             #tvGallery img {
                 width: 240px;
                 height: 180px;
-            }
-        }
-
-        @media (min-width: 2000px) {
-            #slideshow {
-                height: 40vh;
-                min-height: 300px;
-                max-height: 600px;
-                top: 80px;
-            }
-            
-            #info-bar {
-                height: 80px;
-                font-size: 32px;
-                padding: 0 30px;
-            }
-            
-            .content-section {
-                top: 80px;
-                bottom: 200px;
-                padding: 50px;
-            }
-            
-            #day-name {
-                font-size: 26px;
-            }
-            
-            .image-gallery img {
-                width: 320px;
-                height: 420px;
-            }
-            
-            #tvGallery img {
-                width: 280px;
-                height: 200px;
-            }
-        }
-
-        @media (min-width: 3000px) {
-            #slideshow {
-                height: 45vh;
-                min-height: 400px;
-                max-height: 800px;
-                top: 100px;
-            }
-            
-            #info-bar {
-                height: 100px;
-                font-size: 38px;
-            }
-            
-            .content-section {
-                top: 100px;
-                bottom: 250px;
-            }
-            
-            .image-gallery img {
-                width: 380px;
-                height: 500px;
-            }
-            
-            #tvGallery img {
-                width: 320px;
-                height: 240px;
             }
         }
     </style>
@@ -899,8 +896,7 @@
         // تابع برای اسکرول گالری‌ها
         function scrollGallery(galleryId, direction) {
             const gallery = document.getElementById(galleryId);
-            const scrollAmount = 400;
-            
+            const scrollAmount = 350; // کاهش scroll amount برای 1024x768
             if (direction === 'left') {
                 gallery.scrollLeft -= scrollAmount;
             } else {
