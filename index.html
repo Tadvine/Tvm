@@ -32,7 +32,9 @@
             left: 0;
             right: 0;
             width: 100%; /* عرض کامل */
-            height: 280px; /* افزایش ارتفاع برای 4K */
+            height: 30vh; /* ارتفاع نسبی بر اساس viewport */
+            min-height: 200px; /* حداقل ارتفاع */
+            max-height: 400px; /* حداکثر ارتفاع */
             z-index: 95;
             overflow: hidden;
             display: block;
@@ -332,10 +334,62 @@
         .box:nth-child(10) { background-color: #0A0A0A; } /* نزدیک به مشکی */
 
         /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+            #slideshow {
+                height: 25vh; /* کاهش ارتفاع نسبی برای صفحه‌های متوسط */
+                min-height: 180px;
+                max-height: 300px;
+            }
+            
+            .image-gallery img {
+                width: 200px;
+                height: 280px;
+            }
+            
+            #tvGallery img {
+                width: 180px;
+                height: 130px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            #slideshow {
+                height: 22vh;
+                min-height: 160px;
+                max-height: 250px;
+            }
+            
+            .image-gallery img {
+                width: 180px;
+                height: 240px;
+            }
+            
+            #tvGallery img {
+                width: 160px;
+                height: 120px;
+            }
+            
+            .scroll-button {
+                width: 60px;
+                height: 90px;
+                font-size: 35px;
+            }
+
+            .scroll-button.left {
+                right: -70px;
+            }
+
+            .scroll-button.right {
+                left: -70px;
+            }
+        }
+
         @media (max-width: 768px) {
             #slideshow {
                 top: 50px;
-                height: 200px; /* افزایش ارتفاع برای تبلت */
+                height: 20vh;
+                min-height: 140px;
+                max-height: 220px;
             }
             
             #info-bar {
@@ -356,13 +410,13 @@
             }
             
             .image-gallery img {
-                width: 180px;
-                height: 240px;
+                width: 160px;
+                height: 220px;
             }
             
             #tvGallery img {
-                width: 150px;
-                height: 110px;
+                width: 140px;
+                height: 100px;
             }
             
             .scroll-button {
@@ -388,10 +442,12 @@
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 576px) {
             #slideshow {
                 top: 40px;
-                height: 160px; /* افزایش ارتفاع برای موبایل */
+                height: 18vh;
+                min-height: 120px;
+                max-height: 180px;
             }
             
             #info-bar {
@@ -445,10 +501,30 @@
         }
 
         /* تنظیمات برای صفحه‌های 4K و بزرگ */
+        @media (min-width: 1600px) {
+            #slideshow {
+                height: 35vh;
+                min-height: 250px;
+                max-height: 500px;
+            }
+            
+            .image-gallery img {
+                width: 280px;
+                height: 380px;
+            }
+            
+            #tvGallery img {
+                width: 240px;
+                height: 180px;
+            }
+        }
+
         @media (min-width: 2000px) {
             #slideshow {
-                height: 350px; /* ارتفاع بیشتر برای 4K */
-                top: 80px; /* فاصله بیشتر از نوار ساعت */
+                height: 40vh;
+                min-height: 300px;
+                max-height: 600px;
+                top: 80px;
             }
             
             #info-bar {
@@ -466,11 +542,23 @@
             #day-name {
                 font-size: 26px;
             }
+            
+            .image-gallery img {
+                width: 320px;
+                height: 420px;
+            }
+            
+            #tvGallery img {
+                width: 280px;
+                height: 200px;
+            }
         }
 
         @media (min-width: 3000px) {
             #slideshow {
-                height: 450px; /* ارتفاع خیلی بیشتر برای صفحه‌های بزرگ */
+                height: 45vh;
+                min-height: 400px;
+                max-height: 800px;
                 top: 100px;
             }
             
@@ -482,6 +570,16 @@
             .content-section {
                 top: 100px;
                 bottom: 250px;
+            }
+            
+            .image-gallery img {
+                width: 380px;
+                height: 500px;
+            }
+            
+            #tvGallery img {
+                width: 320px;
+                height: 240px;
             }
         }
     </style>
