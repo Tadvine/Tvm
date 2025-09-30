@@ -25,6 +25,114 @@
             overflow-x: hidden;
         }
 
+        /* اسلایدشو افقی */
+        #slideshow {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            height: 200px;
+            z-index: 95;
+            overflow: hidden;
+            display: block;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-bottom: 2px solid #FFD700;
+        }
+
+        #slideshow.hidden {
+            display: none;
+        }
+
+        .slideshow-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-link {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .slide-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slideshow-controls {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .slideshow-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slideshow-dot.active {
+            background-color: #FFD700;
+            transform: scale(1.2);
+        }
+
+        .slideshow-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 215, 0, 0.8);
+            border: none;
+            color: #000;
+            font-size: 24px;
+            width: 40px;
+            height: 60px;
+            cursor: pointer;
+            z-index: 2;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .slideshow-nav:hover {
+            opacity: 1;
+            background-color: #FFD700;
+        }
+
+        .slideshow-prev {
+            right: 10px;
+        }
+
+        .slideshow-next {
+            left: 10px;
+        }
+
         /* نوار ثابت ساعت و تاریخ */
         #info-bar {
             position: fixed;
@@ -253,6 +361,11 @@
 
         /* Responsive Adjustments */
         @media (max-width: 768px) {
+            #slideshow {
+                top: 70px;
+                height: 150px;
+            }
+            
             #info-bar {
                 height: 70px;
                 font-size: clamp(18px, 4vw, 24px);
@@ -304,6 +417,17 @@
         }
 
         @media (max-width: 480px) {
+            #slideshow {
+                top: 60px;
+                height: 120px;
+            }
+            
+            .slideshow-nav {
+                width: 30px;
+                height: 40px;
+                font-size: 18px;
+            }
+            
             #info-bar {
                 padding: 0 15px;
                 height: 60px;
@@ -348,52 +472,6 @@
                 padding: 0 8px;
             }
         }
-
-        @media (min-width: 2000px) {
-            #info-bar {
-                height: 100px;
-                font-size: 36px;
-                padding: 0 40px;
-            }
-            
-            .content-section {
-                top: 100px;
-                bottom: 200px;
-                padding: 50px;
-            }
-            
-            .image-gallery img {
-                width: 300px;
-                height: 400px;
-            }
-            
-            #tvGallery img {
-                width: 250px;
-                height: 180px;
-            }
-            
-            .scroll-button {
-                width: 90px;
-                height: 130px;
-                font-size: 50px;
-            }
-
-            .scroll-button.left {
-                right: -100px;
-            }
-
-            .scroll-button.right {
-                left: -100px;
-            }
-
-            .container {
-                height: 200px;
-            }
-            
-            .box-content {
-                font-size: 28px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -402,6 +480,54 @@
         <div class="time" id="time">۰۰:۰۰</div>
         <div id="day-name" class="day">شنبه</div>
         <div class="date" id="date">۱۴۰۳/۱/۱</div>
+    </div>
+    
+    <!-- اسلایدشو افقی -->
+    <div id="slideshow">
+        <div class="slideshow-container">
+            <button class="slideshow-nav slideshow-prev" onclick="prevSlide()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="slideshow-nav slideshow-next" onclick="nextSlide()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div class="slide active">
+                <a href="newserial.html" class="slide-link">
+                    <img src="https://cdn.afkarnews.com/thumbnail/KmoaUtH9jBeR/5Aw2tglTbFGt66DbrkgXvNc6qtoz1ofcl_5iDcKK5iTik-QRlvjzsEeLwZ4WQiHZjjyVJUh2LSw,/+%D8%B3%D8%B1%DB%8C%D8%A7%D9%84+%D8%B4%D8%BA%D8%A7%D9%84.jpg?width=300&quality=85&sharpen=80&secret=MIx_rmlqaWui0x8svhntPg" alt="شغال" class="slide-image">
+                </a>
+            </div>
+            
+            
+            <div class="slide">
+                <a href="cinema.html" class="slide-link">
+                    <img src="https://static.cdn.asset.filimo.com/flmt/mov_162206_302723-b.jpg?width=400&quality=85&sharpen=80&secret=PQQapahDGznWQsoxu7fLpw" alt="حاج آقا سلام علیکم" class="slide-image">
+                </a>
+            </div>
+            
+            
+            <div class="slide">
+                <a href="cinema.html" class="slide-link">
+                    <img src="https://upko.ir/wp-content/uploads/2024/10/78c18b132ab680d393c24098ede88c56-1.jpg" alt="عملیات پاندا" class="slide-image">
+                </a>
+            </div>
+            
+            
+            <div class="slide">
+                <a href="Music/moein.html" class="slide-link">
+                    <img src="https://edge03.99.ir.cdn.ir/filo/video/TVRRd015OHdOUzh4TXc9PQ==/VTFkMVRVbElUZz09/AkNc-720X404.jpg" alt="گلچین معین" class="slide-image">
+                </a>
+            </div>
+            
+            
+            
+            <div class="slideshow-controls">
+                <div class="slideshow-dot active" onclick="currentSlide(0)"></div>
+                <div class="slideshow-dot" onclick="currentSlide(1)"></div>
+                <div class="slideshow-dot" onclick="currentSlide(2)"></div>
+                <div class="slideshow-dot" onclick="currentSlide(3)"></div>
+            </div>
+        </div>
     </div>
     
     <!-- بخش سریال های جدید -->
@@ -502,6 +628,10 @@
     <script>
         let activeBox = null;
         let activeSection = null;
+        let slideshowInterval;
+        let slideIndex = 0;
+        let slideshowActive = true;
+        const slideshowTimeout = 5000; // 5 ثانیه
 
         // تابع برای تبدیل اعداد انگلیسی به فارسی
         function toPersianNumber(num) {
@@ -538,6 +668,9 @@
         function toggleSection(sectionId, boxElement, event) {
             event.preventDefault();
             
+            // مخفی کردن اسلایدشو
+            hideSlideshow();
+            
             // اگر روی همان باکس فعال کلیک شد، غیرفعال کن
             if (activeBox === boxElement) {
                 // غیرفعال کردن باکس
@@ -549,6 +682,9 @@
                     document.getElementById(activeSection).classList.remove('active');
                     activeSection = null;
                 }
+                
+                // نمایش اسلایدشو وقتی همه چیز غیرفعال شد
+                showSlideshow();
                 return;
             }
             
@@ -577,6 +713,9 @@
         
         // تابع جدید برای مدیریت کلیک روی باکس‌های دارای لینک
         function handleBoxClick(boxElement, event) {
+            // مخفی کردن اسلایدشو
+            hideSlideshow();
+            
             // اگر باکس قبلاً فعال است، غیرفعال کن
             if (activeBox === boxElement) {
                 boxElement.classList.remove('active');
@@ -587,6 +726,9 @@
                     document.getElementById(activeSection).classList.remove('active');
                     activeSection = null;
                 }
+                
+                // نمایش اسلایدشو وقتی همه چیز غیرفعال شد
+                showSlideshow();
                 event.preventDefault(); // فقط در این حالت از رفتن به لینک جلوگیری کن
             } else {
                 // غیرفعال کردن باکس قبلی
@@ -650,6 +792,9 @@
                     document.getElementById(activeSection).classList.remove('active');
                     activeSection = null;
                 }
+                
+                // نمایش اسلایدشو وقتی همه چیز غیرفعال شد
+                showSlideshow();
             }
         });
         
@@ -665,9 +810,112 @@
             }
         }
         
+        // توابع اسلایدشو
+        function showSlideshow() {
+            if (!slideshowActive) return;
+            
+            const slideshow = document.getElementById('slideshow');
+            slideshow.classList.remove('hidden');
+            
+            // پنهان کردن بخش‌های دیگر
+            const contentSections = document.querySelectorAll('.content-section');
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // غیرفعال کردن باکس‌ها
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                box.classList.remove('active');
+            });
+            
+            activeBox = null;
+            activeSection = null;
+            
+            // شروع اسلایدشو
+            startSlideshow();
+        }
+        
+        function hideSlideshow() {
+            const slideshow = document.getElementById('slideshow');
+            slideshow.classList.add('hidden');
+            
+            // توقف تایمر اسلایدشو
+            if (slideshowInterval) {
+                clearInterval(slideshowInterval);
+            }
+        }
+        
+        function startSlideshow() {
+            // توقف تایمر قبلی اگر وجود دارد
+            if (slideshowInterval) {
+                clearInterval(slideshowInterval);
+            }
+            
+            // شروع تایمر جدید
+            slideshowInterval = setInterval(nextSlide, slideshowTimeout);
+        }
+        
+        function nextSlide() {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slideshow-dot');
+            
+            // مخفی کردن اسلاید فعلی
+            slides[slideIndex].classList.remove('active');
+            dots[slideIndex].classList.remove('active');
+            
+            // رفتن به اسلاید بعدی
+            slideIndex = (slideIndex + 1) % slides.length;
+            
+            // نمایش اسلاید جدید
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+        }
+        
+        function prevSlide() {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slideshow-dot');
+            
+            // مخفی کردن اسلاید فعلی
+            slides[slideIndex].classList.remove('active');
+            dots[slideIndex].classList.remove('active');
+            
+            // رفتن به اسلاید قبلی
+            slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+            
+            // نمایش اسلاید جدید
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+            
+            // ریست تایمر
+            startSlideshow();
+        }
+        
+        function currentSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slideshow-dot');
+            
+            // مخفی کردن اسلاید فعلی
+            slides[slideIndex].classList.remove('active');
+            dots[slideIndex].classList.remove('active');
+            
+            // تنظیم اسلاید جدید
+            slideIndex = n;
+            
+            // نمایش اسلاید جدید
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+            
+            // ریست تایمر
+            startSlideshow();
+        }
+        
         // به روزرسانی اولیه
         updateTime();
         updatePersianDate();
+        
+        // نمایش اسلایدشو در ابتدا
+        showSlideshow();
         
         // به روزرسانی زمان هر دقیقه
         setInterval(updateTime, 60000);
