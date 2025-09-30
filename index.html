@@ -32,7 +32,7 @@
             left: 0;
             right: 0;
             width: 100%; /* عرض کامل */
-            height: 220px; /* ارتفاع مناسب */
+            height: 280px; /* افزایش ارتفاع برای 4K */
             z-index: 95;
             overflow: hidden;
             display: block;
@@ -58,10 +58,12 @@
             height: 100%;
             opacity: 0;
             transition: opacity 1s ease-in-out;
+            pointer-events: none; /* جلوگیری از کلیک روی اسلاید غیرفعال */
         }
 
         .slide.active {
             opacity: 1;
+            pointer-events: auto; /* اجازه کلیک روی اسلاید فعال */
         }
 
         .slide-link {
@@ -74,32 +76,33 @@
         .slide-image {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* برگشت به cover برای پر کردن کامل فضای */
-            border-radius: 0; /* حذف border-radius */
+            object-fit: cover;
+            border-radius: 0;
         }
 
         .slideshow-controls {
             position: absolute;
-            bottom: 15px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 12px;
             z-index: 2;
         }
 
         .slideshow-dot {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
             transition: all 0.3s ease;
+            border: none;
         }
 
         .slideshow-dot.active {
             background-color: #FFD700;
-            transform: scale(1.2);
+            transform: scale(1.3);
         }
 
         /* نوار ثابت ساعت و تاریخ */
@@ -135,7 +138,7 @@
         /* بخش‌های محتوا */
         .content-section {
             position: fixed;
-            top: 60px; /* تطبیق با ارتفاع نوار ساعت */
+            top: 60px;
             left: 0;
             right: 0;
             bottom: 150px;
@@ -331,8 +334,8 @@
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             #slideshow {
-                top: 50px; /* تطبیق با موبایل */
-                height: 180px;
+                top: 50px;
+                height: 200px; /* افزایش ارتفاع برای تبلت */
             }
             
             #info-bar {
@@ -342,7 +345,7 @@
             }
             
             .content-section {
-                top: 50px; /* تطبیق با موبایل */
+                top: 50px;
                 bottom: 120px;
                 padding: 20px;
             }
@@ -387,8 +390,8 @@
 
         @media (max-width: 480px) {
             #slideshow {
-                top: 40px; /* تطبیق با موبایل کوچک */
-                height: 140px;
+                top: 40px;
+                height: 160px; /* افزایش ارتفاع برای موبایل */
             }
             
             #info-bar {
@@ -403,7 +406,7 @@
             
             .content-section {
                 padding: 15px;
-                top: 40px; /* تطبیق با موبایل کوچک */
+                top: 40px;
                 bottom: 100px;
             }
             
@@ -440,6 +443,47 @@
                 padding: 0 8px;
             }
         }
+
+        /* تنظیمات برای صفحه‌های 4K و بزرگ */
+        @media (min-width: 2000px) {
+            #slideshow {
+                height: 350px; /* ارتفاع بیشتر برای 4K */
+                top: 80px; /* فاصله بیشتر از نوار ساعت */
+            }
+            
+            #info-bar {
+                height: 80px;
+                font-size: 32px;
+                padding: 0 30px;
+            }
+            
+            .content-section {
+                top: 80px;
+                bottom: 200px;
+                padding: 50px;
+            }
+            
+            #day-name {
+                font-size: 26px;
+            }
+        }
+
+        @media (min-width: 3000px) {
+            #slideshow {
+                height: 450px; /* ارتفاع خیلی بیشتر برای صفحه‌های بزرگ */
+                top: 100px;
+            }
+            
+            #info-bar {
+                height: 100px;
+                font-size: 38px;
+            }
+            
+            .content-section {
+                top: 100px;
+                bottom: 250px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -461,7 +505,7 @@
             
             <div class="slide">
                 <a href="cinema.html" class="slide-link">
-                    <img src="https://static.cdn.asset.filimo.com/flmt/mov_162206_302723-b.jpg" alt="حاج آقا سلام علیکم" class="slide-image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUTsB68xbS7LfN5J9CFLRCyBK9eHHYCglcpwyCjH32PA&s=10" alt="حاج آقا سلام علیکم" class="slide-image">
                 </a>
             </div>
             
@@ -478,10 +522,10 @@
             </div>
             
             <div class="slideshow-controls">
-                <div class="slideshow-dot active" onclick="currentSlide(0)"></div>
-                <div class="slideshow-dot" onclick="currentSlide(1)"></div>
-                <div class="slideshow-dot" onclick="currentSlide(2)"></div>
-                <div class="slideshow-dot" onclick="currentSlide(3)"></div>
+                <div class="slideshow-dot active" onclick="changeSlide(0)"></div>
+                <div class="slideshow-dot" onclick="changeSlide(1)"></div>
+                <div class="slideshow-dot" onclick="changeSlide(2)"></div>
+                <div class="slideshow-dot" onclick="changeSlide(3)"></div>
             </div>
         </div>
     </div>
@@ -828,7 +872,8 @@
             dots[slideIndex].classList.add('active');
         }
         
-        function currentSlide(n) {
+        // تابع اصلاح شده برای تغییر اسلاید - جلوگیری از کلیک روی لینک
+        function changeSlide(n) {
             const slides = document.querySelectorAll('.slide');
             const dots = document.querySelectorAll('.slideshow-dot');
             
@@ -845,6 +890,10 @@
             
             // ریست تایمر
             startSlideshow();
+            
+            // جلوگیری از انتشار رویداد کلیک
+            event.stopPropagation();
+            return false;
         }
         
         // به روزرسانی اولیه
