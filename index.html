@@ -369,59 +369,37 @@
                 <button class="scroll-button right" onclick="scrollGallery('tvGallery', 'right')">
                     <i class="fas fa-chevron-right"></i>
                 </button>
-                
-                
                 <button class="scroll-button left" onclick="scrollGallery('tvGallery', 'left')">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                
-                
-                
                 <div class="image-gallery" id="tvGallery">
                     <a href="Tv/persian.html">
                         <img src="https://www.diycraftsguide.com/uploads/tv_image/persiana-nostalgia.jpg" alt="پرشین نوستالژی" loading="lazy">
                     </a>
-                    
-                    
                     <a href="Tv/pmusic.html">
                         <img src="https://static.wikia.nocookie.net/logopedia/images/a/ae/Persiana-music-fr.png" alt="پرشین موزیک" loading="lazy">
                     </a>
-                    
-                    
                     <a href="Tv/t2.html">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqSe8Hh2i7pjAFTZWo4b31OUdkVmft7KWSIA&s" alt="t2" loading="lazy">
                     </a>
-                    
-                    
                     <a href="Tv/navahng.html">
                         <img src="https://play-lh.googleusercontent.com/CBR9pMaeYR-WUl-ZhmozFIBtK4POS6RqExZNmY522WqqUCtzC9o0TdppbUU9VTK0NF0D" alt="نواهنگ" loading="lazy">
                     </a>
-                    
-                    
                     <a href="Tv/avang.html">
                         <img src="https://static.namasha.com/images/avatar/6654645870-176x176.jpg?d=channel" alt="آونگ موزیک" loading="lazy">
                     </a>
-                    
-                    
                     <a href="Tv/sonpersian.html">
                         <img src="https://dl.avajavan.com/uploads/2024/10/Persiana-Sonati.webp" alt="پرشیانا سنتی" loading="lazy">
                     </a>
-                    
-                    
                     <a href="Tv/itv.html">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ-mjAR12DWQDhtC8l3JbiNJY_R6u5MY7oKU5wOh3fVAnT8IEoF6_UAwI&s=10" alt="itv" loading="lazy">
                     </a>
-                    
-                    
                     <a href="Tv/mtc.html">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZKMlxtdGwVatLkfZV2tRvqp-JFtKv7JjmA&s" alt="MTC" loading="lazy">
                     </a>
-                    
-                    
                     <a href="Tv/tom">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgivIeTjlkMLJbUUTtPpSegoNDOmPXczKmLP8k3Pf18ocydK6x_yE3U6Ce&s=10" alt="تام و جری" loading="lazy">
                     </a>
-                    
                 </div>
             </div>
         </div>
@@ -430,57 +408,33 @@
     <!-- کادرهای پایین صفحه -->
     <div class="container">
         <a href="#series-new" class="box" onclick="toggleSection('newSeriesSection', this, event)">
-            <div class="box-content">سریال  جدید</div>
+            <div class="box-content">سریال جدید</div>
         </a>
-        
-        
         <a href="#live" class="box" onclick="toggleSection('liveChannelsSection', this, event)">
             <div class="box-content">پخش زنده</div>
         </a>
-        
-        
-        
-        
-        <a href="radio.html" class="box" onclick="toggleSection(null, this, event)">
+        <a href="radio.html" class="box" onclick="handleBoxClick(this, event)">
             <div class="box-content">رادیو</div>
         </a>
-        
-        
-        
-        <a href="musit.html" class="box" onclick="toggleSection(null, this, event)">
+        <a href="music.html" class="box" onclick="handleBoxClick(this, event)">
             <div class="box-content">موزیک</div>
         </a>
-        
-        
-        
-        <a href="video.html" class="box" onclick="toggleSection(null, this, event)">
+        <a href="video.html" class="box" onclick="handleBoxClick(this, event)">
             <div class="box-content">ویدیو کلیپ</div>
         </a>
-        
-        
-        <a href="serial.html" class="box" onclick="toggleSection(null, this, event)">
+        <a href="serial.html" class="box" onclick="handleBoxClick(this, event)">
             <div class="box-content">سریال قدیمی</div>
         </a>
-        
-        
-        
-        
-        <a href="cinema.html" class="box" onclick="toggleSection(null, this, event)">
-            <div class="box-content">فیلم </div>
+        <a href="cinema.html" class="box" onclick="handleBoxClick(this, event)">
+            <div class="box-content">فیلم</div>
         </a>
-        
-        
-        <a href="ghadimi.html" class="box" onclick="toggleSection(null, this, event)">
-            <div class="box-content">فیلم  قدیمی</div>
+        <a href="ghadimi.html" class="box" onclick="handleBoxClick(this, event)">
+            <div class="box-content">فیلم قدیمی</div>
         </a>
-        
-        
-        <a href="sargarmi.html" class="box" onclick="toggleSection(null, this, event)">
+        <a href="sargarmi.html" class="box" onclick="handleBoxClick(this, event)">
             <div class="box-content">سرگرمی</div>
         </a>
-        
-        
-        <a href="https://tv.garden/" class="box" onclick="toggleSection(null, this, event)">
+        <a href="https://tv.garden/" class="box" onclick="handleBoxClick(this, event)">
             <div class="box-content">شبکه های تلویزیونی</div>
         </a>
     </div>
@@ -558,6 +512,40 @@
                 activeSection = sectionId;
             } else {
                 activeSection = null;
+            }
+        }
+        
+        // تابع جدید برای مدیریت کلیک روی باکس‌های دارای لینک
+        function handleBoxClick(boxElement, event) {
+            // اگر باکس قبلاً فعال است، غیرفعال کن
+            if (activeBox === boxElement) {
+                boxElement.classList.remove('active');
+                activeBox = null;
+                
+                // مخفی کردن بخش فعال
+                if (activeSection) {
+                    document.getElementById(activeSection).classList.remove('active');
+                    activeSection = null;
+                }
+                event.preventDefault(); // فقط در این حالت از رفتن به لینک جلوگیری کن
+            } else {
+                // غیرفعال کردن باکس قبلی
+                if (activeBox) {
+                    activeBox.classList.remove('active');
+                }
+                
+                // مخفی کردن بخش قبلی
+                if (activeSection) {
+                    document.getElementById(activeSection).classList.remove('active');
+                    activeSection = null;
+                }
+                
+                // فعال کردن باکس جدید
+                boxElement.classList.add('active');
+                activeBox = boxElement;
+                
+                // اجازه بده لینک کار کند - جلوگیری نکن
+                // event.preventDefault() حذف شده
             }
         }
         
