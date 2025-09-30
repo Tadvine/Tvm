@@ -2,29 +2,10 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    
-    
-     <!-- متا تگ‌های جلوگیری از کش -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    
-    
-    <title>Tvm</title>
-    
-    
-    <!-- Preconnect to Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- افزودن فونت Vazirmatn از Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Preload background image -->
-    <link rel="preload" href="https://bayanbox.ir/download/1793887276848709656/Background.jpg" as="image">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پخش رسانه</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Reset CSS */
         * {
             margin: 0;
             padding: 0;
@@ -40,7 +21,6 @@
             background-position: center;
             color: #fff;
             min-height: 100vh;
-            padding-top: 60px; /* برای جلوگیری از همپوشانی با نوار ثابت */
             line-height: 1.6;
         }
 
@@ -72,12 +52,29 @@
             transform: translateX(-50%);
         }
 
-        /* Main Container */
-        .content-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 15px;
-            position: relative;
+        /* بخش‌های محتوا */
+        .content-section {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 120px;
+            display: none;
+            z-index: 90;
+            padding: 20px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         h2 {
@@ -88,6 +85,13 @@
         }
 
         /* Image Gallery */
+        .image-gallery-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         .image-gallery {
             display: flex;
             flex-wrap: nowrap;
@@ -115,8 +119,8 @@
             border-radius: 10px;
             box-shadow: -3px 3px 15px rgba(255, 255, 255, 0.3);
             transition: transform 0.3s, box-shadow 0.3s;
-            width: 180px; /* افزایش سایز تصاویر */
-            height: 240px; /* افزایش سایز تصاویر */
+            width: 180px;
+            height: 240px;
             object-fit: cover;
         }
 
@@ -127,16 +131,8 @@
 
         /* TV Channel Images */
         #tvGallery img {
-            width: 150px; /* افزایش سایز تصاویر */
-            height: 110px; /* افزایش سایز تصاویر */
-        }
-
-        /* Music Buttons */
-        #musicGallery .mybutton {
-            width: 180px; /* افزایش سایز دکمه‌ها */
-            height: 60px; /* افزایش سایز دکمه‌ها */
-            font-size: clamp(16px, 4vw, 20px); /* افزایش سایز فونت */
-            margin: 0 10px;
+            width: 150px;
+            height: 110px;
         }
 
         /* Scroll Buttons */
@@ -147,9 +143,9 @@
             background-color: rgba(0, 0, 0, 0.7);
             border: none;
             color: #fff;
-            font-size: 30px; /* افزایش سایز آیکن‌ها */
-            width: 50px; /* افزایش سایز دکمه‌ها */
-            height: 80px; /* افزایش سایز دکمه‌ها */
+            font-size: 30px;
+            width: 50px;
+            height: 80px;
             cursor: pointer;
             z-index: 1;
             border-radius: 5px;
@@ -165,11 +161,11 @@
         }
 
         .scroll-button.left {
-            right: 0;
+            right: -60px;
         }
 
         .scroll-button.right {
-            left: 0;
+            left: -60px;
         }
 
         /* Hide Scrollbar */
@@ -182,45 +178,68 @@
             scrollbar-width: none;
         }
 
-        /* Buttons */
-        .mybutton {
-            background-color: rgba(77, 77, 77, 0.8);
-            font-family: 'Vazirmatn', sans-serif;
-            padding: 14px;
-            border-radius: 15px;
-            box-shadow: 0 0 8px rgba(207, 207, 207, 0.5);
-            color: #fff;
-            font-size: clamp(14px, 4vw, 18px);
-            border: none;
-            cursor: pointer;
-            min-width: 120px;
-            width: auto;
-            max-width: 200px;
-            height: 50px;
+        /* کادرهای پایین صفحه */
+        .container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px auto;
-            transition: all 0.3s;
+            width: 100%;
+            height: 120px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
         }
 
-        .mybutton:hover {
-            background-color: #cccccc;
-            color: #000;
-            transform: translateY(-2px);
-        }
-
-        hr {
-            border: 1px solid rgba(249, 249, 240, 0.5);
-            margin: 25px auto;
-            width: 90%;
-            max-width: 800px;
-        }
-
-        .custom-button {
+        .box {
+            flex: 1;
+            height: 100%;
+            transform: skewX(-20deg);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
             text-decoration: none;
-            margin: 0 5px;
         }
+
+        .box:last-child {
+            border-right: none;
+        }
+
+        .box.active {
+            flex-grow: 1.5;
+            transform: skewX(-20deg) translateY(-15px);
+            z-index: 10;
+            box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .box-content {
+            transform: skewX(20deg);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        /* رنگ‌های مختلف برای کادرها */
+        .box:nth-child(1) { background-color: #FF6B6B; }
+        .box:nth-child(2) { background-color: #4ECDC4; }
+        .box:nth-child(3) { background-color: #FFD166; }
+        .box:nth-child(4) { background-color: #06D6A0; }
+        .box:nth-child(5) { background-color: #118AB2; }
+        .box:nth-child(6) { background-color: #9B5DE5; }
+        .box:nth-child(7) { background-color: #F15BB5; }
+        .box:nth-child(8) { background-color: #00BBF9; }
+        .box:nth-child(9) { background-color: #00F5D4; }
+        .box:nth-child(10) { background-color: #FB5607; }
 
         /* Responsive Adjustments */
         @media (max-width: 768px) {
@@ -229,8 +248,10 @@
                 font-size: clamp(12px, 3.5vw, 16px);
             }
             
-            .content-container {
-                padding: 15px 10px;
+            .content-section {
+                top: 50px;
+                bottom: 100px;
+                padding: 15px;
             }
             
             .image-gallery {
@@ -248,21 +269,36 @@
                 height: 90px;
             }
             
-            #musicGallery .mybutton {
-                width: 150px;
-                height: 50px;
-            }
-            
             .scroll-button {
                 width: 40px;
                 height: 60px;
                 font-size: 24px;
+            }
+
+            .scroll-button.left {
+                right: -50px;
+            }
+
+            .scroll-button.right {
+                left: -50px;
+            }
+
+            .container {
+                height: 100px;
+            }
+            
+            .box-content {
+                font-size: 14px;
             }
         }
 
         @media (max-width: 480px) {
             #info-bar {
                 padding: 0 10px;
+            }
+            
+            .content-section {
+                padding: 10px;
             }
             
             .image-gallery img {
@@ -274,268 +310,322 @@
                 width: 100px;
                 height: 80px;
             }
-            
-            #musicGallery .mybutton {
-                width: 130px;
-                height: 45px;
-                font-size: 14px;
-                margin: 0 5px;
+
+            .scroll-button {
+                width: 35px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .scroll-button.left {
+                right: -40px;
+            }
+
+            .scroll-button.right {
+                left: -40px;
+            }
+
+            .container {
+                height: 80px;
             }
             
-            .mybutton {
-                min-width: 100px;
-                height: 45px;
-                padding: 10px;
+            .box-content {
+                font-size: 11px;
+                padding: 0 5px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- نوار ثابت ساعت و تاریخ -->
+    <!-- نوار اطلاعات بالا -->
     <div id="info-bar">
-        <span id="time"></span>
-        <span id="day-name"></span>
-        <span id="date"></span>
+        <div class="time" id="time">۰۰:۰۰</div>
+        <div id="day-name" class="day">شنبه</div>
+        <div class="date" id="date">۱۴۰۳/۱/۱</div>
     </div>
-
-    <div class="content-container">
-        <!-- Speed Test Button -->
-        <center>
-            <button type="button" class="mybutton" onClick="window.location.reload()">
-                بروز رسانی
-            </button>
-        </center>
-
-        <!-- Series Section -->
-        <h2>سریال‌ها</h2>
-        <div class="image-gallery" id="seriesGallery">
+    
+    <!-- بخش سریال های جدید -->
+    <div class="content-section" id="newSeriesSection">
+        <div class="section-content">
+            <h2>سریال های جدید</h2>
+            <div class="image-gallery-container">
+                <div class="image-gallery" id="seriesGallery">
+                    <a href="newserial.html">
+                        <img src="https://static.cdn.asset.filimo.com/flmt/mov_161303_300791.jpg?width=300&quality=85&sharpen=80&secret=MIx_rmlqaWui0x8svhntPg" alt="شغال" loading="lazy">
+                    </a>
+                    <a href="mahkoom.html">
+                        <img src="https://static.cdn.asset.filimo.com/flmt/mov_161602_301966-b.jpg?width=300&quality=85&sharpen=80&secret=Fqugml9Z8ugrWROUTXM1JQ" alt="محکوم" loading="lazy">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- بخش پخش زنده -->
+    <div class="content-section" id="liveChannelsSection">
+        <div class="section-content">
+            <h2>پخش زنده</h2>
+            <div class="image-gallery-container">
+                <button class="scroll-button right" onclick="scrollGallery('tvGallery', 'right')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                
+                <button class="scroll-button left" onclick="scrollGallery('tvGallery', 'left')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                
+                
+                <div class="image-gallery" id="tvGallery">
+                    <a href="Tv/persian.html">
+                        <img src="https://www.diycraftsguide.com/uploads/tv_image/persiana-nostalgia.jpg" alt="پرشین نوستالژی" loading="lazy">
+                    </a>
+                    
+                    
+                    <a href="Tv/pmusic.html">
+                        <img src="https://static.wikia.nocookie.net/logopedia/images/a/ae/Persiana-music-fr.png" alt="پرشین موزیک" loading="lazy">
+                    </a>
+                    
+                    
+                    <a href="Tv/t2.html">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqSe8Hh2i7pjAFTZWo4b31OUdkVmft7KWSIA&s" alt="t2" loading="lazy">
+                    </a>
+                    
+                    
+                    <a href="Tv/navahng.html">
+                        <img src="https://play-lh.googleusercontent.com/CBR9pMaeYR-WUl-ZhmozFIBtK4POS6RqExZNmY522WqqUCtzC9o0TdppbUU9VTK0NF0D" alt="نواهنگ" loading="lazy">
+                    </a>
+                    
+                    
+                    <a href="Tv/avang.html">
+                        <img src="https://static.namasha.com/images/avatar/6654645870-176x176.jpg?d=channel" alt="آونگ موزیک" loading="lazy">
+                    </a>
+                    
+                    
+                    <a href="Tv/sonpersian.html">
+                        <img src="https://dl.avajavan.com/uploads/2024/10/Persiana-Sonati.webp" alt="پرشیانا سنتی" loading="lazy">
+                    </a>
+                    
+                    
+                    <a href="Tv/itv.html">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ-mjAR12DWQDhtC8l3JbiNJY_R6u5MY7oKU5wOh3fVAnT8IEoF6_UAwI&s=10" alt="itv" loading="lazy">
+                    </a>
+                    
+                    
+                    <a href="Tv/mtc.html">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZKMlxtdGwVatLkfZV2tRvqp-JFtKv7JjmA&s" alt="MTC" loading="lazy">
+                    </a>
+                    
+                    
+                    <a href="Tv/tom">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgivIeTjlkMLJbUUTtPpSegoNDOmPXczKmLP8k3Pf18ocydK6x_yE3U6Ce&s=10" alt="تام و جری" loading="lazy">
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- کادرهای پایین صفحه -->
+    <div class="container">
+        <a href="#series-new" class="box" onclick="toggleSection('newSeriesSection', this, event)">
+            <div class="box-content">سریال  جدید</div>
+        </a>
         
-            <a href="newserial.html">
-                <img src="https://static.cdn.asset.filimo.com/flmt/mov_161303_300791.jpg?width=300&quality=85&sharpen=80&secret=MIx_rmlqaWui0x8svhntPg" alt="شغال" loading="lazy">
-            </a>
-            
-            
-            
-            <a href="mahkoom.html">
-                <img src="https://static.cdn.asset.filimo.com/flmt/mov_161602_301966-b.jpg?width=300&quality=85&sharpen=80&secret=Fqugml9Z8ugrWROUTXM1JQ" alt="محکوم" loading="lazy">
-            </a>
-            
-            
-            
-          
-        </div>
-        <button class="scroll-button left" onclick="scrollGallery('seriesGallery', -300)">&#10094;</button>
-        <button class="scroll-button right" onclick="scrollGallery('seriesGallery', 300)">&#10095;</button>
-
-        <hr>
-
-        <!-- TV Channels Section -->
-        <h2>پخش زنده</h2>
-        <div class="image-gallery" id="tvGallery">
-            <a href="Tv/persian.html">
-                <img src="https://www.diycraftsguide.com/uploads/tv_image/persiana-nostalgia.jpg" alt="پرشین نوستالژی" loading="lazy">
-            </a>
-            
-            <a href="Tv/pmusic.html">
-                <img src="https://static.wikia.nocookie.net/logopedia/images/a/ae/Persiana-music-fr.png" alt="پرشین موزیک" loading="lazy">
-            </a>
-            
-            <a href="Tv/t2.html">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqSe8Hh2i7pjAFTZWo4b31OUdkVmft7KWSIA&s" alt="t2" loading="lazy">
-            </a>
-            
-      
-      
-      <a href="Tv/navahng.html">
-                <img src="https://play-lh.googleusercontent.com/CBR9pMaeYR-WUl-ZhmozFIBtK4POS6RqExZNmY522WqqUCtzC9o0TdppbUU9VTK0NF0D" alt="نواهنگ" loading="lazy">
-            </a>
-            
-            
-            
-            <a href="Tv/avang.html">
-                <img src="https://static.namasha.com/images/avatar/6654645870-176x176.jpg?d=channel" alt="آونگ موزیک" loading="lazy">
-            </a>
-            
-            
-            
-          <a href="Tv/sonpersian.html">
-                <img src="https://dl.avajavan.com/uploads/2024/10/Persiana-Sonati.webp" alt="پرشیانا سنتی" loading="lazy">
-            </a>
- 
-            
-            
-            
-            <a href="Tv/itv.html">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ-mjAR12DWQDhtC8l3JbiNJY_R6u5MY7oKU5wOh3fVAnT8IEoF6_UAwI&s=10" alt="itv" loading="lazy">
-            </a>
-            
-            
-            
-            
-            <a href="Tv/mtc.html">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZKMlxtdGwVatLkfZV2tRvqp-JFtKv7JjmA&s" alt="MTC" loading="lazy">
-            </a>
-            
-            
-            
-            
-           
-     
-     
-     
-     
-            
-            <a href="Tv/tom">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgivIeTjlkMLJbUUTtPpSegoNDOmPXczKmLP8k3Pf18ocydK6x_yE3U6Ce&s=10" alt="تام و جری" loading="lazy">
-            </a>
-         
-         
-            
-        </div>
-        <button class="scroll-button left" onclick="scrollGallery('tvGallery', -300)">&#10094;</button>
-        <button class="scroll-button right" onclick="scrollGallery('tvGallery', 300)">&#10095;</button>
-
-        <hr>
-
-        <!-- Music Section -->
-        <h2>موزیک و ویدیو</h2>
-        <div class="image-gallery" id="musicGallery">
-            <a href="radio.html" class="custom-button">
-                <button class="mybutton">رادیو</button>
-            </a>
-            <a href="music.html" class="custom-button">
-                <button class="mybutton">موزیک</button>
-            </a>
-            
-            <a href="video.html" class="custom-button">
-                <button class="mybutton">ویدیو کلیپ</button>
-            </a>
-            
-            <a href="sargarmi.html" class="custom-button">
-                <button class="mybutton">سرگرمی</button>
-            </a>
-            
-            
-            
-            <a href="https://tv.garden/" class="custom-button">
-                <button 
-class="mybutton">شبکه های تلویزیونی</button>
-            </a>
-            
-            
-            
-        </div>
-        <button class="scroll-button left" onclick="scrollGallery('musicGallery', -300)">&#10094;</button>
-        <button class="scroll-button right" onclick="scrollGallery('musicGallery', 300)">&#10095;</button>
-
-        <hr>
-
-        <!-- Other Sections (Serial, Cinema, Ghadimi) -->
-        <h2>فیلم و سریال</h2>
-        <div class="image-gallery" id="otherGallery">
-            <a href="serial.html">
-                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/serial.jpg" alt="سریال" loading="lazy">
-            </a>
-            <a href="cinema.html">
-                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/film%20irani.jpg" alt="سینما" loading="lazy">
-            </a>
-            <a href="ghadimi.html">
-                <img src="https://raw.githubusercontent.com/Tadvine/Tvm/refs/heads/main/Pic/ghadimi.jpg" alt="قدیمی" loading="lazy">
-            </a>
-        </div>
-        <button class="scroll-button left" onclick="scrollGallery('otherGallery', -300)">&#10094;</button>
-        <button class="scroll-button right" onclick="scrollGallery('otherGallery', 300)">&#10095;</button>
+        
+        <a href="#live" class="box" onclick="toggleSection('liveChannelsSection', this, event)">
+            <div class="box-content">پخش زنده</div>
+        </a>
+        
+        
+        
+        
+        <a href="radio.html" class="box" onclick="toggleSection(null, this, event)">
+            <div class="box-content">رادیو</div>
+        </a>
+        
+        
+        
+        <a href="musit.html" class="box" onclick="toggleSection(null, this, event)">
+            <div class="box-content">موزیک</div>
+        </a>
+        
+        
+        
+        <a href="video.html" class="box" onclick="toggleSection(null, this, event)">
+            <div class="box-content">ویدیو کلیپ</div>
+        </a>
+        
+        
+        <a href="serial.html" class="box" onclick="toggleSection(null, this, event)">
+            <div class="box-content">سریال قدیمی</div>
+        </a>
+        
+        
+        
+        
+        <a href="cinema.html" class="box" onclick="toggleSection(null, this, event)">
+            <div class="box-content">فیلم </div>
+        </a>
+        
+        
+        <a href="ghadimi.html" class="box" onclick="toggleSection(null, this, event)">
+            <div class="box-content">فیلم  قدیمی</div>
+        </a>
+        
+        
+        <a href="sargarmi.html" class="box" onclick="toggleSection(null, this, event)">
+            <div class="box-content">سرگرمی</div>
+        </a>
+        
+        
+        <a href="https://tv.garden/" class="box" onclick="toggleSection(null, this, event)">
+            <div class="box-content">شبکه های تلویزیونی</div>
+        </a>
     </div>
 
     <script>
-        // Scroll Gallery Function
-        function scrollGallery(galleryId, offset) {
-            const gallery = document.getElementById(galleryId);
-            gallery.scrollBy({ left: offset, behavior: 'smooth' });
+        let activeBox = null;
+        let activeSection = null;
+
+        // تابع برای تبدیل اعداد انگلیسی به فارسی
+        function toPersianNumber(num) {
+            const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return num.toString().replace(/\d/g, digit => persianDigits[parseInt(digit)]);
         }
-
-        // نام روزهای هفته به فارسی
-        const persianWeekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'];
-
-        // Update Time and Date
+        
+        // تابع برای به روزرسانی زمان
         function updateTime() {
             const now = new Date();
-            const timeElement = document.getElementById('time');
-            const dateElement = document.getElementById('date');
-            const dayNameElement = document.getElementById('day-name');
-
-            // Format time (HH:MM)
-            const time = now.toLocaleTimeString('fa-IR', { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                hour12: false 
-            });
-            timeElement.textContent = time;
-
-            // Format date (YYYY/MM/DD)
-            const date = now.toLocaleDateString('fa-IR', { 
-                year: 'numeric', 
-                month: '2-digit', 
-                day: '2-digit' 
-            });
-            dateElement.textContent = date;
-
-            // Get Persian day name
-            const dayOfWeek = now.getDay();
-            dayNameElement.textContent = persianWeekdays[dayOfWeek];
+            const hours = toPersianNumber(now.getHours().toString().padStart(2, '0'));
+            const minutes = toPersianNumber(now.getMinutes().toString().padStart(2, '0'));
+            document.getElementById('time').textContent = `${hours}:${minutes}`;
         }
-
-        // Update time every second
-        setInterval(updateTime, 1000);
-        updateTime(); // Initial call
-
-        // Touch event support for mobile scrolling
-        document.querySelectorAll('.image-gallery').forEach(gallery => {
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-
-            gallery.addEventListener('mousedown', (e) => {
-                isDown = true;
-                startX = e.pageX - gallery.offsetLeft;
-                scrollLeft = gallery.scrollLeft;
+        
+        // تابع برای به روزرسانی تاریخ شمسی
+        function updatePersianDate() {
+            const now = new Date();
+            const options = { weekday: 'long' };
+            const dayName = new Intl.DateTimeFormat('fa-IR', options).format(now);
+            
+            // تاریخ شمسی به صورت عددی
+            const date = new Intl.DateTimeFormat('fa-IR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).format(now);
+            
+            document.getElementById('day-name').textContent = dayName;
+            document.getElementById('date').textContent = date;
+        }
+        
+        // تابع toggle برای بخش‌ها
+        function toggleSection(sectionId, boxElement, event) {
+            event.preventDefault();
+            
+            // اگر روی همان باکس فعال کلیک شد، غیرفعال کن
+            if (activeBox === boxElement) {
+                // غیرفعال کردن باکس
+                boxElement.classList.remove('active');
+                activeBox = null;
+                
+                // مخفی کردن بخش
+                if (activeSection) {
+                    document.getElementById(activeSection).classList.remove('active');
+                    activeSection = null;
+                }
+                return;
+            }
+            
+            // غیرفعال کردن باکس قبلی
+            if (activeBox) {
+                activeBox.classList.remove('active');
+            }
+            
+            // مخفی کردن بخش قبلی
+            if (activeSection) {
+                document.getElementById(activeSection).classList.remove('active');
+            }
+            
+            // فعال کردن باکس جدید
+            boxElement.classList.add('active');
+            activeBox = boxElement;
+            
+            // نمایش بخش جدید
+            if (sectionId) {
+                document.getElementById(sectionId).classList.add('active');
+                activeSection = sectionId;
+            } else {
+                activeSection = null;
+            }
+        }
+        
+        // مخفی کردن بخش‌ها با کلیک خارج از آن
+        document.addEventListener('click', function(event) {
+            const contentSections = document.querySelectorAll('.content-section');
+            const boxes = document.querySelectorAll('.box');
+            const scrollButtons = document.querySelectorAll('.scroll-button');
+            
+            let isClickInsideSection = false;
+            let isClickOnBox = false;
+            let isClickOnScrollButton = false;
+            
+            contentSections.forEach(section => {
+                if (section.contains(event.target)) {
+                    isClickInsideSection = true;
+                }
             });
-
-            gallery.addEventListener('mouseleave', () => {
-                isDown = false;
+            
+            boxes.forEach(box => {
+                if (box.contains(event.target)) {
+                    isClickOnBox = true;
+                }
             });
-
-            gallery.addEventListener('mouseup', () => {
-                isDown = false;
+            
+            scrollButtons.forEach(button => {
+                if (button.contains(event.target)) {
+                    isClickOnScrollButton = true;
+                }
             });
-
-            gallery.addEventListener('mousemove', (e) => {
-                if(!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - gallery.offsetLeft;
-                const walk = (x - startX) * 2;
-                gallery.scrollLeft = scrollLeft - walk;
-            });
-
-            // Touch events for mobile
-            gallery.addEventListener('touchstart', (e) => {
-                isDown = true;
-                startX = e.touches[0].pageX - gallery.offsetLeft;
-                scrollLeft = gallery.scrollLeft;
-            });
-
-            gallery.addEventListener('touchend', () => {
-                isDown = false;
-            });
-
-            gallery.addEventListener('touchmove', (e) => {
-                if(!isDown) return;
-                e.preventDefault();
-                const x = e.touches[0].pageX - gallery.offsetLeft;
-                const walk = (x - startX) * 2;
-                gallery.scrollLeft = scrollLeft - walk;
-            });
+            
+            // اگر روی فضای خالی کلیک شد، همه چیز مخفی شود
+            if (!isClickInsideSection && !isClickOnBox && !isClickOnScrollButton) {
+                // غیرفعال کردن باکس فعال
+                if (activeBox) {
+                    activeBox.classList.remove('active');
+                    activeBox = null;
+                }
+                
+                // مخفی کردن بخش فعال
+                if (activeSection) {
+                    document.getElementById(activeSection).classList.remove('active');
+                    activeSection = null;
+                }
+            }
         });
+        
+        // تابع برای اسکرول گالری‌ها
+        function scrollGallery(galleryId, direction) {
+            const gallery = document.getElementById(galleryId);
+            const scrollAmount = 300;
+            
+            if (direction === 'left') {
+                gallery.scrollLeft -= scrollAmount;
+            } else {
+                gallery.scrollLeft += scrollAmount;
+            }
+        }
+        
+        // به روزرسانی اولیه
+        updateTime();
+        updatePersianDate();
+        
+        // به روزرسانی زمان هر دقیقه
+        setInterval(updateTime, 60000);
+        
+        // به روزرسانی تاریخ هر روز
+        setInterval(updatePersianDate, 86400000);
     </script>
 </body>
 </html>
