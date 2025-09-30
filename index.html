@@ -28,15 +28,16 @@
         /* اسلایدشو افقی */
         #slideshow {
             position: fixed;
-            top: 80px;
+            top: 60px; /* چسبیده به نوار ساعت */
             left: 0;
             right: 0;
-            height: 200px;
+            width: 100%; /* عرض کامل */
+            height: 220px; /* ارتفاع مناسب */
             z-index: 95;
             overflow: hidden;
             display: block;
-            background-color: rgba(0, 0, 0, 0.8);
-            border-bottom: 2px solid #FFD700;
+            background-color: transparent; /* حذف پس‌زمینه */
+            border: none; /* حذف border */
         }
 
         #slideshow.hidden {
@@ -73,7 +74,8 @@
         .slide-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* برگشت به cover برای پر کردن کامل فضای */
+            border-radius: 0; /* حذف border-radius */
         }
 
         .slideshow-controls {
@@ -100,59 +102,26 @@
             transform: scale(1.2);
         }
 
-        .slideshow-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(255, 215, 0, 0.8);
-            border: none;
-            color: #000;
-            font-size: 24px;
-            width: 40px;
-            height: 60px;
-            cursor: pointer;
-            z-index: 2;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.8;
-            transition: all 0.3s ease;
-        }
-
-        .slideshow-nav:hover {
-            opacity: 1;
-            background-color: #FFD700;
-        }
-
-        .slideshow-prev {
-            right: 10px;
-        }
-
-        .slideshow-next {
-            left: 10px;
-        }
-
         /* نوار ثابت ساعت و تاریخ */
         #info-bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 80px;
+            height: 60px;
             background-color: rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-family: 'Vazirmatn', sans-serif;
-            font-size: clamp(20px, 5vw, 28px);
+            font-size: clamp(16px, 4vw, 22px);
             color: #FFD700;
             font-weight: bold;
             z-index: 1000;
-            padding: 0 25px;
+            padding: 0 15px;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
         }
 
         /* آیتم روز هفته در وسط */
@@ -160,13 +129,13 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            font-size: clamp(18px, 4vw, 24px);
+            font-size: clamp(14px, 3vw, 18px);
         }
 
         /* بخش‌های محتوا */
         .content-section {
             position: fixed;
-            top: 80px;
+            top: 60px; /* تطبیق با ارتفاع نوار ساعت */
             left: 0;
             right: 0;
             bottom: 150px;
@@ -362,18 +331,18 @@
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             #slideshow {
-                top: 70px;
-                height: 150px;
+                top: 50px; /* تطبیق با موبایل */
+                height: 180px;
             }
             
             #info-bar {
-                height: 70px;
-                font-size: clamp(18px, 4vw, 24px);
-                padding: 0 20px;
+                height: 50px;
+                font-size: clamp(14px, 3vw, 18px);
+                padding: 0 10px;
             }
             
             .content-section {
-                top: 70px;
+                top: 50px; /* تطبیق با موبایل */
                 bottom: 120px;
                 padding: 20px;
             }
@@ -418,24 +387,23 @@
 
         @media (max-width: 480px) {
             #slideshow {
-                top: 60px;
-                height: 120px;
-            }
-            
-            .slideshow-nav {
-                width: 30px;
-                height: 40px;
-                font-size: 18px;
+                top: 40px; /* تطبیق با موبایل کوچک */
+                height: 140px;
             }
             
             #info-bar {
-                padding: 0 15px;
-                height: 60px;
+                padding: 0 8px;
+                height: 40px;
+                font-size: clamp(12px, 2.5vw, 16px);
+            }
+            
+            #day-name {
+                font-size: clamp(12px, 2.5vw, 14px);
             }
             
             .content-section {
                 padding: 15px;
-                top: 60px;
+                top: 40px; /* تطبیق با موبایل کوچک */
                 bottom: 100px;
             }
             
@@ -485,26 +453,17 @@
     <!-- اسلایدشو افقی -->
     <div id="slideshow">
         <div class="slideshow-container">
-            <button class="slideshow-nav slideshow-prev" onclick="prevSlide()">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-            <button class="slideshow-nav slideshow-next" onclick="nextSlide()">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            
             <div class="slide active">
                 <a href="newserial.html" class="slide-link">
-                    <img src="https://cdn.afkarnews.com/thumbnail/KmoaUtH9jBeR/5Aw2tglTbFGt66DbrkgXvNc6qtoz1ofcl_5iDcKK5iTik-QRlvjzsEeLwZ4WQiHZjjyVJUh2LSw,/+%D8%B3%D8%B1%DB%8C%D8%A7%D9%84+%D8%B4%D8%BA%D8%A7%D9%84.jpg?width=300&quality=85&sharpen=80&secret=MIx_rmlqaWui0x8svhntPg" alt="شغال" class="slide-image">
+                    <img src="https://cdn.afkarnews.com/thumbnail/KmoaUtH9jBeR/5Aw2tglTbFGt66DbrkgXvNc6qtoz1ofcl_5iDcKK5iTik-QRlvjzsEeLwZ4WQiHZjjyVJUh2LSw,/+%D8%B3%D8%B1%DB%8C%D8%A7%D9%84+%D8%B4%D8%BA%D8%A7%D9%84.jpg" alt="شغال" class="slide-image">
                 </a>
             </div>
-            
             
             <div class="slide">
                 <a href="cinema.html" class="slide-link">
-                    <img src="https://static.cdn.asset.filimo.com/flmt/mov_162206_302723-b.jpg?width=400&quality=85&sharpen=80&secret=PQQapahDGznWQsoxu7fLpw" alt="حاج آقا سلام علیکم" class="slide-image">
+                    <img src="https://static.cdn.asset.filimo.com/flmt/mov_162206_302723-b.jpg" alt="حاج آقا سلام علیکم" class="slide-image">
                 </a>
             </div>
-            
             
             <div class="slide">
                 <a href="cinema.html" class="slide-link">
@@ -512,14 +471,11 @@
                 </a>
             </div>
             
-            
             <div class="slide">
                 <a href="Music/moein.html" class="slide-link">
                     <img src="https://edge03.99.ir.cdn.ir/filo/video/TVRRd015OHdOUzh4TXc9PQ==/VTFkMVRVbElUZz09/AkNc-720X404.jpg" alt="گلچین معین" class="slide-image">
                 </a>
             </div>
-            
-            
             
             <div class="slideshow-controls">
                 <div class="slideshow-dot active" onclick="currentSlide(0)"></div>
@@ -870,25 +826,6 @@
             // نمایش اسلاید جدید
             slides[slideIndex].classList.add('active');
             dots[slideIndex].classList.add('active');
-        }
-        
-        function prevSlide() {
-            const slides = document.querySelectorAll('.slide');
-            const dots = document.querySelectorAll('.slideshow-dot');
-            
-            // مخفی کردن اسلاید فعلی
-            slides[slideIndex].classList.remove('active');
-            dots[slideIndex].classList.remove('active');
-            
-            // رفتن به اسلاید قبلی
-            slideIndex = (slideIndex - 1 + slides.length) % slides.length;
-            
-            // نمایش اسلاید جدید
-            slides[slideIndex].classList.add('active');
-            dots[slideIndex].classList.add('active');
-            
-            // ریست تایمر
-            startSlideshow();
         }
         
         function currentSlide(n) {
