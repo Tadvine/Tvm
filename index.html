@@ -9,8 +9,6 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     
-    
-    
     <title> LiveTv</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -44,10 +42,8 @@
             z-index: 95;
             overflow: hidden;
             display: block;
-        
             border: none;
         }
-
 
         #slideshow.hidden {
             display: none;
@@ -143,16 +139,17 @@
             font-size: clamp(14px, 3vw, 18px);
         }
 
-        /* بخش‌های محتوا */
+        /* بخش‌های محتوا - موقعیت اصلاح شده */
         .content-section {
             position: fixed;
-            top: 360px; /* افزایش top به دلیل ارتفاع بیشتر اسلایدشو */
+            top: 160px; /* افزایش top به دلیل ارتفاع بیشتر اسلایدشو */
             left: 0;
             right: 0;
-            bottom: 150px;
+            bottom: 160px; /* افزایش از 150px به 160px برای فاصله بیشتر از منوی پایین */
             display: none;
             z-index: 90;
             padding: 20px;
+            overflow-y: auto; /* اضافه کردن اسکرول در صورت نیاز */
         }
 
         .content-section.active {
@@ -165,12 +162,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* تغییر از center به flex-start */
+            overflow-y: auto;
+            padding-bottom: 20px; /* فضای اضافی در پایین */
         }
 
         h2 {
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0; /* کاهش margin برای صرفه‌جویی در فضا */
             font-size: clamp(24px, 5vw, 36px);
             color: #FFD700;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
@@ -183,6 +182,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
+            max-height: calc(100vh - 300px); /* محدودیت ارتفاع برای جلوگیری از تداخل */
         }
 
         .image-gallery {
@@ -190,11 +190,12 @@
             flex-wrap: nowrap;
             overflow-x: auto;
             scroll-behavior: smooth;
-            padding: 20px 0;
-            margin: 20px 0;
-            gap: 20px;
+            padding: 15px 0; /* کاهش padding برای صرفه‌جویی در فضا */
+            margin: 10px 0; /* کاهش margin برای صرفه‌جویی در فضا */
+            gap: 15px;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
+            max-height: 400px; /* ارتفاع حداکثر برای گالری */
         }
 
         .image-gallery a {
@@ -348,6 +349,8 @@
             
             .content-section {
                 top: 335px; /* تطبیق با ارتفاع جدید اسلایدشو */
+                bottom: 150px; /* افزایش فاصله از پایین */
+                padding: 12px;
             }
             
             #info-bar {
@@ -356,19 +359,20 @@
                 padding: 0 12px;
             }
             
-            .content-section {
-                padding: 15px;
+            .image-gallery-container {
+                max-height: calc(100vh - 350px);
             }
             
             h2 {
-                margin: 15px 0;
+                margin: 12px 0;
                 font-size: clamp(22px, 4.5vw, 32px);
             }
             
             .image-gallery {
-                padding: 15px 0;
-                margin: 15px 0;
-                gap: 15px;
+                padding: 12px 0;
+                margin: 12px 0;
+                gap: 12px;
+                max-height: 350px;
             }
             
             .image-gallery img {
@@ -414,6 +418,8 @@
             
             .content-section {
                 top: 270px; /* تطبیق با ارتفاع جدید */
+                bottom: 140px; /* افزایش فاصله از پایین */
+                padding: 10px;
             }
             
             #info-bar {
@@ -422,14 +428,15 @@
                 padding: 0 10px;
             }
             
-            .content-section {
-                padding: 15px;
+            .image-gallery-container {
+                max-height: calc(100vh - 300px);
             }
             
             .image-gallery {
-                gap: 12px;
-                padding: 15px 0;
-                margin: 15px 0;
+                gap: 10px;
+                padding: 10px 0;
+                margin: 8px 0;
+                max-height: 320px;
             }
             
             .image-gallery img {
@@ -474,6 +481,8 @@
             
             .content-section {
                 top: 220px; /* تطبیق با ارتفاع جدید */
+                bottom: 120px; /* افزایش فاصله از پایین */
+                padding: 8px;
             }
             
             #info-bar {
@@ -486,8 +495,15 @@
                 font-size: clamp(12px, 2.5vw, 14px);
             }
             
-            .content-section {
-                padding: 10px;
+            .image-gallery-container {
+                max-height: calc(100vh - 250px);
+            }
+            
+            .image-gallery {
+                max-height: 280px;
+                padding: 8px 0;
+                margin: 5px 0;
+                gap: 8px;
             }
             
             .image-gallery img {
@@ -532,10 +548,12 @@
             
             .content-section {
                 top: 410px; /* تطبیق با ارتفاع جدید */
+                bottom: 180px; /* افزایش فاصله از پایین */
+                padding: 25px;
             }
             
-            .content-section {
-                padding: 25px;
+            .image-gallery-container {
+                max-height: calc(100vh - 450px);
             }
             
             .image-gallery img {
@@ -556,6 +574,11 @@
             
             .content-section {
                 top: 460px; /* تطبیق با ارتفاع جدید */
+                bottom: 200px; /* افزایش فاصله از پایین */
+            }
+            
+            .image-gallery-container {
+                max-height: calc(100vh - 500px);
             }
             
             .image-gallery img {
@@ -577,6 +600,8 @@
             
             .content-section {
                 top: 520px; /* تطبیق با ارتفاع جدید */
+                bottom: 220px; /* افزایش فاصله از پایین */
+                padding: 40px;
             }
             
             #info-bar {
@@ -585,8 +610,8 @@
                 padding: 0 25px;
             }
             
-            .content-section {
-                padding: 40px;
+            .image-gallery-container {
+                max-height: calc(100vh - 550px);
             }
             
             #day-name {
