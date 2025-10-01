@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-     <!-- متا تگ‌های جلوگیری از کش -->
+    <!-- متا تگ‌های جلوگیری از کش -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     
-    
-    
-    <title> LiveTv</title>
+    <title>LiveTv</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -31,23 +29,50 @@
             min-height: 100vh;
             line-height: 1.6;
             overflow-x: hidden;
+            padding-bottom: 150px; /* فضای اضافی برای کادرهای پایین */
         }
 
-        /* اسلایدشو افقی - ارتفاع بیشتر */
-        #slideshow {
+        /* نوار ثابت ساعت و تاریخ */
+        #info-bar {
             position: fixed;
-            top: 60px; /* چسبیده به نوار ساعت */
+            top: 0;
             left: 0;
-            right: 0;
-            width: 100%; /* عرض کامل */
-            height: 300px; /* افزایش قابل توجه ارتفاع */
+            width: 100%;
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: clamp(16px, 4vw, 22px);
+            color: #FFFFFF;
+            font-weight: bold;
+            z-index: 1000;
+            padding: 0 15px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* آیتم روز هفته در وسط */
+        #day-name {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(14px, 3vw, 18px);
+        }
+
+        /* اسلایدشو افقی */
+        #slideshow {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            margin-top: 60px; /* فاصله از نوار ساعت */
             z-index: 95;
             overflow: hidden;
             display: block;
-        
             border: none;
         }
-
 
         #slideshow.hidden {
             display: none;
@@ -85,7 +110,7 @@
         .slide-image {
             width: 100%;
             height: 130%;
-            object-fit: contain; /* تغییر به contain برای نمایش کامل عکس */
+            object-fit: contain;
         }
 
         .slideshow-controls {
@@ -113,46 +138,13 @@
             transform: scale(1.3);
         }
 
-        /* نوار ثابت ساعت و تاریخ */
-        #info-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-family: 'Vazirmatn', sans-serif;
-            font-size: clamp(16px, 4vw, 22px);
-            color: #FFFFFF;
-            font-weight: bold;
-            z-index: 1000;
-            padding: 0 15px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        /* آیتم روز هفته در وسط */
-        #day-name {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: clamp(14px, 3vw, 18px);
-        }
-
         /* بخش‌های محتوا */
         .content-section {
-            position: fixed;
-            top: 360px; /* تغییر: افزایش top برای شروع از زیر اسلایدشو */
-            left: 0;
-            right: 0;
-            bottom: 150px;
+            position: relative;
             display: none;
             z-index: 90;
             padding: 20px;
+            margin-bottom: 20px;
         }
 
         .content-section.active {
@@ -161,7 +153,6 @@
 
         .section-content {
             width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -286,6 +277,8 @@
             left: 0;
             right: 0;
             z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
         }
 
         .box {
@@ -342,12 +335,7 @@
         /* تنظیمات ویژه برای 1024x768 */
         @media (max-width: 1024px) and (min-width: 769px) {
             #slideshow {
-                height: 280px; /* ارتفاع کمتر اما همچنان زیاد */
-                top: 55px;
-            }
-            
-            .content-section {
-                top: 335px; /* تغییر: تطبیق با ارتفاع جدید اسلایدشو */
+                height: 280px;
             }
             
             #info-bar {
@@ -408,12 +396,7 @@
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             #slideshow {
-                top: 50px;
-                height: 220px; /* ارتفاع کمتر برای موبایل اما همچنان مناسب */
-            }
-            
-            .content-section {
-                top: 270px; /* تغییر: تطبیق با ارتفاع جدید */
+                height: 220px;
             }
             
             #info-bar {
@@ -468,12 +451,7 @@
 
         @media (max-width: 480px) {
             #slideshow {
-                top: 40px;
-                height: 180px; /* ارتفاع مناسب برای موبایل */
-            }
-            
-            .content-section {
-                top: 220px; /* تغییر: تطبیق با ارتفاع جدید */
+                height: 180px;
             }
             
             #info-bar {
@@ -527,11 +505,7 @@
         /* تنظیمات برای صفحه‌های بزرگ */
         @media (min-width: 1200px) {
             #slideshow {
-                height: 350px; /* ارتفاع بیشتر برای صفحه‌های بزرگ */
-            }
-            
-            .content-section {
-                top: 410px; /* تغییر: تطبیق با ارتفاع جدید */
+                height: 350px;
             }
             
             .content-section {
@@ -551,11 +525,7 @@
 
         @media (min-width: 1600px) {
             #slideshow {
-                height: 400px; /* ارتفاع بیشتر برای صفحه‌های خیلی بزرگ */
-            }
-            
-            .content-section {
-                top: 460px; /* تغییر: تطبیق با ارتفاع جدید */
+                height: 400px;
             }
             
             .image-gallery img {
@@ -571,12 +541,7 @@
 
         @media (min-width: 2000px) {
             #slideshow {
-                height: 450px; /* ارتفاع بسیار زیاد برای 4K */
-                top: 70px;
-            }
-            
-            .content-section {
-                top: 520px; /* تغییر: تطبیق با ارتفاع جدید */
+                height: 450px;
             }
             
             #info-bar {
