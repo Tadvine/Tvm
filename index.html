@@ -139,17 +139,20 @@
             font-size: clamp(14px, 3vw, 18px);
         }
 
-        /* بخش‌های محتوا - موقعیت اصلاح شده */
+        /* بخش‌های محتوا - بازنویسی کامل موقعیت */
         .content-section {
             position: fixed;
-            top: 160px; /* افزایش top به دلیل ارتفاع بیشتر اسلایدشو */
+            top: 370px; /* فاصله از پایین اسلایدشو */
             left: 0;
             right: 0;
-            bottom: 160px; /* افزایش از 150px به 160px برای فاصله بیشتر از منوی پایین */
+            height: calc(100vh - 370px - 130px); /* ارتفاع دینامیک با در نظر گرفتن منوی پایین */
             display: none;
             z-index: 90;
             padding: 20px;
-            overflow-y: auto; /* اضافه کردن اسکرول در صورت نیاز */
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.7); /* پس‌زمینه برای جداسازی بهتر */
+            backdrop-filter: blur(10px);
+            border-top: 2px solid rgba(255, 215, 0, 0.3);
         }
 
         .content-section.active {
@@ -162,18 +165,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* تغییر از center به flex-start */
-            overflow-y: auto;
-            padding-bottom: 20px; /* فضای اضافی در پایین */
+            justify-content: flex-start;
+            padding-bottom: 20px;
         }
 
         h2 {
             text-align: center;
-            margin: 15px 0; /* کاهش margin برای صرفه‌جویی در فضا */
+            margin: 15px 0 25px 0;
             font-size: clamp(24px, 5vw, 36px);
             color: #FFD700;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
             font-weight: bold;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            z-index: 1;
+            width: 100%;
         }
 
         /* Image Gallery */
@@ -182,7 +191,10 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            max-height: calc(100vh - 300px); /* محدودیت ارتفاع برای جلوگیری از تداخل */
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .image-gallery {
@@ -190,12 +202,13 @@
             flex-wrap: nowrap;
             overflow-x: auto;
             scroll-behavior: smooth;
-            padding: 15px 0; /* کاهش padding برای صرفه‌جویی در فضا */
-            margin: 10px 0; /* کاهش margin برای صرفه‌جویی در فضا */
-            gap: 15px;
+            padding: 15px 0;
+            margin: 10px 0;
+            gap: 20px;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            max-height: 400px; /* ارتفاع حداکثر برای گالری */
+            min-height: 320px;
+            align-items: center;
         }
 
         .image-gallery a {
@@ -343,14 +356,14 @@
         /* تنظیمات ویژه برای 1024x768 */
         @media (max-width: 1024px) and (min-width: 769px) {
             #slideshow {
-                height: 280px; /* ارتفاع کمتر اما همچنان زیاد */
+                height: 280px;
                 top: 55px;
             }
             
             .content-section {
-                top: 335px; /* تطبیق با ارتفاع جدید اسلایدشو */
-                bottom: 150px; /* افزایش فاصله از پایین */
-                padding: 12px;
+                top: 335px;
+                height: calc(100vh - 335px - 120px);
+                padding: 15px;
             }
             
             #info-bar {
@@ -359,20 +372,16 @@
                 padding: 0 12px;
             }
             
-            .image-gallery-container {
-                max-height: calc(100vh - 350px);
-            }
-            
             h2 {
-                margin: 12px 0;
+                margin: 12px 0 20px 0;
                 font-size: clamp(22px, 4.5vw, 32px);
             }
             
             .image-gallery {
                 padding: 12px 0;
-                margin: 12px 0;
-                gap: 12px;
-                max-height: 350px;
+                margin: 8px 0;
+                gap: 15px;
+                min-height: 280px;
             }
             
             .image-gallery img {
@@ -413,13 +422,13 @@
         @media (max-width: 768px) {
             #slideshow {
                 top: 50px;
-                height: 220px; /* ارتفاع کمتر برای موبایل اما همچنان مناسب */
+                height: 220px;
             }
             
             .content-section {
-                top: 270px; /* تطبیق با ارتفاع جدید */
-                bottom: 140px; /* افزایش فاصله از پایین */
-                padding: 10px;
+                top: 270px;
+                height: calc(100vh - 270px - 110px);
+                padding: 12px;
             }
             
             #info-bar {
@@ -428,15 +437,11 @@
                 padding: 0 10px;
             }
             
-            .image-gallery-container {
-                max-height: calc(100vh - 300px);
-            }
-            
             .image-gallery {
-                gap: 10px;
+                gap: 12px;
                 padding: 10px 0;
                 margin: 8px 0;
-                max-height: 320px;
+                min-height: 240px;
             }
             
             .image-gallery img {
@@ -476,12 +481,12 @@
         @media (max-width: 480px) {
             #slideshow {
                 top: 40px;
-                height: 180px; /* ارتفاع مناسب برای موبایل */
+                height: 180px;
             }
             
             .content-section {
-                top: 220px; /* تطبیق با ارتفاع جدید */
-                bottom: 120px; /* افزایش فاصله از پایین */
+                top: 220px;
+                height: calc(100vh - 220px - 90px);
                 padding: 8px;
             }
             
@@ -495,12 +500,8 @@
                 font-size: clamp(12px, 2.5vw, 14px);
             }
             
-            .image-gallery-container {
-                max-height: calc(100vh - 250px);
-            }
-            
             .image-gallery {
-                max-height: 280px;
+                min-height: 200px;
                 padding: 8px 0;
                 margin: 5px 0;
                 gap: 8px;
@@ -543,17 +544,13 @@
         /* تنظیمات برای صفحه‌های بزرگ */
         @media (min-width: 1200px) {
             #slideshow {
-                height: 350px; /* ارتفاع بیشتر برای صفحه‌های بزرگ */
+                height: 350px;
             }
             
             .content-section {
-                top: 410px; /* تطبیق با ارتفاع جدید */
-                bottom: 180px; /* افزایش فاصله از پایین */
+                top: 410px;
+                height: calc(100vh - 410px - 130px);
                 padding: 25px;
-            }
-            
-            .image-gallery-container {
-                max-height: calc(100vh - 450px);
             }
             
             .image-gallery img {
@@ -569,16 +566,12 @@
 
         @media (min-width: 1600px) {
             #slideshow {
-                height: 400px; /* ارتفاع بیشتر برای صفحه‌های خیلی بزرگ */
+                height: 400px;
             }
             
             .content-section {
-                top: 460px; /* تطبیق با ارتفاع جدید */
-                bottom: 200px; /* افزایش فاصله از پایین */
-            }
-            
-            .image-gallery-container {
-                max-height: calc(100vh - 500px);
+                top: 460px;
+                height: calc(100vh - 460px - 130px);
             }
             
             .image-gallery img {
@@ -594,13 +587,13 @@
 
         @media (min-width: 2000px) {
             #slideshow {
-                height: 450px; /* ارتفاع بسیار زیاد برای 4K */
+                height: 450px;
                 top: 70px;
             }
             
             .content-section {
-                top: 520px; /* تطبیق با ارتفاع جدید */
-                bottom: 220px; /* افزایش فاصله از پایین */
+                top: 520px;
+                height: calc(100vh - 520px - 130px);
                 padding: 40px;
             }
             
@@ -608,10 +601,6 @@
                 height: 70px;
                 font-size: 28px;
                 padding: 0 25px;
-            }
-            
-            .image-gallery-container {
-                max-height: calc(100vh - 550px);
             }
             
             #day-name {
@@ -626,6 +615,22 @@
             #tvGallery img {
                 width: 240px;
                 height: 180px;
+            }
+        }
+
+        /* تنظیمات برای رزولوشن‌های بسیار بزرگ */
+        @media (min-width: 2500px) {
+            #slideshow {
+                height: 500px;
+            }
+            
+            .content-section {
+                top: 570px;
+                height: calc(100vh - 570px - 130px);
+            }
+            
+            .container {
+                height: 140px;
             }
         }
     </style>
