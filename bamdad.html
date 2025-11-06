@@ -296,7 +296,6 @@
         <div class="video-container">
             <div class="video-wrapper">
                 <video id="video-player" controls poster="https://zardfilm.in/wp-content/uploads/2025/04/bamdad.webp">
-                    <source src="" type="video/mp4">
                     مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
                 </video>
                 <div class="video-poster" id="video-poster"></div>
@@ -328,7 +327,7 @@
             
             // Sample episodes data
             const episodes = [
-                { title: "بامداد خمار قسمت یک", url: "https://cdn1.movieland.af/series/2025/bamdad-khmar/season_1/episode_2/bamdad-khmar-s1-e1-720p-movieland.af.mp4q" },
+                { title: "بامداد خمار قسمت یک", url: "https://cdn1.movieland.af/series/2025/bamdad-khmar/season_1/episode_1/bamdad-khmar-s1-e1-720p-movieland.af.mp4" },
                 
                 
                 
@@ -358,7 +357,30 @@
                     });
                     
                     this.classList.add('active');
-                    videoPlayer.src = this.dataset.url;
+                    
+                    // Clear existing sources
+                    while (videoPlayer.firstChild) {
+                        videoPlayer.removeChild(videoPlayer.firstChild);
+                    }
+                    
+                    // Create new source element based on file type
+                    const source = document.createElement('source');
+                    source.src = this.dataset.url;
+                    
+                    // Set type based on file extension
+                    if (this.dataset.url.toLowerCase().endsWith('.m3u8')) {
+                        source.type = 'application/x-mpegURL';
+                    } else if (this.dataset.url.toLowerCase().endsWith('.mp4')) {
+                        source.type = 'video/mp4';
+                    } else if (this.dataset.url.toLowerCase().endsWith('.webm')) {
+                        source.type = 'video/webm';
+                    } else if (this.dataset.url.toLowerCase().endsWith('.ogg')) {
+                        source.type = 'video/ogg';
+                    } else {
+                        source.type = 'video/mp4'; // default
+                    }
+                    
+                    videoPlayer.appendChild(source);
                     videoPlayer.load();
                     videoPoster.style.display = 'none';
                     videoPlayer.play().catch(e => console.log(e));
@@ -374,7 +396,17 @@
                 
                 if (index === 0) {
                     item.classList.add('active');
-                    videoPlayer.src = episode.url;
+                    // Set initial video source
+                    const source = document.createElement('source');
+                    source.src = episode.url;
+                    
+                    if (episode.url.toLowerCase().endsWith('.m3u8')) {
+                        source.type = 'application/x-mpegURL';
+                    } else if (episode.url.toLowerCase().endsWith('.mp4')) {
+                        source.type = 'video/mp4';
+                    }
+                    
+                    videoPlayer.appendChild(source);
                 }
             });
             
