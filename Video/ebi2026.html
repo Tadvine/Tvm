@@ -1,0 +1,91 @@
+<!doctype html>
+<html dir="rtl" lang="fa-IR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Live Tv</title>
+
+    <link id="plyr-io-css" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/plyr.css">
+    <link id="plyr-io-customize" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/player.css">
+    <link id="playlist-scrollbar-css" rel="stylesheet" href="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/css/scrollbar.css">
+
+    <meta name="msapplication-TileImage" content="" />
+    <meta name="robots" content="noindex, nofollow">
+    
+    <style>
+        /* حذف outline در حالت focus برای ویدیو پلیر */
+        video:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* برای مرورگرهای مختلف */
+        video::-webkit-media-controls {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        
+        /* برای حالت تمام صفحه در مرورگرهای مختلف */
+        video:-webkit-full-screen {
+            outline: none !important;
+        }
+        
+        video:-moz-full-screen {
+            outline: none !important;
+        }
+        
+        video:-ms-fullscreen {
+            outline: none !important;
+        }
+        
+        video:fullscreen {
+            outline: none !important;
+        }
+        
+        /* استایل اضافی برای ظاهر بهتر */
+        .video-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #000;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        body {
+            background: #000;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="video-container">
+            <div class="post-info d" id="post-info">
+                <div class="title-wrapper"></div>
+            </div>
+            <video class="video-player" id="video-player" 
+                   controls 
+                   width="100%" 
+                   height="auto" 
+                   playsinline
+                   poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJspfX837VIKKbuellDFk-8Tln1_oCAy-I66Prk_6IN6aHPjcFj5-G0fMe&s=10">
+                   
+                <source src="https://www.ghoflimusic.com/Music%20Video/Ebi%20-%20Live%20in%20Concert%20Toronto%20(2024)/Ebi%20-%20Live%20in%20Concert%20Toronto%20(2024)%20480%20%5BGhofliMusic%5D.mp4"
+                 type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <script id="jquery-core" src="https://ifilmz.ir/wp-includes/js/jquery/jquery.js"></script>
+    <script id="plyr-io-js" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/plyr.js"></script>
+    <script id="plyr-io-setup" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/plyr.setup.js"></script>
+    <script id="playlist-scrollbar-js" src="https://ifilmz.ir/wp-content/themes/FlexMoviez/assets/js/scrollbar.min.js"></script>
+</body>
+</html>
