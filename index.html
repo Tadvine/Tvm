@@ -1,77 +1,101 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- متا تگ‌های جلوگیری از کش -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <title>LiveTv</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>LiveTv | پخش زنده</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
     <style>
+        /* ----- reset & base (Smart TV UI) ----- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Vazirmatn', 'Roboto Condensed', Arial, sans-serif;
-            background-image: url("https://bayanbox.ir/download/1793887276848709656/Background.jpg");
-            background-color: #000;
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            color: #fff;
-            min-height: 100vh;
-            line-height: 1.6;
-            overflow-x: hidden;
-            padding-bottom: 150px; /* فضای اضافی برای کادرهای پایین */
+        :root {
+            --gold: #f5c842;
+            --gold-dim: rgba(245, 200, 66, 0.18);
+            --glass: rgba(10, 10, 10, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.6);
+            --radius-card: 20px;
+            --transition-smooth: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* نوار ثابت ساعت و تاریخ */
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', system-ui, sans-serif;
+            background: #0b0b0b url("https://bayanbox.ir/download/1793887276848709656/Background.jpg") center/cover fixed;
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding-bottom: 130px;
+            /* فضای منوی پایین */
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ----- نوار بالایی (ساعت/تاریخ) شیشه‌ای ----- */
         #info-bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 60px;
-            background-color: rgba(0, 0, 0, 0.8);
+            height: 64px;
+            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-family: 'Vazirmatn', sans-serif;
-            font-size: clamp(16px, 4vw, 22px);
-            color: #FFFFFF;
-            font-weight: bold;
-            z-index: 1000;
-            padding: 0 15px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+            padding: 0 clamp(16px, 4vw, 40px);
+            background: var(--glass);
+            backdrop-filter: blur(18px) saturate(1.2);
+            -webkit-backdrop-filter: blur(18px) saturate(1.2);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
-        /* آیتم روز هفته در وسط */
+        #info-bar .time {
+            font-size: clamp(1.1rem, 2.8vw, 1.8rem);
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 20px rgba(245, 200, 66, 0.15);
+        }
+
         #day-name {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: clamp(14px, 3vw, 18px);
+            font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.3rem 1.4rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+            color: #eaeaea;
         }
 
-        /* اسلایدشو افقی */
+        #info-bar .date {
+            font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+            color: #b0b0b0;
+        }
+
+        /* ----- اسلایدشو (نسبت درست + fade) ----- */
         #slideshow {
             position: relative;
             width: 100%;
-            height: 300px;
-            margin-top: 60px; /* فاصله از نوار ساعت */
-            z-index: 95;
+            height: clamp(180px, 38vh, 460px);
+            margin-top: 64px;
+            background: rgba(0, 0, 0, 0.3);
             overflow: hidden;
-            display: block;
-            border: none;
+            z-index: 95;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
         }
 
         #slideshow.hidden {
@@ -86,13 +110,13 @@
 
         .slide {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 1.2s ease;
             pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .slide.active {
@@ -109,46 +133,75 @@
 
         .slide-image {
             width: 100%;
-            height: 130%;
+            height: 100%;
             object-fit: contain;
+            /* حفظ نسبت تصویر */
+            object-position: center;
+            filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.7));
+            background: #0a0a0a;
         }
 
         .slideshow-controls {
             position: absolute;
-            bottom: 20px;
+            bottom: clamp(10px, 2.5vh, 20px);
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 12px;
-            z-index: 2;
+            gap: clamp(8px, 1.5vw, 16px);
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(12px);
+            padding: clamp(4px, 0.8vw, 10px) clamp(10px, 2vw, 24px);
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            z-index: 5;
         }
 
         .slideshow-dot {
-            width: 14px;
-            height: 14px;
+            width: clamp(8px, 1.2vw, 14px);
+            height: clamp(8px, 1.2vw, 14px);
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.25);
             border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
         }
 
         .slideshow-dot.active {
-            background-color: #FFD700;
-            transform: scale(1.3);
+            background: var(--gold);
+            transform: scale(1.35);
+            box-shadow: 0 0 24px rgba(245, 200, 66, 0.5);
         }
 
-        /* بخش‌های محتوا */
+        /* ----- بخش‌های محتوا (کارت‌های شیشه‌ای) ----- */
         .content-section {
-            position: relative;
             display: none;
             z-index: 90;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: clamp(16px, 3vw, 36px) clamp(12px, 2vw, 28px);
+            margin: 16px auto 24px;
+            max-width: 1440px;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(10px) saturate(1.1);
+            -webkit-backdrop-filter: blur(10px) saturate(1.1);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: var(--shadow-soft);
         }
 
         .content-section.active {
             display: block;
+            animation: fadeUp 0.5s ease;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .section-content {
@@ -156,24 +209,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
 
         h2 {
-            text-align: center;
-            margin: 20px 0;
-            font-size: clamp(24px, 5vw, 36px);
-            color: #FFD700;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-            font-weight: bold;
+            font-size: clamp(1.4rem, 4vw, 2.6rem);
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 0 2px 20px rgba(245, 200, 66, 0.12);
+            margin-bottom: clamp(12px, 2vh, 24px);
+            letter-spacing: 0.5px;
+            position: relative;
         }
 
-        /* Image Gallery */
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            margin: 6px auto 0;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            border-radius: 6px;
+        }
+
+        /* ----- گالری تصاویر (کارت‌های سینمایی) ----- */
         .image-gallery-container {
             position: relative;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
+            padding: 0 4px;
         }
 
         .image-gallery {
@@ -181,117 +245,154 @@
             flex-wrap: nowrap;
             overflow-x: auto;
             scroll-behavior: smooth;
-            padding: 20px 0;
-            margin: 20px 0;
-            gap: 20px;
+            padding: clamp(8px, 1.5vw, 20px) 4px clamp(16px, 2.5vw, 32px);
+            gap: clamp(14px, 2.2vw, 30px);
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
+            align-items: stretch;
+            scrollbar-width: none;
+        }
+
+        .image-gallery::-webkit-scrollbar {
+            display: none;
         }
 
         .image-gallery a {
             scroll-snap-align: start;
             flex: 0 0 auto;
             text-decoration: none;
-            transition: all 0.4s ease;
+            border-radius: var(--radius-card);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 6px;
+            border: 1px solid transparent;
+            transition: var(--transition-smooth);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-gallery a:hover,
+        .image-gallery a:focus-visible {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(245, 200, 66, 0.3);
+            background: rgba(245, 200, 66, 0.04);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(245, 200, 66, 0.05);
+            outline: none;
         }
 
         .image-gallery img {
-            border-radius: 12px;
-            box-shadow: -4px 4px 15px rgba(255, 255, 255, 0.4);
-            transition: all 0.4s ease;
-            width: 200px;
-            height: 280px;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+            transition: var(--transition-smooth);
+            width: clamp(110px, 16vw, 220px);
+            height: clamp(150px, 22vw, 300px);
             object-fit: cover;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: #111;
+            border: 2px solid rgba(255, 255, 255, 0.04);
+            aspect-ratio: 2 / 3;
+        }
+
+        #tvGallery img {
+            aspect-ratio: 16 / 10;
+            height: auto;
+            width: clamp(120px, 16vw, 200px);
+            border-radius: 14px;
         }
 
         .image-gallery img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
-            border-color: #FFD700;
+            border-color: var(--gold);
+            box-shadow: 0 0 40px rgba(245, 200, 66, 0.08);
         }
 
-        /* TV Channel Images */
-        #tvGallery img {
-            width: 180px;
-            height: 120px;
-        }
-
-        /* Scroll Buttons */
+        /* دکمه‌های اسکرول (شیشه‌ای) */
         .scroll-button {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(255, 215, 0, 0.8);
-            border: none;
-            color: #000;
-            font-size: 30px;
-            width: 60px;
-            height: 80px;
-            cursor: pointer;
-            z-index: 1;
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--gold);
+            width: clamp(32px, 4vw, 56px);
+            height: clamp(44px, 6vw, 76px);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.8;
-            transition: all 0.3s ease;
-            font-weight: bold;
+            font-size: clamp(1rem, 2vw, 1.8rem);
+            cursor: pointer;
+            z-index: 5;
+            transition: var(--transition-smooth);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         .scroll-button:hover {
-            opacity: 1;
-            background-color: #FFD700;
-            transform: translateY(-50%) scale(1.05);
+            background: rgba(245, 200, 66, 0.12);
+            border-color: var(--gold);
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 0 40px rgba(245, 200, 66, 0.06);
         }
 
         .scroll-button.left {
-            right: -60px;
+            right: -6px;
         }
-
         .scroll-button.right {
-            left: -60px;
+            left: -6px;
         }
 
-        /* Hide Scrollbar */
-        .image-gallery::-webkit-scrollbar {
-            display: none;
-        }
-
-        .image-gallery {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* کادرهای پایین صفحه */
+        /* ----- منوی پایین (شیشه‌ای + آیکون) ----- */
         .container {
             display: flex;
             width: 100%;
-            height: 130px;
+            height: clamp(72px, 12vh, 140px);
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             z-index: 100;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px) saturate(1.3);
+            -webkit-backdrop-filter: blur(20px) saturate(1.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.6);
+            padding: 0 4px;
+            gap: 2px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .container::-webkit-scrollbar {
+            display: none;
         }
 
         .box {
-            flex: 1;
+            flex: 1 0 auto;
+            min-width: clamp(48px, 8vw, 80px);
             height: 100%;
-            transform: skewX(-20deg);
-            transition: all 0.4s ease;
+            transform: skewX(-8deg);
+            transition: var(--transition-smooth);
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            border-right: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(60, 60, 60, 0.2);
+            backdrop-filter: blur(4px);
+            border-radius: 0;
+        }
+
+        .box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 80%);
+            pointer-events: none;
         }
 
         .box:last-child {
@@ -299,508 +400,471 @@
         }
 
         .box.active {
-            flex-grow: 1.5;
-            transform: skewX(-20deg) translateY(-15px);
+            flex-grow: 1.6;
+            transform: skewX(-8deg) translateY(-12px) scale(1.02);
             z-index: 10;
-            box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.7);
+            background: rgba(245, 200, 66, 0.06);
+            box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(245, 200, 66, 0.2);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .box.active .box-content {
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(245, 200, 66, 0.1);
         }
 
         .box-content {
-            transform: skewX(20deg);
+            transform: skewX(8deg);
             width: 100%;
             height: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            font-weight: bold;
-            font-size: 16px;
-            color: white;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            gap: 4px;
+            font-weight: 500;
+            font-size: clamp(0.5rem, 1vw, 0.85rem);
+            color: #c8c8c8;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
             text-align: center;
-            padding: 0 12px;
+            padding: 0 4px;
+            transition: var(--transition-smooth);
+            letter-spacing: 0.2px;
         }
 
-        /* رنگ‌های مختلف برای کادرها - طیف طوسی */
-        .box:nth-child(1) { background-color: #8C8C8C; }
-        .box:nth-child(2) { background-color: #7A7A7A; }
-        .box:nth-child(3) { background-color: #696969; }
-        .box:nth-child(4) { background-color: #5A5A5A; }
-        .box:nth-child(5) { background-color: #4B4B4B; }
-        .box:nth-child(6) { background-color: #3D3D3D; }
-        .box:nth-child(7) { background-color: #2F2F2F; }
-        .box:nth-child(8) { background-color: #222222; }
-        .box:nth-child(9) { background-color: #151515; }
-        .box:nth-child(10) { background-color: #0A0A0A; }
+        .box-content i {
+            font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+            color: #d0d0d0;
+            transition: var(--transition-smooth);
+        }
 
-        /* تنظیمات ویژه برای 1024x768 */
-        @media (max-width: 1024px) and (min-width: 769px) {
-            #slideshow {
-                height: 280px;
-            }
-            
-            #info-bar {
-                height: 55px;
-                font-size: clamp(14px, 3.5vw, 20px);
-                padding: 0 12px;
-            }
-            
-            .content-section {
-                padding: 15px;
-            }
-            
-            h2 {
-                margin: 15px 0;
-                font-size: clamp(22px, 4.5vw, 32px);
-            }
-            
-            .image-gallery {
-                padding: 15px 0;
-                margin: 15px 0;
-                gap: 15px;
-            }
-            
-            .image-gallery img {
-                width: 180px;
-                height: 250px;
-            }
-            
-            #tvGallery img {
-                width: 160px;
-                height: 110px;
-            }
-            
-            .scroll-button {
-                width: 50px;
-                height: 70px;
-                font-size: 25px;
-            }
+        .box.active .box-content i {
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(245, 200, 66, 0.15);
+        }
 
-            .scroll-button.left {
-                right: -50px;
-            }
+        .box:hover .box-content {
+            color: #fff;
+        }
 
-            .scroll-button.right {
-                left: -50px;
-            }
+        .box:hover .box-content i {
+            color: #fff;
+        }
 
+        /* رنگ‌بندی ملایم برای هر باکس (حالت غیرفعال) */
+        .box:nth-child(1) {
+            background: rgba(50, 50, 50, 0.2);
+        }
+        .box:nth-child(2) {
+            background: rgba(58, 58, 58, 0.2);
+        }
+        .box:nth-child(3) {
+            background: rgba(66, 66, 66, 0.2);
+        }
+        .box:nth-child(4) {
+            background: rgba(74, 74, 74, 0.2);
+        }
+        .box:nth-child(5) {
+            background: rgba(82, 82, 82, 0.2);
+        }
+        .box:nth-child(6) {
+            background: rgba(90, 90, 90, 0.2);
+        }
+        .box:nth-child(7) {
+            background: rgba(98, 98, 98, 0.2);
+        }
+        .box:nth-child(8) {
+            background: rgba(106, 106, 106, 0.2);
+        }
+        .box:nth-child(9) {
+            background: rgba(114, 114, 114, 0.2);
+        }
+        .box:nth-child(10) {
+            background: rgba(122, 122, 122, 0.2);
+        }
+
+        /* ----- حالت فوکوس برای کنترل با کیبورد/ریموت ----- */
+        .box:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: -2px;
+        }
+
+        .image-gallery a:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
+        }
+
+        /* ----- ریسپانسیو کامل با clamp و flex مدرن (بدون Media Query اضافه) ----- */
+        @media (max-width: 600px) {
+            .box-content span {
+                display: none;
+            }
+            .box-content i {
+                font-size: 1.4rem;
+            }
+            .box {
+                min-width: 44px;
+            }
             .container {
-                height: 120px;
+                gap: 0;
+                padding: 0 2px;
             }
-            
+            .box.active {
+                transform: skewX(-6deg) translateY(-8px);
+            }
             .box-content {
-                font-size: 14px;
-                padding: 0 10px;
+                transform: skewX(6deg);
             }
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            #slideshow {
-                height: 220px;
-            }
-            
+        @media (max-width: 400px) {
             #info-bar {
-                height: 50px;
-                font-size: clamp(14px, 3vw, 18px);
-                padding: 0 10px;
-            }
-            
-            .content-section {
-                padding: 15px;
-            }
-            
-            .image-gallery {
-                gap: 12px;
-                padding: 15px 0;
-                margin: 15px 0;
-            }
-            
-            .image-gallery img {
-                width: 150px;
-                height: 200px;
-            }
-            
-            #tvGallery img {
-                width: 130px;
-                height: 90px;
-            }
-            
-            .scroll-button {
-                width: 45px;
-                height: 65px;
-                font-size: 22px;
-            }
-
-            .scroll-button.left {
-                right: -40px;
-            }
-
-            .scroll-button.right {
-                left: -40px;
-            }
-
-            .container {
-                height: 110px;
-            }
-            
-            .box-content {
-                font-size: 13px;
+                height: 52px;
                 padding: 0 8px;
             }
-        }
-
-        @media (max-width: 480px) {
             #slideshow {
-                height: 180px;
+                margin-top: 52px;
+                height: 140px;
             }
-            
-            #info-bar {
-                padding: 0 8px;
-                height: 40px;
-                font-size: clamp(12px, 2.5vw, 16px);
-            }
-            
-            #day-name {
-                font-size: clamp(12px, 2.5vw, 14px);
-            }
-            
             .content-section {
-                padding: 10px;
+                padding: 12px 6px;
+                border-radius: 18px;
+                margin: 8px 4px;
             }
-            
             .image-gallery img {
-                width: 120px;
-                height: 160px;
+                width: 80px;
+                height: 110px;
             }
-            
             #tvGallery img {
-                width: 100px;
-                height: 70px;
+                width: 80px;
+                height: 52px;
             }
-
+            .slideshow-controls {
+                padding: 4px 10px;
+                gap: 6px;
+            }
+            .slideshow-dot {
+                width: 6px;
+                height: 6px;
+            }
             .scroll-button {
-                width: 35px;
-                height: 50px;
-                font-size: 18px;
+                width: 24px;
+                height: 32px;
+                font-size: 0.7rem;
             }
-
             .scroll-button.left {
-                right: -30px;
+                right: 0px;
             }
-
             .scroll-button.right {
-                left: -30px;
+                left: 0px;
             }
-
+            .box-content i {
+                font-size: 1.1rem;
+            }
+            .box {
+                min-width: 36px;
+            }
             .container {
-                height: 90px;
+                height: 62px;
             }
-            
-            .box-content {
-                font-size: 12px;
-                padding: 0 6px;
+            body {
+                padding-bottom: 70px;
             }
         }
 
-        /* تنظیمات برای صفحه‌های بزرگ */
-        @media (min-width: 1200px) {
-            #slideshow {
-                height: 350px;
-            }
-            
-            .content-section {
-                padding: 25px;
-            }
-            
+        @media (min-width: 1400px) {
             .image-gallery img {
                 width: 220px;
                 height: 300px;
             }
-            
             #tvGallery img {
                 width: 200px;
-                height: 140px;
+                height: 130px;
             }
-        }
-
-        @media (min-width: 1600px) {
             #slideshow {
-                height: 400px;
-            }
-            
-            .image-gallery img {
-                width: 250px;
-                height: 340px;
-            }
-            
-            #tvGallery img {
-                width: 220px;
-                height: 160px;
+                height: 420px;
             }
         }
 
         @media (min-width: 2000px) {
             #slideshow {
-                height: 450px;
+                height: 520px;
             }
-            
-            #info-bar {
-                height: 70px;
-                font-size: 28px;
-                padding: 0 25px;
-            }
-            
-            .content-section {
-                padding: 40px;
-            }
-            
-            #day-name {
-                font-size: 22px;
-            }
-            
             .image-gallery img {
                 width: 280px;
                 height: 380px;
             }
-            
             #tvGallery img {
                 width: 240px;
-                height: 180px;
+                height: 160px;
+            }
+            .container {
+                height: 150px;
+            }
+            .box-content {
+                font-size: 1.1rem;
+            }
+            .box-content i {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* برای تلویزیون‌های بزرگ (4K) */
+        @media (min-width: 3000px) {
+            #slideshow {
+                height: 600px;
+            }
+            .image-gallery img {
+                width: 340px;
+                height: 460px;
+            }
+            #tvGallery img {
+                width: 300px;
+                height: 200px;
+            }
+            .container {
+                height: 170px;
+            }
+            .box-content {
+                font-size: 1.3rem;
+            }
+            .box-content i {
+                font-size: 2.6rem;
+            }
+            #info-bar {
+                height: 80px;
+            }
+            #info-bar .time {
+                font-size: 2.4rem;
+            }
+            #day-name {
+                font-size: 1.6rem;
+                padding: 0.4rem 2rem;
+            }
+            #info-bar .date {
+                font-size: 1.6rem;
+            }
+            .content-section {
+                padding: 40px 48px;
+                border-radius: 48px;
+            }
+            .slideshow-controls {
+                padding: 12px 32px;
+                gap: 20px;
+            }
+            .slideshow-dot {
+                width: 18px;
+                height: 18px;
+            }
+            .scroll-button {
+                width: 72px;
+                height: 96px;
+                font-size: 2.4rem;
             }
         }
     </style>
 </head>
 <body>
+
     <!-- نوار اطلاعات بالا -->
     <div id="info-bar">
         <div class="time" id="time">۰۰:۰۰</div>
-        <div id="day-name" class="day">شنبه</div>
+        <div id="day-name">شنبه</div>
         <div class="date" id="date">۱۴۰۳/۱/۱</div>
     </div>
-    
-    <!-- اسلایدشو افقی -->
+
+    <!-- اسلایدشو -->
     <div id="slideshow">
         <div class="slideshow-container">
             <div class="slide active">
                 <a href="bamdad.html" class="slide-link">
-                    <img src="https://zardfilm.in/wp-content/uploads/2025/04/bamdad.webp" alt="بامداد" class="slide-image">
+                    <img src="https://zardfilm.in/wp-content/uploads/2025/04/bamdad.webp" alt="بامداد" class="slide-image" loading="lazy" />
                 </a>
             </div>
-            
             <div class="slide">
                 <a href="cinema.html" class="slide-link">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUTsB68xbS7LfN5J9CFLRCyBK9eHHYCglcpwyCjH32PA&s=10" alt="حاج آقا سلام علیکم" class="slide-image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUTsB68xbS7LfN5J9CFLRCyBK9eHHYCglcpwyCjH32PA&s=10" alt="حاج آقا سلام علیکم" class="slide-image" loading="lazy" />
                 </a>
             </div>
-            
             <div class="slide">
                 <a href="koori.html" class="slide-link">
-                    <img src="https://gamefa.com/wp-content/uploads/2026/07/%D9%82%D8%B3%D9%85%D8%AA-%D8%A7%D9%88%D9%84-%D8%B3%D8%B1%DB%8C%D8%A7%D9%84-%DA%A9%D9%88%D8%B1%DB%8C.jpg" alt="کوری" class="slide-image">
+                    <img src="https://gamefa.com/wp-content/uploads/2026/07/%D9%82%D8%B3%D9%85%D8%AA-%D8%A7%D9%88%D9%84-%D8%B3%D8%B1%DB%8C%D8%A7%D9%84-%DA%A9%D9%88%D8%B1%DB%8C.jpg" alt="کوری" class="slide-image" loading="lazy" />
                 </a>
             </div>
-            
-            
-            
             <div class="slide">
                 <a href="cinema.html" class="slide-link">
-                    <img src="https://edge02.97.ir.cdn.ir/filo/video/TVRRd05DOHdOeTh3TkE9PQ==/U3poM2RVTnZkQT09/aCpE-720X404.jpg" alt="صدام" class="slide-image">
+                    <img src="https://edge02.97.ir.cdn.ir/filo/video/TVRRd05DOHdOeTh3TkE9PQ==/U3poM2RVTnZkQT09/aCpE-720X404.jpg" alt="صدام" class="slide-image" loading="lazy" />
                 </a>
             </div>
-            
             <div class="slide">
                 <a href="Music/moein.html" class="slide-link">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6MuHxVUJ1BXjK1eHm2Q1q1_VST-ft8hElhWGdpcSyMhLj0eNFbrmpAcLq&s=10" alt="گلچین معین" class="slide-image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6MuHxVUJ1BXjK1eHm2Q1q1_VST-ft8hElhWGdpcSyMhLj0eNFbrmpAcLq&s=10" alt="گلچین معین" class="slide-image" loading="lazy" />
                 </a>
             </div>
-            
             <div class="slideshow-controls">
-                <div class="slideshow-dot active" onclick="changeSlide(0)"></div>
-                <div class="slideshow-dot" onclick="changeSlide(1)"></div>
-                <div class="slideshow-dot" onclick="changeSlide(2)"></div>
-                <div class="slideshow-dot" onclick="changeSlide(3)"></div>
+                <div class="slideshow-dot active" data-index="0"></div>
+                <div class="slideshow-dot" data-index="1"></div>
+                <div class="slideshow-dot" data-index="2"></div>
+                <div class="slideshow-dot" data-index="3"></div>
+                <div class="slideshow-dot" data-index="4"></div>
             </div>
         </div>
     </div>
-    
-    <!-- بخش سریال های جدید -->
+
+    <!-- بخش سریال‌های جدید -->
     <div class="content-section" id="newSeriesSection">
         <div class="section-content">
-            <h2>سریال های جدید</h2>
+            <h2>سریال‌های جدید</h2>
             <div class="image-gallery-container">
-                <div class="image-gallery" id="seriesGallery">
-                    <a href="mo be mo.html">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ941i2Eqx6_51NUxzClkxPILUF0KuledmcSkW46HYv7w&s=10" alt="مو به مو" loading="lazy">
+                <button class="scroll-button right" onclick="scrollGallery('seriesGallery', 1)" aria-label="اسکرول به راست">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="scroll-button left" onclick="scrollGallery('seriesGallery', -1)" aria-label="اسکرول به چپ">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="image-gallery" id="seriesGallery" role="list">
+                    <a href="mo be mo.html" role="listitem">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ941i2Eqx6_51NUxzClkxPILUF0KuledmcSkW46HYv7w&s=10" alt="مو به مو" loading="lazy" />
                     </a>
-                    
-                    <a href="koori.html">
-                        <img src="https://zbcdn.cloud/files/cache/26431_photo_2026-06-17_14-11-58.4ac18b.jpg" alt="کوری" loading="lazy">
+                    <a href="koori.html" role="listitem">
+                        <img src="https://zbcdn.cloud/files/cache/26431_photo_2026-06-17_14-11-58.4ac18b.jpg" alt="کوری" loading="lazy" />
                     </a>
-                    
-                        <a href="bamdad.html">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaBDnIsfVZGz3dw6-lrpd1o2MAnBsZCpwUtx6WK3Biwg&s=10?width=300&quality=85&sharpen=80&secret=Fqugml9Z8ugrWROUTXM1JQ" alt="بامداد خمار" loading="lazy">
+                    <a href="bamdad.html" role="listitem">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaBDnIsfVZGz3dw6-lrpd1o2MAnBsZCpwUtx6WK3Biwg&s=10?width=300&quality=85&sharpen=80&secret=Fqugml9Z8ugrWROUTXM1JQ" alt="بامداد خمار" loading="lazy" />
                     </a>
-                    
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- بخش پخش زنده -->
     <div class="content-section" id="liveChannelsSection">
         <div class="section-content">
             <h2>پخش زنده</h2>
             <div class="image-gallery-container">
-                <button class="scroll-button right" onclick="scrollGallery('tvGallery', 'right')">
+                <button class="scroll-button right" onclick="scrollGallery('tvGallery', 1)" aria-label="اسکرول به راست">
                     <i class="fas fa-chevron-right"></i>
                 </button>
-                <button class="scroll-button left" onclick="scrollGallery('tvGallery', 'left')">
+                <button class="scroll-button left" onclick="scrollGallery('tvGallery', -1)" aria-label="اسکرول به چپ">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <div class="image-gallery" id="tvGallery">
-                    <a href="Tv/persian.html">
-                        <img src="https://www.diycraftsguide.com/uploads/tv_image/persiana-nostalgia.jpg" alt="پرشین نوستالژی" loading="lazy">
+                <div class="image-gallery" id="tvGallery" role="list">
+                    <a href="Tv/persian.html" role="listitem">
+                        <img src="https://www.diycraftsguide.com/uploads/tv_image/persiana-nostalgia.jpg" alt="پرشین نوستالژی" loading="lazy" />
                     </a>
-                    <a href="Tv/pmusic.html">
-                        <img src="https://static.wikia.nocookie.net/logopedia/images/a/ae/Persiana-music-fr.png" alt="پرشین موزیک" loading="lazy">
+                    <a href="Tv/pmusic.html" role="listitem">
+                        <img src="https://static.wikia.nocookie.net/logopedia/images/a/ae/Persiana-music-fr.png" alt="پرشین موزیک" loading="lazy" />
                     </a>
-                    <a href="Tv/t2.html">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqSe8Hh2i7pjAFTZWo4b31OUdkVmft7KWSIA&s" alt="t2" loading="lazy">
+                    <a href="Tv/t2.html" role="listitem">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqSe8Hh2i7pjAFTZWo4b31OUdkVmft7KWSIA&s" alt="t2" loading="lazy" />
                     </a>
-                    <a href="Tv/navahng.html">
-                        <img src="https://play-lh.googleusercontent.com/CBR9pMaeYR-WUl-ZhmozFIBtK4POS6RqExZNmY522WqqUCtzC9o0TdppbUU9VTK0NF0D" alt="نواهنگ" loading="lazy">
+                    <a href="Tv/navahng.html" role="listitem">
+                        <img src="https://play-lh.googleusercontent.com/CBR9pMaeYR-WUl-ZhmozFIBtK4POS6RqExZNmY522WqqUCtzC9o0TdppbUU9VTK0NF0D" alt="نواهنگ" loading="lazy" />
                     </a>
-                    <a href="Tv/avang.html">
-                        <img src="https://static.namasha.com/images/avatar/6654645870-176x176.jpg?d=channel" alt="آونگ موزیک" loading="lazy">
+                    <a href="Tv/avang.html" role="listitem">
+                        <img src="https://static.namasha.com/images/avatar/6654645870-176x176.jpg?d=channel" alt="آونگ موزیک" loading="lazy" />
                     </a>
-                    <a href="Tv/sonpersian.html">
-                        <img src="https://dl.avajavan.com/uploads/2024/10/Persiana-Sonati.webp" alt="پرشیانا سنتی" loading="lazy">
+                    <a href="Tv/sonpersian.html" role="listitem">
+                        <img src="https://dl.avajavan.com/uploads/2024/10/Persiana-Sonati.webp" alt="پرشیانا سنتی" loading="lazy" />
                     </a>
-                    <a href="Tv/itv.html">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ-mjAR12DWQDhtC8l3JbiNJY_R6u5MY7oKU5wOh3fVAnT8IEoF6_UAwI&s=10" alt="itv" loading="lazy">
+                    <a href="Tv/itv.html" role="listitem">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ-mjAR12DWQDhtC8l3JbiNJY_R6u5MY7oKU5wOh3fVAnT8IEoF6_UAwI&s=10" alt="itv" loading="lazy" />
                     </a>
-                    <a href="Tv/mtc.html">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZKMlxtdGwVatLkfZV2tRvqp-JFtKv7JjmA&s" alt="MTC" loading="lazy">
+                    <a href="Tv/mtc.html" role="listitem">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZKMlxtdGwVatLkfZV2tRvqp-JFtKv7JjmA&s" alt="MTC" loading="lazy" />
                     </a>
-                    <a href="Tv/tom">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgivIeTjlkMLJbUUTtPpSegoNDOmPXczKmLP8k3Pf18ocydK6x_yE3U6Ce&s=10" alt="تام و جری" loading="lazy">
+                    <a href="Tv/tom" role="listitem">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgivIeTjlkMLJbUUTtPpSegoNDOmPXczKmLP8k3Pf18ocydK6x_yE3U6Ce&s=10" alt="تام و جری" loading="lazy" />
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- کادرهای پایین صفحه -->
-    <div class="container">
-        <a href="#series-new" class="box" onclick="toggleSection('newSeriesSection', this, event)">
-            <div class="box-content">سریال جدید</div>
+
+    <!-- منوی پایین (آیکون‌دار + شیشه‌ای) -->
+    <div class="container" role="navigation">
+        <a href="#series-new" class="box" onclick="toggleSection('newSeriesSection', this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-film"></i><span>سریال جدید</span></div>
         </a>
-        <a href="#live" class="box" onclick="toggleSection('liveChannelsSection', this, event)">
-            <div class="box-content">پخش زنده</div>
+        <a href="#live" class="box" onclick="toggleSection('liveChannelsSection', this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-broadcast-tower"></i><span>پخش زنده</span></div>
         </a>
-        <a href="radio.html" class="box" onclick="handleBoxClick(this, event)">
-            <div class="box-content">رادیو</div>
+        <a href="radio.html" class="box" onclick="handleBoxClick(this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-microphone-alt"></i><span>رادیو</span></div>
         </a>
-        <a href="music.html" class="box" onclick="handleBoxClick(this, event)">
-            <div class="box-content">موزیک</div>
+        <a href="music.html" class="box" onclick="handleBoxClick(this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-music"></i><span>موزیک</span></div>
         </a>
-        <a href="video.html" class="box" onclick="handleBoxClick(this, event)">
-            <div class="box-content">ویدیو کلیپ</div>
+        <a href="video.html" class="box" onclick="handleBoxClick(this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-video"></i><span>کلیپ</span></div>
         </a>
-        <a href="serial.html" class="box" onclick="handleBoxClick(this, event)">
-            <div class="box-content">سریال قدیمی</div>
+        <a href="serial.html" class="box" onclick="handleBoxClick(this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-tv"></i><span>سریال قدیمی</span></div>
         </a>
-        <a href="cinema.html" class="box" onclick="handleBoxClick(this, event)">
-            <div class="box-content">فیلم</div>
+        <a href="cinema.html" class="box" onclick="handleBoxClick(this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-play-circle"></i><span>فیلم</span></div>
         </a>
-        <a href="ghadimi.html" class="box" onclick="handleBoxClick(this, event)">
-            <div class="box-content">فیلم قدیمی</div>
+        <a href="ghadimi.html" class="box" onclick="handleBoxClick(this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-clock"></i><span>فیلم قدیمی</span></div>
         </a>
-        <a href="sargarmi.html" class="box" onclick="handleBoxClick(this, event)">
-            <div class="box-content">سرگرمی</div>
+        <a href="sargarmi.html" class="box" onclick="handleBoxClick(this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-gamepad"></i><span>سرگرمی</span></div>
         </a>
-        <a href="https://tv.garden/" class="box" onclick="handleBoxClick(this, event)">
-            <div class="box-content">شبکه های تلویزیونی</div>
+        <a href="https://tv.garden/" class="box" onclick="handleBoxClick(this, event)" tabindex="0">
+            <div class="box-content"><i class="fas fa-globe-asia"></i><span>شبکه‌ها</span></div>
         </a>
     </div>
 
     <script>
+        // ----- متغیرها -----
         let activeBox = null;
         let activeSection = null;
         let slideshowInterval;
         let slideIndex = 0;
-        let slideshowActive = true;
-        const slideshowTimeout = 7000; // 7 ثانیه
+        const slideshowTimeout = 7000;
 
-        // تابع برای تبدیل اعداد انگلیسی به فارسی
-        function toPersianNumber(num) {
-            const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-            return num.toString().replace(/\d/g, digit => persianDigits[parseInt(digit)]);
-        }
-        
-        // تابع برای به روزرسانی زمان
+        // ----- عدد به فارسی -----
+        const toPersianNumber = num =>
+            num.toString().replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d)]);
+
+        // ----- زمان و تاریخ -----
         function updateTime() {
             const now = new Date();
-            const hours = toPersianNumber(now.getHours().toString().padStart(2, '0'));
-            const minutes = toPersianNumber(now.getMinutes().toString().padStart(2, '0'));
-            document.getElementById('time').textContent = `${hours}:${minutes}`;
+            const h = toPersianNumber(now.getHours().toString().padStart(2, '0'));
+            const m = toPersianNumber(now.getMinutes().toString().padStart(2, '0'));
+            document.getElementById('time').textContent = `${h}:${m}`;
         }
-        
-        // تابع برای به روزرسانی تاریخ شمسی
+
         function updatePersianDate() {
             const now = new Date();
-            const options = { weekday: 'long' };
-            const dayName = new Intl.DateTimeFormat('fa-IR', options).format(now);
-            
-            // تاریخ شمسی به صورت عددی
-            const date = new Intl.DateTimeFormat('fa-IR', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            }).format(now);
-            
-            document.getElementById('day-name').textContent = dayName;
+            const day = new Intl.DateTimeFormat('fa-IR', { weekday: 'long' }).format(now);
+            const date = new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+            document.getElementById('day-name').textContent = day;
             document.getElementById('date').textContent = date;
         }
-        
-        // تابع toggle برای بخش‌ها
+
+        // ----- مدیریت بخش‌ها (سریال جدید / پخش زنده) -----
         function toggleSection(sectionId, boxElement, event) {
             event.preventDefault();
-            
-            // مخفی کردن اسلایدشو
             hideSlideshow();
-            
-            // اگر روی همان باکس فعال کلیک شد، غیرفعال کن
+
             if (activeBox === boxElement) {
-                // غیرفعال کردن باکس
                 boxElement.classList.remove('active');
                 activeBox = null;
-                
-                // مخفی کردن بخش
                 if (activeSection) {
                     document.getElementById(activeSection).classList.remove('active');
                     activeSection = null;
                 }
-                
-                // نمایش اسلایدشو وقتی همه چیز غیرفعال شد
                 showSlideshow();
                 return;
             }
-            
-            // غیرفعال کردن باکس قبلی
-            if (activeBox) {
-                activeBox.classList.remove('active');
-            }
-            
-            // مخفی کردن بخش قبلی
-            if (activeSection) {
-                document.getElementById(activeSection).classList.remove('active');
-            }
-            
-            // فعال کردن باکس جدید
+
+            if (activeBox) activeBox.classList.remove('active');
+            if (activeSection) document.getElementById(activeSection).classList.remove('active');
+
             boxElement.classList.add('active');
             activeBox = boxElement;
-            
-            // نمایش بخش جدید
+
             if (sectionId) {
                 document.getElementById(sectionId).classList.add('active');
                 activeSection = sectionId;
@@ -808,203 +872,152 @@
                 activeSection = null;
             }
         }
-        
-        // تابع جدید برای مدیریت کلیک روی باکس‌های دارای لینک
+
+        // ----- مدیریت کلیک روی باکس‌های دارای لینک -----
         function handleBoxClick(boxElement, event) {
-            // مخفی کردن اسلایدشو
             hideSlideshow();
-            
-            // اگر باکس قبلاً فعال است، غیرفعال کن
+
             if (activeBox === boxElement) {
                 boxElement.classList.remove('active');
                 activeBox = null;
-                
-                // مخفی کردن بخش فعال
                 if (activeSection) {
                     document.getElementById(activeSection).classList.remove('active');
                     activeSection = null;
                 }
-                
-                // نمایش اسلایدشو وقتی همه چیز غیرفعال شد
                 showSlideshow();
-                event.preventDefault(); // فقط در این حالت از رفتن به لینک جلوگیری کن
+                event.preventDefault();
             } else {
-                // غیرفعال کردن باکس قبلی
-                if (activeBox) {
-                    activeBox.classList.remove('active');
-                }
-                
-                // مخفی کردن بخش قبلی
-                if (activeSection) {
-                    document.getElementById(activeSection).classList.remove('active');
-                    activeSection = null;
-                }
-                
-                // فعال کردن باکس جدید
+                if (activeBox) activeBox.classList.remove('active');
+                if (activeSection) document.getElementById(activeSection).classList.remove('active');
                 boxElement.classList.add('active');
                 activeBox = boxElement;
-                
-                // اجازه بده لینک کار کند - جلوگیری نکن
-                // event.preventDefault() حذف شده
+                activeSection = null;
             }
         }
-        
-        // مخفی کردن بخش‌ها با کلیک خارج از آن
-        document.addEventListener('click', function(event) {
-            const contentSections = document.querySelectorAll('.content-section');
+
+        // ----- کلیک خارج از بخش‌ها و منو (بستن) -----
+        document.addEventListener('click', function(e) {
+            const sections = document.querySelectorAll('.content-section');
             const boxes = document.querySelectorAll('.box');
-            const scrollButtons = document.querySelectorAll('.scroll-button');
-            
-            let isClickInsideSection = false;
-            let isClickOnBox = false;
-            let isClickOnScrollButton = false;
-            
-            contentSections.forEach(section => {
-                if (section.contains(event.target)) {
-                    isClickInsideSection = true;
-                }
-            });
-            
-            boxes.forEach(box => {
-                if (box.contains(event.target)) {
-                    isClickOnBox = true;
-                }
-            });
-            
-            scrollButtons.forEach(button => {
-                if (button.contains(event.target)) {
-                    isClickOnScrollButton = true;
-                }
-            });
-            
-            // اگر روی فضای خالی کلیک شد، همه چیز مخفی شود
-            if (!isClickInsideSection && !isClickOnBox && !isClickOnScrollButton) {
-                // غیرفعال کردن باکس فعال
-                if (activeBox) {
-                    activeBox.classList.remove('active');
-                    activeBox = null;
-                }
-                
-                // مخفی کردن بخش فعال
+            const scrolls = document.querySelectorAll('.scroll-button');
+
+            let inside = false,
+                onBox = false,
+                onScroll = false;
+            sections.forEach(s => { if (s.contains(e.target)) inside = true; });
+            boxes.forEach(b => { if (b.contains(e.target)) onBox = true; });
+            scrolls.forEach(s => { if (s.contains(e.target)) onScroll = true; });
+
+            if (!inside && !onBox && !onScroll) {
+                if (activeBox) { activeBox.classList.remove('active');
+                    activeBox = null; }
                 if (activeSection) {
                     document.getElementById(activeSection).classList.remove('active');
                     activeSection = null;
                 }
-                
-                // نمایش اسلایدشو وقتی همه چیز غیرفعال شد
                 showSlideshow();
             }
         });
-        
-        // تابع برای اسکرول گالری‌ها
-        function scrollGallery(galleryId, direction) {
-            const gallery = document.getElementById(galleryId);
-            const scrollAmount = 350;
-            if (direction === 'left') {
-                gallery.scrollLeft -= scrollAmount;
-            } else {
-                gallery.scrollLeft += scrollAmount;
-            }
+
+        // ----- اسکرول گالری (جهت: 1 = راست, -1 = چپ) -----
+        function scrollGallery(id, dir) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const step = el.querySelector('img') ? el.querySelector('img').offsetWidth + 24 : 180;
+            el.scrollLeft += dir * step;
         }
-        
-        // توابع اسلایدشو
+
+        // ----- اسلایدشو -----
         function showSlideshow() {
-            if (!slideshowActive) return;
-            
-            const slideshow = document.getElementById('slideshow');
-            slideshow.classList.remove('hidden');
-            
-            // پنهان کردن بخش‌های دیگر
-            const contentSections = document.querySelectorAll('.content-section');
-            contentSections.forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // غیرفعال کردن باکس‌ها
-            const boxes = document.querySelectorAll('.box');
-            boxes.forEach(box => {
-                box.classList.remove('active');
-            });
-            
+            const el = document.getElementById('slideshow');
+            el.classList.remove('hidden');
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.box').forEach(b => b.classList.remove('active'));
             activeBox = null;
             activeSection = null;
-            
-            // شروع اسلایدشو
             startSlideshow();
         }
-        
+
         function hideSlideshow() {
-            const slideshow = document.getElementById('slideshow');
-            slideshow.classList.add('hidden');
-            
-            // توقف تایمر اسلایدشو
-            if (slideshowInterval) {
-                clearInterval(slideshowInterval);
-            }
+            document.getElementById('slideshow').classList.add('hidden');
+            if (slideshowInterval) clearInterval(slideshowInterval);
         }
-        
+
         function startSlideshow() {
-            // توقف تایمر قبلی اگر وجود دارد
-            if (slideshowInterval) {
-                clearInterval(slideshowInterval);
-            }
-            
-            // شروع تایمر جدید
+            if (slideshowInterval) clearInterval(slideshowInterval);
             slideshowInterval = setInterval(nextSlide, slideshowTimeout);
         }
-        
+
         function nextSlide() {
             const slides = document.querySelectorAll('.slide');
             const dots = document.querySelectorAll('.slideshow-dot');
-            
-            // مخفی کردن اسلاید فعلی
+            if (!slides.length) return;
             slides[slideIndex].classList.remove('active');
-            dots[slideIndex].classList.remove('active');
-            
-            // رفتن به اسلاید بعدی
+            dots[slideIndex]?.classList.remove('active');
             slideIndex = (slideIndex + 1) % slides.length;
-            
-            // نمایش اسلاید جدید
             slides[slideIndex].classList.add('active');
-            dots[slideIndex].classList.add('active');
+            dots[slideIndex]?.classList.add('active');
         }
-        
-        // تابع اصلاح شده برای تغییر اسلاید - جلوگیری از کلیک روی لینک
-        function changeSlide(n) {
-            const slides = document.querySelectorAll('.slide');
-            const dots = document.querySelectorAll('.slideshow-dot');
-            
-            // مخفی کردن اسلاید فعلی
-            slides[slideIndex].classList.remove('active');
-            dots[slideIndex].classList.remove('active');
-            
-            // تنظیم اسلاید جدید
-            slideIndex = n;
-            
-            // نمایش اسلاید جدید
-            slides[slideIndex].classList.add('active');
-            dots[slideIndex].classList.add('active');
-            
-            // ریست تایمر
-            startSlideshow();
-            
-            // جلوگیری از انتشار رویداد کلیک
-            event.stopPropagation();
-            return false;
-        }
-        
-        // به روزرسانی اولیه
+
+        // تغییر اسلاید با کلیک روی دات‌ها
+        document.querySelectorAll('.slideshow-dot').forEach(dot => {
+            dot.addEventListener('click', function(e) {
+                const idx = parseInt(this.dataset.index);
+                const slides = document.querySelectorAll('.slide');
+                const dots = document.querySelectorAll('.slideshow-dot');
+                if (!slides.length) return;
+                slides[slideIndex].classList.remove('active');
+                dots[slideIndex]?.classList.remove('active');
+                slideIndex = idx;
+                slides[slideIndex].classList.add('active');
+                dots[slideIndex]?.classList.add('active');
+                startSlideshow();
+                e.stopPropagation();
+            });
+        });
+
+        // ----- کنترل با کیبورد (جهت ریموت/تلویزیون) -----
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') {
+                const active = document.activeElement;
+                if (active && active.closest('.image-gallery')) {
+                    const gallery = active.closest('.image-gallery');
+                    if (gallery) scrollGallery(gallery.id, 1);
+                    e.preventDefault();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                const active = document.activeElement;
+                if (active && active.closest('.image-gallery')) {
+                    const gallery = active.closest('.image-gallery');
+                    if (gallery) scrollGallery(gallery.id, -1);
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // ----- مقداردهی اولیه -----
         updateTime();
         updatePersianDate();
-        
-        // نمایش اسلایدشو در ابتدا
         showSlideshow();
-        
-        // به روزرسانی زمان هر دقیقه
+
         setInterval(updateTime, 60000);
-        
-        // به روزرسانی تاریخ هر روز
         setInterval(updatePersianDate, 86400000);
+
+        // پشتیبانی از Lazy loading با Intersection Observer (اختیاری)
+        if ('IntersectionObserver' in window) {
+            const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.src; // trigger load
+                        observer.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '200px' });
+            lazyImages.forEach(img => observer.observe(img));
+        }
     </script>
+
 </body>
 </html>
