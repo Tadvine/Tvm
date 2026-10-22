@@ -1,75 +1,763 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ویدئوهای یوتیوب</title>
-    <style>
-        @font-face {
-            font-family: 'Vazir';
-            src: url('https://cdn.rawgit.com/rastikerdar/vazir-font/v26.0.2/dist/font-face/Vazir-Regular.woff2') format('woff2');
-        }
-        body {
-            font-family: 'Vazir', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-        .player-container {
-            width: 90%;
-            max-width: 600px;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            direction: rtl;
-            text-align: right;
-        }
-        .video-player {
-            width: 100%;
-            height: calc((100vw / 16) * 9);
-            max-height: 337.5px;
-        }
-        .dropdown {
-            width: 100%;
-            position: relative;
-        }
-        .dropdown select {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Vazir', Arial, sans-serif;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0d12">
+  <title>پلیر یوتیوب | پخش‌کننده شخصی</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d12;
+      --panel: #12151d;
+      --panel-2: #171b25;
+      --line: #252b38;
+      --text: #f4f6fb;
+      --muted: #929bad;
+      --accent: #ff3b55;
+      --accent-2: #d9213b;
+      --green: #3ddc97;
+      --radius: 18px;
+      --shadow: 0 18px 55px rgba(0,0,0,.28);
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body {
+      margin: 0; min-height: 100vh; background:
+        radial-gradient(ellipse at 15% -10%, rgba(255,59,85,.10), transparent 38%),
+        var(--bg);
+      color: var(--text); font-family: Tahoma, Arial, sans-serif;
+      font-size: 14px; line-height: 1.7;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .app { width: min(1500px, 100%); margin: auto; padding: 22px; }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 4px 0 22px; border-bottom: 1px solid rgba(255,255,255,.07); margin-bottom: 22px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-mark {
+      display: grid; place-items: center; width: 46px; height: 46px; border-radius: 15px;
+      background: linear-gradient(145deg, #ff5269, #d91e3b); box-shadow: 0 8px 24px rgba(255,59,85,.22);
+      flex: 0 0 auto;
+    }
+    .brand-mark svg { width: 23px; height: 23px; fill: white; }
+    .brand h1 { font-size: 19px; margin: 0; font-weight: 800; letter-spacing: -.4px; }
+    .brand p { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+    .saved-badge { display: flex; align-items: center; gap: 8px; color: #b9c3d3; font-size: 12px; white-space: nowrap; }
+    .saved-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; box-shadow: 0 0 12px rgba(61,220,151,.4); }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 370px; gap: 22px; align-items: start; }
+    .main-column { min-width: 0; }
+    .player-card, .playlist-card, .info-card {
+      background: rgba(18,21,29,.92); border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .player-wrap { background: #000; position: relative; aspect-ratio: 16 / 9; width: 100%; }
+    #player, #player iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .player-placeholder {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px; text-align: center; padding: 24px;
+      color: #aeb5c3; background: radial-gradient(ellipse at center, #181c26, #050609 75%);
+    }
+    .placeholder-icon { width: 72px; height: 72px; display: grid; place-items: center; border-radius: 24px; background: rgba(255,59,85,.13); color: var(--accent); }
+    .placeholder-icon svg { width: 31px; height: 31px; fill: currentColor; }
+    .player-placeholder strong { color: #f5f6fa; font-size: 16px; }
+    .player-placeholder span { font-size: 12px; max-width: 340px; }
+    .video-meta { padding: 19px 21px 15px; }
+    .video-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+    .video-heading h2 { margin: 0; font-size: 18px; line-height: 1.7; font-weight: 750; overflow-wrap: anywhere; }
+    .video-heading p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .now-playing { color: #ff8594; background: rgba(255,59,85,.12); border: 1px solid rgba(255,59,85,.20); border-radius: 999px; padding: 4px 10px; font-size: 11px; white-space: nowrap; flex: 0 0 auto; }
+    .progress-area { padding: 0 21px 17px; }
+    .progress-track { height: 5px; background: #2a2f3b; border-radius: 10px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ff7a89, var(--accent)); border-radius: inherit; transition: width .25s linear; }
+    .progress-labels { display: flex; justify-content: space-between; color: #8e97a8; font-size: 11px; margin-top: 5px; direction: ltr; }
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding: 14px 18px; }
+    .transport { display: flex; align-items: center; gap: 9px; }
+    .control-btn {
+      width: 42px; height: 42px; display: grid; place-items: center; color: #e8ebf3;
+      border: 1px solid #303747; background: #1a1f2a; border-radius: 13px; transition: .18s;
+    }
+    .control-btn:hover { background: #252b38; border-color: #4b5568; transform: translateY(-1px); }
+    .control-btn svg { width: 18px; height: 18px; fill: currentColor; }
+    .control-btn.primary { width: auto; padding: 0 15px; display: flex; gap: 8px; background: var(--accent); border-color: var(--accent); color: white; font-weight: 700; }
+    .control-btn.primary:hover { background: var(--accent-2); }
+    .control-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+    .control-caption { font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .side-column { min-width: 0; }
+    .playlist-card { position: sticky; top: 16px; }
+    .playlist-head { padding: 18px 18px 14px; border-bottom: 1px solid var(--line); }
+    .playlist-title-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .playlist-title-row h2 { font-size: 16px; margin: 0; }
+    .count { color: #cbd2df; background: #252b38; border-radius: 8px; padding: 2px 8px; font-size: 11px; }
+    .playlist-subtitle { margin: 4px 0 14px; color: var(--muted); font-size: 11px; }
+    .search-box, .url-input {
+      width: 100%; background: #0c0f15; border: 1px solid #2a3040; color: var(--text);
+      border-radius: 12px; padding: 11px 13px; outline: none; min-width: 0;
+    }
+    .search-box::placeholder, .url-input::placeholder { color: #697386; }
+    .search-box:focus, .url-input:focus { border-color: rgba(255,59,85,.7); box-shadow: 0 0 0 3px rgba(255,59,85,.08); }
+    .add-form { padding: 14px 18px 16px; border-bottom: 1px solid var(--line); }
+    .add-form label { display: block; font-size: 12px; color: #c3cad7; margin-bottom: 8px; }
+    .add-row { display: flex; gap: 8px; }
+    .add-row .url-input { flex: 1; }
+    .add-btn { flex: 0 0 auto; border: 0; background: var(--accent); color: white; border-radius: 12px; padding: 0 15px; font-weight: 750; }
+    .add-btn:hover { background: var(--accent-2); }
+    .form-hint { color: #778195; font-size: 10px; margin: 8px 0 0; }
+    .playlist-actions { display: flex; gap: 8px; padding: 12px 18px 4px; }
+    .sub-btn { background: #1b202b; border: 1px solid #2c3342; color: #c8d0df; border-radius: 10px; padding: 7px 10px; font-size: 11px; }
+    .sub-btn:hover { background: #262d3a; }
+    .video-list { max-height: 480px; overflow: auto; padding: 8px; scrollbar-width: thin; scrollbar-color: #394153 transparent; }
+    .video-item { display: grid; grid-template-columns: 100px minmax(0,1fr) 28px; align-items: center; gap: 10px; padding: 8px; border: 1px solid transparent; border-radius: 13px; cursor: pointer; transition: .16s; }
+    .video-item:hover { background: #1a1f2a; }
+    .video-item.active { background: rgba(255,59,85,.09); border-color: rgba(255,59,85,.28); }
+    .thumb { position: relative; aspect-ratio: 16/9; border-radius: 8px; background: #252b38; overflow: hidden; }
+    .thumb img { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .thumb-fallback { position: absolute; inset: 0; display: grid; place-items: center; color: #737e91; }
+    .thumb-fallback svg { width: 24px; height: 24px; fill: currentColor; }
+    .thumb-duration { position: absolute; bottom: 4px; left: 4px; font-size: 9px; color: white; background: rgba(0,0,0,.78); padding: 0 4px; border-radius: 4px; direction: ltr; }
+    .item-text { min-width: 0; }
+    .item-title { font-size: 12px; font-weight: 700; line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+    .item-sub { color: #8c96a8; font-size: 10px; margin-top: 3px; }
+    .item-playing { color: #ff7284; font-size: 10px; margin-top: 3px; }
+    .remove-btn { display: grid; place-items: center; width: 28px; height: 28px; border: 0; color: #7e899c; background: transparent; border-radius: 8px; }
+    .remove-btn:hover { background: rgba(255,59,85,.13); color: #ff7284; }
+    .remove-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    .empty-list { padding: 30px 18px; text-align: center; color: #8b95a7; font-size: 12px; }
+    .empty-list svg { width: 30px; height: 30px; fill: #515c70; display: block; margin: 0 auto 10px; }
+    .footer-note { margin: 16px 3px 0; color: #737d90; font-size: 11px; line-height: 1.9; }
+    .toast { position: fixed; bottom: 22px; left: 50%; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; z-index: 20; background: #252b38; border: 1px solid #41495b; color: white; padding: 10px 16px; border-radius: 12px; box-shadow: var(--shadow); font-size: 12px; transition: .25s; max-width: calc(100% - 30px); text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 30; display: none; align-items: center; justify-content: center; padding: 18px; }
+    .modal-backdrop.open { display: flex; }
+    .modal { width: min(520px,100%); background: #141822; border: 1px solid #303747; border-radius: 18px; padding: 22px; }
+    .modal h3 { margin: 0 0 8px; font-size: 17px; }
+    .modal p { color: #9ba5b7; font-size: 12px; margin: 0 0 16px; }
+    .modal textarea { width: 100%; min-height: 150px; resize: vertical; background: #0b0d12; color: white; border: 1px solid #303747; border-radius: 12px; padding: 12px; direction: ltr; text-align: left; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+    .status-line { font-size: 11px; color: #8490a4; text-align: center; padding: 10px 16px 15px; }
+    @media (max-width: 1050px) {
+      .layout { grid-template-columns: minmax(0,1fr) 330px; gap: 15px; }
+      .app { padding: 16px; }
+      .video-item { grid-template-columns: 82px minmax(0,1fr) 25px; gap: 8px; }
+    }
+    @media (max-width: 800px) {
+      .layout { grid-template-columns: 1fr; }
+      .playlist-card { position: static; }
+      .video-list { max-height: 390px; }
+      .topbar { padding-bottom: 16px; margin-bottom: 16px; }
+      .brand h1 { font-size: 17px; }
+    }
+    @media (max-width: 520px) {
+      .app { padding: 12px; }
+      .topbar { align-items: flex-start; }
+      .saved-badge { font-size: 10px; gap: 5px; padding-top: 7px; }
+      .brand-mark { width: 40px; height: 40px; border-radius: 13px; }
+      .brand h1 { font-size: 15px; }
+      .brand p { font-size: 10px; }
+      .video-meta { padding: 14px 14px 12px; }
+      .video-heading h2 { font-size: 15px; }
+      .now-playing { display: none; }
+      .progress-area { padding: 0 14px 13px; }
+      .controls { padding: 12px; gap: 8px; }
+      .control-btn { width: 38px; height: 38px; border-radius: 11px; }
+      .control-btn.primary { padding: 0 11px; font-size: 12px; }
+      .control-caption { display: none; }
+      .transport { gap: 6px; }
+      .playlist-head, .add-form { padding-left: 13px; padding-right: 13px; }
+      .playlist-actions { padding-left: 13px; padding-right: 13px; }
+      .video-list { padding: 6px; }
+      .video-item { grid-template-columns: 92px minmax(0,1fr) 27px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="player-container">
-        <iframe id="video-player" class="video-player" src="https://www.youtube.com/embed/aj0s4SH1kMk" frameborder="0" allowfullscreen></iframe>
-        <div class="dropdown">
-            <select id="video-select">
-                <option value="80MaYh4ksQk">مستر بین ■ لایو</option>
-                
-                
-                <option value="44mYJbRNBMo">جنگ</option>
-                
-                
-                <option value="bWUlNCw6WGs">لایو</option>
-            </select>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg>
         </div>
+        <div>
+          <h1>پلیر یوتیوب</h1>
+          <p>پخش‌کننده شخصی و پلی‌لیست شما</p>
+        </div>
+      </div>
+      <div class="saved-badge"><span class="saved-dot"></span><span>ذخیره خودکار در مرورگر</span></div>
+    </header>
+
+    <main class="layout">
+      <section class="main-column" aria-label="پخش‌کننده ویدیو">
+        <div class="player-card">
+          <div class="player-wrap" id="playerWrap">
+            <div id="player"></div>
+            <div class="player-placeholder" id="playerPlaceholder">
+              <div class="placeholder-icon">
+                <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg>
+              </div>
+              <strong>هنوز ویدیویی انتخاب نشده</strong>
+              <span>یک لینک یوتیوب در کادر سمت راست وارد کن یا یکی از ویدیوهای فهرست را انتخاب کن.</span>
+            </div>
+          </div>
+          <div class="video-meta">
+            <div class="video-heading">
+              <div>
+                <h2 id="currentTitle">به پلیر شخصی خودت خوش آمدی</h2>
+                <p id="currentSub">لینک‌های یوتیوب را اضافه کن و پلی‌لیستت را بساز.</p>
+              </div>
+              <span class="now-playing" id="playingBadge">آماده پخش</span>
+            </div>
+          </div>
+          <div class="progress-area">
+            <div class="progress-track" aria-label="پیشرفت ویدیو"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="progress-labels"><span id="currentTime">00:00</span><span id="duration">00:00</span></div>
+          </div>
+          <div class="controls">
+            <div class="transport">
+              <button class="control-btn" id="prevBtn" aria-label="ویدیوی قبلی" title="ویدیوی قبلی" disabled>
+                <svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
+              </button>
+              <button class="control-btn primary" id="playBtn" aria-label="پخش و توقف" disabled>
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>پخش</span>
+              </button>
+              <button class="control-btn" id="nextBtn" aria-label="ویدیوی بعدی" title="ویدیوی بعدی" disabled>
+                <svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <span class="control-caption" id="playStatus">ویدیویی در حال پخش نیست</span>
+            <button class="control-btn" id="fullscreenBtn" aria-label="تمام صفحه" title="تمام صفحه" disabled>
+              <svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z"/></svg>
+            </button>
+          </div>
+          <div class="status-line" id="statusLine">برای شروع، لینک یک ویدیو یا پلی‌لیست یوتیوب را اضافه کن.</div>
+        </div>
+        <p class="footer-note">این صفحه فایل ویدیویی را میزبانی نمی‌کند؛ ویدیوها مستقیماً از یوتیوب پخش می‌شوند. بعضی ویدیوها ممکن است به‌دلیل محدودیت صاحب اثر یا تنظیمات یوتیوب در پلیر تعبیه‌شده قابل پخش نباشند.</p>
+      </section>
+
+      <aside class="side-column">
+        <section class="playlist-card" aria-label="پلی‌لیست">
+          <div class="playlist-head">
+            <div class="playlist-title-row"><h2>پلی‌لیست من</h2><span class="count" id="videoCount">۰ ویدیو</span></div>
+            <p class="playlist-subtitle">لینک‌ها را اضافه کن؛ فهرست روی همین مرورگر می‌ماند.</p>
+            <input class="search-box" id="searchInput" type="search" placeholder="جست‌وجو در پلی‌لیست..." aria-label="جست‌وجو در پلی‌لیست">
+          </div>
+          <form class="add-form" id="addForm">
+            <label for="urlInput">افزودن لینک یوتیوب</label>
+            <div class="add-row">
+              <input class="url-input" id="urlInput" type="url" placeholder="https://youtu.be/..." autocomplete="off" required>
+              <button class="add-btn" type="submit">افزودن +</button>
+            </div>
+            <p class="form-hint">لینک ویدیو یا لینک پلی‌لیست کامل یوتیوب را وارد کن.</p>
+          </form>
+          <div class="playlist-actions">
+            <button class="sub-btn" id="importBtn" type="button">ورود فهرست</button>
+            <button class="sub-btn" id="exportBtn" type="button">خروجی پشتیبان</button>
+            <button class="sub-btn" id="clearBtn" type="button">پاک‌کردن همه</button>
+          </div>
+          <div class="video-list" id="videoList"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal-backdrop" id="importModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <h3 id="modalTitle">ورود پلی‌لیست از فایل متنی</h3>
+      <p>یک آرایه JSON صادرشده از همین پلیر را اینجا بچسبان. ورود، فهرست فعلی را جایگزین می‌کند.</p>
+      <textarea id="importText" placeholder='[{"id":"VIDEO_ID","title":"عنوان ویدیو","type":"video"}]'></textarea>
+      <div class="modal-actions">
+        <button class="sub-btn" id="cancelImport" type="button">انصراف</button>
+        <button class="add-btn" id="confirmImport" type="button" style="padding:9px 15px">وارد کردن</button>
+      </div>
     </div>
-    <script>
-        document.getElementById('video-select').addEventListener('change', function() {
-            var videoId = this.value;
-            var player = document.getElementById('video-player');
-            player.src = 'https://www.youtube.com/embed/' + videoId;
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+      const STORAGE_KEY = "youtube_personal_player_playlist_v1";
+      const $ = (id) => document.getElementById(id);
+      const els = {
+        player: $("player"), playerWrap: $("playerWrap"), placeholder: $("playerPlaceholder"),
+        currentTitle: $("currentTitle"), currentSub: $("currentSub"), playingBadge: $("playingBadge"),
+        progressFill: $("progressFill"), currentTime: $("currentTime"), duration: $("duration"),
+        prevBtn: $("prevBtn"), nextBtn: $("nextBtn"), playBtn: $("playBtn"),
+        fullscreenBtn: $("fullscreenBtn"), playStatus: $("playStatus"), statusLine: $("statusLine"),
+        videoCount: $("videoCount"), searchInput: $("searchInput"), urlInput: $("urlInput"),
+        addForm: $("addForm"), videoList: $("videoList"), toast: $("toast"),
+        importModal: $("importModal"), importText: $("importText")
+      };
+
+      let playlist = loadPlaylist();
+      let currentIndex = -1;
+      let player = null;
+      let playerReady = false;
+      let progressTimer = null;
+      let toastTimer = null;
+      let isPlaylistEnded = false;
+
+      function loadPlaylist() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+          if (!Array.isArray(parsed)) return [];
+          return parsed.filter(v => v && typeof v.id === "string" && /^[\w-]{6,}$/.test(v.id))
+            .map(v => ({
+              id: v.id, type: v.type === "playlist" ? "playlist" : "video",
+              title: typeof v.title === "string" && v.title.trim() ? v.title.trim() : "ویدیوی یوتیوب",
+              addedAt: Number(v.addedAt) || Date.now()
+            }));
+        } catch { return []; }
+      }
+
+      function savePlaylist() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(playlist));
+          return true;
+        } catch {
+          showToast("ذخیره‌سازی مرورگر در دسترس نیست؛ فضای ذخیره‌سازی را بررسی کن.");
+          return false;
+        }
+      }
+
+      function showToast(message) {
+        els.toast.textContent = message;
+        els.toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => els.toast.classList.remove("show"), 2800);
+      }
+
+      function setStatus(message) { els.statusLine.textContent = message; }
+
+      function faNumber(value) {
+        return String(value).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
+      }
+
+      function formatTime(seconds) {
+        if (!Number.isFinite(seconds) || seconds < 0) return "00:00";
+        const total = Math.floor(seconds);
+        const h = Math.floor(total / 3600);
+        const m = Math.floor((total % 3600) / 60);
+        const s = total % 60;
+        return h > 0
+          ? `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`
+          : `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+      }
+
+      function parseYouTubeUrl(raw) {
+        let url;
+        try { url = new URL(raw.trim()); } catch { return null; }
+        const host = url.hostname.toLowerCase().replace(/^www\./, "").replace(/^m\./, "");
+        const validHosts = ["youtube.com", "youtu.be", "youtube-nocookie.com", "music.youtube.com"];
+        if (!validHosts.includes(host) && !host.endsWith(".youtube.com")) return null;
+
+        if (host === "youtu.be") {
+          const id = url.pathname.split("/").filter(Boolean)[0];
+          return id && /^[\w-]{6,}$/.test(id) ? { type: "video", id } : null;
+        }
+        const listId = url.searchParams.get("list");
+        const videoId = url.searchParams.get("v");
+        if (listId && /^[\w-]{6,}$/.test(listId)) {
+          // A video URL containing both v and list is treated as the complete playlist.
+          return { type: "playlist", id: listId, videoId: videoId && /^[\w-]{6,}$/.test(videoId) ? videoId : null };
+        }
+        const parts = url.pathname.split("/").filter(Boolean);
+        let id = "";
+        if (["embed", "shorts", "live", "v"].includes(parts[0])) id = parts[1] || "";
+        else if (videoId) id = videoId;
+        return id && /^[\w-]{6,}$/.test(id) ? { type: "video", id } : null;
+      }
+
+      function videoThumbnail(item) {
+        return item.type === "playlist"
+          ? `https://i.ytimg.com/vi/${encodeURIComponent(item.videoId || "M7lc1UVf-VE")}/mqdefault.jpg`
+          : `https://i.ytimg.com/vi/${encodeURIComponent(item.id)}/mqdefault.jpg`;
+      }
+
+      function playIconMarkup(isPlaying) {
+        return isPlaying
+          ? '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg><span>توقف</span>'
+          : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>پخش</span>';
+      }
+
+      function renderPlaylist() {
+        const query = els.searchInput.value.trim().toLocaleLowerCase();
+        const filtered = playlist.map((item, index) => ({ ...item, index }))
+          .filter(item => item.title.toLocaleLowerCase().includes(query) || item.id.toLocaleLowerCase().includes(query));
+        els.videoCount.textContent = `${faNumber(playlist.length)} ویدیو`;
+        els.videoList.replaceChildren();
+
+        if (!filtered.length) {
+          const empty = document.createElement("div");
+          empty.className = "empty-list";
+          empty.innerHTML = '<svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8Z"/></svg>';
+          const text = document.createElement("div");
+          text.textContent = query ? "موردی با این جست‌وجو پیدا نشد." : "هنوز لینکی اضافه نشده است.";
+          empty.append(text);
+          els.videoList.append(empty);
+          return;
+        }
+
+        filtered.forEach(item => {
+          const row = document.createElement("div");
+          row.className = "video-item" + (item.index === currentIndex ? " active" : "");
+          row.tabIndex = 0;
+          row.setAttribute("role", "button");
+          row.setAttribute("aria-label", `پخش ${item.title}`);
+          const thumb = document.createElement("div");
+          thumb.className = "thumb";
+          const img = document.createElement("img");
+          img.loading = "lazy";
+          img.alt = "";
+          img.src = videoThumbnail(item);
+          img.onerror = () => { img.style.display = "none"; };
+          thumb.append(img);
+          const duration = document.createElement("span");
+          duration.className = "thumb-duration";
+          duration.textContent = item.type === "playlist" ? "PLAYLIST" : "YOUTUBE";
+          thumb.append(duration);
+
+          const textBox = document.createElement("div");
+          textBox.className = "item-text";
+          const title = document.createElement("div");
+          title.className = "item-title";
+          title.textContent = item.title;
+          const sub = document.createElement("div");
+          sub.className = "item-sub";
+          sub.textContent = item.type === "playlist" ? "پلی‌لیست یوتیوب" : "ویدیوی یوتیوب";
+          textBox.append(title, sub);
+          if (item.index === currentIndex) {
+            const playing = document.createElement("div");
+            playing.className = "item-playing";
+            playing.textContent = "● انتخاب‌شده";
+            textBox.append(playing);
+          }
+
+          const remove = document.createElement("button");
+          remove.className = "remove-btn";
+          remove.type = "button";
+          remove.title = "حذف از فهرست";
+          remove.setAttribute("aria-label", `حذف ${item.title}`);
+          remove.innerHTML = '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>';
+          remove.addEventListener("click", (event) => {
+            event.stopPropagation();
+            removeItem(item.index);
+          });
+          row.append(thumb, textBox, remove);
+          row.addEventListener("click", () => playItem(item.index));
+          row.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              playItem(item.index);
+            }
+          });
+          els.videoList.append(row);
         });
-    </script>
+      }
+
+      function addItem(parsed) {
+        const duplicate = playlist.some(item => item.type === parsed.type && item.id === parsed.id);
+        if (duplicate) {
+          showToast("این لینک از قبل در پلی‌لیست وجود دارد.");
+          return;
+        }
+        const item = {
+          id: parsed.id, type: parsed.type,
+          title: parsed.type === "playlist" ? "پلی‌لیست یوتیوب" : "ویدیوی یوتیوب",
+          addedAt: Date.now()
+        };
+        if (parsed.videoId) item.videoId = parsed.videoId;
+        playlist.push(item);
+        savePlaylist();
+        renderPlaylist();
+        const index = playlist.length - 1;
+        playItem(index);
+        showToast(parsed.type === "playlist" ? "پلی‌لیست اضافه شد." : "ویدیو اضافه شد.");
+      }
+
+      function removeItem(index) {
+        if (index < 0 || index >= playlist.length) return;
+        const wasCurrent = index === currentIndex;
+        playlist.splice(index, 1);
+        if (currentIndex > index) currentIndex--;
+        else if (wasCurrent) currentIndex = -1;
+        savePlaylist();
+        renderPlaylist();
+        if (wasCurrent) {
+          if (playlist.length) playItem(Math.min(index, playlist.length - 1));
+          else resetPlayerView();
+        }
+        showToast("از پلی‌لیست حذف شد.");
+      }
+
+      function resetPlayerView() {
+        if (playerReady && player) player.stopVideo();
+        currentIndex = -1;
+        els.placeholder.style.display = "flex";
+        els.currentTitle.textContent = "به پلیر شخصی خودت خوش آمدی";
+        els.currentSub.textContent = "لینک‌های یوتیوب را اضافه کن و پلی‌لیستت را بساز.";
+        els.playingBadge.textContent = "آماده پخش";
+        els.progressFill.style.width = "0%";
+        els.currentTime.textContent = "00:00";
+        els.duration.textContent = "00:00";
+        els.playBtn.disabled = true;
+        els.prevBtn.disabled = true;
+        els.nextBtn.disabled = true;
+        els.fullscreenBtn.disabled = true;
+        els.playBtn.innerHTML = playIconMarkup(false);
+        els.playStatus.textContent = "ویدیویی در حال پخش نیست";
+        setStatus("برای شروع، لینک یک ویدیو یا پلی‌لیست یوتیوب را اضافه کن.");
+        renderPlaylist();
+      }
+
+      function playItem(index) {
+        if (index < 0 || index >= playlist.length) return;
+        currentIndex = index;
+        const item = playlist[index];
+        els.placeholder.style.display = "none";
+        els.currentTitle.textContent = item.title;
+        els.currentSub.textContent = item.type === "playlist" ? "پلی‌لیست یوتیوب" : "ویدیوی یوتیوب";
+        els.playingBadge.textContent = "در حال بارگذاری";
+        els.playBtn.disabled = false;
+        els.prevBtn.disabled = playlist.length < 2;
+        els.nextBtn.disabled = playlist.length < 2;
+        els.fullscreenBtn.disabled = false;
+        els.playBtn.innerHTML = playIconMarkup(false);
+        els.playStatus.textContent = "در حال بارگذاری ویدیو…";
+        isPlaylistEnded = false;
+        renderPlaylist();
+
+        if (!playerReady || !player) {
+          setStatus("در حال آماده‌سازی پخش‌کننده یوتیوب…");
+          return;
+        }
+        try {
+          if (item.type === "playlist") {
+            player.loadPlaylist({ list: item.id, listType: "playlist", index: 0 });
+          } else {
+            player.loadVideoById(item.id);
+          }
+          setStatus("ویدیو برای پخش بارگذاری شد.");
+        } catch (error) {
+          console.error(error);
+          setStatus("بارگذاری ویدیو ناموفق بود. لینک را بررسی کن.");
+        }
+      }
+
+      function playNext() {
+        if (!playlist.length) return;
+        const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % playlist.length;
+        playItem(nextIndex);
+      }
+
+      function playPrevious() {
+        if (!playlist.length) return;
+        const previousIndex = currentIndex <= 0 ? playlist.length - 1 : currentIndex - 1;
+        playItem(previousIndex);
+      }
+
+      function updateProgress() {
+        if (!playerReady || !player || currentIndex < 0) return;
+        try {
+          const current = player.getCurrentTime() || 0;
+          const total = player.getDuration() || 0;
+          els.currentTime.textContent = formatTime(current);
+          els.duration.textContent = formatTime(total);
+          els.progressFill.style.width = total > 0 ? `${Math.min(100, (current / total) * 100)}%` : "0%";
+        } catch { /* Player can be between states. */ }
+      }
+
+      function onPlayerStateChange(event) {
+        const states = window.YT && window.YT.PlayerState;
+        if (!states) return;
+        if (event.data === states.PLAYING) {
+          els.playBtn.innerHTML = playIconMarkup(true);
+          els.playingBadge.textContent = "در حال پخش";
+          els.playStatus.textContent = "ویدیو در حال پخش است";
+          setStatus("پخش شروع شد.");
+          try {
+            const data = player.getVideoData();
+            if (data && data.title) {
+              els.currentTitle.textContent = data.title;
+              if (currentIndex >= 0 && playlist[currentIndex]) {
+                playlist[currentIndex].title = data.title;
+                savePlaylist();
+                renderPlaylist();
+              }
+            }
+          } catch {}
+        } else if (event.data === states.PAUSED) {
+          els.playBtn.innerHTML = playIconMarkup(false);
+          els.playingBadge.textContent = "متوقف‌شده";
+          els.playStatus.textContent = "پخش متوقف شده است";
+        } else if (event.data === states.ENDED) {
+          els.playBtn.innerHTML = playIconMarkup(false);
+          els.playingBadge.textContent = "پایان ویدیو";
+          els.playStatus.textContent = "ویدیو به پایان رسید";
+          updateProgress();
+          // For an actual YouTube playlist, let YouTube handle its internal next item.
+          // For a single-video entry in our local list, advance to the next saved entry.
+          const item = playlist[currentIndex];
+          if (item && item.type === "video") {
+            setTimeout(() => {
+              if (currentIndex >= 0 && playlist[currentIndex] === item) playNext();
+            }, 450);
+          }
+        } else if (event.data === states.BUFFERING) {
+          els.playingBadge.textContent = "در حال آماده‌سازی";
+        } else if (event.data === states.CUED) {
+          els.playingBadge.textContent = "آماده پخش";
+          els.playBtn.innerHTML = playIconMarkup(false);
+          updateProgress();
+        }
+      }
+
+      function initPlayer() {
+        if (!window.YT || !window.YT.Player) return;
+        player = new YT.Player("player", {
+          width: "100%", height: "100%", videoId: "",
+          playerVars: {
+            autoplay: 0, controls: 1, rel: 0, playsinline: 1,
+            modestbranding: 1,
+            ...(location.protocol === "http:" || location.protocol === "https:" ? { origin: location.origin } : {})
+          },
+          events: {
+            onReady: () => {
+              playerReady = true;
+              els.playBtn.disabled = currentIndex < 0;
+              els.fullscreenBtn.disabled = currentIndex < 0;
+              setStatus("پخش‌کننده آماده است.");
+              if (currentIndex >= 0) playItem(currentIndex);
+            },
+            onStateChange: onPlayerStateChange,
+            onError: (event) => {
+              const errors = {
+                2: "شناسه ویدیو نامعتبر است.",
+                5: "این ویدیو با پخش‌کننده HTML5 قابل پخش نیست.",
+                100: "ویدیو پیدا نشد یا حذف شده است.",
+                101: "صاحب ویدیو اجازه پخش تعبیه‌شده را نداده است.",
+                150: "صاحب ویدیو اجازه پخش تعبیه‌شده را نداده است.",
+                153: "یوتیوب اطلاعات ارجاع‌دهنده (Referer) را دریافت نکرده؛ صفحه را از یک وب‌سرور یا دامنه اجرا کن."
+              };
+              const message = errors[event.data] || "خطا در پخش ویدیو.";
+              setStatus(message);
+              els.playingBadge.textContent = "خطا در پخش";
+              showToast(message);
+            }
+          }
+        });
+      }
+
+      window.onYouTubeIframeAPIReady = initPlayer;
+
+      els.addForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const raw = els.urlInput.value.trim();
+        if (!raw) return;
+        const parsed = parseYouTubeUrl(raw);
+        if (!parsed) {
+          showToast("لینک معتبر یوتیوب وارد کن.");
+          els.urlInput.focus();
+          return;
+        }
+        addItem(parsed);
+        els.urlInput.value = "";
+      });
+
+      els.searchInput.addEventListener("input", renderPlaylist);
+      els.prevBtn.addEventListener("click", playPrevious);
+      els.nextBtn.addEventListener("click", playNext);
+      els.playBtn.addEventListener("click", () => {
+        if (!playerReady || !player || currentIndex < 0) return;
+        try {
+          const state = player.getPlayerState();
+          if (state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING) player.pauseVideo();
+          else player.playVideo();
+        } catch { showToast("پخش‌کننده هنوز آماده نیست."); }
+      });
+      els.fullscreenBtn.addEventListener("click", async () => {
+        const iframe = els.playerWrap.querySelector("iframe");
+        try {
+          if (document.fullscreenElement) await document.exitFullscreen();
+          else if (els.playerWrap.requestFullscreen) await els.playerWrap.requestFullscreen();
+          else if (iframe && iframe.requestFullscreen) await iframe.requestFullscreen();
+          else showToast("تمام‌صفحه در این مرورگر پشتیبانی نمی‌شود.");
+        } catch { showToast("مرورگر اجازه تمام‌صفحه شدن را نداد."); }
+      });
+
+      $("clearBtn").addEventListener("click", () => {
+        if (!playlist.length) { showToast("پلی‌لیست از قبل خالی است."); return; }
+        if (!confirm("همه لینک‌های ذخیره‌شده پاک شوند؟")) return;
+        playlist = [];
+        savePlaylist();
+        resetPlayerView();
+        showToast("پلی‌لیست پاک شد.");
+      });
+
+      $("exportBtn").addEventListener("click", () => {
+        const blob = new Blob([JSON.stringify(playlist, null, 2)], { type: "application/json;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "youtube-playlist-backup.json";
+        document.body.append(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showToast("فایل پشتیبان آماده شد.");
+      });
+
+      $("importBtn").addEventListener("click", () => {
+        els.importText.value = "";
+        els.importModal.classList.add("open");
+        els.importText.focus();
+      });
+      $("cancelImport").addEventListener("click", () => els.importModal.classList.remove("open"));
+      els.importModal.addEventListener("click", (event) => {
+        if (event.target === els.importModal) els.importModal.classList.remove("open");
+      });
+      $("confirmImport").addEventListener("click", () => {
+        try {
+          const data = JSON.parse(els.importText.value);
+          if (!Array.isArray(data)) throw new Error("format");
+          const cleaned = data.map(item => {
+            if (!item || typeof item.id !== "string" || !/^[\w-]{6,}$/.test(item.id)) return null;
+            return {
+              id: item.id,
+              type: item.type === "playlist" ? "playlist" : "video",
+              title: typeof item.title === "string" && item.title.trim() ? item.title.trim() : "ویدیوی یوتیوب",
+              addedAt: Number(item.addedAt) || Date.now()
+            };
+          }).filter(Boolean);
+          playlist = cleaned.filter((item, index, all) => all.findIndex(other => other.id === item.id && other.type === item.type) === index);
+          currentIndex = -1;
+          savePlaylist();
+          renderPlaylist();
+          resetPlayerView();
+          els.importModal.classList.remove("open");
+          showToast(`${faNumber(playlist.length)} مورد وارد شد.`);
+        } catch {
+          showToast("فایل JSON معتبر نیست.");
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") els.importModal.classList.remove("open");
+      });
+
+      renderPlaylist();
+      progressTimer = setInterval(updateProgress, 500);
+      if (location.protocol === "file:") {
+        setStatus("نکته: این فایل مستقیم از حافظه باز شده است. برای پخش مطمئن یوتیوب، فایل را روی HTTPS مثل GitHub Pages یا Cloudflare Pages قرار بده؛ بعضی مرورگرها اجرای پلیر از file:// را مسدود می‌کنند.");
+      }
+      const apiScript = document.createElement("script");
+      apiScript.src = "https://www.youtube.com/iframe_api";
+      apiScript.async = true;
+      apiScript.onerror = () => setStatus("بارگذاری API یوتیوب ناموفق بود؛ اتصال اینترنت را بررسی کن.");
+      document.head.append(apiScript);
+    })();
+  </script>
 </body>
 </html>
