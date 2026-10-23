@@ -2,243 +2,642 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090b10">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>پخش کننده سریال تاکسی</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet">
+  <title>سریال تاکسی | پخش آنلاین</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Noto Kufi Arabic", sans-serif; }
-    :root { color-scheme: dark; }
-    html, body { min-height: 100%; }
-    body { background: #1a1a1a; color: #f0f0f0; min-height: 100vh; display: flex; flex-direction: column; }
-    button { font: inherit; }
-    .header { padding: 10px 15px; background: #222; border-bottom: 1px solid #333; display: flex; justify-content: flex-start; align-items: center; }
-    .hamburger-btn { width: 42px; height: 42px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; padding: 8px; background: #333; border-radius: 5px; border: 0; color: white; z-index: 101; }
-    .hamburger-line { width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: .2s; }
-    .hamburger-btn.active .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger-btn.active .hamburger-line:nth-child(2) { opacity: 0; }
-    .hamburger-btn.active .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .series-title { text-align: center; padding: 12px 15px; font-size: 1.3rem; color: #fff; background: #222; }
-    .content-wrapper { flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 15px; }
-    .video-container { width: 100%; margin: 0 auto; }
-    .video-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; overflow: hidden; border-radius: 8px; }
-    video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; outline: none; }
-    .video-poster { position: absolute; inset: 0; width: 100%; height: 100%; background-image: url("https://media.mehrnews.com/d/2026/10/14/3/6218059.jpg?ts=1791975734977"); background-size: cover; background-position: center; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-    .video-poster::after { content: "▶"; font-size: 42px; color: #fff; background: rgba(0,0,0,.55); width: 78px; height: 78px; border-radius: 50%; display: flex; justify-content: center; align-items: center; padding-right: 4px; }
-    .video-poster.hidden { display: none; }
-    .video-controls { display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-    .control-btn { background: #333; color: #fff; border: 1px solid #444; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem; }
-    .control-btn:active, .control-btn:hover { background: #444; }
-    .status { margin-top: 12px; min-height: 28px; text-align: center; color: #ffcc80; font-size: .9rem; overflow-wrap: anywhere; }
-    .playlist-container { position: fixed; top: 0; right: 0; width: min(350px, 88vw); height: 100dvh; background: rgba(37,37,37,.97); backdrop-filter: blur(10px); transition: transform .25s ease; overflow-y: auto; z-index: 100; padding: 70px 0 20px; border-left: 1px solid rgba(255,255,255,.1); transform: translateX(105%); }
-    .playlist-container.active { transform: translateX(0); }
-    .playlist { padding: 15px; }
-    .playlist-heading { padding: 0 15px 10px; color: #ddd; }
-    .playlist-item { display: block; width: 100%; text-align: right; padding: 12px 15px; margin-bottom: 8px; background: rgba(51,51,51,.9); color: #eee; border-radius: 6px; cursor: pointer; border: 1px solid rgba(255,255,255,.1); }
-    .playlist-item:hover { background: #3a3a3a; }
-    .playlist-item.active { background: #244b5b; border-color: #39758d; }
-    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 90; opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s ease; }
-    .overlay.active { opacity: 1; visibility: visible; }
-    @media (min-width: 768px) {
-      .content-wrapper { padding: 24px; }
-      .series-title { font-size: 1.5rem; padding: 15px; }
-      .video-wrapper { aspect-ratio: 16 / 9; }
+    :root {
+      color-scheme: dark;
+      --bg: #090b10;
+      --panel: #11151d;
+      --panel2: #171c26;
+      --line: rgba(255,255,255,.09);
+      --text: #f4f6fb;
+      --muted: #929bad;
+      --accent: #d7a85b;
+      --accent2: #f0c77e;
+      --danger: #ff8585;
+      --radius: 18px;
     }
-    @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--text);
+      background: radial-gradient(ellipse at 50% -20%, #202637 0%, var(--bg) 58%);
+      font-family: Vazirmatn, Tahoma, sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent2); outline-offset: 3px; }
+    .topbar {
+      height: 68px; padding: 0 clamp(14px, 3vw, 34px); display: flex; align-items: center;
+      justify-content: space-between; gap: 14px; border-bottom: 1px solid var(--line);
+      background: rgba(9,11,16,.82); backdrop-filter: blur(18px); position: sticky; top: 0; z-index: 20;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center;
+      background: linear-gradient(145deg, var(--accent2), #a56c2b); color: #17120a; font-size: 18px; font-weight: 900;
+      box-shadow: 0 5px 22px #d7a85b26;
+    }
+    .brand-copy { min-width: 0; }
+    .brand-title { font-size: 15px; font-weight: 800; line-height: 1.35; }
+    .brand-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .pill {
+      border: 1px solid var(--line); background: #ffffff07; color: #d8deea; border-radius: 999px;
+      padding: 7px 12px; font-size: 12px; white-space: nowrap;
+    }
+    .icon-btn {
+      border: 1px solid var(--line); background: var(--panel2); color: var(--text); width: 42px; height: 42px;
+      display: inline-grid; place-items: center; border-radius: 13px; cursor: pointer; flex: 0 0 auto;
+    }
+    .icon-btn:hover { border-color: #d7a85b80; background: #252a34; }
+    .icon-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .layout {
+      width: min(1500px, 100%); margin: 0 auto; padding: clamp(14px, 2.5vw, 30px);
+      display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-items: start;
+    }
+    .main-column { min-width: 0; }
+    .heading-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .eyebrow { color: var(--accent2); font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+    h1 { font-size: clamp(21px, 3vw, 30px); line-height: 1.4; margin: 4px 0 0; font-weight: 800; }
+    .subheading { color: var(--muted); font-size: 13px; margin-top: 5px; }
+    .player-shell {
+      position: relative; background: #000; border: 1px solid #ffffff14; border-radius: var(--radius);
+      overflow: hidden; box-shadow: 0 22px 70px #0009; isolation: isolate;
+    }
+    .video-stage { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
+    video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+    .poster-layer {
+      position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; cursor: pointer;
+      background: linear-gradient(0deg, #000b 0%, transparent 45%, #0003 100%),
+        url("https://media.mehrnews.com/d/2026/10/14/3/6218059.jpg?ts=1791975734977") center/cover no-repeat,
+        #10131a;
+      transition: opacity .2s ease, visibility .2s ease;
+    }
+    .poster-layer::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #090b1055, transparent 45%, #090b1044); }
+    .poster-layer.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .poster-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px; text-align: center; }
+    .big-play {
+      width: 76px; height: 76px; display: grid; place-items: center; border-radius: 50%; color: #1b160c;
+      background: linear-gradient(145deg, #f6d899, #bf8739); box-shadow: 0 8px 35px #0008, 0 0 0 10px #ffffff16;
+      border: 0; cursor: pointer; transition: transform .18s ease;
+    }
+    .big-play:hover { transform: scale(1.06); }
+    .big-play svg { width: 29px; height: 29px; fill: currentColor; margin-left: -3px; }
+    .poster-label { color: white; font-size: 13px; text-shadow: 0 2px 12px #000; }
+    .error-panel {
+      display: none; position: absolute; z-index: 5; inset: auto 12px 12px; padding: 12px 14px;
+      border: 1px solid #ff858555; background: #241416ee; border-radius: 12px; color: #ffdede;
+      font-size: 12px; line-height: 1.9; overflow-wrap: anywhere;
+    }
+    .error-panel.visible { display: block; }
+    .error-panel button { margin-right: 8px; border: 1px solid #ffffff22; color: white; background: #ffffff10; padding: 4px 10px; border-radius: 8px; cursor: pointer; }
+    .custom-controls {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px 14px;
+      background: linear-gradient(180deg, #141820, #0d1016); border-top: 1px solid #ffffff0d;
+    }
+    .ctrl {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px;
+      border: 1px solid var(--line); background: #ffffff08; color: #f4f6fb; border-radius: 11px;
+      padding: 7px 10px; cursor: pointer; font-size: 12px; white-space: nowrap;
+    }
+    .ctrl:hover { background: #ffffff12; border-color: #d7a85b70; }
+    .ctrl svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ctrl.primary { background: var(--accent); color: #1b160c; border-color: transparent; font-weight: 800; }
+    .ctrl.primary:hover { background: var(--accent2); }
+    .time { direction: ltr; color: #c4cad5; font-size: 11px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .seek-wrap { flex: 1 1 180px; display: flex; align-items: center; gap: 10px; min-width: 130px; }
+    input[type="range"] { accent-color: var(--accent); cursor: pointer; min-width: 0; }
+    #seek { width: 100%; direction: ltr; }
+    #volume { width: 78px; direction: ltr; }
+    .select-wrap { position: relative; }
+    select {
+      max-width: 105px; min-height: 38px; padding: 6px 8px; border-radius: 11px; border: 1px solid var(--line);
+      color: #f4f6fb; background: #ffffff08; font-size: 12px;
+    }
+    select option { background: #171c26; }
+    .below-player { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 15px 3px 0; }
+    .now-playing { min-width: 0; }
+    .now-title { font-size: 15px; font-weight: 700; }
+    .now-meta { color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .status { font-size: 12px; color: var(--muted); margin-top: 14px; min-height: 24px; overflow-wrap: anywhere; }
+    .status.error { color: var(--danger); }
+    .side-panel {
+      background: linear-gradient(150deg, #151a24, #0e1118); border: 1px solid var(--line); border-radius: var(--radius);
+      overflow: hidden; min-width: 0;
+    }
+    .side-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 17px; border-bottom: 1px solid var(--line); }
+    .side-title { font-size: 15px; font-weight: 800; }
+    .episode-count { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .episode-list { padding: 10px; display: grid; gap: 8px; max-height: 65vh; overflow: auto; }
+    .episode {
+      display: grid; grid-template-columns: 38px minmax(0, 1fr) 20px; align-items: center; gap: 10px;
+      width: 100%; text-align: right; padding: 11px; border-radius: 13px; border: 1px solid transparent;
+      color: var(--text); background: #ffffff04; cursor: pointer;
+    }
+    .episode:hover { background: #ffffff08; border-color: var(--line); }
+    .episode.active { background: #d7a85b12; border-color: #d7a85b66; }
+    .episode-number { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: #ffffff0b; color: var(--muted); font-size: 12px; direction: ltr; }
+    .episode.active .episode-number { background: var(--accent); color: #1b160c; font-weight: 800; }
+    .episode-name { font-size: 12px; font-weight: 600; line-height: 1.7; }
+    .episode-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .episode-check { color: var(--accent2); font-size: 15px; }
+    .empty-note { color: var(--muted); font-size: 12px; padding: 16px; text-align: center; line-height: 1.9; }
+    .footer { color: #626b7b; text-align: center; font-size: 11px; padding: 20px 12px 28px; }
+    .drawer-backdrop { display: none; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (min-width: 980px) {
+      .layout { grid-template-columns: minmax(0, 1fr) 330px; }
+      .side-panel { position: sticky; top: 90px; }
+      .side-panel.collapsed-desktop { display: none; }
+      .layout.panel-hidden { grid-template-columns: minmax(0, 1fr); }
+      .layout.panel-hidden .main-column { width: 100%; }
+    }
+    @media (max-width: 979px) {
+      .layout { display: block; }
+      .side-panel {
+        position: fixed; z-index: 41; top: 0; bottom: 0; right: 0; width: min(360px, 88vw);
+        border-radius: 0; overflow-y: auto; transform: translateX(105%); transition: transform .25s ease;
+        padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);
+      }
+      .side-panel.mobile-open { transform: translateX(0); }
+      .episode-list { max-height: none; }
+      .drawer-backdrop { display: block; position: fixed; z-index: 40; inset: 0; background: #000a; opacity: 0; visibility: hidden; transition: .2s; }
+      .drawer-backdrop.visible { opacity: 1; visibility: visible; }
+      .side-head { position: sticky; top: 0; background: #151a24f5; backdrop-filter: blur(12px); z-index: 1; }
+    }
+    @media (max-width: 600px) {
+      .topbar { height: 60px; }
+      .brand-sub, .pill { display: none; }
+      .layout { padding: 13px 10px 20px; }
+      .heading-row { margin-bottom: 12px; }
+      .subheading { font-size: 11px; }
+      .player-shell { border-radius: 12px; }
+      .video-stage { aspect-ratio: 16 / 9; }
+      .custom-controls { gap: 6px; padding: 9px; }
+      .ctrl { min-height: 36px; padding: 6px 8px; font-size: 11px; }
+      .ctrl .ctrl-text { display: none; }
+      .seek-wrap { order: 10; flex-basis: 100%; }
+      #volume { width: 62px; }
+      .big-play { width: 62px; height: 62px; }
+      .big-play svg { width: 24px; height: 24px; }
+      .poster-label { font-size: 11px; }
+      .below-player { padding-top: 12px; }
+      .now-title { font-size: 14px; }
+      .status { font-size: 11px; }
+    }
+    @media (orientation: landscape) and (max-height: 560px) {
+      .topbar { height: 48px; }
+      .layout { padding-top: 10px; }
+      .heading-row { margin-bottom: 8px; }
+      .video-stage { max-height: calc(100dvh - 150px); aspect-ratio: 16 / 9; }
+      .custom-controls { padding: 6px 10px; }
+    }
+    video::-webkit-media-controls { direction: ltr; }
   </style>
 </head>
 <body>
-  <header class="header">
-    <button class="hamburger-btn" id="hamburger-btn" type="button" aria-label="باز و بسته کردن فهرست قسمت‌ها" aria-expanded="false">
-      <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
-    </button>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">▶</div>
+      <div class="brand-copy">
+        <div class="brand-title">سینما آنلاین</div>
+        <div class="brand-sub">تماشای سریال، ساده و بدون دردسر</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span class="pill">پخش آنلاین</span>
+      <button class="icon-btn" id="toggle-episodes" type="button" aria-label="نمایش فهرست قسمت‌ها" title="فهرست قسمت‌ها">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><path d="M8 6h.01M8 12h.01M8 18h.01"/></svg>
+      </button>
+    </div>
   </header>
 
-  <div class="series-title">سریال تاکسی</div>
+  <main class="layout" id="layout">
+    <section class="main-column">
+      <div class="heading-row">
+        <div>
+          <div class="eyebrow">سریال منتخب</div>
+          <h1>سریال تاکسی</h1>
+          <div class="subheading">قسمت موردنظر را انتخاب کن و از تماشا لذت ببر.</div>
+        </div>
+      </div>
 
-  <main class="content-wrapper">
-    <section class="video-container" aria-label="پخش ویدیو">
-      <div class="video-wrapper">
-        <video id="video-player" controls playsinline preload="metadata"
-          poster="https://media.mehrnews.com/d/2026/10/14/3/6218059.jpg?ts=1791975734977">
-          مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
-        </video>
-        <div class="video-poster" id="video-poster" role="button" tabindex="0" aria-label="پخش ویدیو"></div>
+      <div class="player-shell" id="player-shell">
+        <div class="video-stage" id="video-stage">
+          <video id="video-player" controls playsinline preload="metadata"
+            poster="https://media.mehrnews.com/d/2026/10/14/3/6218059.jpg?ts=1791975734977">
+            مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+          </video>
+
+          <button class="poster-layer" id="poster-layer" type="button" aria-label="پخش ویدیو">
+            <span class="poster-content">
+              <span class="big-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M8 5.5c0-.8.9-1.3 1.6-.9l10 6.5c.6.4.6 1.4 0 1.8l-10 6.5c-.7.4-1.6-.1-1.6-.9z"/></svg>
+              </span>
+              <span class="poster-label">برای شروع تماشا کلیک کنید</span>
+            </span>
+          </button>
+          <div class="error-panel" id="error-panel" role="alert">
+            <span id="error-text">پخش ویدیو با مشکل مواجه شد.</span>
+            <button id="retry-btn" type="button">تلاش دوباره</button>
+          </div>
+        </div>
+
+        <div class="custom-controls" aria-label="کنترل‌های اختصاصی پخش">
+          <button class="ctrl primary" id="play-pause-btn" type="button" aria-label="پخش">
+            <svg viewBox="0 0 24 24" aria-hidden="true" id="play-pause-icon"><path d="M8 5.5c0-.8.9-1.3 1.6-.9l10 6.5c.6.4.6 1.4 0 1.8l-10 6.5c-.7.4-1.6-.1-1.6-.9z"/></svg>
+            <span class="ctrl-text" id="play-pause-label">پخش</span>
+          </button>
+          <button class="ctrl" id="back-btn" type="button" aria-label="۱۰ ثانیه عقب" title="۱۰ ثانیه عقب">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2.4 6.1"/><path d="M3 4v7h7"/><path d="M13 9v6M11.5 9h3"/></svg><span class="ctrl-text">۱۰ ثانیه عقب</span>
+          </button>
+          <button class="ctrl" id="forward-btn" type="button" aria-label="۱۰ ثانیه جلو" title="۱۰ ثانیه جلو">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11a9 9 0 1 0-2.4 6.1"/><path d="M21 4v7h-7"/><path d="M11 9v6M9.5 9H11M11 9h1.5"/></svg><span class="ctrl-text">۱۰ ثانیه جلو</span>
+          </button>
+          <div class="seek-wrap">
+            <span class="time" id="current-time">00:00</span>
+            <label class="sr-only" for="seek">موقعیت ویدیو</label>
+            <input id="seek" type="range" min="0" max="1000" value="0" step="1" aria-label="موقعیت ویدیو">
+            <span class="time" id="duration">00:00</span>
+          </div>
+          <button class="ctrl" id="mute-btn" type="button" aria-label="قطع صدا" title="قطع یا وصل صدا">
+            <svg viewBox="0 0 24 24" aria-hidden="true" id="volume-icon"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg>
+          </button>
+          <label class="sr-only" for="volume">میزان صدا</label>
+          <input id="volume" type="range" min="0" max="1" value="1" step="0.05" aria-label="میزان صدا">
+          <label class="sr-only" for="speed">سرعت پخش</label>
+          <select id="speed" aria-label="سرعت پخش" title="سرعت پخش">
+            <option value="0.5">۰٫۵×</option>
+            <option value="0.75">۰٫۷۵×</option>
+            <option value="1" selected>۱×</option>
+            <option value="1.25">۱٫۲۵×</option>
+            <option value="1.5">۱٫۵×</option>
+            <option value="1.75">۱٫۷۵×</option>
+            <option value="2">۲×</option>
+          </select>
+          <button class="ctrl" id="fullscreen-btn" type="button" aria-label="تمام صفحه" title="تمام صفحه">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4M16 4h4v4M4 16v4h4M20 16v4h-4"/></svg><span class="ctrl-text">تمام صفحه</span>
+          </button>
+        </div>
       </div>
-      <div class="video-controls">
-        <button class="control-btn" id="play-btn" type="button">پخش</button>
-        <button class="control-btn" id="pause-btn" type="button">توقف</button>
-        <button class="control-btn" id="fullscreen-btn" type="button">تمام صفحه</button>
+
+      <div class="below-player">
+        <div class="now-playing">
+          <div class="now-title" id="now-title">قسمت اول</div>
+          <div class="now-meta">پخش آنلاین · کیفیت وابسته به منبع ویدیو</div>
+        </div>
+        <button class="ctrl" id="show-episodes-bottom" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>فهرست قسمت‌ها
+        </button>
       </div>
-      <p class="status" id="status" role="status" aria-live="polite">برای شروع، روی پخش بزنید.</p>
+      <p class="status" id="status" role="status" aria-live="polite">برای شروع، دکمه پخش را انتخاب کنید.</p>
     </section>
+
+    <aside class="side-panel" id="side-panel" aria-label="فهرست قسمت‌ها">
+      <div class="side-head">
+        <div>
+          <div class="side-title">قسمت‌های سریال</div>
+          <div class="episode-count" id="episode-count">۱ قسمت</div>
+        </div>
+        <button class="icon-btn" id="close-episodes" type="button" aria-label="بستن فهرست">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="episode-list" id="episode-list"></div>
+    </aside>
   </main>
 
-  <aside class="playlist-container" id="playlist-container" aria-label="فهرست قسمت‌ها" aria-hidden="true">
-    <div class="playlist-heading">فهرست قسمت‌ها</div>
-    <div class="playlist" id="playlist"></div>
-  </aside>
-  <div class="overlay" id="overlay"></div>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+  <footer class="footer">پخش‌کننده اختصاصی سریال تاکسی</footer>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const videoPlayer = document.getElementById("video-player");
-      const videoPoster = document.getElementById("video-poster");
-      const playBtn = document.getElementById("play-btn");
-      const pauseBtn = document.getElementById("pause-btn");
-      const fullscreenBtn = document.getElementById("fullscreen-btn");
-      const hamburgerBtn = document.getElementById("hamburger-btn");
-      const playlistContainer = document.getElementById("playlist-container");
-      const playlist = document.getElementById("playlist");
-      const overlay = document.getElementById("overlay");
-      const status = document.getElementById("status");
+    /*
+      برای افزودن قسمت، یک مورد دیگر به آرایه episodes اضافه کنید:
+      { title: "قسمت دوم", url: "https://example.com/episode-2.mp4" }
+      آدرس‌ها باید لینک مستقیم فایل ویدیویی باشند.
+    */
+    const episodes = [
+      {
+        title: "قسمت اول",
+        url: "https://cdn1.movieland.af/series2/2026/taksy/season_1/episode_1/taksy-s1-e1-720p-movieland.af.mp4"
+      }
+    ];
 
-      // آدرس قسمت‌ها را در همین آرایه اضافه کنید.
-      const episodes = [
-        {
-          title: "قسمت اول",
-          url: "https://cdn1.movieland.af/series2/2026/taksy/season_1/episode_1/taksy-s1-e1-720p-movieland.af.mp4"
-        }
-      ];
+    (() => {
+      const $ = id => document.getElementById(id);
+      const video = $("video-player");
+      const poster = $("poster-layer");
+      const status = $("status");
+      const errorPanel = $("error-panel");
+      const errorText = $("error-text");
+      const playPauseBtn = $("play-pause-btn");
+      const playPauseLabel = $("play-pause-label");
+      const playPauseIcon = $("play-pause-icon");
+      const seek = $("seek");
+      const currentTime = $("current-time");
+      const duration = $("duration");
+      const volume = $("volume");
+      const speed = $("speed");
+      const sidePanel = $("side-panel");
+      const backdrop = $("drawer-backdrop");
+      const layout = $("layout");
+      const episodeList = $("episode-list");
+      let activeIndex = 0;
+      let isSeeking = false;
+      let lastVolume = 1;
 
-      function setStatus(message) {
+      const playPath = '<path d="M8 5.5c0-.8.9-1.3 1.6-.9l10 6.5c.6.4.6 1.4 0 1.8l-10 6.5c-.7.4-1.6-.1-1.6-.9z"/>';
+      const pausePath = '<path d="M7 5h4v14H7zM15 5h4v14h-4z"/>';
+      const mutePath = '<path d="M4 9v6h4l5 4V5L8 9z"/><path d="m17 9 5 6m0-6-5 6"/>';
+      const volumePath = '<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a5 5 0 0 1 0 6"/>';
+
+      function fmt(seconds) {
+        if (!Number.isFinite(seconds) || seconds < 0) return "00:00";
+        const s = Math.floor(seconds);
+        const h = Math.floor(s / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        const sec = s % 60;
+        return h > 0
+          ? [h, m, sec].map(v => String(v).padStart(2, "0")).join(":")
+          : [m, sec].map(v => String(v).padStart(2, "0")).join(":");
+      }
+
+      function setStatus(message, isError = false) {
         status.textContent = message;
+        status.classList.toggle("error", isError);
       }
 
-      function hidePoster() {
-        videoPoster.classList.add("hidden");
+      function showError(message) {
+        errorText.textContent = message;
+        errorPanel.classList.add("visible");
+        poster.classList.remove("is-hidden");
+        setStatus(message, true);
       }
 
-      function showPoster() {
-        videoPoster.classList.remove("hidden");
+      function clearError() {
+        errorPanel.classList.remove("visible");
+        setStatus("");
       }
 
-      function closeMenu() {
-        hamburgerBtn.classList.remove("active");
-        hamburgerBtn.setAttribute("aria-expanded", "false");
-        playlistContainer.classList.remove("active");
-        playlistContainer.setAttribute("aria-hidden", "true");
-        overlay.classList.remove("active");
+      function syncPlayButton() {
+        if (video.paused) {
+          playPauseIcon.innerHTML = playPath;
+          playPauseLabel.textContent = "پخش";
+          playPauseBtn.setAttribute("aria-label", "پخش");
+          poster.classList.remove("is-hidden");
+        } else {
+          playPauseIcon.innerHTML = pausePath;
+          playPauseLabel.textContent = "توقف";
+          playPauseBtn.setAttribute("aria-label", "توقف");
+          poster.classList.add("is-hidden");
+        }
       }
 
-      function toggleMenu() {
-        const isOpen = !playlistContainer.classList.contains("active");
-        playlistContainer.classList.toggle("active", isOpen);
-        hamburgerBtn.classList.toggle("active", isOpen);
-        hamburgerBtn.setAttribute("aria-expanded", String(isOpen));
-        playlistContainer.setAttribute("aria-hidden", String(!isOpen));
-        overlay.classList.toggle("active", isOpen);
+      async function togglePlayback() {
+        if (video.paused || video.ended) {
+          clearError();
+          try {
+            await video.play();
+          } catch (e) {
+            showError("پخش آغاز نشد. اتصال اینترنت و دسترسی مستقیم به فایل ویدیو را بررسی کنید.");
+          }
+        } else {
+          video.pause();
+        }
       }
 
-      function selectEpisode(episode, item) {
-        document.querySelectorAll(".playlist-item").forEach(el => el.classList.remove("active"));
-        item.classList.add("active");
-        videoPlayer.pause();
-        videoPlayer.removeAttribute("src");
-        videoPlayer.src = episode.url;
-        videoPlayer.load();
-        showPoster();
-        setStatus("در حال آماده‌سازی ویدیو...");
-        closeMenu();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+      function setEpisode(index, autoplay = false) {
+        if (!episodes[index]) return;
+        activeIndex = index;
+        const episode = episodes[index];
+        $("now-title").textContent = episode.title;
+        [...episodeList.querySelectorAll(".episode")].forEach((item, i) => {
+          item.classList.toggle("active", i === index);
+          item.setAttribute("aria-current", i === index ? "true" : "false");
+          const check = item.querySelector(".episode-check");
+          if (check) check.textContent = i === index ? "●" : "";
+        });
 
-        // تلاش برای پخش پس از انتخاب کاربر؛ اگر سرور اجازه ندهد، خطا نمایش داده می‌شود.
-        const playPromise = videoPlayer.play();
-        if (playPromise && typeof playPromise.catch === "function") {
-          playPromise.then(() => {
-            hidePoster();
-            setStatus("");
-          }).catch(() => {
-            setStatus("پخش خودکار انجام نشد. دکمه پخش را بزنید؛ اگر باز هم اجرا نشد، لینک یا سرور ویدیو را بررسی کنید.");
+        video.pause();
+        video.src = episode.url;
+        video.load();
+        video.currentTime = 0;
+        seek.value = 0;
+        currentTime.textContent = "00:00";
+        duration.textContent = "00:00";
+        poster.classList.remove("is-hidden");
+        clearError();
+        setStatus("در حال اتصال به منبع ویدیو...");
+        closeEpisodes();
+
+        if (autoplay) {
+          video.play().then(clearError).catch(() => {
+            // The media error event will show a more specific message if one occurs.
+            setStatus("برای شروع، دکمه پخش را انتخاب کنید.");
           });
         }
       }
 
-      episodes.forEach((episode, index) => {
-        const item = document.createElement("button");
-        item.type = "button";
-        item.className = "playlist-item";
-        item.textContent = episode.title;
-        item.addEventListener("click", () => selectEpisode(episode, item));
-        playlist.appendChild(item);
-        if (index === 0) {
-          item.classList.add("active");
-          videoPlayer.src = episode.url;
+      function renderEpisodes() {
+        episodeList.innerHTML = "";
+        $("episode-count").textContent = `${episodes.length} ${episodes.length === 1 ? "قسمت" : "قسمت"}`;
+        if (!episodes.length) {
+          episodeList.innerHTML = '<div class="empty-note">هنوز قسمتی اضافه نشده است.</div>';
+          return;
+        }
+        episodes.forEach((episode, index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "episode";
+          button.innerHTML = `<span class="episode-number">${String(index + 1).padStart(2, "0")}</span>
+            <span><span class="episode-name"></span><span class="episode-sub">پخش آنلاین</span></span>
+            <span class="episode-check" aria-hidden="true"></span>`;
+          button.querySelector(".episode-name").textContent = episode.title;
+          button.addEventListener("click", () => setEpisode(index, false));
+          episodeList.appendChild(button);
+        });
+      }
+
+      function openEpisodes() {
+        if (window.matchMedia("(max-width: 979px)").matches) {
+          sidePanel.classList.add("mobile-open");
+          backdrop.classList.add("visible");
+          document.body.style.overflow = "hidden";
+        } else {
+          const hidden = sidePanel.classList.toggle("collapsed-desktop");
+          layout.classList.toggle("panel-hidden", hidden);
+        }
+      }
+
+      function closeEpisodes() {
+        sidePanel.classList.remove("mobile-open");
+        backdrop.classList.remove("visible");
+        document.body.style.overflow = "";
+        if (window.matchMedia("(min-width: 980px)").matches) {
+          // Desktop panel remains visible until the user toggles it.
+        }
+      }
+
+      $("toggle-episodes").addEventListener("click", openEpisodes);
+      $("show-episodes-bottom").addEventListener("click", openEpisodes);
+      $("close-episodes").addEventListener("click", () => {
+        if (window.matchMedia("(max-width: 979px)").matches) closeEpisodes();
+        else {
+          sidePanel.classList.add("collapsed-desktop");
+          layout.classList.add("panel-hidden");
         }
       });
-
-      videoPoster.addEventListener("click", () => {
-        hidePoster();
-        videoPlayer.play().then(() => setStatus("")).catch(() => {
-          showPoster();
-          setStatus("ویدیو پخش نشد. ممکن است لینک مستقیم در دسترس نباشد یا سرور درخواست پلیر را رد کند.");
-        });
-      });
-
-      videoPoster.addEventListener("keydown", event => {
-        if (event.key === "Enter" || event.key === " ") {
+      backdrop.addEventListener("click", closeEpisodes);
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeEpisodes();
+        if (event.code === "Space" && !["INPUT", "SELECT", "BUTTON"].includes(document.activeElement.tagName)) {
           event.preventDefault();
-          videoPoster.click();
+          togglePlayback();
+        }
+        if (event.key === "ArrowLeft" && !["INPUT", "SELECT"].includes(document.activeElement.tagName)) {
+          video.currentTime = Math.min(video.duration || Infinity, video.currentTime + 10);
+        }
+        if (event.key === "ArrowRight" && !["INPUT", "SELECT"].includes(document.activeElement.tagName)) {
+          video.currentTime = Math.max(0, video.currentTime - 10);
         }
       });
 
-      playBtn.addEventListener("click", () => {
-        hidePoster();
-        videoPlayer.play().then(() => setStatus("")).catch(() => {
-          showPoster();
-          setStatus("پخش ناموفق بود. لینک ویدیو یا دسترسی سرور را بررسی کنید.");
+      poster.addEventListener("click", togglePlayback);
+      $("play-pause-btn").addEventListener("click", togglePlayback);
+      $("retry-btn").addEventListener("click", () => {
+        clearError();
+        video.load();
+        video.play().catch(() => {
+          showError("تلاش دوباره ناموفق بود. ممکن است سرور ویدیو درخواست را رد کند یا لینک در دسترس نباشد.");
         });
       });
-
-      pauseBtn.addEventListener("click", () => {
-        videoPlayer.pause();
-        setStatus("ویدیو متوقف شد.");
+      $("back-btn").addEventListener("click", () => {
+        video.currentTime = Math.max(0, (video.currentTime || 0) - 10);
+      });
+      $("forward-btn").addEventListener("click", () => {
+        const max = Number.isFinite(video.duration) ? video.duration : video.currentTime + 10;
+        video.currentTime = Math.min(max, (video.currentTime || 0) + 10);
       });
 
-      fullscreenBtn.addEventListener("click", async () => {
-        try {
-          if (videoPlayer.requestFullscreen) await videoPlayer.requestFullscreen();
-          else if (videoPlayer.webkitEnterFullscreen) videoPlayer.webkitEnterFullscreen();
-          else setStatus("تمام‌صفحه در این مرورگر پشتیبانی نمی‌شود.");
-        } catch (error) {
-          setStatus("امکان ورود به حالت تمام‌صفحه وجود ندارد.");
+      seek.addEventListener("input", () => {
+        isSeeking = true;
+        if (Number.isFinite(video.duration) && video.duration > 0) {
+          currentTime.textContent = fmt((Number(seek.value) / 1000) * video.duration);
         }
       });
+      seek.addEventListener("change", () => {
+        if (Number.isFinite(video.duration) && video.duration > 0) {
+          video.currentTime = (Number(seek.value) / 1000) * video.duration;
+        }
+        isSeeking = false;
+      });
 
-      videoPlayer.addEventListener("loadstart", () => setStatus("در حال اتصال به سرور ویدیو..."));
-      videoPlayer.addEventListener("loadedmetadata", () => setStatus(""));
-      videoPlayer.addEventListener("canplay", () => setStatus(""));
-      videoPlayer.addEventListener("waiting", () => setStatus("در انتظار دریافت داده‌های ویدیو..."));
-      videoPlayer.addEventListener("playing", () => {
-        hidePoster();
+      volume.addEventListener("input", () => {
+        video.volume = Number(volume.value);
+        video.muted = video.volume === 0;
+        if (video.volume > 0) lastVolume = video.volume;
+        $("volume-icon").innerHTML = video.muted ? mutePath : volumePath;
+      });
+      $("mute-btn").addEventListener("click", () => {
+        video.muted = !video.muted;
+        if (!video.muted && video.volume === 0) {
+          video.volume = lastVolume || 1;
+          volume.value = String(video.volume);
+        }
+        $("volume-icon").innerHTML = video.muted ? mutePath : volumePath;
+      });
+      speed.addEventListener("change", () => {
+        video.playbackRate = Number(speed.value);
+      });
+
+      async function enterFullscreen() {
+        const target = $("player-shell");
+        try {
+          if (target.requestFullscreen) {
+            await target.requestFullscreen();
+          } else if (video.webkitEnterFullscreen) {
+            // iOS Safari may only support fullscreen on the video element itself.
+            video.webkitEnterFullscreen();
+          } else if (target.webkitRequestFullscreen) {
+            target.webkitRequestFullscreen();
+          } else if (target.msRequestFullscreen) {
+            target.msRequestFullscreen();
+          } else {
+            showError("تمام‌صفحه در این مرورگر پشتیبانی نمی‌شود؛ از دکمه تمام‌صفحه خود ویدیو استفاده کنید.");
+          }
+        } catch (e) {
+          showError("مرورگر اجازه ورود به حالت تمام‌صفحه را نداد.");
+        }
+      }
+      $("fullscreen-btn").addEventListener("click", enterFullscreen);
+
+      video.addEventListener("loadedmetadata", () => {
+        duration.textContent = fmt(video.duration);
+        setStatus("");
+        clearError();
+      });
+      video.addEventListener("durationchange", () => {
+        duration.textContent = fmt(video.duration);
+      });
+      video.addEventListener("timeupdate", () => {
+        currentTime.textContent = fmt(video.currentTime);
+        if (!isSeeking && Number.isFinite(video.duration) && video.duration > 0) {
+          seek.value = String(Math.round((video.currentTime / video.duration) * 1000));
+        }
+      });
+      video.addEventListener("play", syncPlayButton);
+      video.addEventListener("pause", syncPlayButton);
+      video.addEventListener("playing", () => {
+        clearError();
+        poster.classList.add("is-hidden");
         setStatus("");
       });
-      videoPlayer.addEventListener("ended", () => {
-        showPoster();
+      video.addEventListener("waiting", () => setStatus("در حال بارگذاری ویدیو..."));
+      video.addEventListener("canplay", () => {
+        if (!video.paused) setStatus("");
+      });
+      video.addEventListener("ended", () => {
+        syncPlayButton();
         setStatus("پخش این قسمت به پایان رسید.");
       });
-      videoPlayer.addEventListener("error", () => {
-        const error = videoPlayer.error;
-        const code = error ? error.code : 0;
+      video.addEventListener("error", () => {
+        const code = video.error ? video.error.code : 0;
         const messages = {
           1: "بارگذاری ویدیو لغو شد.",
-          2: "خطای شبکه هنگام دریافت ویدیو. اتصال یا سرور میزبان را بررسی کنید.",
-          3: "مرورگر نتوانست فایل ویدیو را رمزگشایی کند؛ ممکن است کدک پشتیبانی نشود.",
-          4: "منبع ویدیو قابل پخش نیست. لینک ممکن است خراب، مسدود یا دارای محدودیت دسترسی باشد."
+          2: "خطای شبکه هنگام دریافت ویدیو. اتصال یا دسترسی به سرور را بررسی کنید.",
+          3: "مرورگر نتوانست فایل را رمزگشایی کند؛ فرمت یا کدک ویدیو ممکن است پشتیبانی نشود.",
+          4: "منبع ویدیو قابل پخش نیست. لینک ممکن است در دسترس نباشد یا سرور درخواست این پلیر را رد کند."
         };
-        showPoster();
-        setStatus(messages[code] || "خطای نامشخص در پخش ویدیو. لینک مستقیم را بررسی کنید.");
-        console.error("Video playback error:", { code, message: error ? error.message : "unknown", src: videoPlayer.currentSrc });
+        showError(messages[code] || "خطای نامشخص در بارگذاری ویدیو.");
+        console.error("HTML video error", {
+          code,
+          message: video.error ? video.error.message : "unknown",
+          source: video.currentSrc,
+          page: location.href
+        });
       });
 
-      hamburgerBtn.addEventListener("click", toggleMenu);
-      overlay.addEventListener("click", closeMenu);
-      document.addEventListener("keydown", event => {
-        if (event.key === "Escape") closeMenu();
+      document.addEventListener("fullscreenchange", () => {
+        const isFull = !!document.fullscreenElement;
+        $("fullscreen-btn").setAttribute("aria-label", isFull ? "خروج از تمام صفحه" : "تمام صفحه");
       });
-    });
+      window.addEventListener("resize", () => {
+        if (!window.matchMedia("(max-width: 979px)").matches) closeEpisodes();
+      });
+
+      renderEpisodes();
+      setEpisode(0, false);
+      syncPlayButton();
+    })();
   </script>
 </body>
 </html>
