@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مریم نیلوفری | پخش ویدیو</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700&display=swap');
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #101116;
+    color: #fff;
+    font-family: 'Noto Kufi Arabic', sans-serif;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+h2 {
+    font-size: 22px;
+    margin: 0 0 18px;
+}
+
+.player {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+    border-radius: 12px;
+    outline: none;
+    direction: ltr;
+}
+
+.player:fullscreen {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    aspect-ratio: auto;
+    border-radius: 0;
+}
+
+.player video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+
+.center-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 78px;
+    height: 78px;
+    border: 0;
+    border-radius: 50%;
+    background: #e50914;
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+    z-index: 3;
+    transition: opacity .2s;
+}
+
+.controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 35px 16px 12px;
+    background: linear-gradient(transparent, rgba(0,0,0,.94));
+    opacity: 1;
+    transition: opacity .25s;
+    z-index: 4;
+}
+
+.player.idle .controls,
+.player.idle .center-play {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.player.paused .center-play {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.player.paused .controls {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.seek {
+    width: 100%;
+    accent-color: #e50914;
+    cursor: pointer;
+}
+
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    color: white;
+}
+
+.control-row button {
+    border: 0;
+    background: transparent;
+    color: white;
+    font-size: 22px;
+    min-width: 36px;
+    min-height: 36px;
+    cursor: pointer;
+}
+
+.control-row button:focus,
+.center-play:focus,
+select:focus {
+    outline: 2px solid #ff3340;
+    outline-offset: 2px;
+}
+
+#time {
+    font: 13px Arial, sans-serif;
+    direction: ltr;
+    white-space: nowrap;
+}
+
+#volume {
+    width: 85px;
+    accent-color: #e50914;
+}
+
+.playlist {
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 18px;
+}
+
+.playlist select {
+    width: 100%;
+    padding: 13px;
+    background: #202127;
+    color: white;
+    border: 1px solid #41434b;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 15px;
+}
+
+@media (max-width: 600px) {
+    body { padding: 10px; }
+    h2 { font-size: 18px; }
+    .center-play { width: 60px; height: 60px; }
+    .controls { padding: 28px 8px 6px; }
+    .control-row { gap: 4px; }
+    #volume { width: 55px; }
+}
+
+.player:fullscreen .center-play {
+    width: 70px;
+    height: 70px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>مریم نیلوفری</h2>
+
+<div class="player paused" id="player" tabindex="0">
+
+    <video id="video" preload="metadata" playsinline>
+        <source src="https://www.googleapis.com/drive/v3/files/1u7NYMfiAfz1cD7WjIO-DvfI1Cogjb66Z?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" type="video/mp4">
+        مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+    </video>
+
+    <button class="center-play" id="centerPlay"
+        aria-label="پخش ویدیو">▶</button>
+
+    <div class="controls" id="controls">
+
+        <input class="seek" id="seek" type="range"
+            min="0" max="1000" value="0" step="1"
+            aria-label="موقعیت ویدیو">
+
+        <div class="control-row">
+
+            <button id="playPause" aria-label="پخش یا توقف">▶</button>
+
+            <button id="back" aria-label="۱۵ ثانیه عقب">↶</button>
+
+            <button id="forward" aria-label="۱۵ ثانیه جلو">↷</button>
+
+            <span id="time">00:00 / 00:00</span>
+
+            <button id="mute" aria-label="قطع صدا">🔊</button>
+
+            <input id="volume" type="range" min="0" max="1"
+                step="0.05" value="1" aria-label="صدا">
+
+            <button id="fullscreen" aria-label="تمام صفحه">⛶</button>
+
+        </div>
+    </div>
+</div>
+
+<div class="playlist">
+    <select id="videoList" aria-label="انتخاب قسمت">
+        <option value="https://www.googleapis.com/drive/v3/files/1K7uIxia4X8BhpeUHBh5brglg69Z1ogdH?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">دیار عشق</option>
+        <option value="https://www.googleapis.com/drive/v3/files/1P75BAYTPZkAyL4lvwPa0bH2U7LBkwpkT?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">صیاد جان</option>
+        <option value="https://www.googleapis.com/drive/v3/files/1Ohao0Zc0eKPWXY77-3eWwnR91agp0BX5?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">دیار نور</option>
+        <option value="https://www.googleapis.com/drive/v3/files/18w5bH0gBfdWTet3zE3aFULtACxslWAa3?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">بزم عشق</option>
+        <option value="https://www.googleapis.com/drive/v3/files/1Ev2vvj1a6mfWF-j5uUCDDSCTNq4XQwWY?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">مونس جان</option>
+        <option value="https://www.googleapis.com/drive/v3/files/1u7NYMfiAfz1cD7WjIO-DvfI1Cogjb66Z?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">گلچین شاد</option>
+    </select>
+</div>
+
+<script>
+const player = document.getElementById('player');
+const video = document.getElementById('video');
+const centerPlay = document.getElementById('centerPlay');
+const playPause = document.getElementById('playPause');
+const seek = document.getElementById('seek');
+const time = document.getElementById('time');
+const volume = document.getElementById('volume');
+const mute = document.getElementById('mute');
+const list = document.getElementById('videoList');
+
+let hideTimer;
+let seeking = false;
+
+function showControls() {
+    player.classList.remove('idle');
+    clearTimeout(hideTimer);
+
+    if (!video.paused && !seeking) {
+        hideTimer = setTimeout(() => {
+            if (!video.paused && !seeking) {
+                player.classList.add('idle');
+            }
+        }, 3000);
+    }
+}
+
+function updatePlayState() {
+    const paused = video.paused;
+
+    player.classList.toggle('paused', paused);
+    playPause.textContent = paused ? '▶' : '❚❚';
+    centerPlay.textContent = paused ? '▶' : '❚❚';
+
+    if (paused) {
+        clearTimeout(hideTimer);
+        player.classList.remove('idle');
+    } else {
+        showControls();
+    }
+}
+
+async function togglePlay() {
+    if (video.paused) {
+        try {
+            await video.play();
+        } catch (error) {
+            showControls();
+        }
+    } else {
+        video.pause();
+    }
+}
+
+centerPlay.addEventListener('click', togglePlay);
+playPause.addEventListener('click', togglePlay);
+
+video.addEventListener('click', () => {
+    showControls();
+    togglePlay();
+});
+
+player.addEventListener('pointermove', showControls);
+player.addEventListener('pointerdown', showControls);
+player.addEventListener('focusin', showControls);
+
+video.addEventListener('play', updatePlayState);
+video.addEventListener('pause', updatePlayState);
+
+function formatTime(seconds) {
+    if (!Number.isFinite(seconds)) return '00:00';
+
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+
+    return String(mins).padStart(2, '0') + ':' +
+           String(secs).padStart(2, '0');
+}
+
+video.addEventListener('loadedmetadata', () => {
+    updateTime();
+    seek.value = 0;
+});
+
+function updateTime() {
+    time.textContent =
+        formatTime(video.currentTime) + ' / ' +
+        formatTime(video.duration);
+
+    if (!seeking && Number.isFinite(video.duration) &&
+        video.duration > 0) {
+        seek.value = video.currentTime / video.duration * 1000;
+    }
+}
+
+video.addEventListener('timeupdate', updateTime);
+
+seek.addEventListener('pointerdown', () => {
+    seeking = true;
+    showControls();
+});
+
+seek.addEventListener('input', () => {
+    if (Number.isFinite(video.duration)) {
+        video.currentTime = Number(seek.value) / 1000 * video.duration;
+    }
+});
+
+function finishSeeking() {
+    seeking = false;
+    showControls();
+}
+
+seek.addEventListener('pointerup', finishSeeking);
+seek.addEventListener('change', finishSeeking);
+seek.addEventListener('keydown', showControls);
+
+document.getElementById('back').addEventListener('click', () => {
+    video.currentTime = Math.max(0, video.currentTime - 15);
+    showControls();
+});
+
+document.getElementById('forward').addEventListener('click', () => {
+    if (Number.isFinite(video.duration)) {
+        video.currentTime = Math.min(video.duration, video.currentTime + 15);
+    }
+    showControls();
+});
+
+volume.addEventListener('input', () => {
+    video.volume = Number(volume.value);
+    video.muted = video.volume === 0;
+    mute.textContent = video.muted ? '🔇' : '🔊';
+    showControls();
+});
+
+mute.addEventListener('click', () => {
+    video.muted = !video.muted;
+    mute.textContent = video.muted ? '🔇' : '🔊';
+    showControls();
+});
+
+document.getElementById('fullscreen').addEventListener('click', async () => {
+    try {
+        if (!document.fullscreenElement) {
+            if (player.requestFullscreen) {
+                await player.requestFullscreen();
+            } else if (video.webkitEnterFullscreen) {
+                video.webkitEnterFullscreen();
+            }
+        } else {
+            await document.exitFullscreen();
+        }
+    } catch (error) {
+        console.log('تمام‌صفحه در این مرورگر پشتیبانی نشد.');
+    }
+});
+
+document.addEventListener('fullscreenchange', () => {
+    showControls();
+});
+
+list.addEventListener('change', async () => {
+    video.pause();
+    video.src = list.value;
+    video.load();
+
+    try {
+        await video.play();
+    } catch (error) {
+        showControls();
+    }
+});
+
+video.addEventListener('ended', async () => {
+    const next = (list.selectedIndex + 1) % list.options.length;
+    list.selectedIndex = next;
+    video.src = list.value;
+    video.load();
+
+    try {
+        await video.play();
+    } catch (error) {
+        showControls();
+    }
+});
+
+/* کنترل پایه با کیبورد و ریموت‌های دارای کلید جهت */
+player.addEventListener('keydown', event => {
+    if (event.target === seek || event.target === volume) return;
+
+    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+         'Enter', ' ', 'MediaPlayPause'].includes(event.key)) {
+        showControls();
+    }
+
+    switch (event.key) {
+        case ' ':
+        case 'Enter':
+        case 'MediaPlayPause':
+            event.preventDefault();
+            togglePlay();
+            break;
+
+        case 'ArrowLeft':
+            event.preventDefault();
+            video.currentTime = Math.max(0, video.currentTime - 10);
+            break;
+
+        case 'ArrowRight':
+            event.preventDefault();
+            if (Number.isFinite(video.duration)) {
+                video.currentTime = Math.min(video.duration, video.currentTime + 10);
+            }
+            break;
+
+        case 'ArrowUp':
+            event.preventDefault();
+            video.volume = Math.min(1, video.volume + 0.1);
+            volume.value = video.volume;
+            break;
+
+        case 'ArrowDown':
+            event.preventDefault();
+            video.volume = Math.max(0, video.volume - 0.1);
+            volume.value = video.volume;
+            break;
+    }
+});
+
+</script>
+</body>
+</html>
