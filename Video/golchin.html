@@ -33,6 +33,66 @@
             width: 100%;
             height: 100%;
             border-radius: 10px;
+            accent-color: #ffffff;
+            display: block;
+            background: #000;
+            object-fit: contain;
+        }
+        /* کنترل‌های سفارشی برای سازگاری بهتر با ریموت اندرویدباکس */
+        .video-container { background: #000; }
+        .player-controls {
+            position: absolute;
+            inset: auto 0 0 0;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            color: #fff;
+            background: linear-gradient(transparent, rgba(0,0,0,.88));
+            opacity: 1;
+            transition: opacity .25s ease;
+        }
+        .video-container.controls-hidden .player-controls { opacity: 0; pointer-events: none; }
+        .player-controls button, .center-play {
+            border: 1px solid rgba(255,255,255,.85);
+            background: rgba(0,0,0,.72);
+            color: #fff;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            font-size: 17px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .player-controls button:focus, .center-play:focus, .player-controls input:focus {
+            outline: 3px solid #fff;
+            outline-offset: 2px;
+        }
+        .player-controls input[type="range"] { min-width: 30px; flex: 1; accent-color: #fff; cursor: pointer; }
+        .player-time { font: 13px Arial, sans-serif; white-space: nowrap; direction: ltr; }
+        .center-play {
+            position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 4; width: 68px; height: 68px; font-size: 26px;
+            background: rgba(0,0,0,.68);
+        }
+        .center-play.hidden { display: none; }
+        .video-container:fullscreen, .video-container:-webkit-full-screen {
+            width: 100vw; height: 100vh; max-width: none; aspect-ratio: auto;
+            border-radius: 0; display: flex; align-items: center; justify-content: center;
+        }
+        .video-container:fullscreen video, .video-container:-webkit-full-screen video {
+            width: 100%; height: 100%; border-radius: 0; object-fit: contain;
+        }
+        .video-container:fullscreen .player-controls, .video-container:-webkit-full-screen .player-controls { padding: 18px 24px; }
+        @media (max-width: 600px) {
+            .player-controls { gap: 6px; padding: 8px; }
+            .player-controls button { width: 36px; height: 36px; min-width: 36px; }
+            .player-time { font-size: 11px; }
         }
         .dropdown {
             font-family: 'Noto Kufi Arabic', sans-serif;
@@ -69,7 +129,7 @@
             }
         }
         .notification {
-            color: red;
+            color: #ffffff;
             font-size: 16px;
             margin-top: 10px;
         }
@@ -108,10 +168,18 @@
 <body>
     <h2>گلچین ایرانی</h2>
     <div class="video-container">
-        <video id="videoPlayer" controls autoplay>
+        <video id="videoPlayer" autoplay playsinline tabindex="0">
             <source src="https://www.ghoflimusic.com/Music%20Video/Sal%201405/02/Siavash%20Ghomayshi%20-%20Nakhoda%20-%20480%20%20%5BGhofliMusic%5D.mp4" type="video/mp4">
             مرورگر شما از ویدیو پلیر پشتیبانی نمی‌کند.
         </video>
+        <button type="button" id="centerPlay" class="center-play" aria-label="پخش و توقف">▶</button>
+        <div class="player-controls" id="playerControls">
+            <button type="button" id="playPause" aria-label="پخش یا توقف" title="پخش/توقف">▶</button>
+            <span class="player-time" id="currentTime">0:00</span>
+            <input type="range" id="seekBar" min="0" max="1000" value="0" step="1" aria-label="موقعیت پخش" title="جلو و عقب بردن">
+            <span class="player-time" id="duration">0:00</span>
+            <button type="button" id="fullscreenBtn" aria-label="تمام صفحه" title="تمام صفحه">⛶</button>
+        </div>
     </div>
     
   <div class="artist-filter">
@@ -431,6 +499,105 @@
             setTimeout(() => notification.textContent = '', 2000);
             playSelectedVideo();
         }
+
+        // کنترل سفارشی: مستقل از نوار کنترل پیش‌فرض مرورگر
+        const playerContainer = document.querySelector('.video-container');
+        const playPauseBtn = document.getElementById('playPause');
+        const centerPlayBtn = document.getElementById('centerPlay');
+        const seekBar = document.getElementById('seekBar');
+        const currentTimeLabel = document.getElementById('currentTime');
+        const durationLabel = document.getElementById('duration');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        let controlsHideTimer = null;
+
+        function formatTime(seconds) {
+            if (!Number.isFinite(seconds)) return '0:00';
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+        function updatePlayButtons() {
+            const playing = !videoPlayer.paused && !videoPlayer.ended;
+            playPauseBtn.textContent = playing ? '❚❚' : '▶';
+            centerPlayBtn.classList.toggle('hidden', playing);
+            playPauseBtn.setAttribute('aria-label', playing ? 'توقف موقت' : 'پخش');
+        }
+        function showControls() {
+            playerContainer.classList.remove('controls-hidden');
+            clearTimeout(controlsHideTimer);
+            if (!videoPlayer.paused && !videoPlayer.ended) {
+                controlsHideTimer = setTimeout(() => {
+                    playerContainer.classList.add('controls-hidden');
+                }, 2800);
+            }
+        }
+        function togglePlayback() {
+            if (videoPlayer.paused || videoPlayer.ended) {
+                const promise = videoPlayer.play();
+                if (promise && promise.catch) promise.catch(() => { showControls(); });
+            } else {
+                videoPlayer.pause();
+            }
+            showControls();
+        }
+        playPauseBtn.addEventListener('click', togglePlayback);
+        centerPlayBtn.addEventListener('click', togglePlayback);
+        videoPlayer.addEventListener('click', () => { togglePlayback(); });
+        videoPlayer.addEventListener('play', () => { updatePlayButtons(); showControls(); });
+        videoPlayer.addEventListener('pause', () => { updatePlayButtons(); showControls(); });
+        videoPlayer.addEventListener('ended', updatePlayButtons);
+        videoPlayer.addEventListener('loadedmetadata', () => {
+            durationLabel.textContent = formatTime(videoPlayer.duration);
+            seekBar.value = 0;
+        });
+        videoPlayer.addEventListener('timeupdate', () => {
+            currentTimeLabel.textContent = formatTime(videoPlayer.currentTime);
+            if (Number.isFinite(videoPlayer.duration) && videoPlayer.duration > 0 && !seekBar.matches(':active')) {
+                seekBar.value = Math.round((videoPlayer.currentTime / videoPlayer.duration) * 1000);
+            }
+        });
+        seekBar.addEventListener('input', () => {
+            if (Number.isFinite(videoPlayer.duration) && videoPlayer.duration > 0) {
+                videoPlayer.currentTime = (Number(seekBar.value) / 1000) * videoPlayer.duration;
+            }
+            showControls();
+        });
+        fullscreenBtn.addEventListener('click', async () => {
+            try {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    if (playerContainer.requestFullscreen) await playerContainer.requestFullscreen();
+                    else if (playerContainer.webkitRequestFullscreen) playerContainer.webkitRequestFullscreen();
+                } else {
+                    if (document.exitFullscreen) await document.exitFullscreen();
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                }
+            } catch (e) { /* برخی مرورگرهای تلویزیون تمام‌صفحه را محدود می‌کنند */ }
+            showControls();
+        });
+        ['pointermove', 'mousemove', 'touchstart', 'touchmove', 'click', 'focusin'].forEach(eventName => {
+            playerContainer.addEventListener(eventName, showControls, { passive: eventName.startsWith('touch') });
+        });
+        // پشتیبانی از ریموت: Enter/Space پخش، چپ/راست جابه‌جایی، بالا/پایین نمایش کنترل‌ها
+        playerContainer.addEventListener('keydown', (event) => {
+            if (event.target.matches('select, input, button')) {
+                if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') return;
+            }
+            if (event.key === 'Enter' || event.key === ' ') {
+                if (event.target === playerContainer || event.target === videoPlayer) {
+                    event.preventDefault(); togglePlayback();
+                }
+            } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                event.preventDefault();
+                const delta = event.key === 'ArrowRight' ? 10 : -10;
+                if (Number.isFinite(videoPlayer.duration)) videoPlayer.currentTime = Math.max(0, Math.min(videoPlayer.duration, videoPlayer.currentTime + delta));
+                showControls();
+            } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                showControls();
+            } else if (event.key === 'Escape') {
+                showControls();
+            }
+        });
+        updatePlayButtons();
     </script>
 </body>
 </html>
