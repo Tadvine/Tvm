@@ -1,591 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Premium Video Player</title>
-   <!-- Font imports -->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-   <!-- Font Awesome for icons -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   <style>
-      :root {
-         --primary-color: #ff4757;
-         --secondary-color: #2f3542;
-         --dark-color: #1e272e;
-         --light-color: #f1f2f6;
-         --accent-color: #ffa502;
-         --text-color: #2f3542;
-         --text-light: #747d8c;
-      }
-      
-      * {
-         margin: 0;
-         padding: 0;
-         box-sizing: border-box;
-         outline: none;
-         border: none;
-      }
-      
-      body {
-         font-family: 'Montserrat', sans-serif;
-         background-color: var(--dark-color);
-         color: var(--light-color);
-         line-height: 1.6;
-         overflow-x: hidden;
-      }
-      
-      .container {
-         max-width: 1400px;
-         margin: 0 auto;
-         padding: 20px;
-         display: grid;
-         grid-template-columns: 1fr 350px;
-         gap: 25px;
-      }
-      
-      /* Main Video Player Styles */
-      .main-video-container {
-         position: relative;
-         border-radius: 12px;
-         overflow: hidden;
-         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-         background: #000;
-         transition: all 0.3s ease;
-      }
-      
-      .main-video-wrapper {
-         position: relative;
-         padding-bottom: 56.25%; /* 16:9 aspect ratio */
-         height: 0;
-         overflow: hidden;
-         background: #000;
-      }
-      
-      .main-video {
-         position: absolute;
-         top: 0;
-         left: 0;
-         width: 100%;
-         height: 100%;
-         background: #000;
-      }
-      
-      .video-info {
-         padding: 20px;
-         background: #000;
-      }
-      
-      .main-vid-title {
-         font-family: 'Playfair Display', serif;
-         font-size: 24px;
-         font-weight: 600;
-         margin-bottom: 10px;
-         color: white;
-      }
-      
-      .video-controls {
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         padding: 15px 20px;
-         background: rgba(0, 0, 0, 0.7);
-      }
-      
-      .control-btn {
-         background: transparent;
-         color: white;
-         font-size: 18px;
-         cursor: pointer;
-         padding: 8px;
-         border-radius: 50%;
-         transition: all 0.2s ease;
-      }
-      
-      .control-btn:hover {
-         background: rgba(255, 255, 255, 0.2);
-         transform: scale(1.1);
-      }
-      
-      /* Playlist Styles */
-      .video-list-container {
-         height: calc(100vh - 100px);
-         overflow-y: auto;
-         border-radius: 12px;
-         background: var(--secondary-color);
-         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-         padding: 15px;
-      }
-      
-      .playlist-header {
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         margin-bottom: 20px;
-         padding-bottom: 10px;
-         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      
-      .playlist-title {
-         font-family: 'Playfair Display', serif;
-         font-size: 20px;
-         font-weight: 600;
-         color: white;
-      }
-      
-      .playlist-count {
-         background: var(--primary-color);
-         color: white;
-         padding: 3px 8px;
-         border-radius: 20px;
-         font-size: 12px;
-      }
-      
-      .list {
-         display: flex;
-         align-items: center;
-         gap: 15px;
-         padding: 12px;
-         background: rgba(255, 255, 255, 0.05);
-         border-radius: 8px;
-         cursor: pointer;
-         margin-bottom: 10px;
-         transition: all 0.2s ease;
-      }
-      
-      .list:hover {
-         background: rgba(255, 255, 255, 0.1);
-      }
-      
-      .list.active {
-         background: var(--primary-color);
-      }
-      
-      .list.active .list-title {
-         color: white;
-      }
-      
-      .list.active .list-duration {
-         color: rgba(255, 255, 255, 0.8);
-      }
-      
-      .list-info {
-         flex-grow: 1;
-         overflow: hidden;
-      }
-      
-      .list-title {
-         font-size: 14px;
-         font-weight: 500;
-         color: var(--light-color);
-         white-space: nowrap;
-         overflow: hidden;
-         text-overflow: ellipsis;
-         margin-bottom: 3px;
-      }
-      
-      .list-duration {
-         font-size: 12px;
-         color: var(--text-light);
-      }
-      
-      /* Scrollbar styling */
-      .video-list-container::-webkit-scrollbar {
-         width: 6px;
-      }
-      
-      .video-list-container::-webkit-scrollbar-track {
-         background: rgba(255, 255, 255, 0.05);
-         border-radius: 10px;
-      }
-      
-      .video-list-container::-webkit-scrollbar-thumb {
-         background: var(--primary-color);
-         border-radius: 10px;
-      }
-      
-      /* Fullscreen styles */
-      .fullscreen .main-video-container {
-         position: fixed;
-         top: 0;
-         left: 0;
-         width: 100%;
-         height: 100%;
-         z-index: 1000;
-         border-radius: 0;
-      }
-      
-      .fullscreen .video-list-container {
-         display: none;
-      }
-      
-      /* Video Title Overlay */
-      .video-title-overlay {
-         position: absolute;
-         top: 50%;
-         left: 50%;
-         transform: translate(-50%, -50%);
-         font-family: 'Playfair Display', serif;
-         font-size: 2.5vw;
-         font-weight: 700;
-         color: white;
-         text-align: center;
-         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-         opacity: 0;
-         z-index: 5;
-         animation: titleFade 8s ease-in-out;
-         pointer-events: none;
-         width: 90%;
-      }
-      
-      .fullscreen .video-title-overlay {
-         font-size: 3.5vw;
-         display: block !important;
-      }
-      
-      @keyframes titleFade {
-         0% { opacity: 0; transform: translate(-50%, -40%); }
-         15% { opacity: 1; transform: translate(-50%, -50%); }
-         85% { opacity: 1; transform: translate(-50%, -50%); }
-         100% { opacity: 0; transform: translate(-50%, -60%); }
-      }
-      
-      /* Responsive styles */
-      @media (max-width: 992px) {
-         .container {
-            grid-template-columns: 1fr;
-         }
-         
-         .video-list-container {
-            height: auto;
-            max-height: 400px;
-         }
-         
-         .video-title-overlay {
-            font-size: 4vw;
-         }
-      }
-      
-      @media (max-width: 576px) {
-         .main-vid-title {
-            font-size: 18px;
-         }
-         
-         .list {
-            padding: 10px;
-            gap: 10px;
-         }
-         
-         .list-title {
-            font-size: 13px;
-         }
-         
-         .video-title-overlay {
-            font-size: 6vw;
-         }
-      }
-      
-      /* Loading spinner */
-      .spinner {
-         position: absolute;
-         top: 50%;
-         left: 50%;
-         transform: translate(-50%, -50%);
-         width: 40px;
-         height: 40px;
-         border: 4px solid rgba(255, 255, 255, 0.3);
-         border-radius: 50%;
-         border-top: 4px solid var(--primary-color);
-         animation: spin 1s linear infinite;
-         z-index: 10;
-         display: none;
-      }
-      
-      @keyframes spin {
-         0% { transform: translate(-50%, -50%) rotate(0deg); }
-         100% { transform: translate(-50%, -50%) rotate(360deg); }
-      }
-   </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101318">
+<title>Premium Video Player</title>
+<style>
+:root{color-scheme:dark;--bg:#101318;--panel:#1b2029;--panel2:#252c37;--text:#f4f6fa;--muted:#aab3c2;--accent:#e8edf5;--line:#39414e}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
+body{padding:clamp(8px,2vw,24px)}
+button{font:inherit}
+.app{max-width:1500px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,340px);gap:18px;align-items:start}
+.player-column{min-width:0}
+.player-shell{position:relative;background:#000;border-radius:14px;overflow:hidden;box-shadow:0 12px 34px #0006;isolation:isolate}
+.video-stage{position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden}
+.video-stage video{display:block;width:100%;height:100%;object-fit:contain;background:#000;outline:none}
+/* Custom controls are used instead of browser-native controls for consistent behavior. */
+.video-stage video::-webkit-media-controls{display:none!important}
+.center-play{position:absolute;inset:0;margin:auto;width:clamp(58px,7vw,84px);height:clamp(58px,7vw,84px);border-radius:50%;display:grid;place-items:center;background:#101318c9;border:1px solid #ffffff9c;color:#fff;cursor:pointer;z-index:4;transition:opacity .25s,transform .25s,visibility .25s;font-size:clamp(24px,3vw,34px)}
+.center-play:hover{transform:scale(1.06);background:#303744e8}
+.player-shell.playing .center-play{opacity:0;visibility:hidden;pointer-events:none}
+.player-shell.paused .center-play{opacity:1;visibility:visible;pointer-events:auto}
+.spinner{position:absolute;left:50%;top:50%;width:42px;height:42px;border:4px solid #ffffff45;border-top-color:#fff;border-radius:50%;transform:translate(-50%,-50%);animation:spin .8s linear infinite;display:none;z-index:5}
+.player-shell.loading .spinner{display:block}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.title-overlay{position:absolute;top:0;left:0;right:0;padding:clamp(12px,2vw,22px);font-size:clamp(14px,1.8vw,22px);font-weight:700;background:linear-gradient(#000b,transparent);z-index:3;opacity:1;transition:opacity .25s;pointer-events:none}
+.controls-overlay{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:12px clamp(10px,2vw,20px) max(12px,env(safe-area-inset-bottom));background:linear-gradient(transparent,#000d 35%,#000e);opacity:1;visibility:visible;transition:opacity .25s,visibility .25s}
+.player-shell.controls-hidden .controls-overlay,.player-shell.controls-hidden .title-overlay{opacity:0;visibility:hidden}
+.player-shell.controls-hidden{cursor:none}
+.seek-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;direction:ltr;font-size:12px;font-variant-numeric:tabular-nums}
+.seek{width:100%;height:6px;accent-color:#fff;cursor:pointer;min-width:0}
+.control-row{display:flex;align-items:center;gap:8px;direction:ltr}
+.ctrl{min-width:38px;min-height:38px;padding:7px 10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #ffffff38;border-radius:9px;background:#161a20b8;color:#fff;cursor:pointer;font-size:16px}
+.ctrl:hover,.ctrl:focus-visible{background:#ffffff26;outline:2px solid #fff;outline-offset:1px}
+.ctrl:disabled{opacity:.45;cursor:default}
+.spacer{flex:1}
+.volume{width:clamp(65px,10vw,115px);accent-color:#fff;cursor:pointer}
+.player-status{min-height:28px;padding:7px 12px;background:#171b22;color:var(--muted);font-size:12px}
+.video-info{padding:14px 4px 4px}
+.video-title{font-size:clamp(18px,2.3vw,26px);margin:0 0 5px;font-weight:700}
+.video-subtitle{font-size:13px;color:var(--muted)}
+.playlist{background:var(--panel);border:1px solid #ffffff0d;border-radius:14px;overflow:hidden;max-height:calc(100dvh - 48px);display:flex;flex-direction:column;min-width:0}
+.playlist-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px;border-bottom:1px solid var(--line)}
+.playlist-head h2{font-size:17px;margin:0}
+.count{font-size:12px;color:var(--muted);white-space:nowrap}
+.playlist-items{overflow:auto;padding:9px;overscroll-behavior:contain}
+.list-item{width:100%;display:flex;align-items:center;gap:12px;text-align:right;direction:rtl;padding:12px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--text);cursor:pointer;margin-bottom:5px}
+.list-item:hover,.list-item:focus-visible{background:#ffffff0c;outline:2px solid #b9c3d2;outline-offset:-2px}
+.list-item.active{background:var(--panel2);border-color:#8d98a9}
+.track-number{flex:0 0 34px;width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:#303744;color:#fff;font-size:12px;direction:ltr}
+.track-info{min-width:0;flex:1}
+.track-name{font-size:13px;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
+.track-duration{display:block;color:var(--muted);font-size:11px;margin-top:3px;direction:ltr;text-align:right}
+.track-state{font-size:14px;color:#fff}
+.app.fullscreen{display:block;max-width:none;padding:0}
+.app.fullscreen .player-column{height:100dvh}
+.app.fullscreen .player-shell{position:fixed;inset:0;z-index:1000;border-radius:0;height:100dvh;width:100vw;display:flex;flex-direction:column}
+.app.fullscreen .video-stage{flex:1;min-height:0;aspect-ratio:auto}
+.app.fullscreen .video-stage video{height:100%;width:100%}
+.app.fullscreen .video-info,.app.fullscreen .playlist{display:none}
+.app.fullscreen .player-status{display:none}
+.app.fullscreen .video-title{display:none}
+.notice{padding:10px 12px;color:#f5dca8;background:#3c3020;border-radius:8px;margin-top:10px;font-size:13px;display:none}
+@media(max-width:900px){.app{grid-template-columns:minmax(0,1fr)}.playlist{max-height:38dvh}.playlist-items{max-height:calc(38dvh - 62px)}.video-info{padding-top:12px}}
+@media(max-width:520px){body{padding:7px}.app{gap:12px}.player-shell{border-radius:9px}.controls-overlay{padding:9px 8px max(9px,env(safe-area-inset-bottom))}.ctrl{min-width:34px;min-height:34px;padding:5px 8px;font-size:14px}.seek-row{gap:7px;font-size:11px}.volume{width:58px}.playlist{max-height:42dvh}.playlist-items{max-height:calc(42dvh - 62px)}.list-item{padding:9px;gap:9px}.track-number{flex-basis:30px;width:30px;height:30px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
-   <div class="container">
-      <div class="main-video-container">
-         <div class="main-video-wrapper">
-            <video class="main-video" controls></video>
-            <div class="spinner"></div>
-            <div class="video-title-overlay"></div>
-         </div>
-         <div class="video-info">
-            <h3 class="main-vid-title">Select a video from the playlist</h3>
-         </div>
-         <div class="video-controls">
-            <button class="control-btn prev-btn" title="Previous video">
-               <i class="fas fa-step-backward"></i>
-            </button>
-            <button class="control-btn play-btn" title="Play/Pause">
-               <i class="fas fa-play"></i>
-            </button>
-            <button class="control-btn next-btn" title="Next video">
-               <i class="fas fa-step-forward"></i>
-            </button>
-         </div>
+<main class="app" id="app">
+  <section class="player-column" aria-label="پخش‌کننده ویدیو">
+    <div class="player-shell paused controls-visible" id="playerShell">
+      <div class="video-stage" id="videoStage">
+        <video id="mainVideo" preload="metadata" playsinline></video>
+        <div class="title-overlay" id="titleOverlay">01. Broken Angel</div>
+        <div class="spinner" aria-label="در حال بارگذاری"></div>
+        <button class="center-play" id="centerPlay" type="button" aria-label="پخش ویدیو" title="پخش">▶</button>
+        <div class="controls-overlay" id="controlsOverlay">
+          <div class="seek-row">
+            <span id="currentTime">0:00</span>
+            <input class="seek" id="seekBar" type="range" min="0" max="1000" value="0" step="1" aria-label="موقعیت ویدیو">
+            <span id="duration">0:00</span>
+          </div>
+          <div class="control-row">
+            <button class="ctrl" id="playPause" type="button" aria-label="پخش" title="پخش / توقف">▶</button>
+            <button class="ctrl" id="backward" type="button" aria-label="۱۰ ثانیه عقب" title="۱۰ ثانیه عقب">−10</button>
+            <button class="ctrl" id="forward" type="button" aria-label="۱۰ ثانیه جلو" title="۱۰ ثانیه جلو">+10</button>
+            <button class="ctrl" id="mute" type="button" aria-label="قطع صدا" title="قطع / وصل صدا">🔊</button>
+            <input class="volume" id="volume" type="range" min="0" max="1" value="1" step="0.05" aria-label="میزان صدا">
+            <span class="spacer"></span>
+            <button class="ctrl" id="previous" type="button" aria-label="ویدیوی قبلی" title="ویدیوی قبلی">⏮</button>
+            <button class="ctrl" id="next" type="button" aria-label="ویدیوی بعدی" title="ویدیوی بعدی">⏭</button>
+            <button class="ctrl" id="fullscreen" type="button" aria-label="تمام صفحه" title="تمام صفحه">⛶</button>
+          </div>
+        </div>
       </div>
-      
-      <div class="video-list-container">
-         <div class="playlist-header">
-            <h3 class="playlist-title">Playlist</h3>
-            <span class="playlist-count">7 videos</span>
-         </div>
-         
-         <div class="list active" data-src="https://www.googleapis.com/drive/v3/files/1cXs63KPcGGtQs3IQrLg7DECE0XF2owmF?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
-            <div class="list-info">
-               <h3 class="list-title">01. Broken Angel</h3>
-               <span class="list-duration">3:45</span>
-            </div>
-         </div>
-         
-         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/146YfAHnqz0E1wieMppHQdY1xwy6pd0GU?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
-            <div class="list-info">
-               <h3 class="list-title">02. Pure Love Moscow</h3>
-               <span class="list-duration">4:12</span>
-            </div>
-         </div>
-         
-         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/11t7o-ktb1y3CBsPBTZt-e2HAd22ZUFTw?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
-            <div class="list-info">
-               <h3 class="list-title">03. One Day</h3>
-               <span class="list-duration">4:30</span>
-            </div>
-         </div>
-         
-         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/1GSN8FJ7fI_Qu2jnVrmkkM-xHf2FqsHuH?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
-            <div class="list-info">
-               <h3 class="list-title">04. Pure Love</h3>
-               <span class="list-duration">3:22</span>
-            </div>
-         </div>
-         
-         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/1TCTFQVByVB3ck12tQpwJH7HnD9UlYn7g?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
-            <div class="list-info">
-               <h3 class="list-title">05. Angels Lullaby</h3>
-               <span class="list-duration">5:15</span>
-            </div>
-         </div>
-         
-         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/1TCTFQVByVB3ck12tQpwJH7HnD9UlYn7g?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
-            <div class="list-info">
-               <h3 class="list-title">06. Dooset Daram</h3>
-               <span class="list-duration">3:40</span>
-            </div>
-         </div>
-         
-         <div class="list" data-src="https://www.googleapis.com/drive/v3/files/1HGyuX1CJ_oESwu_LC5yqMVk_6wFScF6q?alt=media&key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU">
-            <div class="list-info">
-               <h3 class="list-title">07. One Night Dubai</h3>
-               <span class="list-duration">4:05</span>
-            </div>
-         </div>
-      </div>
-   </div>
-
-   <script>
-      document.addEventListener('DOMContentLoaded', function() {
-         // DOM Elements
-         const mainVideo = document.querySelector('.main-video');
-         const videoTitle = document.querySelector('.main-vid-title');
-         const videoLists = document.querySelectorAll('.list');
-         const playBtn = document.querySelector('.play-btn');
-         const prevBtn = document.querySelector('.prev-btn');
-         const nextBtn = document.querySelector('.next-btn');
-         const spinner = document.querySelector('.spinner');
-         const container = document.querySelector('.container');
-         const mainVideoWrapper = document.querySelector('.main-video-wrapper');
-         const titleOverlay = document.querySelector('.video-title-overlay');
-         
-         let currentVideoIndex = 0;
-         let isPlaying = false;
-         let isAutoPlayingNext = false;
-         
-         // Video durations in seconds
-         const videoDurations = [225, 252, 270, 202, 315, 220, 245];
-         
-         // Format time from seconds to MM:SS
-         function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-         }
-         
-         // Set durations in the playlist
-         videoLists.forEach((list, index) => {
-            const durationElement = list.querySelector('.list-duration');
-            durationElement.textContent = formatTime(videoDurations[index]);
-         });
-         
-         // Show title overlay animation
-         function showTitleOverlay(title) {
-            titleOverlay.textContent = title;
-            titleOverlay.style.animation = 'none';
-            void titleOverlay.offsetWidth; // Trigger reflow
-            titleOverlay.style.animation = 'titleFade 8s ease-in-out';
-            titleOverlay.style.display = 'block';
-         }
-         
-         // Load video function
-         function loadVideo(index, autoPlay = true) {
-            if (index < 0) index = videoLists.length - 1;
-            if (index >= videoLists.length) index = 0;
-            
-            currentVideoIndex = index;
-            
-            // Update active state in playlist
-            videoLists.forEach((list, i) => {
-               list.classList.toggle('active', i === index);
-            });
-            
-            // Get video data
-            const activeVideo = videoLists[index];
-            const videoSrc = activeVideo.dataset.src;
-            const videoName = activeVideo.querySelector('.list-title').textContent;
-            
-            // Show loading spinner and set black background
-            spinner.style.display = 'block';
-            mainVideo.style.opacity = '0';
-            mainVideoWrapper.style.backgroundColor = '#000';
-            
-            // Load new video
-            mainVideo.src = videoSrc;
-            videoTitle.textContent = videoName;
-            
-            // Show title overlay
-            showTitleOverlay(videoName);
-            
-            // When video is loaded
-            mainVideo.onloadeddata = function() {
-               spinner.style.display = 'none';
-               mainVideo.style.opacity = '1';
-               
-               if (autoPlay) {
-                  const playPromise = mainVideo.play();
-                  
-                  if (playPromise !== undefined) {
-                     playPromise.then(_ => {
-                        isPlaying = true;
-                        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                     })
-                     .catch(error => {
-                        console.log("Autoplay prevented:", error);
-                        isPlaying = false;
-                        playBtn.innerHTML = '<i class="fas fa-play"></i>';
-                     });
-                  }
-               }
-            };
-            
-            // Error handling
-            mainVideo.onerror = function() {
-               spinner.style.display = 'none';
-               mainVideoWrapper.style.backgroundColor = '#000';
-               videoTitle.textContent = 'Error loading video';
-            };
-            
-            // Scroll to active video in playlist
-            activeVideo.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-         }
-         
-         // Play/pause toggle
-         function togglePlay() {
-            if (mainVideo.paused) {
-               const playPromise = mainVideo.play();
-               
-               if (playPromise !== undefined) {
-                  playPromise.then(_ => {
-                     isPlaying = true;
-                     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                  })
-                  .catch(error => {
-                     console.log("Play prevented:", error);
-                  });
-               }
-            } else {
-               mainVideo.pause();
-               isPlaying = false;
-               playBtn.innerHTML = '<i class="fas fa-play"></i>';
-            }
-         }
-         
-         // Event listeners
-         playBtn.addEventListener('click', togglePlay);
-         
-         mainVideo.addEventListener('click', togglePlay);
-         
-         prevBtn.addEventListener('click', () => {
-            loadVideo(currentVideoIndex - 1);
-         });
-         
-         nextBtn.addEventListener('click', () => {
-            loadVideo(currentVideoIndex + 1);
-         });
-         
-         // Double click for fullscreen
-         mainVideo.addEventListener('dblclick', function() {
-            if (!document.fullscreenElement) {
-               container.classList.add('fullscreen');
-               document.documentElement.requestFullscreen().catch(err => {
-                  console.error(`Error attempting to enable fullscreen: ${err.message}`);
-               });
-            } else {
-               document.exitFullscreen();
-               container.classList.remove('fullscreen');
-            }
-         });
-         
-         // Click on playlist items
-         videoLists.forEach((list, index) => {
-            list.addEventListener('click', () => {
-               loadVideo(index);
-            });
-         });
-         
-         // Auto play next video when current ends
-         mainVideo.addEventListener('ended', () => {
-            isAutoPlayingNext = true;
-            loadVideo(currentVideoIndex + 1);
-         });
-         
-         // Keyboard controls
-         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-               e.preventDefault();
-               togglePlay();
-            } else if (e.code === 'ArrowRight') {
-               loadVideo(currentVideoIndex + 1);
-            } else if (e.code === 'ArrowLeft') {
-               loadVideo(currentVideoIndex - 1);
-            } else if (e.code === 'KeyF') {
-               if (!document.fullscreenElement) {
-                  container.classList.add('fullscreen');
-                  document.documentElement.requestFullscreen();
-               } else {
-                  document.exitFullscreen();
-                  container.classList.remove('fullscreen');
-               }
-            }
-         });
-         
-         // Load first video initially
-         loadVideo(0, false);
-         
-         // Enable fullscreen change detection
-         document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-               container.classList.remove('fullscreen');
-            }
-         });
-      });
-   </script>
+    </div>
+    <div class="video-info">
+      <h1 class="video-title" id="videoTitle">01. Broken Angel</h1>
+      <div class="video-subtitle">Premium Video Player</div>
+      <div class="notice" id="errorNotice" role="status"></div>
+    </div>
+    <div class="player-status" id="playerStatus" role="status">برای شروع، دکمه پخش را بزنید یا یک ویدیو از فهرست انتخاب کنید.</div>
+  </section>
+  <aside class="playlist" aria-label="فهرست ویدیوها">
+    <header class="playlist-head"><h2>فهرست پخش</h2><span class="count" id="playlistCount">۷ ویدیو</span></header>
+    <div class="playlist-items" id="playlistItems">
+      <button class="list-item active" type="button" data-src="https://www.googleapis.com/drive/v3/files/1cXs63KPcGGtQs3IQrLg7DECE0XF2owmF?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" data-duration="225"><span class="track-number">01</span><span class="track-info"><span class="track-name">Broken Angel</span><span class="track-duration">3:45</span></span><span class="track-state">▶</span></button>
+      <button class="list-item" type="button" data-src="https://www.googleapis.com/drive/v3/files/146YfAHnqz0E1wieMppHQdY1xwy6pd0GU?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" data-duration="252"><span class="track-number">02</span><span class="track-info"><span class="track-name">Pure Love Moscow</span><span class="track-duration">4:12</span></span><span class="track-state">▶</span></button>
+      <button class="list-item" type="button" data-src="https://www.googleapis.com/drive/v3/files/11t7o-ktb1y3CBsPBTZt-e2HAd22ZUFTw?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" data-duration="270"><span class="track-number">03</span><span class="track-info"><span class="track-name">One Day</span><span class="track-duration">4:30</span></span><span class="track-state">▶</span></button>
+      <button class="list-item" type="button" data-src="https://www.googleapis.com/drive/v3/files/1GSN8FJ7fI_Qu2jnVrmkkM-xHf2FqsHuH?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" data-duration="202"><span class="track-number">04</span><span class="track-info"><span class="track-name">Pure Love</span><span class="track-duration">3:22</span></span><span class="track-state">▶</span></button>
+      <button class="list-item" type="button" data-src="https://www.googleapis.com/drive/v3/files/1TCTFQVByVB3ck12tQpwJH7HnD9UlYn7g?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" data-duration="315"><span class="track-number">05</span><span class="track-info"><span class="track-name">Angels Lullaby</span><span class="track-duration">5:15</span></span><span class="track-state">▶</span></button>
+      <button class="list-item" type="button" data-src="https://www.googleapis.com/drive/v3/files/1TCTFQVByVB3ck12tQpwJH7HnD9UlYn7g?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" data-duration="220"><span class="track-number">06</span><span class="track-info"><span class="track-name">Dooset Daram</span><span class="track-duration">3:40</span></span><span class="track-state">▶</span></button>
+      <button class="list-item" type="button" data-src="https://www.googleapis.com/drive/v3/files/1HGyuX1CJ_oESwu_LC5yqMVk_6wFScF6q?alt=media&amp;key=AIzaSyDzexTk_4tsYJJrsdeD-xImXZfAke264AU" data-duration="245"><span class="track-number">07</span><span class="track-info"><span class="track-name">One Night Dubai</span><span class="track-duration">4:05</span></span><span class="track-state">▶</span></button>
+    </div>
+  </aside>
+</main>
+<script>
+(() => {
+  const app = document.getElementById('app');
+  const shell = document.getElementById('playerShell');
+  const video = document.getElementById('mainVideo');
+  const items = [...document.querySelectorAll('.list-item')];
+  const title = document.getElementById('videoTitle');
+  const titleOverlay = document.getElementById('titleOverlay');
+  const status = document.getElementById('playerStatus');
+  const notice = document.getElementById('errorNotice');
+  const spinner = document.querySelector('.spinner');
+  const playPause = document.getElementById('playPause');
+  const centerPlay = document.getElementById('centerPlay');
+  const seek = document.getElementById('seekBar');
+  const currentTime = document.getElementById('currentTime');
+  const durationText = document.getElementById('duration');
+  const volume = document.getElementById('volume');
+  const mute = document.getElementById('mute');
+  let index = 0, hideTimer = null, seeking = false, lastPointerMove = 0;
+  const fmt = n => { if (!Number.isFinite(n) || n < 0) n = 0; return Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'); };
+  function updatePlayState(){
+    const playing = !video.paused && !video.ended;
+    shell.classList.toggle('playing', playing);
+    shell.classList.toggle('paused', !playing);
+    playPause.textContent = playing ? 'Ⅱ' : '▶';
+    playPause.setAttribute('aria-label', playing ? 'توقف' : 'پخش');
+    centerPlay.setAttribute('aria-label', playing ? 'توقف ویدیو' : 'پخش ویدیو');
+    items.forEach((item,i)=>{ const state=item.querySelector('.track-state'); if(state) state.textContent=(i===index && playing)?'♫':'▶'; });
+  }
+  function showControls(reset=true){
+    shell.classList.remove('controls-hidden');
+    if (hideTimer) clearTimeout(hideTimer);
+    if(reset && !video.paused){ hideTimer=setTimeout(()=>shell.classList.add('controls-hidden'),3000); }
+  }
+  function interact(){ showControls(true); }
+  function loadVideo(nextIndex, autoplay=true){
+    index=(nextIndex+items.length)%items.length;
+    const item=items[index];
+    items.forEach((el,i)=>el.classList.toggle('active',i===index));
+    const name=item.querySelector('.track-name').textContent.trim();
+    title.textContent=name; titleOverlay.textContent=name;
+    notice.style.display='none';
+    shell.classList.add('loading'); shell.classList.remove('controls-hidden');
+    status.textContent='در حال بارگذاری ویدیو…';
+    video.pause(); video.src=item.dataset.src; video.load();
+    item.scrollIntoView({behavior:'smooth',block:'nearest'});
+    updatePlayState();
+    if(autoplay){
+      const onReady=()=>{video.removeEventListener('canplay',onReady); video.play().then(()=>{status.textContent='در حال پخش: '+name; updatePlayState(); showControls(true);}).catch(()=>{status.textContent='برای شروع پخش، دکمه پخش را بزنید.'; updatePlayState(); showControls(false);});};
+      video.addEventListener('canplay',onReady);
+    }
+  }
+  function togglePlay(){
+    if(video.paused){ video.play().then(()=>{status.textContent='در حال پخش: '+items[index].querySelector('.track-name').textContent.trim(); updatePlayState(); showControls(true);}).catch(()=>{status.textContent='پخش خودکار مسدود شد؛ دکمه پخش را دوباره بزنید.'; showControls(false);}); }
+    else {video.pause(); showControls(false);}
+  }
+  async function toggleFullscreen(){
+    try{
+      if(!document.fullscreenElement){ if(shell.requestFullscreen) await shell.requestFullscreen(); else if(video.webkitEnterFullscreen) video.webkitEnterFullscreen(); }
+      else await document.exitFullscreen();
+    }catch(e){ status.textContent='تمام‌صفحه در این مرورگر پشتیبانی نشد.'; }
+  }
+  centerPlay.addEventListener('click',e=>{e.stopPropagation();togglePlay();});
+  playPause.addEventListener('click',togglePlay);
+  document.getElementById('previous').addEventListener('click',()=>loadVideo(index-1));
+  document.getElementById('next').addEventListener('click',()=>loadVideo(index+1));
+  document.getElementById('backward').addEventListener('click',()=>{video.currentTime=Math.max(0,(video.currentTime||0)-10);interact();});
+  document.getElementById('forward').addEventListener('click',()=>{video.currentTime=Math.min(video.duration||Infinity,(video.currentTime||0)+10);interact();});
+  document.getElementById('fullscreen').addEventListener('click',toggleFullscreen);
+  items.forEach((item,i)=>item.addEventListener('click',()=>loadVideo(i,true)));
+  video.addEventListener('play',()=>{updatePlayState();showControls(true);});
+  video.addEventListener('pause',()=>{updatePlayState();showControls(false);});
+  video.addEventListener('ended',()=>loadVideo(index+1,true));
+  video.addEventListener('loadstart',()=>{shell.classList.add('loading');status.textContent='در حال بارگذاری ویدیو…';});
+  video.addEventListener('canplay',()=>{shell.classList.remove('loading');durationText.textContent=fmt(video.duration);status.textContent='ویدیو آماده پخش است.';});
+  video.addEventListener('waiting',()=>shell.classList.add('loading'));
+  video.addEventListener('playing',()=>{shell.classList.remove('loading');status.textContent='در حال پخش: '+items[index].querySelector('.track-name').textContent.trim();});
+  video.addEventListener('error',()=>{shell.classList.remove('loading');notice.textContent='پخش این ویدیو ناموفق بود. دسترسی فایل Google Drive یا لینک آن را بررسی کنید.';notice.style.display='block';status.textContent='خطا در بارگذاری ویدیو.';});
+  video.addEventListener('timeupdate',()=>{if(!seeking){currentTime.textContent=fmt(video.currentTime);if(Number.isFinite(video.duration)&&video.duration>0)seek.value=String(Math.round(video.currentTime/video.duration*1000));}});
+  video.addEventListener('durationchange',()=>{durationText.textContent=fmt(video.duration);});
+  seek.addEventListener('input',()=>{seeking=true; if(Number.isFinite(video.duration)) currentTime.textContent=fmt(Number(seek.value)/1000*video.duration); showControls(false);});
+  seek.addEventListener('change',()=>{if(Number.isFinite(video.duration))video.currentTime=Number(seek.value)/1000*video.duration;seeking=false;showControls(true);});
+  volume.addEventListener('input',()=>{video.volume=Number(volume.value);video.muted=video.volume===0;mute.textContent=video.muted?'🔇':'🔊';});
+  mute.addEventListener('click',()=>{video.muted=!video.muted;mute.textContent=video.muted?'🔇':'🔊';if(!video.muted&&video.volume===0){video.volume=.5;volume.value='.5';}interact();});
+  shell.addEventListener('pointermove',()=>{const now=Date.now();if(now-lastPointerMove>80){lastPointerMove=now;interact();}});
+  shell.addEventListener('pointerdown',()=>showControls(false));
+  shell.addEventListener('touchstart',()=>showControls(false),{passive:true});
+  document.addEventListener('fullscreenchange',()=>{app.classList.toggle('fullscreen',!!document.fullscreenElement);showControls(true);});
+  document.addEventListener('keydown',e=>{
+    const tag=(e.target&&e.target.tagName||'').toLowerCase();
+    if(['input','textarea','select'].includes(tag))return;
+    if(e.code==='Space'||e.code==='Enter'){e.preventDefault();togglePlay();}
+    else if(e.code==='ArrowRight'){e.preventDefault(); if(e.altKey)loadVideo(index+1);else video.currentTime=Math.min(video.duration||Infinity,(video.currentTime||0)+10);interact();}
+    else if(e.code==='ArrowLeft'){e.preventDefault(); if(e.altKey)loadVideo(index-1);else video.currentTime=Math.max(0,(video.currentTime||0)-10);interact();}
+    else if(e.code==='ArrowUp'){e.preventDefault();video.volume=Math.min(1,video.volume+.1);volume.value=String(video.volume);video.muted=false;mute.textContent='🔊';interact();}
+    else if(e.code==='ArrowDown'){e.preventDefault();video.volume=Math.max(0,video.volume-.1);volume.value=String(video.volume);if(video.volume===0)video.muted=true;mute.textContent=video.muted?'🔇':'🔊';interact();}
+    else if(e.code==='KeyF'){e.preventDefault();toggleFullscreen();}
+  });
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)showControls(true);});
+  document.getElementById('playlistCount').textContent=items.length+' ویدیو';
+  loadVideo(0,false);
+})();
+</script>
 </body>
 </html>
