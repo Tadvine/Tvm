@@ -1,886 +1,1006 @@
 <!DOCTYPE html>
-<html lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-     <!-- متا تگ‌های جلوگیری از کش -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    
-    
-    
-    <title>پلی لیست  ترند</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            padding-bottom: 90px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background-color: #1e1e1e;
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        
-        .playlist-header {
-            display: flex;
-            margin-top: 30px;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        
-        .playlist-cover {
-            width: 250px;
-            height: 250px;
-            background-color: #2d2d2d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .playlist-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .playlist-info {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .playlist-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #ffffff;
-        }
-        
-        .playlist-description {
-            color: #b0b0b0;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-        
-        .playlist-meta {
-            display: flex;
-            align-items: center;
-            color: #b0b0b0;
-            font-size: 14px;
-        }
-        
-        .playlist-meta span {
-            margin-left: 15px;
-        }
-        
-        .tracks-list {
-            margin-top: 30px;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        
-        .track {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #2d2d2d;
-            transition: background-color 0.2s;
-            cursor: pointer;
-        }
-        
-        .track:hover {
-            background-color: #2a2a2a;
-        }
-        
-        .track.active {
-            background-color: #1e88e5;
-            color: white;
-        }
-        
-        .track.active .track-number,
-        .track.active .track-title,
-        .track.active .track-artist,
-        .track.active .track-duration {
-            color: white;
-        }
-        
-        .track.active .track-play {
-            background-color: #0d47a1;
-        }
-        
-        .track.active .track-play i {
-            display: none;
-        }
-        
-        .track.active .track-play::after {
-            content: "";
-            display: block;
-            width: 12px;
-            height: 12px;
-            background-color: white;
-            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E") no-repeat center;
-            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E") no-repeat center;
-        }
-        
-        .track-number {
-            width: 30px;
-            color: #b0b0b0;
-            font-size: 16px;
-        }
-        
-        .track-info {
-            flex: 1;
-            margin-left: 20px;
-        }
-        
-        .track-title {
-            font-weight: 500;
-            margin-bottom: 5px;
-            color: #e0e0e0;
-        }
-        
-        .track-artist {
-            color: #b0b0b0;
-            font-size: 14px;
-        }
-        
-        .track-duration {
-            color: #b0b0b0;
-            font-size: 14px;
-            min-width: 50px;
-            text-align: right;
-        }
-        
-        .track-play {
-            width: 40px;
-            height: 40px;
-            background-color: #1e88e5;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            margin-left: 15px;
-            transition: all 0.2s;
-        }
-        
-        .track-play:hover {
-            transform: scale(1.05);
-        }
-        
-        .player-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #1e1e1e;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            z-index: 1000;
-            direction: ltr;
-        }
-        
-        .player-info {
-            display: flex;
-            align-items: center;
-            flex: 1;
-        }
-        
-        .player-cover {
-            width: 90px;
-            height: 90px;
-            background-color: #2d2d2d;
-            border-radius: 5px;
-            margin-right: 15px;
-            display: none;
-        }
-        
-        .player-cover.has-cover {
-            display: flex;
-        }
-        
-        .player-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        
-        .player-track-info {
-            margin-left: 15px;
-            direction: rtl;
-            text-align: right;
-        }
-        
-        .player-track-title {
-            font-weight: 500;
-            color: #ffffff;
-        }
-        
-        .player-track-artist {
-            color: #b0b0b0;
-            font-size: 13px;
-        }
-        
-        .player-controls {
-            display: flex;
-            align-items: center;
-        }
-        
-        .player-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: #ffffff;
-            cursor: pointer;
-            margin: 0 10px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s;
-        }
-        
-        .player-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .player-btn.play-pause {
-            font-size: 24px;
-        }
-        
-        .progress-container {
-            flex: 2;
-            display: flex;
-            align-items: center;
-        }
-        
-        .progress-bar {
-            flex: 1;
-            height: 4px;
-            background-color: #3d3d3d;
-            border-radius: 2px;
-            margin: 0 10px;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .progress {
-            height: 100%;
-            background-color: #1e88e5;
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.1s;
-        }
-        
-        .progress-bar:hover .progress::after {
-            content: "";
-            position: absolute;
-            right: -5px;
-            top: -3px;
-            width: 10px;
-            height: 10px;
-            background-color: #1e88e5;
-            border-radius: 50%;
-        }
-        
-        .time {
-            font-size: 13px;
-            color: #b0b0b0;
-            width: 40px;
-        }
-        
-        .loading-skeleton {
-            animation: shimmer 1.5s infinite linear;
-            background: linear-gradient(to right, #2a2a2a 0%, #3d3d3d 50%, #2a2a2a 100%);
-            background-size: 200% 100%;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        @media (max-width: 768px) {
-            .playlist-header {
-                flex-direction: column;
-            }
-            
-            .playlist-cover {
-                width: 100%;
-                height: 200px;
-            }
-            
-            .player-container {
-                flex-direction: column;
-                padding: 10px;
-            }
-            
-            .player-info {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            .progress-container {
-                width: 100%;
-            }
-            
-            .player-controls {
-                margin-top: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="container header-content">
-            <div class="logo">گلچین آهنگ های ترند
-        </div>
-    </header>
-    
-    <div class="container">
-        <div class="playlist-header">
-            <div class="playlist-cover">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToPEcAoTw5rX3xE-BrjP9z7gLgqQH4g7Iqq3HzArkdtf8Azn26YhKxAaM&s=10" alt="پلی لیست">
-            </div>
-            <div class="playlist-info">
-                <h1 class="playlist-title">گلچین آهنگ های ترند</h1>
-                <p class="playlist-description">  بهترین آهنگ‌های ترند</p>
-                <div class="playlist-meta">
-                    <span><i class="fas fa-music"></i> <span id="track-count">0</span> آهنگ</span>
-                    <span><i class="fas fa-clock"></i> <span id="total-duration">--:--</span> دقیقه</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="tracks-list" id="tracks-list">
-            <!-- آهنگ‌ها به صورت دینامیک اضافه می‌شوند -->
-        </div>
+<html dir="rtl" lang="fa">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+  <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
+  <meta content="no-cache" http-equiv="Pragma"/>
+  <meta content="0" http-equiv="Expires"/>
+  <title>
+   گلچین آهنگ&zwnj;های ترند
+  </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+  <style>
+:root {
+    color-scheme:dark;
+    --bg:#0b0d12;
+    --panel:#141821;
+    --panel2:#1b202b;
+    --line:#292f3b;
+    --text:#f4f6fb;
+    --muted:#9ca6b7;
+    --accent:#6c8cff;
+    --accent2:#4568ed;
+    --danger:#ff7373;
+    --player-h:112px
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:'Vazirmatn',Tahoma,sans-serif
+}
+
+body {
+    background:radial-gradient(ellipse at top right,#1a2340 0,transparent 38%),var(--bg);
+    color:var(--text);
+    padding-bottom:calc(var(--player-h) + 28px);
+    min-height:100vh
+}
+
+button {
+    font:inherit
+}
+
+button:focus-visible,.track:focus-visible,.seekbar:focus-visible {
+    outline:3px solid #a9b8ff;
+    outline-offset:3px
+}
+
+.topbar {
+    padding:20px 0 10px
+}
+
+.container {
+    width:min(1120px,100% - 32px);
+    margin-inline:auto
+}
+
+.brand {
+    display:flex;
+    align-items:center;
+    gap:12px
+}
+
+.brand-icon {
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border-radius:16px;
+    background:linear-gradient(135deg,var(--accent),#9b67f4);
+    font-size:21px;
+    box-shadow:0 8px 26px #526fe344
+}
+
+.brand h1 {
+    font-size:clamp(19px,3vw,27px);
+    font-weight:800
+}
+
+.brand p {
+    font-size:13px;
+    color:var(--muted);
+    margin-top:3px
+}
+
+.hero {
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:26px;
+    align-items:center;
+    margin:24px 0 22px;
+    padding:22px;
+    background:linear-gradient(135deg,#191f2d,#12151d);
+    border:1px solid var(--line);
+    border-radius:24px;
+    box-shadow:0 18px 45px #0002
+}
+
+.hero-cover {
+    width:100%;
+    aspect-ratio:1;
+    border-radius:18px;
+    overflow:hidden;
+    background:linear-gradient(135deg,#2d3e78,#292039);
+    display:grid;
+    place-items:center
+}
+
+.hero-cover img {
+    width:100%;
+    height:100%;
+    object-fit:cover
+}
+
+.hero-info .eyebrow {
+    color:#a9b8ff;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.3px
+}
+
+.hero-info h2 {
+    font-size:clamp(23px,4vw,35px);
+    line-height:1.5;
+    margin:7px 0
+}
+
+.hero-info p {
+    color:var(--muted);
+    line-height:1.9
+}
+
+.meta {
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    color:#c5ccda;
+    font-size:13px;
+    margin-top:17px
+}
+
+.meta span {
+    display:flex;
+    align-items:center;
+    gap:7px
+}
+
+.section-head {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin:28px 2px 12px
+}
+
+.section-head h3 {
+    font-size:18px
+}
+
+.section-head span {
+    font-size:12px;
+    color:var(--muted)
+}
+
+.tracks {
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:20px;
+    overflow:hidden
+}
+
+.track {
+    display:grid;
+    grid-template-columns:34px 46px minmax(0,1fr) auto 42px;
+    gap:13px;
+    align-items:center;
+    padding:13px 16px;
+    border-bottom:1px solid #ffffff0a;
+    cursor:pointer;
+    transition:background .18s;
+    min-height:76px
+}
+
+.track:last-child {
+    border-bottom:0
+}
+
+.track:hover {
+    background:#ffffff08
+}
+
+.track.active {
+    background:linear-gradient(90deg,#627dff22,#627dff08);
+    box-shadow:inset -3px 0 var(--accent)
+}
+
+.track-number {
+    color:#7f899b;
+    text-align:center;
+    font-size:13px
+}
+
+.track.active .track-number {
+    color:#c1cbff
+}
+
+.track-art {
+    width:46px;
+    height:46px;
+    border-radius:12px;
+    overflow:hidden;
+    background:#242b39;
+    display:grid;
+    place-items:center;
+    color:#8b9cff
+}
+
+.track-art img {
+    width:100%;
+    height:100%;
+    object-fit:cover
+}
+
+.track-copy {
+    min-width:0
+}
+
+.track-title {
+    font-weight:600;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:14px
+}
+
+.track-artist {
+    color:var(--muted);
+    font-size:12px;
+    margin-top:4px;
+    min-height:18px
+}
+
+.track-duration {
+    color:#9ba5b6;
+    font-size:12px;
+    direction:ltr;
+    white-space:nowrap
+}
+
+.track-play {
+    width:38px;
+    height:38px;
+    border:1px solid #ffffff12;
+    border-radius:50%;
+    background:#242b39;
+    color:#e8ecff;
+    display:grid;
+    place-items:center;
+    cursor:pointer
+}
+
+.track.active .track-play {
+    background:var(--accent2);
+    color:white;
+    border-color:transparent
+}
+
+.empty-cover {
+    display:none
+}
+
+.player {
+    position:fixed;
+    z-index:20;
+    bottom:0;
+    left:0;
+    right:0;
+    background:#11151df2;
+    border-top:1px solid #ffffff16;
+    box-shadow:0 -12px 40px #0005;
+    backdrop-filter:blur(20px);
+    padding:12px max(18px,env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom));
+    direction:ltr
+}
+
+.player-inner {
+    width:min(1240px,100%);
+    margin:auto;
+    display:grid;
+    grid-template-columns:minmax(180px,1fr) auto minmax(230px,1.5fr);
+    align-items:center;
+    gap:24px
+}
+
+.now-playing {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+    direction:ltr
+}
+
+.now-art {
+    width:56px;
+    height:56px;
+    flex:0 0 56px;
+    border-radius:12px;
+    background:#242b39;
+    overflow:hidden;
+    display:grid;
+    place-items:center;
+    color:#9baaff
+}
+
+.now-art img {
+    width:100%;
+    height:100%;
+    object-fit:cover
+}
+
+.now-copy {
+    min-width:0;
+    direction:rtl;
+    text-align:right
+}
+
+.now-title {
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis
+}
+
+.now-artist {
+    font-size:11px;
+    color:var(--muted);
+    margin-top:4px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis
+}
+
+.controls {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px
+}
+
+.control {
+    width:40px;
+    height:40px;
+    border:0;
+    border-radius:50%;
+    background:transparent;
+    color:#e9edfa;
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    font-size:16px;
+    transition:background .18s,transform .18s
+}
+
+.control:hover {
+    background:#ffffff12
+}
+
+.control:active {
+    transform:scale(.94)
+}
+
+.control.main {
+    width:48px;
+    height:48px;
+    background:#f4f6ff;
+    color:#10131a;
+    font-size:18px
+}
+
+.timeline {
+    min-width:0;
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr) 42px;
+    align-items:center;
+    gap:9px
+}
+
+.time {
+    font-size:11px;
+    color:#aeb7c8;
+    direction:ltr;
+    text-align:center;
+    font-variant-numeric:tabular-nums
+}
+
+.seekbar {
+    height:24px;
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    touch-action:none;
+    min-width:0
+}
+
+.seek-track {
+    height:5px;
+    background:#353c4b;
+    width:100%;
+    border-radius:99px;
+    position:relative
+}
+
+.seek-fill {
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#8b9fff,var(--accent));
+    border-radius:99px;
+    position:relative
+}
+
+.seek-fill::after {
+    content:"";
+    position:absolute;
+    right:-5px;
+    top:50%;
+    transform:translateY(-50%);
+    width:11px;
+    height:11px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 0 0 3px #6c8cff33;
+    opacity:0;
+    transition:opacity .15s
+}
+
+.seekbar:hover .seek-fill::after,.seekbar:focus-visible .seek-fill::after {
+    opacity:1
+}
+
+.status {
+    position:fixed;
+    z-index:30;
+    left:50%;
+    bottom:calc(var(--player-h) + 12px);
+    transform:translateX(-50%);
+    max-width:calc(100% - 28px);
+    padding:10px 16px;
+    border:1px solid #ffffff20;
+    border-radius:12px;
+    background:#242a36;
+    color:#f6f7fb;
+    font-size:13px;
+    box-shadow:0 8px 25px #0005;
+    display:none;
+    text-align:center
+}
+
+.status.show {
+    display:block
+}
+
+.status.error {
+    border-color:#ff737366;
+    color:#ffd5d5
+}
+
+@media(max-width:800px) {
+    :root {
+    --player-h:166px
+}
+
+.container {
+    width:calc(100% - 22px)
+}
+
+.hero {
+    grid-template-columns:120px 1fr;
+    gap:16px;
+    padding:15px;
+    border-radius:18px
+}
+
+.hero-cover {
+    border-radius:14px
+}
+
+.hero-info h2 {
+    font-size:22px
+}
+
+.hero-info p {
+    font-size:13px
+}
+
+.meta {
+    gap:12px;
+    margin-top:10px
+}
+
+.player {
+    padding:9px 12px calc(9px + env(safe-area-inset-bottom))
+}
+
+.player-inner {
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:5px 12px
+}
+
+.now-playing {
+    grid-column:1;
+    grid-row:1
+}
+
+.now-art {
+    width:44px;
+    height:44px;
+    flex-basis:44px
+}
+
+.controls {
+    grid-column:2;
+    grid-row:1;
+    gap:0
+}
+
+.control {
+    width:35px;
+    height:35px;
+    font-size:14px
+}
+
+.control.main {
+    width:42px;
+    height:42px;
+    font-size:16px
+}
+
+.timeline {
+    grid-column:1 / -1;
+    grid-row:2;
+    width:100%;
+    gap:8px
+}
+
+.status {
+    bottom:calc(var(--player-h) + 8px)
+}
+
+}
+
+@media(max-width:420px) {
+    .hero {
+    grid-template-columns:92px 1fr;
+    padding:12px;
+    gap:12px
+}
+
+.hero-info h2 {
+    font-size:18px
+}
+
+.hero-info p {
+    font-size:12px;
+    line-height:1.7
+}
+
+.hero-info .eyebrow {
+    font-size:10px
+}
+
+.track {
+    grid-template-columns:24px 40px minmax(0,1fr) 38px;
+    gap:9px;
+    padding:11px 10px
+}
+
+.track-art {
+    width:40px;
+    height:40px
+}
+
+.track-play {
+    display:none
+}
+
+.track-title {
+    font-size:13px
+}
+
+.track-duration {
+    font-size:11px
+}
+
+.now-title {
+    font-size:12px
+}
+
+.now-artist {
+    font-size:10px
+}
+
+.player-inner {
+    gap:4px 8px
+}
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+    * {
+    transition:none!important
+}
+
+}
+</style>
+ </head>
+ <body>
+  <header class="topbar">
+   <div class="container brand">
+    <div class="brand-icon">
+     <i class="fa-solid fa-headphones">
+     </i>
     </div>
-    
-    <div class="player-container">
-        <div class="player-info">
-            <div class="player-cover" id="current-track-cover">
-                <img src="" alt="کاور آهنگ">
-            </div>
-            <div class="player-track-info">
-                <div class="player-track-title">هیچ آهنگی در حال پخش نیست</div>
-                <div class="player-track-artist">برای شروع روی آهنگ مورد نظر کلیک کنید</div>
-            </div>
-        </div>
-        
-        <div class="player-controls">
-            <button class="player-btn" id="prev-btn"><i class="fas fa-step-backward"></i></button>
-            <button class="player-btn play-pause" id="play-pause-btn"><i class="fas fa-play"></i></button>
-            <button class="player-btn" id="next-btn"><i class="fas fa-step-forward"></i></button>
-        </div>
-        
-        <div class="progress-container">
-            <span class="time" id="current-time">0:00</span>
-            <div class="progress-bar" id="progress-bar">
-                <div class="progress" id="progress"></div>
-            </div>
-            <span class="time" id="duration">--:--</span>
-        </div>
+    <div>
+     <h1>
+      گلچین آهنگ&zwnj;های ترند
+     </h1>
+     <p>
+      موسیقی&zwnj;های منتخب، همه در یک فهرست
+     </p>
     </div>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // لیست آهنگ‌ها
-            const tracks = [            
-                
-                {
-                    title: "خوم کرماشانی",
-                    artist: " ",
-                    cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT91F6FT9mwNxQNN6wab7i1swUjVaRsQ0oRi0DA83_kQ&s=10 ",
-                    src: "https://dl.aba-music.ir/music/1405/01/Kemashani.mp3"
-                },
-                
-                
-                
-                
-                {
-                    title: "Ankara Echoes",
-                    artist: "",
-                    cover: "https://cdn.bubilet.com.tr/cdn-cgi/image/width=1920,quality=80/files/Sanatci/ankara-echoes-99052.jpeg",
-                    src: "https://musicviral.musitraf.ir/Music/05-03/Ankara%20Echoes%20-%20Ta%20ki%20seni%20gorene%20kadar%20(Beni%20Al%20Afro%20house%20remix).mp3"
-                },
-                
-                
-                
-                 {
-                    title: "دل به صدای در میزنه",
-                    artist: "",
-                    cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG_xeGR3ZaOD34jDWATc2lTlI7fhyE-pMAqd2wYzHHo0XAa387NCSVYbU&s=10",
-                    src: "https://dl.sarimusic.in/1405/04/24/1/Del%20Be%20Sedaye%20To.mp3"
-                },
-                
-                
-                
-                {
-                    title: "I’m Not Like Them",
-                    artist: "",
-                    cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8Zuk9YsRZ-HyW-qzTWPuSAzEN594hM5zIiIxHjMUVgkIz1vwOBghNZiw&s=10",
-                    src: "https://elienglish.com/wp-content/uploads/2026/06/Iron-Heart-2-Im-Not-Like-them.mp3"
-                },
-                
-           
-                
-                   {
-                    title: "هیچی تو این دنیا",
-                    artist: "",
-                    cover: "https://musicviral.ir/wp-content/uploads/2026/08/%D8%AF%D8%A7%D9%86%D9%84%D9%88%D8%AF-%D8%A2%D9%87%D9%86%DA%AF-%D9%87%DB%8C%DA%86%DB%8C-%D8%AA%D9%88-%D8%A7%DB%8C%D9%86-%D8%AF%D9%86%DB%8C%D8%A7-%D9%85%D9%86%D9%88-%D8%AE%D9%88%D8%B4%D8%AD%D8%A7%D9%84-%D9%86%D9%85%DB%8C%DA%A9%D9%86%D9%87-%D8%AF%DB%8C%DA%AF%D9%87-%D8%A7%D8%B2-%D9%85%DB%8C%D8%B1%D8%A7-%D9%87%D9%88%D8%B4-%D9%85%D8%B5%D9%86%D9%88%D8%B9%DB%8C-73307.jpg",
-                    src: "https://dl.musicviral.ir/Music/05-05/mira%20-%20sahme%20man%20ai.mp3"
-                },
-                
-                
-                
-                
-                
-                
-                
-                        {
-                    title: "Mama Look At Me Now",
-                    artist: "",
-                    cover: "https://www.teh-dl.ir/wp-content/uploads/2026/05/NEWROJ-Mama-Look-At-Me-Now.jpg",
-                    src: "https://tehdl.musitraf.ir/music1405/3/NEWROJ%20-%20Mama%20Look%20At%20Me%20Now.mp3"
-                },
-                
-                
-                
-                
-                        {
-                    title: "I'M TIRED",
-                    artist: "",
-                    cover: "https://www.teh-dl.ir/wp-content/uploads/2026/06/Im-Tired-Im-Tired-Im-Tired.jpg",
-                    src: "https://tehdl.musitraf.ir/music1405/3/ATP%20-%20Night%20After%20Night%20128.mp3"
-                },
-                
-                
-                
-                
-                {
-                    title: "زاخو دله من",
-                    artist: "",
-                    cover: "https://cdn.shabahang-music.net/wp-content/uploads/2026/ZAXO-DIL%C3%8A-MAYA.webp",
-                    src: "https://dl.musicsweb.ir/musics/05/03/Ai%20-%20Zakho%20-%20128.mp3"
-                },
-                
-                
-                
-                {
-                    title: "REYVI - Chaque ",
-                    artist: "",
-                    cover: "https://behmelody.in/wp-content/uploads/2026/08/REYVI-Chaque-Fois.jpg",
-                    src: "https://behmelody.musitraf.ir/1405/05/26/REYVI%20-%20Chaque%20Fois.mp3"
-                },
-                
-                
-                
-                
-                 {
-                    title: "Best of Darbuka",
-                    artist: "",
-                    cover: "",
-                    src: "https://cdn.imgurl.ir/uploads/c5890_.m4a"
-                },
-                
-                
-                
-              
-                
-                
-                
-                     
-                
-                // می‌توانید آهنگ‌های بیشتری اضافه کنید
-            ];
-            
-            // عناصر DOM
-            const audio = new Audio();
-            let currentTrackIndex = 0;
-            let isPlaying = false;
-            let isDragging = false;
-            
-            const tracksListEl = document.getElementById('tracks-list');
-            const playPauseBtn = document.getElementById('play-pause-btn');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const progressBar = document.getElementById('progress-bar');
-            const progress = document.getElementById('progress');
-            const currentTimeEl = document.getElementById('current-time');
-            const durationEl = document.getElementById('duration');
-            const playerTitle = document.querySelector('.player-track-title');
-            const playerArtist = document.querySelector('.player-track-artist');
-            const playerCover = document.getElementById('current-track-cover');
-            const playerCoverImg = playerCover.querySelector('img');
-            const trackCountEl = document.getElementById('track-count');
-            const totalDurationEl = document.getElementById('total-duration');
-            
-            // متغیرهای مدیریت بارگذاری
-            let loadingQueue = [];
-            let isProcessingQueue = false;
-            const loadedDurations = {};
-            
-            // نمایش اولیه لیست آهنگ‌ها (بدون مدت زمان)
-            function renderInitialTracks() {
-                tracksListEl.innerHTML = '';
-                tracks.forEach((track, index) => {
-                    const trackEl = document.createElement('div');
-                    trackEl.className = 'track';
-                    trackEl.innerHTML = `
-                        <div class="track-number">${index + 1}</div>
-                        <div class="track-info">
-                            <div class="track-title">${track.title}</div>
-                            <div class="track-artist">${track.artist}</div>
-                        </div>
-                        <div class="track-duration" id="duration-${index}">--:--</div>
-                        <div class="track-play">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    `;
-                    tracksListEl.appendChild(trackEl);
-                    
-                    // رویدادهای کلیک
-                    trackEl.addEventListener('click', function(e) {
-                        if (!e.target.closest('.track-play')) {
-                            playTrack(index);
-                        }
-                    });
-                    
-                    trackEl.querySelector('.track-play').addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        playTrack(index);
-                    });
-                    
-                    // اضافه به صف بارگذاری
-                    loadingQueue.push(index);
-                });
-                
-                trackCountEl.textContent = tracks.length;
-                
-                // شروع پردازش صف بارگذاری
-                processLoadingQueue();
-            }
-            
-            // پردازش صف بارگذاری با تأخیر
-            function processLoadingQueue() {
-                if (isProcessingQueue || loadingQueue.length === 0) return;
-                
-                isProcessingQueue = true;
-                const index = loadingQueue.shift();
-                
-                // اگر مدت زمان قبلاً بارگذاری شده
-                if (loadedDurations[index]) {
-                    updateTrackDuration(index, loadedDurations[index]);
-                    isProcessingQueue = false;
-                    processLoadingQueue();
-                    return;
-                }
-                
-                loadTrackDuration(index, function(duration) {
-                    loadedDurations[index] = duration;
-                    updateTrackDuration(index, duration);
-                    updateTotalDuration();
-                    
-                    // تأخیر برای جلوگیری از مسدود شدن UI
-                    setTimeout(() => {
-                        isProcessingQueue = false;
-                        if (loadingQueue.length > 0) {
-                            processLoadingQueue();
-                        }
-                    }, 200);
-                });
-            }
-            
-            // بارگذاری مدت زمان یک آهنگ
-            function loadTrackDuration(index, callback) {
-                const track = tracks[index];
-                const durationEl = document.getElementById(`duration-${index}`);
-                
-                if (!durationEl) return callback(0);
-                
-                durationEl.textContent = "درحال بارگذاری...";
-                
-                const tempAudio = new Audio();
-                tempAudio.src = track.src;
-                
-                const timeout = setTimeout(() => {
-                    tempAudio.removeEventListener('loadedmetadata', loadedHandler);
-                    tempAudio.removeEventListener('error', errorHandler);
-                    callback(0);
-                }, 5000); // تایم‌اوت پس از 5 ثانیه
-                
-                function loadedHandler() {
-                    clearTimeout(timeout);
-                    callback(tempAudio.duration);
-                    tempAudio.remove();
-                }
-                
-                function errorHandler() {
-                    clearTimeout(timeout);
-                    callback(0);
-                    tempAudio.remove();
-                }
-                
-                tempAudio.addEventListener('loadedmetadata', loadedHandler, {once: true});
-                tempAudio.addEventListener('error', errorHandler, {once: true});
-            }
-            
-            // به‌روزرسانی مدت زمان نمایش داده شده
-            function updateTrackDuration(index, duration) {
-                const durationEl = document.getElementById(`duration-${index}`);
-                if (durationEl) {
-                    durationEl.textContent = duration > 0 ? formatTime(duration) : "--:--";
-                    tracks[index].duration = duration;
-                }
-            }
-            
-            // محاسبه مدت زمان کل
-            function updateTotalDuration() {
-                let totalSeconds = 0;
-                let loadedCount = 0;
-                
-                tracks.forEach((track, index) => {
-                    if (loadedDurations[index] !== undefined) {
-                        totalSeconds += loadedDurations[index] || 0;
-                        loadedCount++;
-                    }
-                });
-                
-                if (loadedCount > 0) {
-                    totalDurationEl.textContent = formatTime(totalSeconds);
-                }
-            }
-            
-            // پخش آهنگ
-            function playTrack(index) {
-                if (index < 0 || index >= tracks.length) return;
-                
-                currentTrackIndex = index;
-                const track = tracks[currentTrackIndex];
-                
-                audio.src = track.src;
-                playerTitle.textContent = track.title;
-                playerArtist.textContent = track.artist;
-                
-                // مدیریت نمایش کاور
-                if (track.cover) {
-                    playerCoverImg.src = track.cover;
-                    playerCover.classList.add('has-cover');
-                } else {
-                    playerCover.classList.remove('has-cover');
-                }
-                
-                audio.play()
-                    .then(() => {
-                        isPlaying = true;
-                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                        updateActiveTrack();
-                        
-                        if (track.duration) {
-                            durationEl.textContent = formatTime(track.duration);
-                        } else if (loadedDurations[index]) {
-                            durationEl.textContent = formatTime(loadedDurations[index]);
-                        } else {
-                            durationEl.textContent = "--:--";
-                        }
-                    })
-                    .catch(error => {
-                        console.error('خطا در پخش آهنگ:', error);
-                    });
-            }
-            
-            // به‌روزرسانی آهنگ فعال در لیست
-            function updateActiveTrack() {
-                document.querySelectorAll('.track').forEach((trackEl, index) => {
-                    if (index === currentTrackIndex) {
-                        trackEl.classList.add('active');
-                    } else {
-                        trackEl.classList.remove('active');
-                    }
-                });
-            }
-            
-            // پخش یا توقف
-            function togglePlay() {
-                if (audio.paused) {
-                    if (audio.src) {
-                        audio.play()
-                            .then(() => {
-                                isPlaying = true;
-                                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                            });
-                    } else if (tracks.length > 0) {
-                        playTrack(0);
-                    }
-                } else {
-                    audio.pause();
-                    isPlaying = false;
-                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                }
-            }
-            
-            // آهنگ بعدی
-            function nextTrack() {
-                if (tracks.length === 0) return;
-                
-                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-                playTrack(currentTrackIndex);
-            }
-            
-            // آهنگ قبلی
-            function prevTrack() {
-                if (tracks.length === 0) return;
-                
-                if (audio.currentTime > 3) {
-                    audio.currentTime = 0;
-                    return;
-                }
-                
-                currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-                playTrack(currentTrackIndex);
-            }
-            
-            // فرمت زمان
-            function formatTime(seconds) {
-                if (isNaN(seconds) || seconds === 0) return '0:00';
-                
-                const minutes = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-            }
-            
-            // به‌روزرسانی نوار پیشرفت
-            function updateProgress() {
-                if (isNaN(audio.duration) || isDragging) return;
-                
-                const progressPercent = (audio.currentTime / audio.duration) * 100;
-                progress.style.width = `${progressPercent}%`;
-                currentTimeEl.textContent = formatTime(audio.currentTime);
-            }
-            
-            // شروع درگ کردن نوار پیشرفت
-            function startDrag(e) {
-                isDragging = true;
-                document.addEventListener('mousemove', handleDrag);
-                document.addEventListener('mouseup', stopDrag);
-                handleDrag(e);
-            }
-            
-            // درگ کردن
-            function handleDrag(e) {
-                if (!isDragging) return;
-                
-                const width = progressBar.clientWidth;
-                const clickX = e.clientX - progressBar.getBoundingClientRect().left;
-                const percent = Math.min(Math.max(clickX / width, 0), 1);
-                
-                progress.style.width = `${percent * 100}%`;
-                currentTimeEl.textContent = formatTime(audio.duration * percent);
-            }
-            
-            // توقف درگ کردن
-            function stopDrag() {
-                if (!isDragging) return;
-                
-                isDragging = false;
-                document.removeEventListener('mousemove', handleDrag);
-                document.removeEventListener('mouseup', stopDrag);
-                
-                const width = progressBar.clientWidth;
-                const progressWidth = parseFloat(progress.style.width) / 100;
-                audio.currentTime = audio.duration * progressWidth;
-            }
-            
-            // تنظیم رویدادها
-            function setupEventListeners() {
-                playPauseBtn.addEventListener('click', togglePlay);
-                prevBtn.addEventListener('click', prevTrack);
-                nextBtn.addEventListener('click', nextTrack);
-                
-                audio.addEventListener('timeupdate', updateProgress);
-                audio.addEventListener('ended', nextTrack);
-                audio.addEventListener('pause', () => {
-                    isPlaying = false;
-                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                });
-                audio.addEventListener('play', () => {
-                    isPlaying = true;
-                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                });
-                
-                progressBar.addEventListener('mousedown', startDrag);
-                
-                // بارگذاری مدت زمان‌ها هنگام اسکرول
-                window.addEventListener('scroll', function() {
-                    if (loadingQueue.length > 0 && !isProcessingQueue) {
-                        processLoadingQueue();
-                    }
-                });
-            }
-            
-            // مقداردهی اولیه
-            function init() {
-                renderInitialTracks();
-                setupEventListeners();
-                
-                // بارگذاری مدت زمان آهنگ اول برای نمایش در پلیر
-                if (tracks.length > 0) {
-                    loadTrackDuration(0, function(duration) {
-                        loadedDurations[0] = duration;
-                        updateTrackDuration(0, duration);
-                        updateTotalDuration();
-                    });
-                }
-            }
-            
-            init();
+   </div>
+  </header>
+  <main class="container">
+   <section aria-label="اطلاعات فهرست پخش" class="hero">
+    <div class="hero-cover">
+     <img alt="کاور پلی&zwnj;لیست" loading="lazy" onerror="this.style.display='none'" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToPEcAoTw5rX3xE-BrjP9z7gLgqQH4g7Iqq3HzArkdtf8Azn26YhKxAaM&amp;s=10"/>
+    </div>
+    <div class="hero-info">
+     <div class="eyebrow">
+      PLAYLIST &middot; TRENDING
+     </div>
+     <h2>
+      گلچین آهنگ&zwnj;های ترند
+     </h2>
+     <p>
+      بهترین آهنگ&zwnj;های ترند در یک مجموعه برای گوش دادن پیوسته.
+     </p>
+     <div class="meta">
+      <span>
+       <i class="fa-solid fa-music">
+       </i>
+       <b id="track-count">
+        0
+       </b>
+       آهنگ
+      </span>
+      <span>
+       <i class="fa-regular fa-clock">
+       </i>
+       <b id="total-duration">
+        در حال محاسبه
+       </b>
+      </span>
+     </div>
+    </div>
+   </section>
+   <div class="section-head">
+    <h3>
+     <i class="fa-solid fa-list-music">
+     </i>
+     فهرست آهنگ&zwnj;ها
+    </h3>
+    <span>
+     برای پخش، یک آهنگ را انتخاب کنید
+    </span>
+   </div>
+   <section aria-label="فهرست آهنگ&zwnj;ها" class="tracks" id="tracks-list">
+   </section>
+  </main>
+  <div aria-live="polite" class="status" id="status" role="status">
+  </div>
+  <footer aria-label="پخش&zwnj;کننده صوتی" class="player">
+   <div class="player-inner">
+    <div class="now-playing">
+     <div class="now-art" id="current-track-cover">
+      <i class="fa-solid fa-music">
+      </i>
+      <img alt="" id="current-cover-img" style="display:none"/>
+     </div>
+     <div class="now-copy">
+      <div class="now-title" id="player-title">
+       هنوز آهنگی انتخاب نشده
+      </div>
+      <div class="now-artist" id="player-artist">
+       برای شروع یک آهنگ را انتخاب کنید
+      </div>
+     </div>
+    </div>
+    <div class="controls">
+     <button aria-label="آهنگ قبلی" class="control" id="prev-btn" title="قبلی">
+      <i class="fa-solid fa-backward-step">
+      </i>
+     </button>
+     <button aria-label="پخش" class="control main" id="play-pause-btn" title="پخش یا توقف">
+      <i class="fa-solid fa-play">
+      </i>
+     </button>
+     <button aria-label="آهنگ بعدی" class="control" id="next-btn" title="بعدی">
+      <i class="fa-solid fa-forward-step">
+      </i>
+     </button>
+    </div>
+    <div class="timeline">
+     <span class="time" id="current-time">
+      0:00
+     </span>
+     <div aria-label="موقعیت پخش" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="seekbar" id="progress-bar" role="slider" tabindex="0">
+      <div class="seek-track">
+       <div class="seek-fill" id="progress">
+       </div>
+      </div>
+     </div>
+     <span class="time" id="duration">
+      --:--
+     </span>
+    </div>
+   </div>
+  </footer>
+  <script>
+(() =>  {
+    'use strict';
+
+    // ============================================================
+    // فهرست آهنگ‌ها | ویرایش آسان
+    //
+    // افزودن آهنگ:
+    // ۱) یک بلوک از نمونه زیر را کپی کنید.
+    // ۲) عنوان، نام خواننده، لینک کاور و لینک فایل MP3 را تغییر دهید.
+    // ۳) بین هر دو بلوک یک ویرگول انگلیسی , قرار دهید.
+    //
+    // حذف آهنگ:
+    // کل بلوک مربوط به همان آهنگ را از { تا } حذف کنید.
+    // اگر آهنگ آخر را حذف می‌کنید، ویرگول انتهای آهنگ قبلی لازم نیست.
+    // اگر کاور ندارید، مقدار cover را خالی بگذارید: cover: ""
+    // ============================================================
+
+    const tracks = [
+        // آهنگ ۱
+        {
+            title: "Lorestan Ai Made",
+            artist: "",
+            cover: "https://soonami.ir/wp-content/webp-express/webp-images/uploads/2026/10/Lorestan-Ai-Made-Andeka.jpg.webp",
+            src: "https://kk.soonami.ir/s2/Lorestan%20Ai%20Made%20-%20Andeka.mp3"
+        },
+
+        // آهنگ ۲
+        {
+            title: "خوم کرماشانی",
+            artist: "",
+            cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT91F6FT9mwNxQNN6wab7i1swUjVaRsQ0oRi0DA83_kQ&s=10",
+            src: "https://dl.aba-music.ir/music/1405/01/Kemashani.mp3"
+        },
+
+        // آهنگ ۳
+        {
+            title: "Stay With Me",
+            artist: "",
+            cover: "",
+            src: "https://kk.soonami.ir/s2/Dj%20Bobojon%20-%20Stay%20With%20Me.mp3"
+        },
+
+        // آهنگ ۴
+        {
+            title: "Laya Lo",
+            artist: "",
+            cover: "",
+            src: "https://kk.soonami.ir/s2/Dj%20Parik%20-%20Laya%20Lo.mp3"
+        },
+
+        // آهنگ ۵
+        {
+            title: "Ankara Echoes",
+            artist: "",
+            cover: "https://cdn.bubilet.com.tr/cdn-cgi/image/width=1920,quality=80/files/Sanatci/ankara-echoes-99052.jpeg",
+            src: "https://musicviral.musitraf.ir/Music/05-03/Ankara%20Echoes%20-%20Ta%20ki%20seni%20gorene%20kadar%20(Beni%20Al%20Afro%20house%20remix).mp3"
+        },
+
+        // آهنگ ۶
+        {
+            title: "Memories",
+            artist: "Dourush",
+            cover: "https://soonami.ir/wp-content/webp-express/webp-images/uploads/2026/07/DUORUSH-Memories.jpg.webp",
+            src: "https://kk.soonami.ir/s2/DUORUSH%20-%20Memories.mp3"
+        },
+
+        // آهنگ ۷
+        {
+            title: "دل به صدای در میزنه",
+            artist: "",
+            cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG_xeGR3ZaOD34jDWATc2lTlI7fhyE-pMAqd2wYzHHo0XAa387NCSVYbU&s=10",
+            src: "https://dl.sarimusic.in/1405/04/24/1/Del%20Be%20Sedaye%20To.mp3"
+        },
+
+        // آهنگ ۸
+        {
+            title: "I’m Not Like Them",
+            artist: "",
+            cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8Zuk9YsRZ-HyW-qzTWPuSAzEN594hM5zIiIxHjMUVgkIz1vwOBghNZiw&s=10",
+            src: "https://elienglish.com/wp-content/uploads/2026/06/Iron-Heart-2-Im-Not-Like-them.mp3"
+        },
+
+        // آهنگ ۹
+        {
+            title: "هیچی تو این دنیا",
+            artist: "",
+            cover: "https://musicviral.ir/wp-content/uploads/2026/08/%D8%AF%D8%A7%D9%86%D9%84%D9%88%D8%AF-%D8%A2%D9%87%D9%86%DA%AF-%D9%87%DB%8C%DA%86%DB%8C-%D8%AA%D9%88-%D8%A7%DB%8C%D9%86-%D8%AF%D9%86%DB%8C%D8%A7-%D9%85%D9%86%D9%88-%D8%AE%D9%88%D8%B4%D8%AD%D8%A7%D9%84-%D9%86%D9%85%DB%8C%DA%A9%D9%86%D9%87-%D8%AF%DB%8C%DA%AF%D9%87-%D8%A7%D8%B2-%D9%85%DB%8C%D8%B1%D8%A7-%D9%87%D9%88%D8%B4-%D9%85%D8%B5%D9%86%D9%88%D8%B9%DB%8C-73307.jpg",
+            src: "https://dl.musicviral.ir/Music/05-05/mira%20-%20sahme%20man%20ai.mp3"
+        },
+
+        // آهنگ ۱۰
+        {
+            title: "Mama Look At Me Now",
+            artist: "",
+            cover: "https://www.teh-dl.ir/wp-content/uploads/2026/05/NEWROJ-Mama-Look-At-Me-Now.jpg",
+            src: "https://tehdl.musitraf.ir/music1405/3/NEWROJ%20-%20Mama%20Look%20At%20Me%20Now.mp3"
+        },
+
+        // آهنگ ۱۱
+        {
+            title: "I'M TIRED",
+            artist: "",
+            cover: "https://www.teh-dl.ir/wp-content/uploads/2026/06/Im-Tired-Im-Tired-Im-Tired.jpg",
+            src: "https://tehdl.musitraf.ir/music1405/3/ATP%20-%20Night%20After%20Night%20128.mp3"
+        },
+
+        // آهنگ ۱۲
+        {
+            title: "زاخو دله من",
+            artist: "",
+            cover: "https://cdn.shabahang-music.net/wp-content/uploads/2026/ZAXO-DIL%C3%8A-MAYA.webp",
+            src: "https://dl.musicsweb.ir/musics/05/03/Ai%20-%20Zakho%20-%20128.mp3"
+        },
+
+        // آهنگ ۱۳
+        {
+            title: "REYVI - Chaque",
+            artist: "",
+            cover: "https://behmelody.in/wp-content/uploads/2026/08/REYVI-Chaque-Fois.jpg",
+            src: "https://behmelody.musitraf.ir/1405/05/26/REYVI%20-%20Chaque%20Fois.mp3"
+        },
+
+        // آهنگ ۱۴
+        {
+            title: "See You Again",
+            artist: "Dourush",
+            cover: "https://soonami.ir/wp-content/webp-express/webp-images/uploads/2026/09/See-You-Again-DUORUSH.jpg.webp",
+            src: "https://kk.soonami.ir/s2/See%20You%20Again%20-%20DUORUSH.mp3"
+        }
+    ];
+
+    const audio = new Audio(); audio.preload = 'metadata'; audio.autoplay = false; const $ = id => document.getElementById(id); const listEl=$('tracks-list'), playBtn=$('play-pause-btn'), prevBtn=$('prev-btn'), nextBtn=$('next-btn'), seek=$('progress-bar'), fill=$('progress'), currentTimeEl=$('current-time'), durationEl=$('duration'), titleEl=$('player-title'), artistEl=$('player-artist'), coverImg=$('current-cover-img'), coverBox=$('current-track-cover'), totalEl=$('total-duration'), statusEl=$('status'); let currentIndex=-1, dragging=false, statusTimer=0, durationQueue=[], queueRunning=false; const durationCache = new Map(); function formatTime(value) {
+        if(!Number.isFinite(value)||value<0)return '0:00';const s=Math.floor(value);return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`
+    }
+    function notify(message, isError=false) {
+        statusEl.textContent=message;statusEl.classList.toggle('error', isError);statusEl.classList.add('show');clearTimeout(statusTimer);statusTimer=setTimeout(()=>statusEl.classList.remove('show'), isError?5000:2600)
+    }
+    function setPlayIcon(playing) {
+        playBtn.innerHTML=playing?'<i class="fa-solid fa-pause"></i>':'<i class="fa-solid fa-play"></i>';playBtn.setAttribute('aria-label', playing?'توقف':'پخش');document.querySelectorAll('.track').forEach((el, i)=> {
+            const icon=el.querySelector('.track-play i');if(icon)icon.className=(i===currentIndex&&playing)?'fa-solid fa-pause':'fa-solid fa-play';
         });
-    </script>
-</body>
+    }
+    function setCover(url) {
+        if(url) {
+            coverImg.src=url;coverImg.style.display='block';coverBox.querySelector('i').style.display='none';coverImg.onerror=()=> {
+                coverImg.style.display='none';coverBox.querySelector('i').style.display='block'
+            };
+        }
+        else {
+            coverImg.removeAttribute('src');coverImg.style.display='none';coverBox.querySelector('i').style.display='block'
+        }
+    }
+    function renderTracks() {
+        listEl.innerHTML='';tracks.forEach((track, index)=> {
+            const row=document.createElement('div');row.className='track';row.tabIndex=0;row.setAttribute('role', 'button');row.setAttribute('aria-label', `پخش ${track.title}`);row.dataset.index=index; const number=document.createElement('div');number.className='track-number';number.textContent=String(index+1); const art=document.createElement('div');art.className='track-art';const fallback=document.createElement('i');fallback.className='fa-solid fa-music';art.appendChild(fallback);if(track.cover) {
+                const img=document.createElement('img');img.src=track.cover;img.alt='';img.loading='lazy';img.onerror=()=>img.remove();art.appendChild(img)
+            }
+            const copy=document.createElement('div');copy.className='track-copy';const name=document.createElement('div');name.className='track-title';name.textContent=track.title;const artist=document.createElement('div');artist.className='track-artist';artist.textContent=track.artist||' ';copy.append(name, artist); const dur=document.createElement('div');dur.className='track-duration';dur.id=`track-duration-${index}`;dur.textContent='--:--';const play=document.createElement('button');play.className='track-play';play.type='button';play.setAttribute('aria-label', `پخش ${track.title}`);play.innerHTML='<i class="fa-solid fa-play"></i>';play.addEventListener('click', e=> {
+                e.stopPropagation();playTrack(index)
+            }); row.append(number, art, copy, dur, play);row.addEventListener('click', ()=>playTrack(index));row.addEventListener('keydown', e=> {
+                if(e.key==='Enter'||e.key===' ') {
+                    e.preventDefault();playTrack(index)
+                }
+            });listEl.appendChild(row);durationQueue.push(index)
+        });$('track-count').textContent=tracks.length;processDurationQueue()
+    }
+    function updateDuration(index, duration) {
+        durationCache.set(index, Number.isFinite(duration)&&duration>0?duration:0);const el=$(`track-duration-${index}`);if(el)el.textContent=durationCache.get(index)>0?formatTime(durationCache.get(index)):'--:--';let sum=0, known=0;for(const d of durationCache.values()) {
+            if(d>0) {
+                sum+=d;known++
+            }
+        }
+        totalEl.textContent=known===tracks.length?`${formatTime(sum)} مدت کل`:`${known} از ${tracks.length} مدت بارگذاری شد`;if(index===currentIndex&&duration>0)durationEl.textContent=formatTime(duration)
+    }
+    function loadDuration(index) {
+        return new Promise(resolve=> {
+            const probe=new Audio();let finished=false;const done=duration=> {
+                if(finished)return;finished=true;clearTimeout(timer);probe.removeAttribute('src');probe.load();resolve(Number.isFinite(duration)&&duration>0?duration:0)
+            };const timer=setTimeout(()=>done(0), 6500);probe.preload='metadata';probe.addEventListener('loadedmetadata', ()=>done(probe.duration),  {
+                once:true
+            });probe.addEventListener('durationchange', ()=> {
+                if(Number.isFinite(probe.duration)&&probe.duration>0)done(probe.duration)
+            },  {
+                once:true
+            });probe.addEventListener('error', ()=>done(0),  {
+                once:true
+            });probe.src=tracks[index].src;probe.load()
+        })
+    }
+    async function processDurationQueue() {
+        if(queueRunning)return;queueRunning=true;while(durationQueue.length) {
+            const index=durationQueue.shift();if(durationCache.has(index))continue;const duration=await loadDuration(index);updateDuration(index, duration);await new Promise(r=>setTimeout(r, 180))
+        }
+        queueRunning=false
+    }
+    function updateActive() {
+        document.querySelectorAll('.track').forEach((el, i)=> {
+            el.classList.toggle('active', i===currentIndex);if(i===currentIndex)el.setAttribute('aria-current', 'true');else el.removeAttribute('aria-current')
+        })
+    }
+    async function playTrack(index) {
+        if(index<0||index>=tracks.length)return;currentIndex=index;const track=tracks[index];titleEl.textContent=track.title;artistEl.textContent=track.artist||'در حال پخش';setCover(track.cover);updateActive();fill.style.width='0%';currentTimeEl.textContent='0:00';durationEl.textContent=durationCache.get(index)>0?formatTime(durationCache.get(index)):'--:--';audio.pause();audio.src=track.src;audio.load();setPlayIcon(false);notify(`در حال بارگذاری: ${track.title}`);try {
+            await audio.play();setPlayIcon(true);notify(`در حال پخش: ${track.title}`)
+        }
+        catch(err) {
+            setPlayIcon(false);notify('پخش این آهنگ ممکن نشد؛ اتصال اینترنت، لینک فایل یا محدودیت مرورگر را بررسی کنید.', true);console.error('Audio playback failed:', err)
+        }
+    }
+    async function togglePlay() {
+        if(currentIndex<0) {
+            if(tracks.length)await playTrack(0);return
+        }
+        if(audio.paused) {
+            try {
+                await audio.play();setPlayIcon(true)
+            }
+            catch(e) {
+                notify('پخش ادامه پیدا نکرد. دوباره آهنگ را انتخاب کنید.', true)
+            }
+        }
+        else audio.pause()
+    }
+    function nextTrack() {
+        if(!tracks.length)return;playTrack((Math.max(currentIndex, 0)+1)%tracks.length)
+    }
+    function prevTrack() {
+        if(!tracks.length)return;if(audio.currentTime>3) {
+            audio.currentTime=0;return
+        }
+        playTrack((Math.max(currentIndex, 0)-1+tracks.length)%tracks.length)
+    }
+    function updateProgress() {
+        if(dragging)return;const d=audio.duration;const pct=Number.isFinite(d)&&d>0?audio.currentTime/d*100:0;fill.style.width=`${pct}%`;currentTimeEl.textContent=formatTime(audio.currentTime);seek.setAttribute('aria-valuenow', String(Math.round(pct)));if(Number.isFinite(d)&&d>0)durationEl.textContent=formatTime(d)
+    }
+    function seekToClientX(clientX) {
+        const rect=seek.getBoundingClientRect();const pct=Math.max(0, Math.min(1, (clientX-rect.left)/rect.width));const d=audio.duration;if(Number.isFinite(d)&&d>0) {
+            audio.currentTime=pct*d;fill.style.width=`${pct*100}%`;currentTimeEl.textContent=formatTime(audio.currentTime);seek.setAttribute('aria-valuenow', String(Math.round(pct*100)))
+        }
+    }
+    seek.addEventListener('pointerdown', e=> {
+        if(!Number.isFinite(audio.duration)||audio.duration<=0)return;dragging=true;seek.setPointerCapture?.(e.pointerId);seekToClientX(e.clientX);e.preventDefault()
+    });seek.addEventListener('pointermove', e=> {
+        if(dragging)seekToClientX(e.clientX)
+    });function endSeek() {
+        dragging=false
+    }
+    seek.addEventListener('pointerup', endSeek);seek.addEventListener('pointercancel', endSeek);seek.addEventListener('keydown', e=> {
+        if(!Number.isFinite(audio.duration)||audio.duration<=0)return;let delta=0;if(e.key==='ArrowRight')delta=-5;else if(e.key==='ArrowLeft')delta=5;else if(e.key==='PageDown')delta=-15;else if(e.key==='PageUp')delta=15;else if(e.key==='Home') {
+            audio.currentTime=0;e.preventDefault();return
+        }
+        else if(e.key==='End') {
+            audio.currentTime=audio.duration;e.preventDefault();return
+        }
+        else return;e.preventDefault();audio.currentTime=Math.max(0, Math.min(audio.duration, audio.currentTime+delta));updateProgress()
+    }); playBtn.addEventListener('click', togglePlay);nextBtn.addEventListener('click', nextTrack);prevBtn.addEventListener('click', prevTrack);audio.addEventListener('timeupdate', updateProgress);audio.addEventListener('loadedmetadata', ()=> {
+        durationEl.textContent=formatTime(audio.duration);updateProgress();if(currentIndex>=0)updateDuration(currentIndex, audio.duration)
+    });audio.addEventListener('play', ()=>setPlayIcon(true));audio.addEventListener('pause', ()=>setPlayIcon(false));audio.addEventListener('ended', nextTrack);audio.addEventListener('error', ()=> {
+        if(currentIndex>=0)notify(`خطا در دریافت یا پخش «${tracks[currentIndex].title}». آهنگ بعدی را امتحان کنید.`, true);setPlayIcon(false)
+    }); document.addEventListener('keydown', e=> {
+        const tag=e.target?.tagName?.toLowerCase();if(['button', 'input', 'textarea', 'select'].includes(tag)||e.target===seek)return;if(e.code==='Space') {
+            e.preventDefault();togglePlay()
+        }
+        else if(e.key==='ArrowRight') {
+            e.preventDefault();nextTrack()
+        }
+        else if(e.key==='ArrowLeft') {
+            e.preventDefault();prevTrack()
+        }
+    }); renderTracks();
+})();
+</script>
+ </body>
 </html>
