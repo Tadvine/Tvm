@@ -1,38 +1,329 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Manoto</title>
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>mtc</title>
+
+    <!-- Video.js -->
+    <link
+        href="https://vjs.zencdn.net/8.23.4/video-js.css"
+        rel="stylesheet"
+    >
+
+    <script src="https://vjs.zencdn.net/8.23.4/video.min.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
 
- 
-<body bgcolor='#000000'>
+        /* Player container */
+
+        .player-container {
+            width: min(100vw, 177.7778dvh);
+            aspect-ratio: 16 / 9;
+
+            position: relative;
+
+            background: #000;
+            overflow: hidden;
+        }
 
 
-  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
-  <script src="https://unpkg.com/video.js/dist/video.js"></script>
-  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
-   
+        /* Video.js player */
+
+        .video-js {
+            width: 100%;
+            height: 100%;
+
+            background: #000;
+
+            font-family: Arial, sans-serif;
+        }
+
+        .video-js .vjs-tech {
+            object-fit: contain;
+        }
+
+
+        /* Big play button - Perfect Center */
+
+        .video-js .vjs-big-play-button {
+
+            width: 76px;
+            height: 76px;
+
+            position: absolute !important;
+
+            top: 50% !important;
+            left: 50% !important;
+
+            right: auto !important;
+            bottom: auto !important;
+
+            transform: translate(-50%, -50%) !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            line-height: 74px;
+
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 50%;
+
+            background: rgba(0,0,0,0.55);
+
+            font-size: 34px;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .video-js .vjs-big-play-button:hover {
+            background: rgba(255,255,255,0.18);
+        }
+
+
+        /* Control bar */
+
+        .video-js .vjs-control-bar {
+
+            height: 48px;
+            padding: 0 10px;
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(0,0,0,0.95),
+                    rgba(0,0,0,0.65)
+                );
+        }
+
+        .video-js .vjs-button > .vjs-icon-placeholder:before {
+
+            line-height: 48px;
+            color: #fff;
+        }
+
+
+        /* Progress bar */
+
+        .video-js .vjs-progress-control {
+            min-width: 40px;
+        }
+
+        .video-js .vjs-play-progress {
+            background: #fff;
+        }
+
+        .video-js .vjs-play-progress:before {
+            color: #fff;
+        }
+
+        .video-js .vjs-load-progress {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .video-js .vjs-progress-holder {
+
+            height: 4px;
+            margin: 0;
+        }
+
+        .video-js .vjs-progress-control:hover .vjs-progress-holder {
+            height: 6px;
+        }
+
+
+        /* Time display */
+
+        .video-js .vjs-time-control {
+
+            font-size: 12px;
+            line-height: 48px;
+
+            min-width: 38px;
+            padding: 0 3px;
+
+            color: #fff;
+        }
+
+
+        /* Volume */
+
+        .video-js .vjs-volume-panel {
+            width: 90px;
+        }
+
+        .video-js .vjs-volume-level {
+            background: #fff;
+        }
+
+
+        /* Fullscreen */
+
+        .video-js.vjs-fullscreen {
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-js .vjs-control:focus,
+        .video-js .vjs-button:focus {
+            outline: none;
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 600px) {
+
+            .video-js .vjs-control-bar {
+
+                height: 42px;
+                padding: 0 5px;
+            }
+
+            .video-js .vjs-button > .vjs-icon-placeholder:before {
+                line-height: 42px;
+            }
+
+            .video-js .vjs-time-control {
+
+                font-size: 10px;
+                line-height: 42px;
+
+                min-width: 30px;
+            }
+
+            .video-js .vjs-volume-panel {
+                width: 40px;
+            }
+
+            .video-js .vjs-big-play-button {
+
+                width: 62px;
+                height: 62px;
+
+                line-height: 60px;
+                font-size: 28px;
+            }
+
+        }
+
+
+        /* Hide unnecessary controls */
+
+        .video-js .vjs-picture-in-picture-control {
+            display: none;
+        }
+
+    </style>
+
 </head>
+
+
 <body>
 
+    <div class="player-container">
 
-  <video id="my_video_1" class="video-js vjs-fluid vjs-default-skin" controls 
-  preload="auto"
-  poster="https://dl.avajavan.com/uploads/2024/10/Persiana-Sonati.webp"
-  data-setup='{}'>
-  
-    
-  
-    <source src="https://sonhls.persiana.live/hls/stream.m3u8" type="application/x-mpegURL">
-  </video>
-  
-<script>
-var player = videojs('my_video_1');
-player.play();
-</script>
-  
+        <video
+            id="musicPlayer"
+            class="video-js vjs-default-skin"
+            controls
+            playsinline
+            preload="auto"
+
+            poster="https://dl.avajavan.com/uploads/2024/10/Persiana-Sonati.webp"
+        >
+
+            <source
+                src="https://sonhls.persiana.live/hls/stream.m3u8"
+                type="application/x-mpegURL"
+            >
+
+        </video>
+
+    </div>
+
+
+    <script>
+
+        // Initialize player
+
+        const player = videojs('musicPlayer', {
+
+            controls: true,
+
+            autoplay: false,
+
+            preload: 'auto',
+
+            fluid: false,
+
+            responsive: true,
+
+            aspectRatio: '16:9',
+
+            controlBar: {
+
+                children: [
+                    'playToggle',
+                    'volumePanel',
+                    'currentTimeDisplay',
+                    'timeDivider',
+                    'durationDisplay',
+                    'progressControl',
+                    'fullscreenToggle'
+                ]
+
+            }
+
+        });
+
+
+        // Attempt autoplay
+
+        player.ready(function () {
+
+            const playAttempt = player.play();
+
+            if (playAttempt !== undefined) {
+
+                playAttempt.catch(function () {
+
+                    // Browser autoplay restriction.
+                    // User can start playback manually.
+
+                });
+
+            }
+
+        });
+
+    </script>
+
 </body>
+
 </html>

@@ -1,295 +1,329 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PMC TV - پخش زنده</title>
-    <meta name="description" content="پخش زنده شبکه PMC">
-    
-    <!-- Video.js CSS -->
-    <link href="https://unpkg.com/video.js@7.21.1/dist/video-js.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/@videojs/themes@1.0.0/dist/sea/index.css" rel="stylesheet">
-    
+
+    <title>mtc</title>
+
+    <!-- Video.js -->
+    <link
+        href="https://vjs.zencdn.net/8.23.4/video-js.css"
+        rel="stylesheet"
+    >
+
+    <script src="https://vjs.zencdn.net/8.23.4/video.min.js"></script>
+
     <style>
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        
+
+        html,
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #000;
-            color: #fff;
-            overflow-x: hidden;
-        }
-        
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
-        
-        
-        .logo {
-            height: 50px;
-            width: auto;
-        }
-        
-        .player-wrapper {
-            flex: 1;
-            position: relative;
-            max-width: 1200px;
             width: 100%;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
+            height: 100%;
+            background: #000;
             overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
         }
-        
-        .video-js {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+
+        body {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            z-index: 10;
+            justify-content: center;
         }
-        
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
+
+
+        /* Player container */
+
+        .player-container {
+            width: min(100vw, 177.7778dvh);
+            aspect-ratio: 16 / 9;
+
+            position: relative;
+
+            background: #000;
+            overflow: hidden;
+        }
+
+
+        /* Video.js player */
+
+        .video-js {
+            width: 100%;
+            height: 100%;
+
+            background: #000;
+
+            font-family: Arial, sans-serif;
+        }
+
+        .video-js .vjs-tech {
+            object-fit: contain;
+        }
+
+
+        /* Big play button - Perfect Center */
+
+        .video-js .vjs-big-play-button {
+
+            width: 76px;
+            height: 76px;
+
+            position: absolute !important;
+
+            top: 50% !important;
+            left: 50% !important;
+
+            right: auto !important;
+            bottom: auto !important;
+
+            transform: translate(-50%, -50%) !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            line-height: 74px;
+
+            border: 1px solid rgba(255,255,255,0.8);
             border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 15px;
+
+            background: rgba(0,0,0,0.55);
+
+            font-size: 34px;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+
+        .video-js .vjs-big-play-button:hover {
+            background: rgba(255,255,255,0.18);
         }
-        
-        .status-message {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 18px;
+
+
+        /* Control bar */
+
+        .video-js .vjs-control-bar {
+
+            height: 48px;
+            padding: 0 10px;
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(0,0,0,0.95),
+                    rgba(0,0,0,0.65)
+                );
         }
-        
-        footer {
-            background-color: #111;
-            padding: 15px;
-            text-align: center;
-            font-size: 14px;
-            color: #aaa;
+
+        .video-js .vjs-button > .vjs-icon-placeholder:before {
+
+            line-height: 48px;
+            color: #fff;
         }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .logo {
-                height: 40px;
+
+
+        /* Progress bar */
+
+        .video-js .vjs-progress-control {
+            min-width: 40px;
+        }
+
+        .video-js .vjs-play-progress {
+            background: #fff;
+        }
+
+        .video-js .vjs-play-progress:before {
+            color: #fff;
+        }
+
+        .video-js .vjs-load-progress {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .video-js .vjs-progress-holder {
+
+            height: 4px;
+            margin: 0;
+        }
+
+        .video-js .vjs-progress-control:hover .vjs-progress-holder {
+            height: 6px;
+        }
+
+
+        /* Time display */
+
+        .video-js .vjs-time-control {
+
+            font-size: 12px;
+            line-height: 48px;
+
+            min-width: 38px;
+            padding: 0 3px;
+
+            color: #fff;
+        }
+
+
+        /* Volume */
+
+        .video-js .vjs-volume-panel {
+            width: 90px;
+        }
+
+        .video-js .vjs-volume-level {
+            background: #fff;
+        }
+
+
+        /* Fullscreen */
+
+        .video-js.vjs-fullscreen {
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-js .vjs-control:focus,
+        .video-js .vjs-button:focus {
+            outline: none;
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 600px) {
+
+            .video-js .vjs-control-bar {
+
+                height: 42px;
+                padding: 0 5px;
             }
-            
-            .player-wrapper {
-                padding: 10px;
+
+            .video-js .vjs-button > .vjs-icon-placeholder:before {
+                line-height: 42px;
             }
-            
-            .status-message {
-                font-size: 16px;
+
+            .video-js .vjs-time-control {
+
+                font-size: 10px;
+                line-height: 42px;
+
+                min-width: 30px;
             }
-        }
-        
-        @media (max-width: 480px) {
-            .logo {
-                height: 30px;
-            }
-            
-            .spinner {
+
+            .video-js .vjs-volume-panel {
                 width: 40px;
-                height: 40px;
             }
+
+            .video-js .vjs-big-play-button {
+
+                width: 62px;
+                height: 62px;
+
+                line-height: 60px;
+                font-size: 28px;
+            }
+
         }
+
+
+        /* Hide unnecessary controls */
+
+        .video-js .vjs-picture-in-picture-control {
+            display: none;
+        }
+
     </style>
+
 </head>
+
+
 <body>
-    <div class="main-container">
-        <header>
-            
-        </header>
-        
-        <div class="player-wrapper">
-            <div class="video-container">
-                <div class="loading-overlay">
-                    <div class="spinner"></div>
-                    <div class="status-message">در حال اتصال به پخش زنده...</div>
-                </div>
-                
-                <video
-                    id="pmc-player"
-                    class="video-js vjs-theme-sea"
-                    controls
-                    autoplay
-                    muted
-                    playsinline
-                    preload="auto"
-                    poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO-lFBA98zxlTMvWg1caS5WG8_DMa9vq_Irg&s"
-                    data-setup='{
-                        "fluid": true,
-                        "liveui": true,
-                        "responsive": true,
-                        "autoplay": true,
-                        "muted": true,
-                        "controlBar": {
-                            "pictureInPictureToggle": false,
-                            "volumePanel": {
-                                "inline": false
-                            }
-                        }
-                    }'>
-                    <source src="https://ca1.buximedia.com/itv/persian/playlist.m3u8" type="application/x-mpegURL">
-                    <p class="vjs-no-js">
-                        برای مشاهده این ویدیو لطفا JavaScript را فعال کنید یا از مرورگری که از HTML5 پشتیبانی می‌کند استفاده نمایید.
-                    </p>
-                </video>
-            </div>
-        </div>
-        
-        <footer>
-            © 2023 PMC TV - پخش زنده
-        </footer>
+
+    <div class="player-container">
+
+        <video
+            id="musicPlayer"
+            class="video-js vjs-default-skin"
+            controls
+            playsinline
+            preload="auto"
+
+            poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7cjH-Uo9UgEvPUUPzz96Ara1JGzfMALbyGFCTvJQSCSsFBx82vSkbkxnc&s=10"
+        >
+
+            <source
+                src="https://pmchls.wns.live/hls/stream.m3u8"
+                type="application/x-mpegURL"
+            >
+
+        </video>
+
     </div>
 
-    <!-- Video.js and plugins -->
-    <script src="https://unpkg.com/video.js@7.21.1/dist/video.min.js"></script>
-    <script src="https://unpkg.com/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
-    <script src="https://unpkg.com/videojs-errors@4.4.3/dist/videojs-errors.min.js"></script>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize player
-            const player = videojs('pmc-player', {
-                html5: {
-                    hls: {
-                        overrideNative: true,
-                        enableLowInitialPlaylist: true,
-                        smoothQualityChange: true,
-                        bandwidth: 2000000
-                    }
-                },
-                userActions: {
-                    hotkeys: function(event) {
-                        // Space key for play/pause
-                        if (event.keyCode === 32) {
-                            if (player.paused()) {
-                                player.play();
-                            } else {
-                                player.pause();
-                            }
-                        }
-                        // F key for fullscreen
-                        if (event.keyCode === 70) {
-                            if (!player.isFullscreen()) {
-                                player.requestFullscreen();
-                            } else {
-                                player.exitFullscreen();
-                            }
-                        }
-                        // M key for mute/unmute
-                        if (event.keyCode === 77) {
-                            player.muted(!player.muted());
-                        }
-                    }
-                }
-            });
-            
-            // Hide loading overlay when player is ready
-            player.ready(function() {
-                const loadingOverlay = document.querySelector('.loading-overlay');
-                
-                // Try to unmute and play
-                const playPromise = player.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        player.muted(false);
-                        loadingOverlay.style.display = 'none';
-                    })
-                    .catch(error => {
-                        console.log('Autoplay prevented, keeping muted:', error);
-                        loadingOverlay.style.display = 'none';
-                    });
-                }
-            });
-            
-            // Error handling
-            player.on('error', function() {
-                const error = player.error();
-                console.error('Player error:', error);
-                
-                const loadingOverlay = document.querySelector('.loading-overlay');
-                const statusMessage = document.querySelector('.status-message');
-                
-                loadingOverlay.style.display = 'flex';
-                
-                switch(error.code) {
-                    case 1:
-                        statusMessage.textContent = 'خطا در بارگذاری رسانه';
-                        break;
-                    case 2:
-                        statusMessage.textContent = 'قطع ارتباط با سرور';
-                        break;
-                    case 3:
-                        statusMessage.textContent = 'خطا در رمزگشایی ویدیو';
-                        break;
-                    case 4:
-                        statusMessage.textContent = 'منبع ویدیو پشتیبانی نمی‌شود';
-                        break;
-                    default:
-                        statusMessage.textContent = 'خطای ناشناخته در پخش';
-                }
-            });
-            
-            // Network handling
-            player.on('waiting', function() {
-                const loadingOverlay = document.querySelector('.loading-overlay');
-                const statusMessage = document.querySelector('.status-message');
-                
-                loadingOverlay.style.display = 'flex';
-                statusMessage.textContent = 'در حال دریافت داده...';
-            });
-            
-            player.on('playing', function() {
-                document.querySelector('.loading-overlay').style.display = 'none';
-            });
-            
-            // Fullscreen change handling
-            player.on('fullscreenchange', function() {
-                if (player.isFullscreen()) {
-                    player.controls(true);
-                }
-            });
+
+        // Initialize player
+
+        const player = videojs('musicPlayer', {
+
+            controls: true,
+
+            autoplay: false,
+
+            preload: 'auto',
+
+            fluid: false,
+
+            responsive: true,
+
+            aspectRatio: '16:9',
+
+            controlBar: {
+
+                children: [
+                    'playToggle',
+                    'volumePanel',
+                    'currentTimeDisplay',
+                    'timeDivider',
+                    'durationDisplay',
+                    'progressControl',
+                    'fullscreenToggle'
+                ]
+
+            }
+
         });
+
+
+        // Attempt autoplay
+
+        player.ready(function () {
+
+            const playAttempt = player.play();
+
+            if (playAttempt !== undefined) {
+
+                playAttempt.catch(function () {
+
+                    // Browser autoplay restriction.
+                    // User can start playback manually.
+
+                });
+
+            }
+
+        });
+
     </script>
+
 </body>
+
 </html>
