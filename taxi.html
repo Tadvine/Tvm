@@ -1,34 +1,388 @@
 
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Video Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stream Player</title>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
 <style>
-body {
-    background: #000;
-    color: white;
-    font-family: sans-serif;
-    text-align: center;
-    padding: 20px;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
+
+body {
+    background: #090b10;
+    color: #fff;
+    font-family: Tahoma, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.logo {
+    text-align: center;
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #28c7ad;
+}
+
+.player-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
 video {
     width: 100%;
-    max-width: 900px;
-    background: #111;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    background: #000;
+}
+
+.center-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 72px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(40, 199, 173, .92);
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+.center-play.hidden {
+    display: none;
+}
+
+.status {
+    position: absolute;
+    bottom: 65px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 13px;
+    color: #fff;
+    text-shadow: 0 2px 5px #000;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.controls {
+    margin-top: 15px;
+    padding: 15px;
+    background: #171b24;
+    border-radius: 12px;
+}
+
+input {
+    width: 100%;
+    height: 46px;
+    background: #0d1118;
+    border: 1px solid #303744;
+    border-radius: 7px;
+    padding: 0 12px;
+    color: white;
+    outline: none;
+    font-size: 13px;
+    direction: ltr;
+    margin-bottom: 10px;
+}
+
+input:focus {
+    border-color: #28c7ad;
+}
+
+button.action {
+    height: 44px;
+    border: none;
+    border-radius: 7px;
+    background: #168f80;
+    color: white;
+    padding: 0 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+button.action:active {
+    opacity: .7;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+.row button {
+    flex: 1;
+}
+
+.note {
+    color: #8993a3;
+    font-size: 11px;
+    line-height: 1.9;
+    margin-top: 12px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 8px;
+    }
+
+    .player-box {
+        border-radius: 7px;
+    }
+
+    .controls {
+        padding: 10px;
+    }
+
+    .center-play {
+        width: 58px;
+        height: 58px;
+    }
 }
 </style>
 </head>
+
 <body>
 
-<h3>آزمایش پخش مستقیم</h3>
+<div class="container">
 
-<video controls playsinline preload="metadata">
-    <source
-        src="https://cdn1.movieland.af/series2/2026/taksy/season_1/episode_1/taksy-s1-e1-720p-movieland.af.mp4"
-        type="video/mp4">
-</video>
+    <div class="logo">STREAM PLAYER</div>
+
+    <div class="player-box" id="playerBox">
+
+        <video
+            id="video"
+            controls
+            playsinline
+            preload="metadata">
+        </video>
+
+        <button
+            class="center-play"
+            id="centerPlay"
+            aria-label="پخش">
+            ▶
+        </button>
+
+        <div class="status" id="status"></div>
+
+    </div>
+
+    <div class="controls">
+
+        <input
+            type="text"
+            id="videoUrl"
+            placeholder="آدرس مستقیم MP4 یا M3U8 را وارد کنید"
+            autocomplete="off">
+
+        <div class="row">
+            <button class="action" id="loadBtn">
+                بارگذاری و پخش
+            </button>
+
+            <button class="action" id="stopBtn">
+                توقف
+            </button>
+        </div>
+
+        <div class="note">
+            فرمت‌های قابل پشتیبانی: MP4 و M3U8
+            <br>
+            برای پخش HLS در مرورگر، اتصال به کتابخانه HLS.js لازم است.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const video = document.getElementById("video");
+const urlInput = document.getElementById("videoUrl");
+const loadBtn = document.getElementById("loadBtn");
+const stopBtn = document.getElementById("stopBtn");
+const centerPlay = document.getElementById("centerPlay");
+const status = document.getElementById("status");
+
+let hls = null;
+
+function showStatus(message) {
+    status.textContent = message;
+}
+
+function destroyHls() {
+    if (hls) {
+        hls.destroy();
+        hls = null;
+    }
+}
+
+function playVideo() {
+
+    const url = urlInput.value.trim();
+
+    if (!url) {
+        showStatus("لطفاً آدرس ویدیو را وارد کنید.");
+        return;
+    }
+
+    if (!/^https?:\/\//i.test(url)) {
+        showStatus("آدرس باید با HTTP یا HTTPS شروع شود.");
+        return;
+    }
+
+    destroyHls();
+
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+
+    centerPlay.classList.remove("hidden");
+    showStatus("در حال اتصال به سرور...");
+
+    const cleanUrl = url.split("?")[0].toLowerCase();
+
+    if (cleanUrl.endsWith(".m3u8")) {
+
+        if (Hls.isSupported()) {
+
+            hls = new Hls({
+                enableWorker: true,
+                lowLatencyMode: false,
+                backBufferLength: 60
+            });
+
+            hls.loadSource(url);
+            hls.attachMedia(video);
+
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                startPlayback();
+            });
+
+            hls.on(Hls.Events.ERROR, function(event, data) {
+
+                if (data.fatal) {
+                    showStatus("خطای دریافت استریم: " + data.type);
+
+                    if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+                        hls.startLoad();
+                    } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+                        hls.recoverMediaError();
+                    } else {
+                        destroyHls();
+                    }
+                }
+            });
+
+        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+
+            video.src = url;
+            video.addEventListener("loadedmetadata", startPlayback, {
+                once: true
+            });
+
+        } else {
+            showStatus("مرورگر از پخش M3U8 پشتیبانی نمی‌کند.");
+        }
+
+    } else {
+
+        video.src = url;
+        video.load();
+
+        video.addEventListener("loadedmetadata", startPlayback, {
+            once: true
+        });
+
+        video.addEventListener("error", function() {
+            showStatus("پخش فایل ممکن نیست. آدرس یا پاسخ سرور را بررسی کنید.");
+        }, {
+            once: true
+        });
+    }
+}
+
+function startPlayback() {
+
+    video.play()
+        .then(function() {
+            showStatus("");
+        })
+        .catch(function() {
+            showStatus("برای شروع پخش، دکمه وسط تصویر را بزنید.");
+            centerPlay.classList.remove("hidden");
+        });
+}
+
+centerPlay.addEventListener("click", function() {
+    video.play();
+});
+
+video.addEventListener("play", function() {
+    centerPlay.classList.add("hidden");
+    showStatus("");
+});
+
+video.addEventListener("pause", function() {
+    if (!video.ended && video.currentTime > 0) {
+        centerPlay.classList.remove("hidden");
+    }
+});
+
+video.addEventListener("waiting", function() {
+    showStatus("در حال بارگذاری...");
+});
+
+video.addEventListener("playing", function() {
+    showStatus("");
+});
+
+loadBtn.addEventListener("click", playVideo);
+
+stopBtn.addEventListener("click", function() {
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+
+    destroyHls();
+
+    centerPlay.classList.remove("hidden");
+    showStatus("پخش متوقف شد.");
+});
+
+urlInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        playVideo();
+    }
+});
+</script>
 
 </body>
 </html>
