@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Video Player</title>
+
     <style>
+
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -12,8 +17,9 @@
             background-color: #f4f4f4;
             display: flex;
             height: 100vh;
-            overflow: hidden; /* Prevents horizontal scroll */
+            overflow: hidden;
         }
+
         .container {
             display: flex;
             flex-direction: column;
@@ -23,6 +29,7 @@
             transition: margin-left 0.3s;
             margin-left: 0;
         }
+
         .sidebar {
             width: 300px;
             background-color: #2c3e50;
@@ -31,12 +38,14 @@
             height: 100vh;
             overflow-y: auto;
             position: fixed;
-            left: -320px; /* Hide completely */
+            left: -320px;
             transition: left 0.3s;
         }
+
         .sidebar.open {
             left: 0;
         }
+
         .toggle-btn {
             position: fixed;
             top: 20px;
@@ -48,19 +57,23 @@
             cursor: pointer;
             z-index: 1000;
         }
+
         .toggle-btn:hover {
             background-color: #2980b9;
         }
+
         #videoPlayer {
             width: 80%;
             max-width: 800px;
             height: auto;
         }
+
         #videoList {
             margin-top: 20px;
             padding: 0;
             text-align: center;
         }
+
         .videoItem {
             padding: 15px;
             margin: 8px 0;
@@ -69,35 +82,40 @@
             cursor: pointer;
             list-style-type: none;
             color: white;
-            font-size: 20px; /* Larger font size */
-            font-family: 'Arial', sans-serif; /* Improved font */
-            text-align: center; /* Center align text */
+            font-size: 20px;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
         }
+
         .videoItem:hover {
             background-color: #1abc9c;
         }
+
         .search-bar {
             margin-bottom: 20px;
-            padding: 20px; /* Add padding to adjust size */
-            background-color: #2c3e50; /* Match sidebar background */
-            position: sticky; /* Fix position at the top */
+            padding: 20px;
+            background-color: #2c3e50;
+            position: sticky;
             top: 0;
-            z-index: 100; /* Ensure it is above other elements */
+            z-index: 100;
         }
+
         .search-bar input {
-            width: calc(100% - 40px); /* Full width within padding */
+            width: calc(100% - 40px);
             padding: 10px;
             border: none;
             border-radius: 5px;
-            font-size: 18px; /* Larger font size for input */
+            font-size: 18px;
             font-family: 'Arial', sans-serif;
             text-align: right;
         }
+
         .buttons {
             margin-top: 10px;
             display: flex;
             justify-content: space-between;
         }
+
         .buttons button {
             padding: 10px;
             border: none;
@@ -106,152 +124,556 @@
             border-radius: 5px;
             cursor: pointer;
             width: 48%;
-            font-size: 18px; /* Larger font size for buttons */
+            font-size: 18px;
         }
+
         .buttons button:hover {
             background-color: #c0392b;
         }
+
         @media (max-width: 768px) {
+
             .container {
                 width: 100%;
             }
+
             .sidebar {
                 width: 250px;
-                left: -270px; /* Hide completely */
+                left: -270px;
             }
+
             .sidebar.open {
                 left: 0;
             }
+
             .toggle-btn {
                 top: 10px;
                 left: 10px;
                 padding: 8px;
             }
-        }
-    </style>
-</head>
-<body>
-    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-    <div class="sidebar" id="sidebar">
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="نام فیلم را جستجو کنید...">
-            <div class="buttons">
-                <button onclick="searchMovie()">جستجو</button>
-                <button onclick="cancelSearch()">لغو</button>
-            </div>
-        </div>
-        <ul id="videoList"></ul>
-    </div>
-    <div class="container" id="mainContainer">
-        <video id="videoPlayer" controls></video>
-    </div>
-    <script>
-        const mainPlaylistUrl = 'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/A04_Ghadimi.m3u';
-        
-        const secondaryPlaylistUrl = ''; // Replace with the actual URL of the second playlist
 
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <div class="sidebar" id="sidebar">
+
+        <div class="search-bar">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="نام فیلم را جستجو کنید..."
+            >
+
+            <div class="buttons">
+
+                <button onclick="searchMovie()">جستجو</button>
+
+                <button onclick="cancelSearch()">لغو</button>
+
+            </div>
+
+        </div>
+
+        <ul id="videoList"></ul>
+
+    </div>
+
+    <div class="container" id="mainContainer">
+
+        <video id="videoPlayer" controls></video>
+
+    </div>
+
+
+    <script>
+
+        // آدرس لیست اصلی
+        const mainPlaylistUrl =
+            'https://raw.githubusercontent.com/shayanline/iptv-iran/main/playlists/iran.m3u';
+
+
+        // آدرس لیست دوم
+        const secondaryPlaylistUrl =
+            'https://raw.githubusercontent.com/Tadvine/Config/refs/heads/main/A08.m3u';
+
+
+        let activePlaylist = 'main';
+
+
+        // بارگذاری اولیه
         document.addEventListener('DOMContentLoaded', () => {
+
             loadPlaylist(mainPlaylistUrl);
+
         });
 
-        function loadPlaylist(url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    const videoList = document.getElementById('videoList');
-                    const videoPlayer = document.getElementById('videoPlayer');
-                    videoList.innerHTML = ''; // Clear previous list
-                    
-                    const lines = data.split('\n');
-                    let currentVideoTitle = '';
-                    const videoItems = [];
 
-                    lines.forEach(line => {
-                        line = line.trim();
-                        if (line.startsWith('#EXTINF')) {
-                            const match = line.match(/#EXTINF:.*,(.+)/);
-                            if (match) {
-                                currentVideoTitle = match[1].trim();
-                            }
-                        } else if (line && !line.startsWith('#') && currentVideoTitle) { // Add check for currentVideoTitle
-                            const listItem = document.createElement('li');
-                            listItem.className = 'videoItem';
-                            listItem.textContent = currentVideoTitle;
-                            listItem.addEventListener('click', () => {
-                                videoPlayer.src = line;
-                                videoPlayer.play();
-                            });
-                            videoItems.push(listItem);
-                            currentVideoTitle = '';
-                        }
-                    });
+        // دریافت آدرس صفحه اول گوشی
+        function getPhoneHtmlUrl() {
 
-                    // مرتب‌سازی آیتم‌ها بر اساس حروف الفبا
-                    videoItems.sort((a, b) => a.textContent.localeCompare(b.textContent));
-                    videoItems.forEach(item => videoList.appendChild(item));
+            let savedUrl = localStorage.getItem(
+                'phoneHtmlServerUrl'
+            );
 
-                    // باز کردن سایدبار لیست فیلم‌ها
-                    toggleSidebar();
-                })
-                .catch(error => console.error('Error fetching the m3u file:', error));
-        }
+            if (!savedUrl) {
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContainer = document.getElementById('mainContainer');
-            sidebar.classList.toggle('open');
-            if (sidebar.classList.contains('open')) {
-                mainContainer.style.marginLeft = '300px';
-            } else {
-                mainContainer.style.marginLeft = '0';
+                savedUrl = prompt(
+                    'آدرس کامل صفحه HTML گوشی را وارد کنید:',
+                    'http://192.168.1.105:8080/Backup1/android/temp.html'
+                );
+
+                if (!savedUrl) {
+                    return null;
+                }
+
+                savedUrl = savedUrl.trim();
+
             }
+
+            try {
+
+                const parsedUrl = new URL(savedUrl);
+
+                if (
+                    parsedUrl.protocol !== 'http:' &&
+                    parsedUrl.protocol !== 'https:'
+                ) {
+
+                    throw new Error('Invalid protocol');
+
+                }
+
+                localStorage.setItem(
+                    'phoneHtmlServerUrl',
+                    parsedUrl.href
+                );
+
+                return parsedUrl.href;
+
+            } catch (error) {
+
+                alert('آدرس واردشده معتبر نیست.');
+
+                return null;
+
+            }
+
         }
 
-        function searchMovie() {
-            const sidebar = document.getElementById('sidebar');
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const videoItems = document.querySelectorAll('.videoItem');
 
-            if (query === '00100') { // Replace with your actual secret code
-                loadPlaylist(secondaryPlaylistUrl); // Load the secondary playlist
-                sidebar.classList.add('open');
-                document.getElementById('mainContainer').style.marginLeft = '300px';
+        // تغییر آدرس صفحه اول گوشی
+        function changePhoneHtmlUrl() {
+
+            const currentUrl = localStorage.getItem(
+                'phoneHtmlServerUrl'
+            ) || 'http://192.168.1.105:8080/Backup1/android/temp.html';
+
+
+            const newUrl = prompt(
+                'آدرس جدید صفحه HTML گوشی را وارد کنید:',
+                currentUrl
+            );
+
+
+            if (!newUrl) {
                 return;
             }
 
-            let found = false;
-            videoItems.forEach(item => {
-                if (item.textContent.toLowerCase().includes(query)) {
-                    item.style.display = 'block';
-                    found = true;
-                } else {
-                    item.style.display = 'none';
+
+            try {
+
+                const parsedUrl = new URL(newUrl.trim());
+
+                if (
+                    parsedUrl.protocol !== 'http:' &&
+                    parsedUrl.protocol !== 'https:'
+                ) {
+
+                    throw new Error('Invalid protocol');
+
                 }
+
+                localStorage.setItem(
+                    'phoneHtmlServerUrl',
+                    parsedUrl.href
+                );
+
+                alert('آدرس جدید ذخیره شد.');
+
+            } catch (error) {
+
+                alert('آدرس واردشده معتبر نیست.');
+
+            }
+
+        }
+
+
+        // باز کردن صفحه HTML اول گوشی
+        function openPhoneHtmlPage() {
+
+            const phoneHtmlUrl = getPhoneHtmlUrl();
+
+            if (phoneHtmlUrl) {
+
+                window.location.href = phoneHtmlUrl;
+
+            }
+
+        }
+
+
+        // باز کردن صفحه فیلم گوشی با IP خودکار
+        
+        function openFilmPage() {
+
+            const filmUrl = new URL(
+                'local/index.html',
+                window.location.origin
+            ).href;
+
+            window.location.href = filmUrl;
+
+        }
+
+
+        // بارگذاری فایل M3U
+        function loadPlaylist(url) {
+
+            fetch(url)
+
+                .then(response => {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'HTTP Error: ' + response.status
+                        );
+
+                    }
+
+                    return response.text();
+
+                })
+
+                .then(data => {
+
+                    const videoList =
+                        document.getElementById('videoList');
+
+                    const videoPlayer =
+                        document.getElementById('videoPlayer');
+
+                    videoList.innerHTML = '';
+
+                    const lines = data.split(/\r?\n/);
+
+                    let currentVideoTitle = '';
+
+                    const videoItems = [];
+
+
+                    lines.forEach(line => {
+
+                        line = line.trim();
+
+                        if (line.startsWith('#EXTINF')) {
+
+                            const match = line.match(
+                                /#EXTINF:.*,(.+)/
+                            );
+
+                            if (match) {
+
+                                currentVideoTitle =
+                                    match[1].trim();
+
+                            }
+
+                        }
+
+                        else if (
+                            line &&
+                            !line.startsWith('#') &&
+                            currentVideoTitle
+                        ) {
+
+                            const videoUrl =
+                                new URL(line, url).href;
+
+                            const listItem =
+                                document.createElement('li');
+
+                            listItem.className = 'videoItem';
+
+                            listItem.textContent =
+                                currentVideoTitle;
+
+
+                            listItem.addEventListener('click', () => {
+
+                                videoPlayer.src = videoUrl;
+
+                                videoPlayer.play();
+
+                            });
+
+
+                            videoItems.push(listItem);
+
+                            currentVideoTitle = '';
+
+                        }
+
+                    });
+
+
+                    videoItems.sort((a, b) =>
+                        a.textContent.localeCompare(b.textContent)
+                    );
+
+
+                    videoItems.forEach(item => {
+
+                        videoList.appendChild(item);
+
+                    });
+
+
+                    const sidebar =
+                        document.getElementById('sidebar');
+
+                    const mainContainer =
+                        document.getElementById('mainContainer');
+
+
+                    sidebar.classList.add('open');
+
+                    mainContainer.style.marginLeft = '300px';
+
+
+                    console.log(
+                        'Playlist loaded successfully:',
+                        videoItems.length,
+                        'videos'
+                    );
+
+
+                    if (videoItems.length === 0) {
+
+                        alert('هیچ فیلمی در فایل M3U پیدا نشد.');
+
+                    }
+
+                })
+
+                .catch(error => {
+
+                    console.error(
+                        'Error loading M3U playlist:',
+                        error
+                    );
+
+                    alert(
+                        'خطا در بارگذاری فایل M3U. اتصال شبکه را بررسی کنید.'
+                    );
+
+                });
+
+        }
+
+
+        // باز و بسته کردن سایدبار
+        function toggleSidebar() {
+
+            const sidebar =
+                document.getElementById('sidebar');
+
+            const mainContainer =
+                document.getElementById('mainContainer');
+
+
+            sidebar.classList.toggle('open');
+
+
+            if (sidebar.classList.contains('open')) {
+
+                mainContainer.style.marginLeft = '300px';
+
+            } else {
+
+                mainContainer.style.marginLeft = '0';
+
+            }
+
+        }
+
+
+        // جستجو و کدهای مخفی
+        function searchMovie() {
+
+            const sidebar =
+                document.getElementById('sidebar');
+
+            const searchInput =
+                document.getElementById('searchInput');
+
+            const query =
+                searchInput.value.trim().toLowerCase();
+
+
+            // کد 00100: بارگذاری لیست دوم
+            if (query === '00100') {
+
+                activePlaylist = 'secondary';
+
+                searchInput.value = '';
+
+                loadPlaylist(secondaryPlaylistUrl);
+
+                return;
+
+            }
+
+
+            // کد 00200: باز کردن صفحه HTML گوشی
+            if (query === '00200') {
+
+                searchInput.value = '';
+
+                openPhoneHtmlPage();
+
+                return;
+
+            }
+
+
+            // کد 00201: تغییر آدرس صفحه اول گوشی
+            if (query === '00201') {
+
+                searchInput.value = '';
+
+                changePhoneHtmlUrl();
+
+                return;
+
+            }
+
+
+            // کد film: باز کردن صفحه پخش فیلم گوشی
+            if (query === 'film') {
+
+                searchInput.value = '';
+
+                openFilmPage();
+
+                return;
+
+            }
+
+
+            // جستجوی عادی فیلم‌ها
+            let found = false;
+
+            const videoItems =
+                document.querySelectorAll('.videoItem');
+
+
+            videoItems.forEach(item => {
+
+                if (
+                    item.textContent.toLowerCase().includes(query)
+                ) {
+
+                    item.style.display = 'block';
+
+                    found = true;
+
+                } else {
+
+                    item.style.display = 'none';
+
+                }
+
             });
 
+
             if (found) {
+
                 sidebar.classList.add('open');
-                document.getElementById('mainContainer').style.marginLeft = '300px';
+
+                document.getElementById(
+                    'mainContainer'
+                ).style.marginLeft = '300px';
+
             } else {
+
                 cancelSearch();
+
             }
+
         }
 
+
+        // لغو جستجو و بازگشت به لیست اصلی
         function cancelSearch() {
-            const sidebar = document.getElementById('sidebar');
-            const searchInput = document.getElementById('searchInput');
+
+            const sidebar =
+                document.getElementById('sidebar');
+
+            const searchInput =
+                document.getElementById('searchInput');
+
+
             searchInput.value = '';
-            loadPlaylist(mainPlaylistUrl); // Reload the main playlist
+
+            activePlaylist = 'main';
+
+            loadPlaylist(mainPlaylistUrl);
+
             sidebar.classList.remove('open');
-            document.getElementById('mainContainer').style.marginLeft = '0';
+
+            document.getElementById(
+                'mainContainer'
+            ).style.marginLeft = '0';
+
         }
 
+
+        // مرتب‌سازی الفبایی
         function sortMoviesAlphabetically() {
-            const videoList = document.getElementById('videoList');
-            const videoItems = Array.from(videoList.getElementsByClassName('videoItem'));
-            videoItems.sort((a, b) => a.textContent.localeCompare(b.textContent));
-            videoItems.forEach(item => videoList.appendChild(item));
+
+            const videoList =
+                document.getElementById('videoList');
+
+            const videoItems =
+                Array.from(
+                    videoList.getElementsByClassName('videoItem')
+                );
+
+
+            videoItems.sort((a, b) =>
+                a.textContent.localeCompare(b.textContent)
+            );
+
+
+            videoItems.forEach(item => {
+
+                videoList.appendChild(item);
+
+            });
+
         }
+
     </script>
+
 </body>
 </html>
