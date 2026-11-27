@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>آزمایش دسترسی USB</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:20px;
+  background:#10131b;
+  color:#eee;
+  font-family:Tahoma,sans-serif;
+}
+.container{max-width:700px;margin:auto}
+h2{color:#65c8ff}
+button{
+  display:block;
+  width:100%;
+  padding:16px;
+  margin:12px 0;
+  border:0;
+  border-radius:10px;
+  background:#2479bd;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+button:active{background:#14578d}
+.status{
+  background:#202735;
+  border-radius:10px;
+  padding:14px;
+  margin:15px 0;
+  line-height:2;
+  overflow-wrap:anywhere;
+}
+#results{
+  background:#080b11;
+  padding:14px;
+  border-radius:10px;
+  min-height:100px;
+  line-height:2;
+  overflow-wrap:anywhere;
+}
+.ok{color:#65e6a0}
+.bad{color:#ff7777}
+.info{color:#65c8ff}
+input{display:none}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h2>آزمایش دسترسی به فلش USB</h2>
+
+<div class="status" id="browserInfo"></div>
+
+<button onclick="selectFolder()">
+۱. انتخاب پوشه فلش USB
+</button>
+
+<button onclick="selectFiles()">
+۲. انتخاب چند فایل ویدیویی
+</button>
+
+<button onclick="directoryAPI()">
+۳. آزمایش دسترسی مستقیم به پوشه
+</button>
+
+<input id="folderInput" type="file"
+       webkitdirectory directory multiple>
+
+<input id="fileInput" type="file"
+       accept="video/*,.mkv,.avi,.mov,.mp4"
+       multiple>
+
+<div class="status">
+<strong>نتیجه آزمایش:</strong>
+<div id="results">هنوز آزمایشی انجام نشده است.</div>
+</div>
+
+</div>
+
+<script>
+const results = document.getElementById("results");
+
+function log(message, type="info"){
+  results.innerHTML +=
+    `<div class="${type}">${message}</div>`;
+}
+
+function clearLog(){
+  results.innerHTML="";
+}
+
+function selectFolder(){
+  clearLog();
+  log("درخواست انتخاب پوشه ارسال شد...");
+
+  document.getElementById("folderInput").click();
+}
+
+function selectFiles(){
+  clearLog();
+  log("درخواست انتخاب فایل ارسال شد...");
+
+  document.getElementById("fileInput").click();
+}
+
+function showFiles(files){
+  clearLog();
+
+  if(!files || files.length===0){
+    log("هیچ فایلی انتخاب نشد.","bad");
+    return;
+  }
+
+  log("تعداد فایل‌های شناسایی‌شده: "+files.length,"ok");
+
+  let videos=0;
+
+  Array.from(files).forEach((file,index)=>{
+    if(file.type.startsWith("video/") ||
+       /\.(mp4|mkv|avi|mov|webm|m4v)$/i.test(file.name)){
+      videos++;
+    }
+
+    if(index<30){
+      log((index+1)+". "+file.name+
+      " | "+(file.size/1048576).toFixed(2)+" MB");
+    }
+  });
+
+  log("تعداد ویدیوهای احتمالی: "+videos,"ok");
+
+  if(files.length>30){
+    log("نمایش ۳۰ فایل اول از "+files.length);
+  }
+}
+
+document.getElementById("folderInput")
+.addEventListener("change",function(){
+  showFiles(this.files);
+});
+
+document.getElementById("fileInput")
+.addEventListener("change",function(){
+  showFiles(this.files);
+});
+
+async function directoryAPI(){
+  clearLog();
+
+  if(!window.isSecureContext){
+    log("این صفحه در محیط امن HTTPS اجرا نشده است.","bad");
+    return;
+  }
+
+  if(!("showDirectoryPicker" in window)){
+    log("مرورگر از showDirectoryPicker پشتیبانی نمی‌کند.","bad");
+    return;
+  }
+
+  try{
+    log("درخواست دسترسی به پوشه...");
+
+    const directory =
+      await window.showDirectoryPicker();
+
+    let count=0;
+
+    for await(const entry of directory.values()){
+      if(entry.kind==="file"){
+        count++;
+        log("فایل: "+entry.name);
+      }
+    }
+
+    log("تعداد فایل‌های پوشه: "+count,"ok");
+
+  }catch(error){
+    log("خطا: "+error.name+" - "+error.message,"bad");
+  }
+}
+
+document.getElementById("browserInfo").innerHTML =
+  "مرورگر: "+navigator.userAgent+
+  "<br>HTTPS: "+(window.isSecureContext?"فعال":"غیرفعال")+
+  "<br>پشتیبانی از انتخاب پوشه: "+
+  ("webkitdirectory" in document.createElement("input")?"بله":"خیر")+
+  "<br>پشتیبانی از Directory Picker: "+
+  ("showDirectoryPicker" in window?"بله":"خیر");
+</script>
+
+</body>
+</html>
